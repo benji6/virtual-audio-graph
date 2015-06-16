@@ -1,0 +1,33 @@
+{
+  "name": "virtual-audio-graph",
+  "version": "0.0.0",
+  "description": "virtual-audio-graph",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benji6/virtual-audio-graph.git"
+  },
+  "author": "Ben Hall",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benji6/virtual-audio-graph/issues"
+  },
+  "homepage": "https://github.com/benji6/virtual-audio-graph",
+  "devDependencies": {
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.4",
+    "gulp": "^3.9.0",
+    "gulp-minify-html": "^1.0.3",
+    "gulp-plumber": "^1.0.1",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.5",
+    "ramda": "^0.15.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.2.2"
+  },
+  "jshintConfig": {
+    "esnext": true
+  }
+}
