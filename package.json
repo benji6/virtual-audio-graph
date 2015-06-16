@@ -30,5 +30,8 @@
   },
   "jshintConfig": {
     "esnext": true
+  },
+  "dependencies": {
+    "ramda": "^0.15.0"
   }
 }

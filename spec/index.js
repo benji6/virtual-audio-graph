@@ -2,14 +2,16 @@ const audioContext = require('./tools/audioContext');
 const VirtualAudioGraph = require('../src/index.js');
 
 describe("VirtualAudioGraph", () => {
-  it("is a constructor which takes an audio context and returns an object with that same audio context as a property", () => {
-    const virtualAudioGraph = new VirtualAudioGraph(audioContext);
+  it("takes audioContext property and returns an object with that same audio context as a property", () => {
+    const virtualAudioGraph = new VirtualAudioGraph({audioContext});
     expect(virtualAudioGraph.audioContext).toBe(audioContext);
   });
 
-  it("creates a new audioContext if one is not supplied", () => {
-    const virtualAudioGraph = new VirtualAudioGraph();
-    expect(virtualAudioGraph.audioContext.constructor).toBe(AudioContext);
+  it("takes audio node destination parameter", () => {
+    const virtualAudioGraph = new VirtualAudioGraph({
+      destination: audioContext.destination,
+    });
+    expect(virtualAudioGraph.destination).toBe(audioContext.destination);
   });
 });
 
@@ -17,34 +19,40 @@ describe("virtualAudioGraph.update", () => {
   var virtualAudioGraph;
 
   beforeEach(() => {
-    virtualAudioGraph = new VirtualAudioGraph();
+    virtualAudioGraph = new VirtualAudioGraph({
+      audioContext,
+      destination: audioContext.destination,
+    });
   });
 
-  it('throws an error when virtualNode name property is not recognised', () => {
+  it('throws an error when virtual node name property is not recognised', () => {
     const virtualNode = {
       name: 'qwerty',
+      connections: [0],
     };
     expect(() => virtualAudioGraph.update(virtualNode)).toThrow();
   });
 
-  it('creates specified virtualNode and stores it in audioGraph property which is an array', () => {
-    const virtualNode = {
+  it('creates specified virtual nodes and stores them in virtualAudioGraph property which is an array', () => {
+    const virtualNodeParams = [{
+      id: 1,
+      name: 'gain',
+      connections: 0,
+    },
+    {
+      id: 2,
       name: 'oscillator',
-    };
-    virtualAudioGraph.update(virtualNode);
-    expect(Array.isArray(virtualAudioGraph.audioGraph)).toBe(true);
-    expect(typeof virtualAudioGraph.audioGraph[0]).toBe('object');
+      connections: 1,
+    }];
+    virtualAudioGraph.update(virtualNodeParams);
+    expect(Array.isArray(virtualAudioGraph.virtualAudioGraph)).toBe(true);
   });
 
-  it('returns this', () => {
+  it('can take object or array of objects and returns this', () => {
     const virtualNode = {
       name: 'oscillator',
+      connections: [0],
     };
     expect(virtualAudioGraph.update(virtualNode)).toBe(virtualAudioGraph);
   });
-});
-
-describe("VirtualNodeConstructors", () => {
-  require('./nodeConstructors/Gain');
-  require('./nodeConstructors/Oscillator');
 });
