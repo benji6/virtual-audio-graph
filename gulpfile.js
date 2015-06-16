@@ -17,35 +17,39 @@ const bundleName = 'virtual-audio-graph.js';
 
 gulp.task('jsDev', function () {
   watchify(browserify(jsEntryPoint, R.assoc('debug', true, watchify.args)))
-    .transform(babelify)
+    .transform(babelify.configure({
+        optional: ['runtime']
+    }))
     .bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source(bundleName))
     .pipe(plumber())
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(uglify())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(buildDestinationPath));
 });
 
 gulp.task('jsSpec', function () {
   watchify(browserify('spec/index.js', R.assoc('debug', true, watchify.args)))
-    .transform(babelify)
+    .transform(babelify.configure({
+        optional: ['runtime']
+    }))
     .bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('spec.js'))
     .pipe(plumber())
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(uglify())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(buildDestinationPath));
 });
 
 gulp.task('jsProd', function () {
   browserify(jsEntryPoint)
-    .transform(babelify)
+    .transform(babelify.configure({
+        optional: ['runtime']
+    }))
     .bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source(bundleName))
