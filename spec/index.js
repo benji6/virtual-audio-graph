@@ -1,6 +1,11 @@
 const audioContext = require('./tools/audioContext');
 const VirtualAudioGraph = require('../src/index.js');
 
+const automatedTestFinish = () => {
+  audioContext.close();
+  require('./manualTests.js');
+};
+
 describe("VirtualAudioGraph", () => {
   it("takes audioContext property and returns an object with that same audio context as a property", () => {
     const virtualAudioGraph = new VirtualAudioGraph({audioContext});
@@ -26,11 +31,11 @@ describe("virtualAudioGraph.update", () => {
   });
 
   it('throws an error when virtual node name property is not recognised', () => {
-    const virtualNode = {
+    const virtualNodeParams = [{
       name: 'qwerty',
       connections: [0],
-    };
-    expect(() => virtualAudioGraph.update(virtualNode)).toThrow();
+    }];
+    expect(() => virtualAudioGraph.update(virtualNodeParams)).toThrow();
   });
 
   it('creates specified virtual nodes and stores them in virtualAudioGraph property which is an array', () => {
@@ -49,10 +54,13 @@ describe("virtualAudioGraph.update", () => {
   });
 
   it('can take object or array of objects and returns this', () => {
-    const virtualNode = {
+    const virtualNodeParams = [{
       name: 'oscillator',
       connections: [0],
-    };
-    expect(virtualAudioGraph.update(virtualNode)).toBe(virtualAudioGraph);
+    }];
+    expect(virtualAudioGraph.update(virtualNodeParams)).toBe(virtualAudioGraph);
+
+    automatedTestFinish();
   });
 });
+

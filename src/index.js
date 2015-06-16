@@ -1,4 +1,4 @@
-const {find, forEach, map, prop, propEq} = require('ramda');
+const {concat, differenceWith, eqProps, find, findIndex, forEach, map, prop, propEq, remove} = require('ramda');
 
 const namesToConstructors = {
   oscillator: require('./nodeConstructors/Oscillator'),
@@ -10,7 +10,7 @@ class VirtualAudioGraph {
     Object.assign(this, {
       audioContext: params.audioContext,
       destination: params.destination,
-      virtualAudioGraph: null,
+      virtualAudioGraph: [],
     });
   }
 
@@ -24,6 +24,7 @@ class VirtualAudioGraph {
         }
       }, connections);
     }, this.virtualAudioGraph);
+    return this;
   }
 
   createAudioNode (nodeParams) {
@@ -35,19 +36,27 @@ class VirtualAudioGraph {
   }
 
   createAudioNodes (virtualAudioNodeParams) {
-    if (Array.isArray(virtualAudioNodeParams)) {
-      this.virtualAudioGraph = map(this.createAudioNode.bind(this), virtualAudioNodeParams);
-    } else {
-      this.virtualAudioGraph = [this.createAudioNode(virtualAudioNodeParams)];
-    }
+    this.virtualAudioGraph = concat(this.virtualAudioGraph, map(this.createAudioNode.bind(this), virtualAudioNodeParams));
+    return this;
+  }
+
+  removeAudioNodes (virtualAudioNodes) {
+    forEach(({audioNode, id}) => {
+      audioNode.disconnect();
+      audioNode.stop && audioNode.stop();
+      this.virtualAudioGraph = remove(findIndex(propEq("id", id))(this.virtualAudioGraph), 1, this.virtualAudioGraph);
+    }, virtualAudioNodes)
     return this;
   }
 
   update (virtualAudioNodeParams) {
-    this
-      .createAudioNodes(virtualAudioNodeParams)
+    const newAudioNodes = differenceWith(eqProps('id'), virtualAudioNodeParams, this.virtualAudioGraph);
+    const oldAudioNodes = differenceWith(eqProps('id'), this.virtualAudioGraph, virtualAudioNodeParams);
+    return this
+      .removeAudioNodes(oldAudioNodes)
+      //update to go here
+      .createAudioNodes(newAudioNodes)
       .connectAudioNodes();
-    return this;
   }
 }
 
