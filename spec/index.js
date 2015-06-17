@@ -3,7 +3,7 @@ const VirtualAudioGraph = require('../src/index.js');
 
 const automatedTestFinish = () => {
   audioContext.close();
-  require('./manualTests.js');
+  require('./manualTests.jsx');
 };
 
 describe("VirtualAudioGraph", () => {
@@ -63,4 +63,3 @@ describe("virtualAudioGraph.update", () => {
     automatedTestFinish();
   });
 });
-

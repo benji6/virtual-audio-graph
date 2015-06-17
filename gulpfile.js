@@ -6,6 +6,7 @@ const gutil = require('gulp-util');
 const minifyHTML = require('gulp-minify-html');
 const plumber = require('gulp-plumber');
 const R = require ('ramda');
+const reactify = require('reactify');
 const source = require('vinyl-source-stream');
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
@@ -35,6 +36,7 @@ gulp.task('jsSpec', function () {
     .transform(babelify.configure({
         optional: ['runtime']
     }))
+    .transform(reactify)
     .bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('spec.js'))
@@ -60,7 +62,7 @@ gulp.task('jsProd', function () {
 
 gulp.task('watch', function () {
   gulp.watch('src/**/*.js', ['jsDev', 'jsSpec']);
-  gulp.watch('spec/**/*.js', ['jsSpec']);
+  gulp.watch('spec/**/*.js*', ['jsSpec']);
 });
 
 gulp.task('build', ['jsProd']);
