@@ -8,8 +8,13 @@ const virtualAudioGraph = new VirtualAudioGraph({
 });
 
 const View = React.createClass({
+  changeVol: function (e) {
+    this.props.gain = Number(e.target.value);
+  },
+
   componentDidMount: function() {
     this.props.oscillatorType = 'sine';
+    this.props.gain = 0.2;
   },
 
   handleClick: (() => {
@@ -24,10 +29,14 @@ const View = React.createClass({
           connections: 0,
         }];
       } else {
-        virtualNodeParams = [{
+        virtualNodeParams = [
+        {
           id: 1,
           name: 'gain',
           connections: 0,
+          params: {
+            gain: this.props.gain,
+          },
         },
         {
           id: 2,
@@ -36,8 +45,9 @@ const View = React.createClass({
           params: {
             type: this.props.oscillatorType,
             frequency: 800,
-          }
-        }];
+          },
+        },
+      ];
       }
       isOn = !isOn;
       virtualAudioGraph.update(virtualNodeParams);
@@ -69,6 +79,10 @@ const View = React.createClass({
           </div>
           <div className="col-sm-6">
             <p>Toggle simple tone</p>
+          </div>
+          <div className="col-sm-6">
+            <p>volume</p>
+            <input type="range" min="0" max="1" step="0.01" onChange={this.changeVol}></input>
           </div>
         </div>
       </div>

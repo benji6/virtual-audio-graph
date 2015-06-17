@@ -5,22 +5,26 @@ module.exports = class VirtualAudioNode {
   constructor (audioContext, virtualNodeParams) {
     let {name, id, connections, params} = virtualNodeParams;
     params = params || {};
-    const audioNode = createAudioNode(audioContext, name);
-    forEach((key) => {
-      switch (key) {
-        case 'type':
-          audioNode[key] = params[key];
-          return;
-        default:
-          audioNode[key].value = params[key];
-          return;
-      }
-    }, keys(params));
+    this.audioNode = createAudioNode(audioContext, name);
+    this.updateAudioNode(params);
 
     Object.assign(this, {
-      audioNode,
+      audioNode: this.audioNode,
       id,
       connections: Array.isArray(connections) ? connections : [connections],
     });
+  }
+
+  updateAudioNode (params) {
+    forEach((key) => {
+      switch (key) {
+        case 'type':
+          this.audioNode[key] = params[key];
+          return;
+        default:
+          this.audioNode[key].value = params[key];
+          return;
+      }
+    }, keys(params));
   }
 };
