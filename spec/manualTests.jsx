@@ -8,6 +8,10 @@ const virtualAudioGraph = new VirtualAudioGraph({
 });
 
 const View = React.createClass({
+  componentDidMount: function() {
+    this.props.oscillatorType = 'sine';
+  },
+
   handleClick: (() => {
     var isOn = false;
 
@@ -31,6 +35,7 @@ const View = React.createClass({
           connections: 1,
           params: {
             type: this.props.oscillatorType,
+            frequency: 800,
           }
         }];
       }

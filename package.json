@@ -30,7 +30,8 @@
     "watchify": "^3.2.2"
   },
   "jshintConfig": {
-    "esnext": true
+    "esnext": true,
+    "expr": "true"
   },
   "dependencies": {
     "ramda": "^0.15.0",

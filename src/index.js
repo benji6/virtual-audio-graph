@@ -1,9 +1,5 @@
 const {concat, differenceWith, eqProps, find, findIndex, forEach, map, prop, propEq, remove} = require('ramda');
-
-const namesToConstructors = {
-  oscillator: require('./nodeConstructors/Oscillator'),
-  gain: require('./nodeConstructors/Gain'),
-};
+const VirtualAudioNode = require('./VirtualAudioNode');
 
 class VirtualAudioGraph {
   constructor (params = {}) {
@@ -28,11 +24,7 @@ class VirtualAudioGraph {
   }
 
   createAudioNode (nodeParams) {
-    const constructor = namesToConstructors[nodeParams.name];
-    if (constructor === undefined) {
-      throw new Error(`${name} is not recognised as an virtual-audio-node name`);
-    }
-    return new constructor(this.audioContext, nodeParams);
+    return new VirtualAudioNode(this.audioContext, nodeParams);
   }
 
   createAudioNodes (virtualAudioNodeParams) {
@@ -42,10 +34,10 @@ class VirtualAudioGraph {
 
   removeAudioNodes (virtualAudioNodes) {
     forEach(({audioNode, id}) => {
-      audioNode.disconnect();
       audioNode.stop && audioNode.stop();
+      audioNode.disconnect();
       this.virtualAudioGraph = remove(findIndex(propEq("id", id))(this.virtualAudioGraph), 1, this.virtualAudioGraph);
-    }, virtualAudioNodes)
+    }, virtualAudioNodes);
     return this;
   }
 
