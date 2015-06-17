@@ -56,6 +56,9 @@ describe("virtualAudioGraph.update", () => {
   it('can take object or array of objects and returns this', () => {
     const virtualNodeParams = [{
       name: 'oscillator',
+      params: {
+        type: 'square',
+      },
       connections: [0],
     }];
     expect(virtualAudioGraph.update(virtualNodeParams)).toBe(virtualAudioGraph);
