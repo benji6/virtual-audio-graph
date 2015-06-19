@@ -1,11 +1,17 @@
 const createAudioNode = require('./createAudioNode');
-const {forEach, keys} = require('ramda');
+const {forEach, keys, pick, omit} = require('ramda');
+
+const constructorParamsKeys = [
+  'maxDelayTime',
+];
 
 module.exports = class VirtualAudioNode {
   constructor (audioContext, virtualNodeParams) {
     let {name, id, connections, params} = virtualNodeParams;
     params = params || {};
-    this.audioNode = createAudioNode(audioContext, name);
+    const constructorParams = pick(constructorParamsKeys, params);
+    params = omit(constructorParamsKeys, params);
+    this.audioNode = createAudioNode(audioContext, name, constructorParams);
     this.updateAudioNode(params);
 
     Object.assign(this, {
@@ -16,6 +22,7 @@ module.exports = class VirtualAudioNode {
   }
 
   updateAudioNode (params) {
+    params = omit(constructorParamsKeys, params);
     forEach((key) => {
       switch (key) {
         case 'type':

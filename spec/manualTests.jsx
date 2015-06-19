@@ -30,24 +30,34 @@ const View = React.createClass({
         }];
       } else {
         virtualNodeParams = [
-        {
-          id: 1,
-          name: 'gain',
-          connections: 0,
-          params: {
-            gain: this.props.gain,
+          {
+            connections: [0],
+            id: 1,
+            name: 'gain',
+            params: {
+              gain: 0.2,
+            },
           },
-        },
-        {
-          id: 2,
-          name: 'oscillator',
-          connections: 1,
-          params: {
-            type: this.props.oscillatorType,
-            frequency: 800,
+          {
+            connections: [1],
+            id: 2,
+            name: 'oscillator',
+            params: {
+              type: 'square',
+              frequency: 440,
+            },
           },
-        },
-      ];
+          {
+            connections: [1],
+            id: 3,
+            name: 'oscillator',
+            params: {
+              type: 'sawtooth',
+              frequency: 220,
+              detune: 4,
+            },
+          },
+        ];
       }
       isOn = !isOn;
       virtualAudioGraph.update(virtualNodeParams);
