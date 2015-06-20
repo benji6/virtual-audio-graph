@@ -1,10 +1,8 @@
-const audioContext = require('./tools/audioContext');
 const VirtualAudioGraph = require('../src/index.js');
 
-const automatedTestFinish = () => {
-  audioContext.close();
-  require('./manualTests.jsx');
-};
+const audioContext = new AudioContext();
+
+const automatedTestFinish = () => audioContext.close();
 
 describe("VirtualAudioGraph", () => {
   it("takes audioContext property", () => {

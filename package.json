@@ -34,7 +34,6 @@
     "expr": "true"
   },
   "dependencies": {
-    "ramda": "^0.15.0",
-    "react": "^0.13.3"
+    "ramda": "^0.15.0"
   }
 }
