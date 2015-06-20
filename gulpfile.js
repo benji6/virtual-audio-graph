@@ -1,3 +1,4 @@
+const babel = require('gulp-babel');
 const babelify = require('babelify');
 const browserify = require('browserify');
 const buffer = require('vinyl-buffer');
@@ -48,14 +49,8 @@ gulp.task('jsSpec', function () {
 });
 
 gulp.task('jsProd', function () {
-  browserify(jsEntryPoint)
-    .transform(babelify.configure({
-        optional: ['runtime']
-    }))
-    .bundle()
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-    .pipe(source(bundleName))
-    .pipe(buffer())
+  return gulp.src('src/**/*.js')
+    .pipe(babel())
     .pipe(uglify())
     .pipe(gulp.dest(buildDestinationPath));
 });
