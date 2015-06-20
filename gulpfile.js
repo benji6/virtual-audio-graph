@@ -51,7 +51,6 @@ gulp.task('jsSpec', function () {
 gulp.task('jsProd', function () {
   return gulp.src('src/**/*.js')
     .pipe(babel())
-    .pipe(uglify())
     .pipe(gulp.dest(buildDestinationPath));
 });
 

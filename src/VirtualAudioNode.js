@@ -13,12 +13,8 @@ module.exports = class VirtualAudioNode {
     params = omit(constructorParamsKeys, params);
     this.audioNode = createAudioNode(audioContext, name, constructorParams);
     this.updateAudioNode(params);
-
-    Object.assign(this, {
-      audioNode: this.audioNode,
-      id,
-      connections: Array.isArray(connections) ? connections : [connections],
-    });
+    this.id = id;
+    this.connections = Array.isArray(connections) ? connections : [connections];
   }
 
   updateAudioNode (params) {

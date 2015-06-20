@@ -3,11 +3,9 @@ const VirtualAudioNode = require('./VirtualAudioNode');
 
 class VirtualAudioGraph {
   constructor (params = {}) {
-    Object.assign(this, {
-      audioContext: params.audioContext,
-      destination: params.destination,
-      virtualAudioGraph: [],
-    });
+    this.audioContext = params.audioContext;
+    this.destination = params.destination;
+    this.virtualAudioGraph = [];
   }
 
   connectAudioNodes () {
