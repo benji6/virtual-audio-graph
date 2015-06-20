@@ -1,1 +1,3 @@
-"use strict";module.exports=require("./VirtualAudioGraph");
+'use strict';
+
+module.exports = require('./VirtualAudioGraph');

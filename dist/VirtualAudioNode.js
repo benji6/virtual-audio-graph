@@ -1,1 +1,56 @@
-"use strict";function _classCallCheck(e,r){if(!(e instanceof r))throw new TypeError("Cannot call a class as a function")}var _createClass=function(){function e(e,r){for(var a=0;a<r.length;a++){var o=r[a];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(e,o.key,o)}}return function(r,a,o){return a&&e(r.prototype,a),o&&e(r,o),r}}(),createAudioNode=require("./createAudioNode"),_require=require("ramda"),forEach=_require.forEach,keys=_require.keys,pick=_require.pick,omit=_require.omit,constructorParamsKeys=["maxDelayTime"];module.exports=function(){function e(r,a){_classCallCheck(this,e);var o=a.name,t=a.id,i=a.connections,n=a.params;n=n||{};var u=pick(constructorParamsKeys,n);n=omit(constructorParamsKeys,n),this.audioNode=createAudioNode(r,o,u),this.updateAudioNode(n),Object.assign(this,{audioNode:this.audioNode,id:t,connections:Array.isArray(i)?i:[i]})}return _createClass(e,[{key:"updateAudioNode",value:function(e){var r=this;e=omit(constructorParamsKeys,e),forEach(function(a){switch(a){case"type":return void(r.audioNode[a]=e[a]);default:return void(r.audioNode[a].value=e[a])}},keys(e))}}]),e}();
+'use strict';
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var createAudioNode = require('./createAudioNode');
+
+var _require = require('ramda');
+
+var forEach = _require.forEach;
+var keys = _require.keys;
+var pick = _require.pick;
+var omit = _require.omit;
+
+var constructorParamsKeys = ['maxDelayTime'];
+
+module.exports = (function () {
+  function VirtualAudioNode(audioContext, virtualNodeParams) {
+    _classCallCheck(this, VirtualAudioNode);
+
+    var name = virtualNodeParams.name;
+    var id = virtualNodeParams.id;
+    var connections = virtualNodeParams.connections;
+    var params = virtualNodeParams.params;
+
+    params = params || {};
+    var constructorParams = pick(constructorParamsKeys, params);
+    params = omit(constructorParamsKeys, params);
+    this.audioNode = createAudioNode(audioContext, name, constructorParams);
+    this.updateAudioNode(params);
+    this.id = id;
+    this.connections = Array.isArray(connections) ? connections : [connections];
+  }
+
+  _createClass(VirtualAudioNode, [{
+    key: 'updateAudioNode',
+    value: function updateAudioNode(params) {
+      var _this = this;
+
+      params = omit(constructorParamsKeys, params);
+      forEach(function (key) {
+        switch (key) {
+          case 'type':
+            _this.audioNode[key] = params[key];
+            return;
+          default:
+            _this.audioNode[key].value = params[key];
+            return;
+        }
+      }, keys(params));
+    }
+  }]);
+
+  return VirtualAudioNode;
+})();

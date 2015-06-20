@@ -1,1 +1,18 @@
-"use strict";var capitalizeFirst=function(a){return a[0].toUpperCase()+a.slice(1)},namesToParamsKey={delay:"maxDelayTime"};module.exports=function(a,e,t){var r=namesToParamsKey[e],i=r?a["create"+capitalizeFirst(e)](t[r]):a["create"+capitalizeFirst(e)]();return"oscillator"===e&&i.start(),i};
+'use strict';
+
+var capitalizeFirst = function capitalizeFirst(str) {
+  return str[0].toUpperCase() + str.slice(1);
+};
+
+var namesToParamsKey = {
+  delay: 'maxDelayTime'
+};
+
+module.exports = function (audioContext, name, constructorParams) {
+  var constructorParamsKey = namesToParamsKey[name];
+  var audioNode = constructorParamsKey ? audioContext['create' + capitalizeFirst(name)](constructorParams[constructorParamsKey]) : audioContext['create' + capitalizeFirst(name)]();
+  if (name === 'oscillator') {
+    audioNode.start();
+  }
+  return audioNode;
+};
