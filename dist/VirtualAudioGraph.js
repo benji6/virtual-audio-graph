@@ -26,8 +26,8 @@ var VirtualAudioGraph = (function () {
 
     _classCallCheck(this, VirtualAudioGraph);
 
-    this.audioContext = params.audioContext;
-    this.destination = params.destination;
+    this.audioContext = params.audioContext || new AudioContext();
+    this.destination = params.destination || this.audioContext.destination;
     this.virtualAudioGraph = [];
   }
 

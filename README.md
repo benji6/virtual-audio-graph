@@ -1,6 +1,6 @@
 # virtual-audio-graph
 
-**In Development**
+**In Development - API very likely to change**
 
 ## Overview
 
@@ -66,8 +66,8 @@ virtualAudioGraph.update(updateParams);
 ### Instantiating a new virtual-audio-graph
 
 The constructor takes an object with two properties:
-- `audioContext`: an instance of AudioContext
-- `destination`: a valid AudioNode destination e.g. audioContext.destination or audioContext.createGain()
+- `audioContext`: an instance of AudioContext, if not provided then a new AudioContext will be created, this is best avoided as the number which can be created is limited
+- `destination`: a valid AudioNode destination e.g. audioContext.destination or audioContext.createGain(), if not provided then the audioContext destination will be used
 
 ### virtualAudioGraph.update
 

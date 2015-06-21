@@ -3,8 +3,8 @@ const VirtualAudioNode = require('./VirtualAudioNode');
 
 class VirtualAudioGraph {
   constructor (params = {}) {
-    this.audioContext = params.audioContext;
-    this.destination = params.destination;
+    this.audioContext = params.audioContext || new AudioContext();
+    this.destination = params.destination || this.audioContext.destination;
     this.virtualAudioGraph = [];
   }
 

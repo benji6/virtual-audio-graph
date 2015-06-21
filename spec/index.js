@@ -5,16 +5,16 @@ const audioContext = new AudioContext();
 const automatedTestFinish = () => audioContext.close();
 
 describe("VirtualAudioGraph", () => {
-  it("takes audioContext property", () => {
-    const virtualAudioGraph = new VirtualAudioGraph({audioContext});
-    expect(virtualAudioGraph.audioContext).toBe(audioContext);
+  it("optionally takes audioContext property", () => {
+    expect(new VirtualAudioGraph({audioContext}).audioContext).toBe(audioContext);
+    expect(new VirtualAudioGraph().audioContext instanceof AudioContext).toBe(true);
   });
 
-  it("takes audio node destination parameter", () => {
-    const virtualAudioGraph = new VirtualAudioGraph({
+  it("optionally takes audio node destination parameter", () => {
+    expect(new VirtualAudioGraph({
       destination: audioContext.destination,
-    });
-    expect(virtualAudioGraph.destination).toBe(audioContext.destination);
+    }).destination).toBe(audioContext.destination);
+    expect(new VirtualAudioGraph({audioContext}).destination).toBe(audioContext.destination);
   });
 });
 
