@@ -19,18 +19,18 @@ module.exports = (function () {
   function VirtualAudioNode(audioContext, virtualNodeParams) {
     _classCallCheck(this, VirtualAudioNode);
 
-    var name = virtualNodeParams.name;
+    var node = virtualNodeParams.node;
     var id = virtualNodeParams.id;
-    var connections = virtualNodeParams.connections;
+    var output = virtualNodeParams.output;
     var params = virtualNodeParams.params;
 
     params = params || {};
     var constructorParams = pick(constructorParamsKeys, params);
     params = omit(constructorParamsKeys, params);
-    this.audioNode = createAudioNode(audioContext, name, constructorParams);
+    this.audioNode = createAudioNode(audioContext, node, constructorParams);
     this.updateAudioNode(params);
     this.id = id;
-    this.connections = Array.isArray(connections) ? connections : [connections];
+    this.output = Array.isArray(output) ? output : [output];
   }
 
   _createClass(VirtualAudioNode, [{

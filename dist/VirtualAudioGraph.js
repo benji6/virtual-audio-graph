@@ -6,6 +6,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var _require = require('ramda');
 
+var any = _require.any;
 var concat = _require.concat;
 var differenceWith = _require.differenceWith;
 var eqProps = _require.eqProps;
@@ -27,7 +28,7 @@ var VirtualAudioGraph = (function () {
     _classCallCheck(this, VirtualAudioGraph);
 
     this.audioContext = params.audioContext || new AudioContext();
-    this.destination = params.destination || this.audioContext.destination;
+    this.output = params.output || this.audioContext.destination;
     this.virtualAudioGraph = [];
   }
 
@@ -38,15 +39,15 @@ var VirtualAudioGraph = (function () {
 
       forEach(function (_ref) {
         var audioNode = _ref.audioNode;
-        var connections = _ref.connections;
+        var output = _ref.output;
 
         forEach(function (connection) {
-          if (connection === 0) {
-            audioNode.connect(_this.destination);
+          if (connection === 'output') {
+            audioNode.connect(_this.output);
           } else {
             audioNode.connect(prop('audioNode', find(propEq('id', connection))(_this.virtualAudioGraph)));
           }
-        }, connections);
+        }, output);
       }, this.virtualAudioGraph);
       return this;
     }
@@ -79,6 +80,9 @@ var VirtualAudioGraph = (function () {
   }, {
     key: 'update',
     value: function update(virtualAudioNodeParams) {
+      if (any(propEq('id', undefined), virtualAudioNodeParams)) {
+        throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
+      }
       var newAudioNodes = differenceWith(eqProps('id'), virtualAudioNodeParams, this.virtualAudioGraph);
       var oldAudioNodes = differenceWith(eqProps('id'), this.virtualAudioGraph, virtualAudioNodeParams);
       var sameAudioNodes = intersectionWith(eqProps('id'), virtualAudioNodeParams, this.virtualAudioGraph);

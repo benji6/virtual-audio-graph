@@ -1,22 +1,22 @@
-const {concat, differenceWith, eqProps, find, findIndex, forEach, intersectionWith, map, prop, propEq, remove} = require('ramda');
+const {any, concat, differenceWith, eqProps, find, findIndex, forEach, intersectionWith, map, prop, propEq, remove} = require('ramda');
 const VirtualAudioNode = require('./VirtualAudioNode');
 
 class VirtualAudioGraph {
   constructor (params = {}) {
     this.audioContext = params.audioContext || new AudioContext();
-    this.destination = params.destination || this.audioContext.destination;
+    this.output = params.output || this.audioContext.destination;
     this.virtualAudioGraph = [];
   }
 
   connectAudioNodes () {
-    forEach(({audioNode, connections}) => {
+    forEach(({audioNode, output}) => {
       forEach((connection) => {
-        if (connection === 0) {
-          audioNode.connect(this.destination);
+        if (connection === 'output') {
+          audioNode.connect(this.output);
         } else {
           audioNode.connect(prop("audioNode", find(propEq("id", connection))(this.virtualAudioGraph)));
         }
-      }, connections);
+      }, output);
     }, this.virtualAudioGraph);
     return this;
   }
@@ -40,6 +40,9 @@ class VirtualAudioGraph {
   }
 
   update (virtualAudioNodeParams) {
+    if (any(propEq('id', undefined), virtualAudioNodeParams)) {
+      throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
+    }
     const newAudioNodes = differenceWith(eqProps('id'), virtualAudioNodeParams, this.virtualAudioGraph);
     const oldAudioNodes = differenceWith(eqProps('id'), this.virtualAudioGraph, virtualAudioNodeParams);
     const sameAudioNodes = intersectionWith(eqProps('id'), virtualAudioNodeParams, this.virtualAudioGraph);

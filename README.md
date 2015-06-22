@@ -1,93 +1,86 @@
 # virtual-audio-graph
 
-**In Development - API very likely to change**
+## Status
+Project is in early stages of development and API is very likely to change.
 
 ## Overview
 
 Library for manipulating the Web Audio API.
 
+Abstracts away the pain of directly manipulating the Audio Graph in a similar fashion to the way in which react and virtual-dom abstract away DOM manipulation pain.
+
 Create and update an Audio Graph by generating a virtual audio graph with a JSON-compatible array of objects representing the nodes to be constructed and their relationships to each other.
-
-Should reduce pain of creating and updating the Audio Graph as this is abstracted away in a similar fashion to the way in which react and virtual-dom abstract away DOM manipulation pain.
-
-## Example
-
-### Create new virtualAudioGraph
-```javascript
-
-const audioContext = new AudioContext();
-const virtualAudioGraph = new VirtualAudioGraph({
-  audioContext: audioContext,
-  destination: audioContext.destination,
-});
-
-```
-
-### Create new audio graph
-
-```javascript
-
-var updateParams = [
-  {
-    connections: [0],
-    id: 1,
-    name: 'gain',
-    params: {
-      gain: 0.2,
-    },
-  },
-  {
-    connections: [1],
-    id: 2,
-    name: 'oscillator',
-    params: {
-      type: 'square',
-      frequency: 440,
-    },
-  },
-  {
-    connections: [1],
-    id: 3,
-    name: 'oscillator',
-    params: {
-      type: 'sawtooth',
-      frequency: 220,
-      detune: 4,
-    },
-  },
-];
-
-virtualAudioGraph.update(updateParams);
-
-```
 
 ## API
 
 ### Instantiating a new virtual-audio-graph
 
-The constructor takes an object with two properties:
-- `audioContext`: an instance of AudioContext, if not provided then a new AudioContext will be created, this is best avoided as the number which can be created is limited
-- `destination`: a valid AudioNode destination e.g. audioContext.destination or audioContext.createGain(), if not provided then the audioContext destination will be used
+```javascript
 
-### virtualAudioGraph.update
+var VirtualAudioGraph = require('virtual-audio-graph');
 
-Here we pass in an array of virtual audio node paramaters. Properties follow:
+var audioContext = new AudioContext();
 
-- `name`: name of the node we are creating.
+var virtualAudioGraph = new VirtualAudioGraph({
+  audioContext: audioContext,
+  output: audioContext.destination,
+});
 
-- `id`: each virtual node needs an id, this is for describing the relationships between nodes. recommended that ids be integers starting at 1 as 0 is reserved and represents the final destination as specified when VirtualAudioGraph was instantiated.
+```
 
-- `connections`: an array of integers (or a single integer) representing ids of the nodes this node is connecting to. 0 is reserved for the final destination specified when VirtualAudioGraph was instantiated.
+The ```VirtualAudioGraph``` constructor takes an object with two optional properties:
 
-- `params`: is an object representing any properties which we would like to alter on the audio node created.
+- `audioContext` - an instance of AudioContext. If not provided then virtual-audio-graph will create its own instance of AudioContext. However, if you already have an instance of AudioContext it is best to pass it here here because the number of instances which can be created is limited.
+
+- `output` - a valid AudioNode destination (e.g. audioContext.destination or audioContext.createGain()). If not provided then the audioContext destination will be used.
+
+### Updating the Audio Graph
+
+```javascript
+
+var virtualNodeParams = [
+  {
+    id: 0,
+    node: 'gain',
+    output: 'output',
+    params: {
+      gain: 0.2,
+    }
+  },
+  {
+    id: 1,
+    node: 'oscillator',
+    output: 0,
+    params: {
+      type: 'square',
+      frequency: 440
+    }
+  }
+];
+
+virtualAudioGraph.update(virtualNodeParams);
+
+```
+
+```virtualAudioGraph.update``` takes an array of virtual audio node parameters, then internally it creates a virtual audio graph which it compares to any previous updates and updates the actual audio graph accordingly.
+
+In the example above we create a single oscillatorNode, which is connected to a single gainNode which in turn is connected to the virtualAudioGraph output. Below is an explanation of properties for virtualAudioNode parameter objects:
+
+- `node` - name of the node we are creating.
+
+- `id` - each virtual node needs an id for efficient diffing and allowing the relationships between nodes to be described. ```'output'``` is a reserved id which represents the ```virtualAudioGraph``` destination property.
+
+- `output` - an id or array of ids for nodes this node connects to. ```'output'``` connects this node to the virtualAudioGraph output.
+
+- `params` - is an object representing any properties which we would like to alter on the audio node created.
 
 ### Virtual audio nodes
 
-Here is a list of virutal audio names and the params you can provide them with. For more info check out (https://developer.mozilla.org/en-US/docs/Web/API/AudioNode)
+Here is a list of standard virutal audio nodes implemented in virtual-audio-graph and the params you can provide them with. For more info check out (https://developer.mozilla.org/en-US/docs/Web/API/AudioNode)
 
 ```javascript
 {
-  name: 'oscillator',
+  node: 'oscillator',
   params: {
     type,
     frequency,
@@ -98,7 +91,7 @@ Here is a list of virutal audio names and the params you can provide them with. 
 
 ```javascript
 {
-  name: 'gain',
+  node: 'gain',
   params: {
     gain,
   }
@@ -107,7 +100,7 @@ Here is a list of virutal audio names and the params you can provide them with. 
 
 ```javascript
 {
-  name: 'biquadFilter',
+  node: 'biquadFilter',
   params: {
     type,
     frequency,
@@ -119,7 +112,7 @@ Here is a list of virutal audio names and the params you can provide them with. 
 
 ```javascript
 {
-  name: 'delay',
+  node: 'delay',
   params: {
     delayTime,
     maxDelayTime, //special parameter which must be set when node is first created, it cannot be altered thereafter
@@ -129,9 +122,49 @@ Here is a list of virutal audio names and the params you can provide them with. 
 
 ```javascript
 {
-  name: 'stereoPanner',
+  node: 'stereoPanner',
   params: {
     pan,
   },
 }
+```
+
+## Examples
+
+### Two Oscillators
+
+```javascript
+
+var virtualNodeParams = [
+  {
+    output: 'output',
+    id: 1,
+    node: 'gain',
+    params: {
+      gain: 0.2,
+    },
+  },
+  {
+    output: 1,
+    id: 2,
+    node: 'oscillator',
+    params: {
+      type: 'square',
+      frequency: 440,
+    },
+  },
+  {
+    output: 1,
+    id: 3,
+    node: 'oscillator',
+    params: {
+      type: 'sawtooth',
+      frequency: 220,
+      detune: 4,
+    },
+  },
+];
+
+virtualAudioGraph.update(virtualNodeParams);
+
 ```

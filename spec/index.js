@@ -10,11 +10,11 @@ describe("VirtualAudioGraph", () => {
     expect(new VirtualAudioGraph().audioContext instanceof AudioContext).toBe(true);
   });
 
-  it("optionally takes audio node destination parameter", () => {
+  it("optionally takes output parameter", () => {
     expect(new VirtualAudioGraph({
-      destination: audioContext.destination,
-    }).destination).toBe(audioContext.destination);
-    expect(new VirtualAudioGraph({audioContext}).destination).toBe(audioContext.destination);
+      output: audioContext.destination,
+    }).output).toBe(audioContext.destination);
+    expect(new VirtualAudioGraph({audioContext}).output).toBe(audioContext.destination);
   });
 });
 
@@ -24,14 +24,23 @@ describe("virtualAudioGraph.update", () => {
   beforeEach(() => {
     virtualAudioGraph = new VirtualAudioGraph({
       audioContext,
-      destination: audioContext.destination,
+      output: audioContext.destination,
     });
+  });
+
+  it('throws an error if no id is provided', () => {
+    const virtualNodeParams = [{
+      node: 'gain',
+      output: 'output',
+    }];
+    expect(() => virtualAudioGraph.update(virtualNodeParams)).toThrow();
   });
 
   it('throws an error when virtual node name property is not recognised', () => {
     const virtualNodeParams = [{
-      name: 'qwerty',
-      connections: [0],
+      id: 0,
+      node: 'foobar',
+      output: 'output',
     }];
     expect(() => virtualAudioGraph.update(virtualNodeParams)).toThrow();
   });
@@ -39,13 +48,13 @@ describe("virtualAudioGraph.update", () => {
   it('creates specified virtual nodes and stores them in virtualAudioGraph property', () => {
     const virtualNodeParams = [{
       id: 1,
-      name: 'gain',
-      connections: 0,
+      node: 'gain',
+      output: 'output',
     },
     {
       id: 2,
-      name: 'oscillator',
-      connections: 1,
+      node: 'oscillator',
+      output: 1,
     }];
     virtualAudioGraph.update(virtualNodeParams);
     expect(Array.isArray(virtualAudioGraph.virtualAudioGraph)).toBe(true);
@@ -53,11 +62,12 @@ describe("virtualAudioGraph.update", () => {
 
   it('returns itself', () => {
     const virtualNodeParams = [{
-      name: 'oscillator',
+      id: 0,
+      node: 'oscillator',
       params: {
         type: 'square',
       },
-      connections: [0],
+      output: 'output',
     }];
     expect(virtualAudioGraph.update(virtualNodeParams)).toBe(virtualAudioGraph);
   });
@@ -72,9 +82,10 @@ describe("virtualAudioGraph.update", () => {
     const {type, frequency, detune} = params;
 
     const virtualNodeParams = [{
-      name: 'oscillator',
+      id: 0,
+      node: 'oscillator',
       params,
-      connections: [0],
+      output: 'output',
     }];
 
     virtualAudioGraph.update(virtualNodeParams);
@@ -89,11 +100,12 @@ describe("virtualAudioGraph.update", () => {
     const gain = 0.5;
 
     const virtualNodeParams = [{
-      name: 'gain',
+      id: 0,
+      node: 'gain',
       params: {
         gain,
       },
-      connections: [0],
+      output: 'output',
     }];
 
     virtualAudioGraph.update(virtualNodeParams);
@@ -109,14 +121,15 @@ describe("virtualAudioGraph.update", () => {
     const Q = 0.5;
 
     const virtualNodeParams = [{
-      name: 'biquadFilter',
+      id: 0,
+      node: 'biquadFilter',
       params: {
         type,
         frequency,
         detune,
         Q,
       },
-      connections: [0],
+      output: 'output',
     }];
 
     virtualAudioGraph.update(virtualNodeParams);
@@ -133,12 +146,13 @@ describe("virtualAudioGraph.update", () => {
     const maxDelayTime = 5;
 
     const virtualNodeParams = [{
-      name: 'delay',
+      id: 0,
+      node: 'delay',
       params: {
         delayTime,
         maxDelayTime,
       },
-      connections: [0],
+      output: 'output',
     }];
 
     virtualAudioGraph.update(virtualNodeParams);
@@ -151,11 +165,12 @@ describe("virtualAudioGraph.update", () => {
     const pan = 1;
 
     const virtualNodeParams = [{
-      name: 'stereoPanner',
+      id: 0,
+      node: 'stereoPanner',
       params: {
         pan,
       },
-      connections: 0,
+      output: 'output',
     }];
 
     virtualAudioGraph.update(virtualNodeParams);

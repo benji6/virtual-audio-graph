@@ -7,14 +7,14 @@ const constructorParamsKeys = [
 
 module.exports = class VirtualAudioNode {
   constructor (audioContext, virtualNodeParams) {
-    let {name, id, connections, params} = virtualNodeParams;
+    let {node, id, output, params} = virtualNodeParams;
     params = params || {};
     const constructorParams = pick(constructorParamsKeys, params);
     params = omit(constructorParamsKeys, params);
-    this.audioNode = createAudioNode(audioContext, name, constructorParams);
+    this.audioNode = createAudioNode(audioContext, node, constructorParams);
     this.updateAudioNode(params);
     this.id = id;
-    this.connections = Array.isArray(connections) ? connections : [connections];
+    this.output = Array.isArray(output) ? output : [output];
   }
 
   updateAudioNode (params) {
