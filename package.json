@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/benji6/virtual-audio-graph",
   "devDependencies": {
-    "babel-runtime": "^5.5.8",
+    "babel-runtime": "^5.6.4",
     "babelify": "^6.1.2",
     "browserify": "^10.2.4",
     "gulp": "^3.9.0",
@@ -23,8 +23,8 @@
     "gulp-plumber": "^1.0.1",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
-    "gulp-util": "^3.0.5",
-    "ramda": "^0.15.0",
+    "gulp-util": "^3.0.6",
+    "ramda": "^0.15.1",
     "reactify": "^1.1.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
@@ -35,6 +35,6 @@
     "expr": true
   },
   "dependencies": {
-    "ramda": "^0.15.0"
+    "ramda": "^0.15.1"
   }
 }
