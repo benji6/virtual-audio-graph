@@ -1,20 +1,26 @@
-const createAudioNode = require('./createAudioNode');
+const createAudioNode = require('../tools/createAudioNode');
 const {forEach, keys, pick, omit} = require('ramda');
 
 const constructorParamsKeys = [
   'maxDelayTime',
 ];
 
-module.exports = class VirtualAudioNode {
-  constructor (audioContext, virtualNodeParams) {
-    let {node, id, output, params} = virtualNodeParams;
+module.exports = class NativeVirtualAudioNode {
+  constructor (virtualAudioGraph, virtualNodeParams) {
+    let {node, id, input, output, params} = virtualNodeParams;
     params = params || {};
     const constructorParams = pick(constructorParamsKeys, params);
     params = omit(constructorParamsKeys, params);
-    this.audioNode = createAudioNode(audioContext, node, constructorParams);
+    this.audioNode = createAudioNode(virtualAudioGraph.audioContext, node, constructorParams);
     this.updateAudioNode(params);
     this.id = id;
+    this.input = input;
     this.output = Array.isArray(output) ? output : [output];
+    this.params = params;
+  }
+
+  connect (destination) {
+    this.audioNode.connect(destination);
   }
 
   updateAudioNode (params) {
