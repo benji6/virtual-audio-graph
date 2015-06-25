@@ -17,11 +17,11 @@ Create and update an Audio Graph by generating a virtual audio graph with a JSON
 
 ```javascript
 
-var VirtualAudioGraph = require('virtual-audio-graph');
+const VirtualAudioGraph = require('virtual-audio-graph');
 
-var audioContext = new AudioContext();
+const audioContext = new AudioContext();
 
-var virtualAudioGraph = new VirtualAudioGraph({
+const virtualAudioGraph = new VirtualAudioGraph({
   audioContext: audioContext,
   output: audioContext.destination,
 });
@@ -40,7 +40,7 @@ Create two oscillators, put them through a gain node and attach the gain node to
 
 ```javascript
 
-var virtualNodeParams = [
+const virtualNodeParams = [
   {
     output: 'output',
     id: 1,
@@ -92,68 +92,75 @@ Calling `virtualAudioGraph.update` subsequently will diff the new state against 
 
 The virtual audio graph is composed of standard virtual audio nodes (see below) and custom virtual audio nodes which in their simplest form are built out of standard audio nodes.
 
-`virtualAudioGraph.defineNode` allows you to define your own custom nodes, it takes two arguments the, first is an array of virtual audio node parameters and the second is the name of the custom node.
+`virtualAudioGraph.defineNode` allows you to define your own custom nodes, it takes two arguments, the first is a function which returns an array of virtual audio node parameters and the second is the name of the custom node. The function can optionally take an object as an argument with properties corresponding to varaible parameters for the node (see below)
 
 When defining virtual audio node parameters include a property `input` and value `'input'` which specifies the input points of the custom virtual node:
 
 ```javascript
 
-const pingPongDelayParams = [
-  {
-    id: 0,
-    node: 'stereoPanner',
-    output: 'output',
-    params: {
-      pan: -1,
-    }
-  },
-  {
-    id: 1,
-    node: 'stereoPanner',
-    output: 'output',
-    params: {
-      pan: 1,
-    }
-  },
-  {
-    id: 2,
-    node: 'delay',
-    output: [1, 5],
-    params: {
-      maxDelayTime: 1 / 3,
-      delayTime: 1 / 3
+const pingPongDelayParamsFactory = (params = {}) => {
+  let {decay, delayTime, maxDelayTime} = params;
+  decay = decay !== undefined ? decay : 1 / 3;
+  delayTime = delayTime !== undefined ? delayTime : 1 / 3;
+  maxDelayTime = maxDelayTime !== undefined ? maxDelayTime : 1 / 3;
+
+  return [
+    {
+      id: 0,
+      node: 'stereoPanner',
+      output: 'output',
+      params: {
+        pan: -1,
+      }
     },
-  },
-  {
-    id: 3,
-    node: 'gain',
-    output: 2,
-    params: {
-      gain: 1 / 3,
-    }
-  },
-  {
-    id: 4,
-    node: 'delay',
-    output: [0, 3],
-    params: {
-      maxDelayTime: 1 / 3,
-      delayTime: 1 / 3
+    {
+      id: 1,
+      node: 'stereoPanner',
+      output: 'output',
+      params: {
+        pan: 1,
+      }
     },
-  },
-  {
-    id: 5,
-    input: 'input',
-    node: 'gain',
-    output: 4,
-    params: {
-      gain: 1 / 3,
-    }
-  },
-];
+    {
+      id: 2,
+      node: 'delay',
+      output: [1, 5],
+      params: {
+        maxDelayTime,
+        delayTime,
+      },
+    },
+    {
+      id: 3,
+      node: 'gain',
+      output: 2,
+      params: {
+        gain: decay,
+      }
+    },
+    {
+      id: 4,
+      node: 'delay',
+      output: [0, 3],
+      params: {
+        maxDelayTime,
+        delayTime,
+      },
+    },
+    {
+      id: 5,
+      input: 'input',
+      node: 'gain',
+      output: 4,
+      params: {
+        gain: decay,
+      }
+    },
+  ];
+};
 
 //define a custom node like this:
-virtualAudioGraph.defineNode(pingPongDelayParams, 'pingPongDelay');
+virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
 
 //and now this instance of virtual-audio-graph will recognize it as a valid node:
 virtualAudioGraph.update([
@@ -161,6 +168,12 @@ virtualAudioGraph.update([
     id: 0,
     node: 'pingPongDelay',
     output: 'output',
+    //with custom parameters as defined in above factory
+    params: {
+      decay: 1 / 4,
+      delayTime: 1 / 3,
+      maxDelayTime: 1,
+    },
   },
   {
     id: 1,
@@ -168,7 +181,7 @@ virtualAudioGraph.update([
     output: [0, 'output'],
     params: {
       gain: 1 / 4,
-    }
+    },
   },
   {
     id: 2,
