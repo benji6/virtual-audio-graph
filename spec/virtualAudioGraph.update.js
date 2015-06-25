@@ -1,8 +1,6 @@
 const VirtualAudioGraph = require('../src/index.js');
 const audioContext = require('./tools/audioContext');
 
-const automatedTestFinish = () => audioContext.close();
-
 describe("virtualAudioGraph.update", () => {
   let virtualAudioGraph;
 
@@ -13,10 +11,30 @@ describe("virtualAudioGraph.update", () => {
     });
   });
 
+  it('returns itself', () => {
+    const virtualNodeParams = [{
+      id: 0,
+      node: 'oscillator',
+      params: {
+        type: 'square',
+      },
+      output: 'output',
+    }];
+    expect(virtualAudioGraph.update(virtualNodeParams)).toBe(virtualAudioGraph);
+  });
+
   it('throws an error if no id is provided', () => {
     const virtualNodeParams = [{
       node: 'gain',
       output: 'output',
+    }];
+    expect(() => virtualAudioGraph.update(virtualNodeParams)).toThrow();
+  });
+
+  it('throws an error if no output is provided', () => {
+    const virtualNodeParams = [{
+      node: 'gain',
+      id: 1,
     }];
     expect(() => virtualAudioGraph.update(virtualNodeParams)).toThrow();
   });
@@ -43,18 +61,7 @@ describe("virtualAudioGraph.update", () => {
     }];
     virtualAudioGraph.update(virtualNodeParams);
     expect(Array.isArray(virtualAudioGraph.virtualAudioGraph)).toBe(true);
-  });
-
-  it('returns itself', () => {
-    const virtualNodeParams = [{
-      id: 0,
-      node: 'oscillator',
-      params: {
-        type: 'square',
-      },
-      output: 'output',
-    }];
-    expect(virtualAudioGraph.update(virtualNodeParams)).toBe(virtualAudioGraph);
+    expect(virtualAudioGraph.virtualAudioGraph.length).toBe(2);
   });
 
   it('creates OscillatorNode with all valid parameters', () => {
@@ -162,6 +169,5 @@ describe("virtualAudioGraph.update", () => {
     const audioNode = virtualAudioGraph.virtualAudioGraph[0].audioNode;
     expect(audioNode.constructor.name).toBe('StereoPannerNode');
     expect(audioNode.pan.value).toBe(pan);
-    automatedTestFinish();
   });
 });
