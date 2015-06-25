@@ -1,8 +1,6 @@
 'use strict';
 
-var capitalizeFirst = function capitalizeFirst(str) {
-  return str[0].toUpperCase() + str.slice(1);
-};
+var capitalizeFirst = require('./capitalizeFirst');
 
 var namesToParamsKey = {
   delay: 'maxDelayTime'
