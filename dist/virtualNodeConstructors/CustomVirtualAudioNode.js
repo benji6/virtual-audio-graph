@@ -14,28 +14,24 @@ var pick = _require.pick;
 var pluck = _require.pluck;
 var propEq = _require.propEq;
 var omit = _require.omit;
+var zipWith = _require.zipWith;
 
 var connectAudioNodes = require('../tools/connectAudioNodes');
-// if you use the below extract it
-// const constructorParamsKeys = [
-//   'maxDelayTime',
-// ];
 
 module.exports = (function () {
-  function CustomVirtualAudioNode(virtualAudioGraph, virtualNodeParams) {
+  function CustomVirtualAudioNode(virtualAudioGraph, _ref) {
+    var node = _ref.node;
+    var id = _ref.id;
+    var output = _ref.output;
+    var params = _ref.params;
+
     _classCallCheck(this, CustomVirtualAudioNode);
 
-    var node = virtualNodeParams.node;
-    var id = virtualNodeParams.id;
-    var output = virtualNodeParams.output;
-
-    // params = params || {};
-    // const constructorParams = pick(constructorParamsKeys, params);
-    // params = omit(constructorParamsKeys, params);
-    // this.updateAudioNode(params);
-    this.virtualAudioGraph = virtualAudioGraph.customNodes[node]();
-    this.virtualAudioGraph = virtualAudioGraph.createVirtualAudioNodes(this.virtualAudioGraph);
-    connectAudioNodes(CustomVirtualAudioNode, this.virtualAudioGraph);
+    params = params || {};
+    this.audioGraphParamsFactory = virtualAudioGraph.customNodes[node];
+    this.virtualNodes = this.audioGraphParamsFactory(params);
+    this.virtualNodes = virtualAudioGraph.createVirtualAudioNodes(this.virtualNodes);
+    connectAudioNodes(CustomVirtualAudioNode, this.virtualNodes);
     this.id = id;
     this.output = Array.isArray(output) ? output : [output];
   }
@@ -43,25 +39,28 @@ module.exports = (function () {
   _createClass(CustomVirtualAudioNode, [{
     key: 'connect',
     value: function connect(destination) {
-      var outputVirtualNodes = filter(function (_ref) {
-        var output = _ref.output;
+      var outputVirtualNodes = filter(function (_ref2) {
+        var output = _ref2.output;
         return contains('output', output);
-      }, this.virtualAudioGraph);
+      }, this.virtualNodes);
       forEach(function (audioNode) {
         return audioNode.connect(destination);
       }, pluck('audioNode', outputVirtualNodes));
     }
   }, {
     key: 'updateAudioNode',
-    value: function updateAudioNode(params) {}
+    value: function updateAudioNode(params) {
+      zipWith(function (virtualNode, _ref3) {
+        var params = _ref3.params;
+        return virtualNode.updateAudioNode(params);
+      }, this.virtualNodes, this.audioGraphParamsFactory(params));
+    }
   }, {
     key: 'inputs',
     get: function () {
-      return pluck('audioNode', filter(propEq('input', 'input'), this.virtualAudioGraph));
+      return pluck('audioNode', filter(propEq('input', 'input'), this.virtualNodes));
     }
   }]);
 
   return CustomVirtualAudioNode;
 })();
-
-// need to implement some update logic here
