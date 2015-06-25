@@ -1,5 +1,5 @@
 const VirtualAudioGraph = require('../src/index.js');
-const audioContext = require('./tools/audioContext');
+const audioContext = new AudioContext();
 
 describe("VirtualAudioGraph", () => {
   it("optionally takes audioContext property", () => {

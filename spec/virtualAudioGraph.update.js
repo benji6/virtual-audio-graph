@@ -1,10 +1,11 @@
 const VirtualAudioGraph = require('../src/index.js');
-const audioContext = require('./tools/audioContext');
 
 describe("virtualAudioGraph.update", () => {
+  let audioContext;
   let virtualAudioGraph;
 
   beforeEach(() => {
+    audioContext = new AudioContext();
     virtualAudioGraph = new VirtualAudioGraph({
       audioContext,
       output: audioContext.destination,
@@ -60,8 +61,8 @@ describe("virtualAudioGraph.update", () => {
       output: 1,
     }];
     virtualAudioGraph.update(virtualNodeParams);
-    expect(Array.isArray(virtualAudioGraph.virtualAudioGraph)).toBe(true);
-    expect(virtualAudioGraph.virtualAudioGraph.length).toBe(2);
+    expect(Array.isArray(virtualAudioGraph.virtualNodes)).toBe(true);
+    expect(virtualAudioGraph.virtualNodes.length).toBe(2);
   });
 
   it('creates OscillatorNode with all valid parameters', () => {
@@ -81,7 +82,7 @@ describe("virtualAudioGraph.update", () => {
     }];
 
     virtualAudioGraph.update(virtualNodeParams);
-    const audioNode = virtualAudioGraph.virtualAudioGraph[0].audioNode;
+    const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
     expect(audioNode.constructor).toBe(OscillatorNode);
     expect(audioNode.type).toBe(type);
     expect(audioNode.frequency.value).toBe(frequency);
@@ -101,7 +102,7 @@ describe("virtualAudioGraph.update", () => {
     }];
 
     virtualAudioGraph.update(virtualNodeParams);
-    const audioNode = virtualAudioGraph.virtualAudioGraph[0].audioNode;
+    const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
     expect(audioNode.constructor).toBe(GainNode);
     expect(audioNode.gain.value).toBe(gain);
   });
@@ -125,7 +126,7 @@ describe("virtualAudioGraph.update", () => {
     }];
 
     virtualAudioGraph.update(virtualNodeParams);
-    const audioNode = virtualAudioGraph.virtualAudioGraph[0].audioNode;
+    const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
     expect(audioNode.constructor).toBe(BiquadFilterNode);
     expect(audioNode.type).toBe(type);
     expect(audioNode.frequency.value).toBe(frequency);
@@ -148,7 +149,7 @@ describe("virtualAudioGraph.update", () => {
     }];
 
     virtualAudioGraph.update(virtualNodeParams);
-    const audioNode = virtualAudioGraph.virtualAudioGraph[0].audioNode;
+    const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
     expect(audioNode.constructor).toBe(DelayNode);
     expect(audioNode.delayTime.value).toBe(delayTime);
   });
@@ -166,7 +167,7 @@ describe("virtualAudioGraph.update", () => {
     }];
 
     virtualAudioGraph.update(virtualNodeParams);
-    const audioNode = virtualAudioGraph.virtualAudioGraph[0].audioNode;
+    const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
     expect(audioNode.constructor.name).toBe('StereoPannerNode');
     expect(audioNode.pan.value).toBe(pan);
   });
