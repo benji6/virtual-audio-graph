@@ -40,13 +40,9 @@ var removeAudioNodesAndUpdateVirtualAudioGraph = function removeAudioNodesAndUpd
 
   var virtualNodesToBeRemoved = differenceWith(eqProps('id'), this.virtualNodes, virtualAudioNodeParams);
 
-  forEach(function (_ref) {
-    var audioNode = _ref.audioNode;
-    var id = _ref.id;
-
-    audioNode.stop && audioNode.stop();
-    audioNode.disconnect();
-    _this.virtualNodes = remove(findIndex(propEq('id', id))(_this.virtualNodes), 1, _this.virtualNodes);
+  forEach(function (virtualNode) {
+    virtualNode.disconnect();
+    _this.virtualNodes = remove(findIndex(propEq('id', virtualNode.id))(_this.virtualNodes), 1, _this.virtualNodes);
   }, virtualNodesToBeRemoved);
 
   return virtualAudioNodeParams;
@@ -84,8 +80,8 @@ var VirtualAudioGraph = (function () {
     value: function createVirtualAudioNodes(virtualAudioNodesParams) {
       var _this3 = this;
 
-      var partitionedVirtualAudioNodeParams = partition(function (_ref2) {
-        var node = _ref2.node;
+      var partitionedVirtualAudioNodeParams = partition(function (_ref) {
+        var node = _ref.node;
         return isNil(_this3.customNodes[node]);
       }, virtualAudioNodesParams);
 

@@ -42,6 +42,12 @@ module.exports = (function () {
       this.audioNode.connect(destination);
     }
   }, {
+    key: 'disconnect',
+    value: function disconnect() {
+      this.audioNode.stop && this.audioNode.stop();
+      this.audioNode.disconnect();
+    }
+  }, {
     key: 'updateAudioNode',
     value: function updateAudioNode(params) {
       var _this = this;

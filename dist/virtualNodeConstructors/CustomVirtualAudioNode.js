@@ -48,6 +48,13 @@ module.exports = (function () {
       }, pluck('audioNode', outputVirtualNodes));
     }
   }, {
+    key: 'disconnect',
+    value: function disconnect() {
+      forEach(function (virtualNode) {
+        return virtualNode.disconnect();
+      }, this.virtualNodes);
+    }
+  }, {
     key: 'updateAudioNode',
     value: function updateAudioNode(params) {
       zipWith(function (virtualNode, _ref3) {
