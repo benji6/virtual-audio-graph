@@ -16,10 +16,9 @@ const createVirtualAudioNodesAndUpdateVirtualAudioGraph = function (virtualAudio
 const removeAudioNodesAndUpdateVirtualAudioGraph = function (virtualAudioNodeParams) {
   const virtualNodesToBeRemoved = differenceWith(eqProps('id'), this.virtualNodes, virtualAudioNodeParams);
 
-  forEach(({audioNode, id}) => {
-    audioNode.stop && audioNode.stop();
-    audioNode.disconnect();
-    this.virtualNodes = remove(findIndex(propEq("id", id))(this.virtualNodes), 1, this.virtualNodes);
+  forEach((virtualNode) => {
+    virtualNode.disconnect();
+    this.virtualNodes = remove(findIndex(propEq("id", virtualNode.id))(this.virtualNodes), 1, this.virtualNodes);
   }, virtualNodesToBeRemoved);
 
   return virtualAudioNodeParams;

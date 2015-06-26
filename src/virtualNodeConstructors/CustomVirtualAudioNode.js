@@ -17,6 +17,10 @@ module.exports = class CustomVirtualAudioNode {
     forEach((audioNode) => audioNode.connect(destination), pluck('audioNode', outputVirtualNodes));
   }
 
+  disconnect () {
+    forEach((virtualNode) => virtualNode.disconnect(), this.virtualNodes);
+  }
+
   get inputs () {
     return pluck('audioNode', filter(propEq('input', 'input'), this.virtualNodes));
   }

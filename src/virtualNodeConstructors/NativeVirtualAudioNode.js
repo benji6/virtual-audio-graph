@@ -23,6 +23,11 @@ module.exports = class NativeVirtualAudioNode {
     this.audioNode.connect(destination);
   }
 
+  disconnect () {
+    this.audioNode.stop && this.audioNode.stop();
+    this.audioNode.disconnect();
+  }
+
   updateAudioNode (params) {
     params = omit(constructorParamsKeys, params);
     forEach((key) => {
