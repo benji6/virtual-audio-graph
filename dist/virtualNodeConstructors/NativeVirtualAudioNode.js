@@ -29,6 +29,7 @@ module.exports = (function () {
     var constructorParams = pick(constructorParamsKeys, params);
     params = omit(constructorParamsKeys, params);
     this.audioNode = createAudioNode(virtualAudioGraph.audioContext, node, constructorParams);
+    this.node = node;
     this.updateAudioNode(params);
     this.id = id;
     this.input = input;

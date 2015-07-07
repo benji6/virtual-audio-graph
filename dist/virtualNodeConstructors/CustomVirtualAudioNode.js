@@ -29,6 +29,7 @@ module.exports = (function () {
 
     params = params || {};
     this.audioGraphParamsFactory = virtualAudioGraph.customNodes[node];
+    this.node = node;
     this.virtualNodes = this.audioGraphParamsFactory(params);
     this.virtualNodes = virtualAudioGraph.createVirtualAudioNodes(this.virtualNodes);
     connectAudioNodes(CustomVirtualAudioNode, this.virtualNodes);
@@ -64,7 +65,7 @@ module.exports = (function () {
     }
   }, {
     key: 'inputs',
-    get: function () {
+    get: function get() {
       return pluck('audioNode', filter(propEq('input', 'input'), this.virtualNodes));
     }
   }]);

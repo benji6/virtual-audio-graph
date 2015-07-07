@@ -1,6 +1,6 @@
 'use strict';
 
-var capitalizeFirst = require('./capitalizeFirst');
+var capitalize = require('capitalize');
 
 var namesToParamsKey = {
   delay: 'maxDelayTime'
@@ -8,7 +8,7 @@ var namesToParamsKey = {
 
 module.exports = function (audioContext, name, constructorParams) {
   var constructorParamsKey = namesToParamsKey[name];
-  var audioNode = constructorParamsKey ? audioContext['create' + capitalizeFirst(name)](constructorParams[constructorParamsKey]) : audioContext['create' + capitalizeFirst(name)]();
+  var audioNode = constructorParamsKey ? audioContext['create' + capitalize(name)](constructorParams[constructorParamsKey]) : audioContext['create' + capitalize(name)]();
   if (name === 'oscillator') {
     audioNode.start();
   }
