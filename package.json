@@ -35,6 +35,7 @@
     "expr": true
   },
   "dependencies": {
+    "capitalize": "^1.0.0",
     "ramda": "^0.15.1"
   }
 }

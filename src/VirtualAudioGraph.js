@@ -1,6 +1,6 @@
 const {any, assoc, concat, compose, differenceWith, eqProps, find, findIndex, forEach,
   intersectionWith, isNil, map, partition, propEq, remove} = require('ramda');
-const capitalizeFirst = require('./tools/capitalizeFirst');
+const capitalize = require('capitalize');
 const NativeVirtualAudioNode = require('./virtualNodeConstructors/NativeVirtualAudioNode');
 const CustomVirtualAudioNode = require('./virtualNodeConstructors/CustomVirtualAudioNode');
 const connectAudioNodes = require('./tools/connectAudioNodes');
@@ -65,7 +65,7 @@ class VirtualAudioGraph {
   }
 
   defineNode (customNodeParamsFactory, name) {
-    if (this.audioContext[`create${capitalizeFirst(name)}`]) {
+    if (this.audioContext[`create${capitalize(name)}`]) {
       throw new Error(`${name} is a standard audio node name and cannot be overwritten`);
     }
     this.customNodes[name] = customNodeParamsFactory;
