@@ -5,6 +5,11 @@ const NativeVirtualAudioNode = require('./virtualNodeConstructors/NativeVirtualA
 const CustomVirtualAudioNode = require('./virtualNodeConstructors/CustomVirtualAudioNode');
 const connectAudioNodes = require('./tools/connectAudioNodes');
 
+const disconnectAndRemoveVirtualAudioNode = function (virtualNode) {
+  virtualNode.disconnect();
+  this.virtualNodes = remove(findIndex(propEq("id", virtualNode.id))(this.virtualNodes), 1, this.virtualNodes);
+};
+
 const createVirtualAudioNodesAndUpdateVirtualAudioGraph = function (virtualAudioNodeParams) {
   const newVirtualAudioNodeParams = differenceWith(eqProps('id'), virtualAudioNodeParams, this.virtualNodes);
 
@@ -16,10 +21,7 @@ const createVirtualAudioNodesAndUpdateVirtualAudioGraph = function (virtualAudio
 const removeAudioNodesAndUpdateVirtualAudioGraph = function (virtualAudioNodeParams) {
   const virtualNodesToBeRemoved = differenceWith(eqProps('id'), this.virtualNodes, virtualAudioNodeParams);
 
-  forEach((virtualNode) => {
-    virtualNode.disconnect();
-    this.virtualNodes = remove(findIndex(propEq("id", virtualNode.id))(this.virtualNodes), 1, this.virtualNodes);
-  }, virtualNodesToBeRemoved);
+  forEach(disconnectAndRemoveVirtualAudioNode.bind(this), virtualNodesToBeRemoved);
 
   return virtualAudioNodeParams;
 };
@@ -29,6 +31,8 @@ const updateAudioNodesAndUpdateVirtualAudioGraph = function (virtualAudioNodePar
 
   forEach((virtualAudioNodeParam) => {
     const virtualAudioNode = find(propEq("id", virtualAudioNodeParam.id))(this.virtualNodes);
+    if (virtualAudioNodeParam.node !== virtualAudioNode.node)
+      disconnectAndRemoveVirtualAudioNode.call(this, virtualAudioNode);
     virtualAudioNode.updateAudioNode(virtualAudioNodeParam.params);
   }, updateParams);
 
@@ -65,17 +69,16 @@ class VirtualAudioGraph {
   }
 
   defineNode (customNodeParamsFactory, name) {
-    if (this.audioContext[`create${capitalize(name)}`]) {
+    if (this.audioContext[`create${capitalize(name)}`])
       throw new Error(`${name} is a standard audio node name and cannot be overwritten`);
-    }
+
     this.customNodes[name] = customNodeParamsFactory;
     return this;
   }
 
   update (virtualAudioNodeParams) {
-    if (any(propEq('id', undefined), virtualAudioNodeParams)) {
+    if (any(propEq('id', undefined), virtualAudioNodeParams))
       throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
-    }
 
     this._removeUpdateAndCreate(virtualAudioNodeParams);
     connectAudioNodes(CustomVirtualAudioNode, this.virtualNodes, (virtualAudioNode) =>

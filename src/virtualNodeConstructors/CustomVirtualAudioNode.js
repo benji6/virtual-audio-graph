@@ -5,6 +5,7 @@ module.exports = class CustomVirtualAudioNode {
   constructor (virtualAudioGraph, {node, id, output, params}) {
     params = params || {};
     this.audioGraphParamsFactory = virtualAudioGraph.customNodes[node];
+    this.node = node;
     this.virtualNodes = this.audioGraphParamsFactory(params);
     this.virtualNodes = virtualAudioGraph.createVirtualAudioNodes(this.virtualNodes);
     connectAudioNodes(CustomVirtualAudioNode, this.virtualNodes);
