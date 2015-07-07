@@ -1,4 +1,5 @@
 const VirtualAudioGraph = require('../src/index.js');
+const pingPongDelayParamsFactory = require('./tools/pingPongDelayParamsFactory');
 
 describe("virtualAudioGraph.update", () => {
   let audioContext;
@@ -47,6 +48,60 @@ describe("virtualAudioGraph.update", () => {
       output: 'output',
     }];
     expect(() => virtualAudioGraph.update(virtualNodeParams)).toThrow();
+  });
+
+  it('changes the node if passed params with same id but different node property', () => {
+    virtualAudioGraph.update([{
+      id: 0,
+      node: 'gain',
+      output: 'output',
+    }]);
+
+    expect(audioContext.toJSON()).toEqual({
+      name: "AudioDestinationNode",
+      inputs: [
+        {
+          name: "GainNode",
+          gain: {
+            value: 1,
+            inputs: []
+          },
+          inputs: []
+        }
+      ]
+    });
+
+    virtualAudioGraph.update([{
+      id: 0,
+      node: 'oscillator',
+      output: 'output',
+    }]);
+
+    expect(audioContext.toJSON()).toEqual({
+      "name":"AudioDestinationNode",
+      "inputs":[
+        {
+          "name":"OscillatorNode",
+          "type":"sine",
+          "frequency":{
+            "value":440,"inputs":[]
+          },
+          "detune":{
+            "value":0,"inputs":[]
+          },
+          "inputs":[]
+        }
+      ]
+    });
+
+    virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
+
+    virtualAudioGraph.update([{
+      id: 0,
+      node: 'pingPongDelay',
+      output: 'output',
+    }]);
+    expect(audioContext.toJSON()).toEqual({"name":"AudioDestinationNode","inputs":[{"name":"StereoPannerNode","pan":{"value":-1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.3333333333333333,"inputs":[]},"inputs":["<circular:DelayNode>"]}]}]}]}]},{"name":"StereoPannerNode","pan":{"value":1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.3333333333333333,"inputs":[]},"inputs":["<circular:DelayNode>"]}]}]}]}]}]});
   });
 
   it('creates specified virtual nodes and stores them in virtualAudioGraph property', () => {
