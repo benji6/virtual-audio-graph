@@ -1,16 +1,16 @@
-const VirtualAudioGraph = require('../src/index.js');
+const VirtualAudioGraph = require('../dist/index.js');
 const audioContext = new AudioContext();
 
-describe("VirtualAudioGraph", () => {
-  it("optionally takes audioContext property", () => {
-    expect(new VirtualAudioGraph({audioContext}).audioContext).toBe(audioContext);
+describe("VirtualAudioGraph", function () {
+  it("optionally takes audioContext property", function () {
+    expect(new VirtualAudioGraph({audioContext: audioContext}).audioContext).toBe(audioContext);
     expect(new VirtualAudioGraph().audioContext instanceof AudioContext).toBe(true);
   });
 
-  it("optionally takes output parameter", () => {
+  it("optionally takes output parameter", function () {
     expect(new VirtualAudioGraph({
       output: audioContext.destination,
     }).output).toBe(audioContext.destination);
-    expect(new VirtualAudioGraph({audioContext}).output).toBe(audioContext.destination);
+    expect(new VirtualAudioGraph({audioContext: audioContext}).output).toBe(audioContext.destination);
   });
 });

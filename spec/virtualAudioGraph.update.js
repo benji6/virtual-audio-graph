@@ -1,19 +1,19 @@
-const VirtualAudioGraph = require('../src/index.js');
+const VirtualAudioGraph = require('../dist/index.js');
 const pingPongDelayParamsFactory = require('./tools/pingPongDelayParamsFactory');
 
-describe("virtualAudioGraph.update", () => {
-  let audioContext;
-  let virtualAudioGraph;
+describe("virtualAudioGraph.update", function () {
+  var audioContext;
+  var virtualAudioGraph;
 
-  beforeEach(() => {
+  beforeEach(function () {
     audioContext = new AudioContext();
     virtualAudioGraph = new VirtualAudioGraph({
-      audioContext,
+      audioContext: audioContext,
       output: audioContext.destination,
     });
   });
 
-  it('returns itself', () => {
+  it('returns itself', function () {
     const virtualNodeParams = [{
       id: 0,
       node: 'oscillator',
@@ -25,32 +25,38 @@ describe("virtualAudioGraph.update", () => {
     expect(virtualAudioGraph.update(virtualNodeParams)).toBe(virtualAudioGraph);
   });
 
-  it('throws an error if no id is provided', () => {
+  it('throws an error if no id is provided', function () {
     const virtualNodeParams = [{
       node: 'gain',
       output: 'output',
     }];
-    expect(() => virtualAudioGraph.update(virtualNodeParams)).toThrow();
+    expect(function () {
+      virtualAudioGraph.update(virtualNodeParams);
+    }).toThrow();
   });
 
-  it('throws an error if no output is provided', () => {
+  it('throws an error if no output is provided', function () {
     const virtualNodeParams = [{
       node: 'gain',
       id: 1,
     }];
-    expect(() => virtualAudioGraph.update(virtualNodeParams)).toThrow();
+    expect(function () {
+      virtualAudioGraph.update(virtualNodeParams);
+    }).toThrow();
   });
 
-  it('throws an error when virtual node name property is not recognised', () => {
+  it('throws an error when virtual node name property is not recognised', function () {
     const virtualNodeParams = [{
       id: 0,
       node: 'foobar',
       output: 'output',
     }];
-    expect(() => virtualAudioGraph.update(virtualNodeParams)).toThrow();
+    expect(function () {
+      virtualAudioGraph.update(virtualNodeParams);
+    }).toThrow();
   });
 
-  it('changes the node if passed params with same id but different node property', () => {
+  it('changes the node if passed params with same id but different node property', function () {
     virtualAudioGraph.update([{
       id: 0,
       node: 'gain',
@@ -104,7 +110,7 @@ describe("virtualAudioGraph.update", () => {
     expect(audioContext.toJSON()).toEqual({"name":"AudioDestinationNode","inputs":[{"name":"StereoPannerNode","pan":{"value":-1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.3333333333333333,"inputs":[]},"inputs":["<circular:DelayNode>"]}]}]}]}]},{"name":"StereoPannerNode","pan":{"value":1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.3333333333333333,"inputs":[]},"inputs":["<circular:DelayNode>"]}]}]}]}]}]});
   });
 
-  it('creates specified virtual nodes and stores them in virtualAudioGraph property', () => {
+  it('creates specified virtual nodes and stores them in virtualAudioGraph property', function () {
     const virtualNodeParams = [{
       id: 1,
       node: 'gain',
@@ -120,38 +126,36 @@ describe("virtualAudioGraph.update", () => {
     expect(virtualAudioGraph.virtualNodes.length).toBe(2);
   });
 
-  it('creates OscillatorNode with all valid parameters', () => {
+  it('creates OscillatorNode with all valid parameters', function () {
     const params = {
       type: 'square',
       frequency: 440,
       detune: 4,
     };
 
-    const {type, frequency, detune} = params;
-
     const virtualNodeParams = [{
       id: 0,
       node: 'oscillator',
-      params,
+      params: params,
       output: 'output',
     }];
 
     virtualAudioGraph.update(virtualNodeParams);
     const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
     expect(audioNode.constructor).toBe(OscillatorNode);
-    expect(audioNode.type).toBe(type);
-    expect(audioNode.frequency.value).toBe(frequency);
-    expect(audioNode.detune.value).toBe(detune);
+    expect(audioNode.type).toBe(params.type);
+    expect(audioNode.frequency.value).toBe(params.frequency);
+    expect(audioNode.detune.value).toBe(params.detune);
   });
 
-  it('creates GainNode with all valid parameters', () => {
+  it('creates GainNode with all valid parameters', function () {
     const gain = 0.5;
 
     const virtualNodeParams = [{
       id: 0,
       node: 'gain',
       params: {
-        gain,
+        gain: gain,
       },
       output: 'output',
     }];
@@ -162,7 +166,7 @@ describe("virtualAudioGraph.update", () => {
     expect(audioNode.gain.value).toBe(gain);
   });
 
-  it('creates BiquadFilterNode with all valid parameters', () => {
+  it('creates BiquadFilterNode with all valid parameters', function () {
     const type = 'peaking';
     const frequency = 500;
     const detune = 6;
@@ -172,10 +176,10 @@ describe("virtualAudioGraph.update", () => {
       id: 0,
       node: 'biquadFilter',
       params: {
-        type,
-        frequency,
-        detune,
-        Q,
+        type: type,
+        frequency: frequency,
+        detune: detune,
+        Q: Q,
       },
       output: 'output',
     }];
@@ -189,7 +193,7 @@ describe("virtualAudioGraph.update", () => {
     expect(audioNode.Q.value).toBe(Q);
   });
 
-  it('creates DelayNode with all valid parameters', () => {
+  it('creates DelayNode with all valid parameters', function () {
     const delayTime = 2;
     const maxDelayTime = 5;
 
@@ -197,8 +201,8 @@ describe("virtualAudioGraph.update", () => {
       id: 0,
       node: 'delay',
       params: {
-        delayTime,
-        maxDelayTime,
+        delayTime: delayTime,
+        maxDelayTime: maxDelayTime,
       },
       output: 'output',
     }];
@@ -209,14 +213,14 @@ describe("virtualAudioGraph.update", () => {
     expect(audioNode.delayTime.value).toBe(delayTime);
   });
 
-  it('creates StereoPannerNode with all valid parameters', () => {
+  it('creates StereoPannerNode with all valid parameters', function () {
     const pan = 1;
 
     const virtualNodeParams = [{
       id: 0,
       node: 'stereoPanner',
       params: {
-        pan,
+        pan: pan,
       },
       output: 'output',
     }];

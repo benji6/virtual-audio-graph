@@ -1,8 +1,8 @@
-module.exports = (params = {}) => {
-  let {decay, delayTime, maxDelayTime} = params;
-  decay = decay !== undefined ? decay : 1 / 3;
-  delayTime = delayTime !== undefined ? delayTime : 1 / 3;
-  maxDelayTime = maxDelayTime !== undefined ? maxDelayTime : 1 / 3;
+module.exports = function (params) {
+  params = params || {};
+  var decay = params.decay !== undefined ? params.decay : 1 / 3;
+  var delayTime = params.delayTime !== undefined ? params.delayTime : 1 / 3;
+  var maxDelayTime = params.maxDelayTime !== undefined ? params.maxDelayTime : 1 / 3;
 
   return [
     {
@@ -26,8 +26,8 @@ module.exports = (params = {}) => {
       node: 'delay',
       output: [1, 5],
       params: {
-        maxDelayTime,
-        delayTime,
+        maxDelayTime: maxDelayTime,
+        delayTime: delayTime,
       },
     },
     {
@@ -43,8 +43,8 @@ module.exports = (params = {}) => {
       node: 'delay',
       output: [0, 3],
       params: {
-        maxDelayTime,
-        delayTime,
+        maxDelayTime: maxDelayTime,
+        delayTime: delayTime,
       },
     },
     {
