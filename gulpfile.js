@@ -26,7 +26,9 @@ gulp.task('spec', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch('src/**/*.js', ['js']);
+  gulp.watch('src/**/*.js', function () {
+    return runSequence('js', 'spec');
+  });
   gulp.watch('spec/**/*.js*', ['spec']);
 });
 
