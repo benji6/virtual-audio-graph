@@ -126,6 +126,68 @@ describe("virtualAudioGraph.update", function () {
     expect(virtualAudioGraph.virtualNodes.length).toBe(2);
   });
 
+  it('connects nodes to each other', function () {
+    virtualAudioGraph.update([{
+      id: 1,
+      node: 'gain',
+      output: 'output',
+    },
+    {
+      id: 2,
+      node: 'oscillator',
+      output: 1,
+    }]);
+    expect(audioContext.toJSON()).toEqual({
+      "name":"AudioDestinationNode",
+      "inputs":[
+        {
+          "name":"GainNode",
+          "gain":{
+            "value":1,"inputs":[]
+          },
+          "inputs":[
+            {
+              "name":"OscillatorNode",
+              "type":"sine",
+              "frequency":{
+                "value":440,
+                "inputs":[]
+              },
+              "detune":{
+                "value":0,
+                "inputs":[]
+              },
+              "inputs":[]
+            }
+          ]
+        }
+      ]
+    });
+    virtualAudioGraph.update([{
+      id: 0,
+      node: 'oscillator',
+      output: 'output',
+    }]);
+    expect(audioContext.toJSON()).toEqual({
+      "name":"AudioDestinationNode",
+      "inputs":[
+        {
+          "name":"OscillatorNode",
+          "type":"sine",
+          "frequency":{
+            "value":440,
+            "inputs":[]
+          },
+          "detune":{
+            "value":0,
+            "inputs":[]
+          },
+          "inputs":[]
+        }
+      ]
+    });
+  });
+
   it('creates OscillatorNode with all valid parameters', function () {
     const params = {
       type: 'square',
