@@ -1,4 +1,4 @@
-# virtual-audio-graph
+# virtual-audio-graph [![Build Status](https://api.travis-ci.org/benji6/virtual-audio-graph.svg?branch=master)](https://travis-ci.org/benji6/virtual-audio-graph)
 
 ## Status
 Project is in early stages of development and API is very likely to change.
