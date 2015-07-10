@@ -1,7 +1,7 @@
 # virtual-audio-graph [![Build Status](https://api.travis-ci.org/benji6/virtual-audio-graph.svg?branch=master)](https://travis-ci.org/benji6/virtual-audio-graph)
 
 ## Status
-Project is in early stages of development and API is very likely to change.
+Project is in early stages of development and API is likely to change.
 
 ## Overview
 
@@ -42,26 +42,26 @@ Create two oscillators, put them through a gain node and attach the gain node to
 
 const virtualNodeParams = [
   {
-    output: 'output',
-    id: 1,
+    id: 0,
     node: 'gain',
+    output: 'output',
     params: {
       gain: 0.2,
     },
   },
   {
-    output: 1,
-    id: 2,
+    id: 1,
     node: 'oscillator',
+    output: 0,
     params: {
       type: 'square',
       frequency: 440,
     },
   },
   {
-    output: 1,
-    id: 3,
+    id: 2,
     node: 'oscillator',
+    output: 0,
     params: {
       type: 'sawtooth',
       frequency: 220,
@@ -82,7 +82,37 @@ In the example above we create a single oscillatorNode, which is connected to a 
 
 - `id` - each virtual node needs an id for efficient diffing and allowing the relationships between nodes to be described. ```'output'``` is a reserved id which represents the ```virtualAudioGraph``` destination property.
 
-- `output` - an id or array of ids for nodes this node connects to. ```'output'``` connects this node to the virtualAudioGraph output.
+- `output` - an id or array of ids for nodes this node connects to. ```'output'``` connects this node to the virtualAudioGraph output. You can also connect a node to a valid AudioParam using an object with an `id` property corresponding to the destination virtual-node id and a `destination` property with a string value specifying the AudioParam destination. See below:
+
+```javascript
+
+virtualAudioGraph.update([
+  {
+    id: 0,
+    node: 'oscillator',
+    output: 'output', // reserved id for virtual-audio-graph destination
+  },
+  {
+    id: 1,
+    node: 'gain',
+    // below we are connecting to the frequency AudioParam of the oscillator above
+    output: {id: 0, destination: 'frequency'},
+    params: {
+      gain: 10,
+    },
+  },
+  {
+    id: 2,
+    node: 'oscillator',
+    output: 1, // connect to node id 1 (gain node above)
+    params: {
+      type: 'triangle',
+      frequency: 1,
+    },
+  },
+]);
+
+```
 
 - `params` - is an object representing any properties which we would like to alter on the audio node created.
 
