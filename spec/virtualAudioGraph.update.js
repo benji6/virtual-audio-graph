@@ -188,6 +188,236 @@ describe("virtualAudioGraph.update", function () {
     });
   });
 
+  it('reconnects nodes to each other', function () {
+    virtualAudioGraph.update([{
+      id: 0,
+      node: 'gain',
+      output: 'output',
+    },
+    {
+      id: 1,
+      node: 'oscillator',
+      output: 0,
+    }]);
+    expect(audioContext.toJSON()).toEqual({
+      "name":"AudioDestinationNode",
+      "inputs":[
+        {
+          "name":"GainNode",
+          "gain":{
+            "value":1,
+            "inputs":[]
+          },
+          "inputs":[
+            {
+              "name":"OscillatorNode",
+              "type":"sine",
+              "frequency":{
+                "value":440,
+                "inputs":[]
+              },
+              "detune":{
+                "value":0,
+                "inputs":[]
+              },
+              "inputs":[]
+            }
+          ]
+        }
+      ]
+    });
+    virtualAudioGraph.update([{
+      id: 0,
+      node: 'gain',
+      output: 'output',
+    },
+    {
+      id: 1,
+      node: 'oscillator',
+      output: 'output',
+    }]);
+    expect(audioContext.toJSON()).toEqual({
+      "name":"AudioDestinationNode",
+      "inputs":[
+        {
+          "name":"GainNode",
+          "gain":{
+            "value":1,
+            "inputs":[]
+          },
+          "inputs":[]
+        },
+        {
+          "name":"OscillatorNode",
+          "type":"sine",
+          "frequency":{
+            "value":440,
+            "inputs":[]
+          },
+          "detune":{
+            "value":0,
+            "inputs":[]
+          },
+          "inputs":[]
+        }
+      ]
+    });
+  });
+
+  it('connects and reconnects nodes to audioParams', function () {
+    virtualAudioGraph.update([{
+      id: 0,
+      node: 'gain',
+      output: 'output',
+    },
+    {
+      id: 1,
+      node: 'oscillator',
+      output: 0,
+    },
+    {
+      id: 2,
+      node: 'oscillator',
+      output: [
+        {id: 1, destination: 'frequency'}
+      ],
+      params: {
+        frequency: 0.5,
+        type: 'triangle',
+      },
+    }]);
+
+    expect(audioContext.toJSON()).toEqual({
+      "name":"AudioDestinationNode",
+      "inputs":[
+        {
+          "name":"GainNode",
+          "gain":{
+            "value":1,
+            "inputs":[]
+          },
+          "inputs":[
+            {
+              "name":"OscillatorNode",
+              "type":"sine",
+              "frequency":{
+                "value":440,
+                "inputs":[
+                  {
+                    "name":"OscillatorNode",
+                    "type":"triangle",
+                    "frequency":{
+                      "value":0.5,
+                      "inputs":[]
+                    },
+                    "detune":{
+                      "value":0,
+                      "inputs":[]
+                    },
+                    "inputs":[]
+                  }
+                ]
+              },
+              "detune":{
+                "value":0,
+                "inputs":[]
+              },
+              "inputs":[]
+            }
+          ]
+        }
+      ]
+    });
+
+    virtualAudioGraph.update([{
+      id: 0,
+      node: 'gain',
+      output: 'output',
+    },
+    {
+      id: 1,
+      node: 'oscillator',
+      output: 0,
+    },
+    {
+      id: 2,
+      node: 'oscillator',
+      output: [
+        {id: 1, destination: 'detune'}
+      ],
+      params: {
+        frequency: 0.5,
+        type: 'triangle',
+      },
+    }]);
+
+    expect(audioContext.toJSON()).toEqual({
+      "name":"AudioDestinationNode",
+      "inputs":[
+        {
+          "name":"GainNode",
+          "gain":{
+            "value":1,
+            "inputs":[]
+          },
+          "inputs":[
+            {
+              "name":"OscillatorNode",
+              "type":"sine",
+              "frequency":{
+                "value":440,
+                "inputs":[]
+              },
+              "detune":{
+                "value":0,
+                "inputs":[
+                  {
+                    "name":"OscillatorNode",
+                    "type":"triangle",
+                    "frequency":{
+                      "value":0.5,
+                      "inputs":[]
+                    },
+                    "detune":{
+                      "value":0,
+                      "inputs":[]
+                    },
+                    "inputs":[]
+                  }
+                ]
+              },
+              "inputs":[]
+            }
+          ]
+        }
+      ]
+    });
+
+    virtualAudioGraph.update([{
+      id: 0,
+      node: 'oscillator',
+      output: 'output',
+    }]);
+    expect(audioContext.toJSON()).toEqual({
+      "name":"AudioDestinationNode",
+      "inputs":[
+        {
+          "name":"OscillatorNode",
+          "type":"sine",
+          "frequency":{
+            "value":440,
+            "inputs":[]
+          },
+          "detune":{
+            "value":0,
+            "inputs":[]
+          },
+          "inputs":[]
+        }
+      ]
+    });
+  });
+
   it('creates OscillatorNode with all valid parameters', function () {
     const params = {
       type: 'square',
