@@ -12,6 +12,7 @@ var concat = _require.concat;
 var compose = _require.compose;
 var differenceWith = _require.differenceWith;
 var eqProps = _require.eqProps;
+var equals = _require.equals;
 var find = _require.find;
 var findIndex = _require.findIndex;
 var forEach = _require.forEach;
@@ -56,6 +57,12 @@ var updateAudioNodesAndUpdateVirtualAudioGraph = function updateAudioNodesAndUpd
   forEach(function (virtualAudioNodeParam) {
     var virtualAudioNode = find(propEq('id', virtualAudioNodeParam.id))(_this.virtualNodes);
     if (virtualAudioNodeParam.node !== virtualAudioNode.node) disconnectAndRemoveVirtualAudioNode.call(_this, virtualAudioNode);
+
+    if (!equals(virtualAudioNodeParam.output, virtualAudioNode.output)) {
+      virtualAudioNode.disconnect();
+      virtualAudioNode.output = virtualAudioNodeParam.output;
+    }
+
     virtualAudioNode.updateAudioNode(virtualAudioNodeParam.params);
   }, updateParams);
 
@@ -114,6 +121,7 @@ var VirtualAudioGraph = (function () {
       if (any(propEq('id', undefined), virtualAudioNodeParams)) throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
 
       this._removeUpdateAndCreate(virtualAudioNodeParams);
+
       connectAudioNodes(CustomVirtualAudioNode, this.virtualNodes, function (virtualAudioNode) {
         return virtualAudioNode.connect(_this3.output);
       });

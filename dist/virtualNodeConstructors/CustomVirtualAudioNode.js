@@ -16,6 +16,7 @@ var propEq = _require.propEq;
 var omit = _require.omit;
 var zipWith = _require.zipWith;
 
+var asArray = require('../tools/asArray');
 var connectAudioNodes = require('../tools/connectAudioNodes');
 
 module.exports = (function () {
@@ -29,12 +30,13 @@ module.exports = (function () {
 
     params = params || {};
     this.audioGraphParamsFactory = virtualAudioGraph.customNodes[node];
+    this.connected = false;
     this.node = node;
     this.virtualNodes = this.audioGraphParamsFactory(params);
     this.virtualNodes = virtualAudioGraph.createVirtualAudioNodes(this.virtualNodes);
     connectAudioNodes(CustomVirtualAudioNode, this.virtualNodes);
     this.id = id;
-    this.output = Array.isArray(output) ? output : [output];
+    this.output = output;
   }
 
   _createClass(CustomVirtualAudioNode, [{
@@ -42,11 +44,12 @@ module.exports = (function () {
     value: function connect(destination) {
       var outputVirtualNodes = filter(function (_ref2) {
         var output = _ref2.output;
-        return contains('output', output);
+        return contains('output', asArray(output));
       }, this.virtualNodes);
       forEach(function (audioNode) {
         return audioNode.connect(destination);
       }, pluck('audioNode', outputVirtualNodes));
+      this.connected = true;
     }
   }, {
     key: 'disconnect',
@@ -54,6 +57,7 @@ module.exports = (function () {
       forEach(function (virtualNode) {
         return virtualNode.disconnect();
       }, this.virtualNodes);
+      this.connected = false;
     }
   }, {
     key: 'updateAudioNode',

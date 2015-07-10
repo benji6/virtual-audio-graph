@@ -3,23 +3,33 @@
 var _require = require('ramda');
 
 var find = _require.find;
+var filter = _require.filter;
 var forEach = _require.forEach;
 var propEq = _require.propEq;
+var keys = _require.keys;
+
+var asArray = require('./asArray');
 
 module.exports = function (CustomVirtualAudioNode, virtualAudioNodes) {
   var handleConnectionToOutput = arguments[2] === undefined ? function () {} : arguments[2];
   return forEach(function (virtualAudioNode) {
-    forEach(function (connection) {
-      if (connection === 'output') {
-        handleConnectionToOutput(virtualAudioNode);
-      } else {
-        var destinationVirtualAudioNode = find(propEq('id', connection))(virtualAudioNodes);
-        if (destinationVirtualAudioNode instanceof CustomVirtualAudioNode) {
-          forEach(virtualAudioNode.connect.bind(virtualAudioNode), destinationVirtualAudioNode.inputs);
-        } else {
-          virtualAudioNode.connect(destinationVirtualAudioNode.audioNode);
-        }
+    return forEach(function (connection) {
+      if (connection === 'output') return handleConnectionToOutput(virtualAudioNode);
+
+      if (Object.prototype.toString.call(connection) === '[object Object]') {
+        var id = connection.id;
+        var destination = connection.destination;
+
+        var _destinationVirtualAudioNode = find(propEq('id', id))(virtualAudioNodes);
+
+        return virtualAudioNode.connect(_destinationVirtualAudioNode.audioNode[destination]);
       }
-    }, virtualAudioNode.output);
-  }, virtualAudioNodes);
+
+      var destinationVirtualAudioNode = find(propEq('id', connection))(virtualAudioNodes);
+
+      if (destinationVirtualAudioNode instanceof CustomVirtualAudioNode) return forEach(virtualAudioNode.connect.bind(virtualAudioNode), destinationVirtualAudioNode.inputs);
+
+      virtualAudioNode.connect(destinationVirtualAudioNode.audioNode);
+    }, asArray(virtualAudioNode.output));
+  }, filter(propEq('connected', false), virtualAudioNodes));
 };

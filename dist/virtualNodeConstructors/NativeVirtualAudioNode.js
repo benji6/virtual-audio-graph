@@ -29,11 +29,12 @@ module.exports = (function () {
     var constructorParams = pick(constructorParamsKeys, params);
     params = omit(constructorParamsKeys, params);
     this.audioNode = createAudioNode(virtualAudioGraph.audioContext, node, constructorParams);
+    this.connected = false;
     this.node = node;
     this.updateAudioNode(params);
     this.id = id;
     this.input = input;
-    this.output = Array.isArray(output) ? output : [output];
+    this.output = output;
     this.params = params;
   }
 
@@ -41,12 +42,13 @@ module.exports = (function () {
     key: 'connect',
     value: function connect(destination) {
       this.audioNode.connect(destination);
+      this.connected = true;
     }
   }, {
     key: 'disconnect',
     value: function disconnect() {
-      this.audioNode.stop && this.audioNode.stop();
       this.audioNode.disconnect();
+      this.connected = false;
     }
   }, {
     key: 'updateAudioNode',
