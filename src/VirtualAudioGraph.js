@@ -7,7 +7,7 @@ const connectAudioNodes = require('./tools/connectAudioNodes');
 
 const disconnectAndRemoveVirtualAudioNode = function (virtualNode) {
   virtualNode.disconnect();
-  this.virtualNodes = remove(findIndex(propEq("id", virtualNode.id))(this.virtualNodes), 1, this.virtualNodes);
+  this.virtualNodes = remove(findIndex(propEq('id', virtualNode.id))(this.virtualNodes), 1, this.virtualNodes);
 };
 
 const createVirtualAudioNodesAndUpdateVirtualAudioGraph = function (virtualAudioNodeParams) {
@@ -30,7 +30,7 @@ const updateAudioNodesAndUpdateVirtualAudioGraph = function (virtualAudioNodePar
   const updateParams = intersectionWith(eqProps('id'), virtualAudioNodeParams, this.virtualNodes);
 
   forEach((virtualAudioNodeParam) => {
-    const virtualAudioNode = find(propEq("id", virtualAudioNodeParam.id))(this.virtualNodes);
+    const virtualAudioNode = find(propEq('id', virtualAudioNodeParam.id))(this.virtualNodes);
     if (virtualAudioNodeParam.node !== virtualAudioNode.node)
       disconnectAndRemoveVirtualAudioNode.call(this, virtualAudioNode);
 
