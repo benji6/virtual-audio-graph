@@ -16,6 +16,12 @@ Abstracts away the pain of directly manipulating the Audio Graph in a similar fa
 
 Create and update an Audio Graph by generating a virtual audio graph with a JSON-compatible array of objects representing the nodes to be constructed and their relationships to each other.
 
+## Installation
+
+```bash
+$ npm install --save virtual-audio-graph
+```
+
 ## API
 
 ### Instantiating a new virtual-audio-graph
