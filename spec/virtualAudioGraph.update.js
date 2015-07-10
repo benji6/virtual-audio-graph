@@ -278,9 +278,7 @@ describe("virtualAudioGraph.update", function () {
     {
       id: 2,
       node: 'oscillator',
-      output: [
-        {id: 1, destination: 'frequency'}
-      ],
+      output: {id: 1, destination: 'frequency'},
       params: {
         frequency: 0.5,
         type: 'triangle',
