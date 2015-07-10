@@ -27,9 +27,23 @@
     "run-sequence": "^1.1.1",
     "web-audio-test-api": "^0.3.4"
   },
-  "jshintConfig": {
-    "esnext": true,
-    "expr": true
+  "eslintConfig": {
+    "ecmaFeatures": {
+      "modules": true
+    },
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true
+    },
+    "rules": {
+      "curly": [0],
+      "comma-dangle": [1, "always-multiline"],
+      "quotes": [1, "single"],
+      "no-underscore-dangle": [0],
+      "no-unused-vars": [0],
+      "no-shadow": [0]
+    }
   },
   "dependencies": {
     "capitalize": "^1.0.0",
