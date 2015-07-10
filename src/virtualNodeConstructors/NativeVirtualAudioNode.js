@@ -12,21 +12,23 @@ module.exports = class NativeVirtualAudioNode {
     const constructorParams = pick(constructorParamsKeys, params);
     params = omit(constructorParamsKeys, params);
     this.audioNode = createAudioNode(virtualAudioGraph.audioContext, node, constructorParams);
+    this.connected = false;
     this.node = node;
     this.updateAudioNode(params);
     this.id = id;
     this.input = input;
-    this.output = Array.isArray(output) ? output : [output];
+    this.output = output;
     this.params = params;
   }
 
   connect (destination) {
     this.audioNode.connect(destination);
+    this.connected = true;
   }
 
   disconnect () {
-    this.audioNode.stop && this.audioNode.stop();
     this.audioNode.disconnect();
+    this.connected = false;
   }
 
   updateAudioNode (params) {
