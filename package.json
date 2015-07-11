@@ -8,6 +8,7 @@
     "url": "https://github.com/benji6/virtual-audio-graph.git"
   },
   "scripts": {
+    "benchmark": "node benchmark",
     "test": "gulp spec"
   },
   "author": "Ben Hall",
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/benji6/virtual-audio-graph",
   "devDependencies": {
     "babel-runtime": "^5.6.15",
+    "benchmark": "^1.0.0",
     "del": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
@@ -25,6 +27,7 @@
     "gulp-plumber": "^1.0.1",
     "gulp-uglify": "^1.2.0",
     "run-sequence": "^1.1.1",
+    "virtual-audio-graph": "^0.3.2",
     "web-audio-test-api": "^0.3.4"
   },
   "eslintConfig": {
