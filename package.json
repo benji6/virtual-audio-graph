@@ -1,6 +1,6 @@
 {
   "name": "virtual-audio-graph",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "virtual-audio-graph",
   "main": "dist/index.js",
   "repository": {
