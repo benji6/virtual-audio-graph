@@ -60,7 +60,9 @@ describe('virtualAudioGraph.defineNode', function () {
     ];
 
     expect(virtualAudioGraph.update(virtualNodeParams)).toBe(virtualAudioGraph);
+    /* eslint-disable */
     expect(R.equals(audioContext.toJSON(), {"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"StereoPannerNode","pan":{"value":-1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":["<circular:DelayNode>"]}]},{"name":"OscillatorNode","type":"sine","frequency":{"value":440,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]},{"name":"StereoPannerNode","pan":{"value":1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":["<circular:DelayNode>",{"name":"OscillatorNode","type":"sine","frequency":{"value":440,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]}]}]}]}]})).toBe(true);
+    /* eslint-enable */
   });
 
   it('can define a custom node built of other custom nodes', function () {
@@ -115,7 +117,9 @@ describe('virtualAudioGraph.defineNode', function () {
     ];
 
     expect(virtualAudioGraph.update(virtualNodeParams)).toBe(virtualAudioGraph);
+    /* eslint-disable */
     expect(R.equals(audioContext.toJSON(), {"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":1,"inputs":[]},"inputs":[{"name":"StereoPannerNode","pan":{"value":-1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.3333333333333333,"inputs":[]},"inputs":["<circular:DelayNode>"]}]},{"name":"OscillatorNode","type":"sine","frequency":{"value":440,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]},{"name":"StereoPannerNode","pan":{"value":1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.3333333333333333,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.3333333333333333,"inputs":[]},"inputs":["<circular:DelayNode>",{"name":"OscillatorNode","type":"sine","frequency":{"value":440,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]}]}]}]}]}]})).toBe(true);
+    /* eslint-enable */
   });
 
   it('can define a custom node which can be updated', function () {
@@ -149,13 +153,15 @@ describe('virtualAudioGraph.defineNode', function () {
 
     virtualAudioGraph.update(virtualNodeParams);
 
+    /* eslint-disable */
     expect(R.equals(audioContext.toJSON(), {"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"StereoPannerNode","pan":{"value":-1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":["<circular:DelayNode>"]}]},{"name":"OscillatorNode","type":"sine","frequency":{"value":440,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]},{"name":"StereoPannerNode","pan":{"value":1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":["<circular:DelayNode>",{"name":"OscillatorNode","type":"sine","frequency":{"value":440,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]}]}]}]}]})).toBe(true);
-
+    /* eslint-enable */
     virtualNodeParams[1].params.decay = 0.6;
 
     virtualAudioGraph.update(virtualNodeParams);
-
+    /* eslint-disable */
     expect(R.equals(audioContext.toJSON(), {"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"StereoPannerNode","pan":{"value":-1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.6,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.6,"inputs":[]},"inputs":["<circular:DelayNode>"]}]},{"name":"OscillatorNode","type":"sine","frequency":{"value":440,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]},{"name":"StereoPannerNode","pan":{"value":1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.6,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.6,"inputs":[]},"inputs":["<circular:DelayNode>",{"name":"OscillatorNode","type":"sine","frequency":{"value":440,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]}]}]}]}]})).toBe(true);
+    /* eslint-enable */
   });
 
   it('can define a custom node which can be removed', function () {
@@ -189,8 +195,9 @@ describe('virtualAudioGraph.defineNode', function () {
 
     virtualAudioGraph.update(virtualNodeParams);
 
+    /* eslint-disable */
     expect(R.equals(audioContext.toJSON(), {"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"StereoPannerNode","pan":{"value":-1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":["<circular:DelayNode>"]}]},{"name":"OscillatorNode","type":"sine","frequency":{"value":440,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]},{"name":"StereoPannerNode","pan":{"value":1,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"DelayNode","delayTime":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":["<circular:DelayNode>",{"name":"OscillatorNode","type":"sine","frequency":{"value":440,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]}]}]}]}]})).toBe(true);
-
+    /* eslint-enable */
     virtualNodeParams[1].params.decay = 0.6;
 
     virtualAudioGraph.update([
@@ -200,10 +207,22 @@ describe('virtualAudioGraph.defineNode', function () {
         output: 'output',
         params: {
           gain: 0.5,
-        }
-      }
+        },
+      },
     ]);
 
-    expect(R.equals(audioContext.toJSON(), {"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[]}]})).toBe(true);
+    expect(R.equals(audioContext.toJSON(), {
+      name: 'AudioDestinationNode',
+      inputs: [
+        {
+          name: 'GainNode',
+          gain: {
+            value: 0.5,
+            inputs: [],
+          },
+          inputs: [],
+        },
+      ],
+    })).toBe(true);
   });
 });
