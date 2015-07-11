@@ -37,12 +37,29 @@
       "node": true
     },
     "rules": {
-      "curly": [0],
-      "comma-dangle": [1, "always-multiline"],
-      "quotes": [1, "single"],
-      "no-underscore-dangle": [0],
-      "no-unused-vars": [0],
-      "no-shadow": [0]
+      "curly": [
+        0
+      ],
+      "comma-dangle": [
+        1,
+        "always-multiline"
+      ],
+      "quotes": [
+        1,
+        "single"
+      ],
+      "no-undef": [
+        0
+      ],
+      "no-underscore-dangle": [
+        0
+      ],
+      "no-unused-vars": [
+        0
+      ],
+      "no-shadow": [
+        0
+      ]
     }
   },
   "dependencies": {

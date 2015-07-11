@@ -1,7 +1,7 @@
 const VirtualAudioGraph = require('../dist/index.js');
 const pingPongDelayParamsFactory = require('./tools/pingPongDelayParamsFactory');
 
-describe("virtualAudioGraph.update", function () {
+describe('virtualAudioGraph.update', function () {
   var audioContext;
   var virtualAudioGraph;
 
@@ -64,17 +64,17 @@ describe("virtualAudioGraph.update", function () {
     }]);
 
     expect(audioContext.toJSON()).toEqual({
-      name: "AudioDestinationNode",
+      name: 'AudioDestinationNode',
       inputs: [
         {
-          name: "GainNode",
+          name: 'GainNode',
           gain: {
             value: 1,
-            inputs: []
+            inputs: [],
           },
-          inputs: []
-        }
-      ]
+          inputs: [],
+        },
+      ],
     });
 
     virtualAudioGraph.update([{
@@ -84,20 +84,22 @@ describe("virtualAudioGraph.update", function () {
     }]);
 
     expect(audioContext.toJSON()).toEqual({
-      "name":"AudioDestinationNode",
-      "inputs":[
+      name: 'AudioDestinationNode',
+      inputs: [
         {
-          "name":"OscillatorNode",
-          "type":"sine",
-          "frequency":{
-            "value":440,"inputs":[]
+          name: 'OscillatorNode',
+          type: 'sine',
+          frequency: {
+            value: 440,
+            inputs: [],
           },
-          "detune":{
-            "value":0,"inputs":[]
+          detune: {
+            value: 0,
+            inputs: [],
           },
-          "inputs":[]
-        }
-      ]
+          inputs: [],
+        },
+      ],
     });
 
     virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
@@ -138,30 +140,31 @@ describe("virtualAudioGraph.update", function () {
       output: 1,
     }]);
     expect(audioContext.toJSON()).toEqual({
-      "name":"AudioDestinationNode",
-      "inputs":[
+      name: 'AudioDestinationNode',
+      inputs: [
         {
-          "name":"GainNode",
-          "gain":{
-            "value":1,"inputs":[]
+          name: 'GainNode',
+          gain: {
+            value: 1,
+            inputs: [],
           },
-          "inputs":[
+          inputs: [
             {
-              "name":"OscillatorNode",
-              "type":"sine",
-              "frequency":{
-                "value":440,
-                "inputs":[]
+              name: 'OscillatorNode',
+              type: 'sine',
+              frequency: {
+                value: 440,
+                inputs: [],
               },
-              "detune":{
-                "value":0,
-                "inputs":[]
+              detune: {
+                value: 0,
+                inputs: [],
               },
-              "inputs":[]
-            }
-          ]
-        }
-      ]
+              inputs: [],
+            },
+          ],
+        },
+      ],
     });
     virtualAudioGraph.update([{
       id: 0,
@@ -169,22 +172,22 @@ describe("virtualAudioGraph.update", function () {
       output: 'output',
     }]);
     expect(audioContext.toJSON()).toEqual({
-      "name":"AudioDestinationNode",
-      "inputs":[
+      'name':'AudioDestinationNode',
+      'inputs':[
         {
-          "name":"OscillatorNode",
-          "type":"sine",
-          "frequency":{
-            "value":440,
-            "inputs":[]
+          'name':'OscillatorNode',
+          'type':'sine',
+          'frequency':{
+            'value':440,
+            'inputs':[]
           },
-          "detune":{
-            "value":0,
-            "inputs":[]
+          'detune':{
+            'value':0,
+            'inputs':[]
           },
-          "inputs":[]
-        }
-      ]
+          inputs: [],
+        },
+      ],
     });
   });
 
@@ -200,27 +203,27 @@ describe("virtualAudioGraph.update", function () {
       output: 0,
     }]);
     expect(audioContext.toJSON()).toEqual({
-      "name":"AudioDestinationNode",
-      "inputs":[
+      'name':'AudioDestinationNode',
+      'inputs':[
         {
-          "name":"GainNode",
-          "gain":{
-            "value":1,
-            "inputs":[]
+          'name':'GainNode',
+          'gain':{
+            'value':1,
+            'inputs':[]
           },
-          "inputs":[
+          'inputs':[
             {
-              "name":"OscillatorNode",
-              "type":"sine",
-              "frequency":{
-                "value":440,
-                "inputs":[]
+              'name':'OscillatorNode',
+              'type':'sine',
+              'frequency':{
+                'value':440,
+                'inputs':[]
               },
-              "detune":{
-                "value":0,
-                "inputs":[]
+              'detune':{
+                'value':0,
+                'inputs':[]
               },
-              "inputs":[]
+              'inputs':[]
             }
           ]
         }
@@ -237,28 +240,28 @@ describe("virtualAudioGraph.update", function () {
       output: 'output',
     }]);
     expect(audioContext.toJSON()).toEqual({
-      "name":"AudioDestinationNode",
-      "inputs":[
+      'name':'AudioDestinationNode',
+      'inputs':[
         {
-          "name":"GainNode",
-          "gain":{
-            "value":1,
-            "inputs":[]
+          'name':'GainNode',
+          'gain':{
+            'value':1,
+            'inputs':[]
           },
-          "inputs":[]
+          'inputs':[]
         },
         {
-          "name":"OscillatorNode",
-          "type":"sine",
-          "frequency":{
-            "value":440,
-            "inputs":[]
+          'name':'OscillatorNode',
+          'type':'sine',
+          'frequency':{
+            'value':440,
+            'inputs':[]
           },
-          "detune":{
-            "value":0,
-            "inputs":[]
+          'detune':{
+            'value':0,
+            'inputs':[]
           },
-          "inputs":[]
+          'inputs':[]
         }
       ]
     });
@@ -286,41 +289,41 @@ describe("virtualAudioGraph.update", function () {
     }]);
 
     expect(audioContext.toJSON()).toEqual({
-      "name":"AudioDestinationNode",
-      "inputs":[
+      'name':'AudioDestinationNode',
+      'inputs':[
         {
-          "name":"GainNode",
-          "gain":{
-            "value":1,
-            "inputs":[]
+          'name':'GainNode',
+          'gain':{
+            'value':1,
+            'inputs':[]
           },
-          "inputs":[
+          'inputs':[
             {
-              "name":"OscillatorNode",
-              "type":"sine",
-              "frequency":{
-                "value":440,
-                "inputs":[
+              'name':'OscillatorNode',
+              'type':'sine',
+              'frequency':{
+                'value':440,
+                'inputs':[
                   {
-                    "name":"OscillatorNode",
-                    "type":"triangle",
-                    "frequency":{
-                      "value":0.5,
-                      "inputs":[]
+                    'name':'OscillatorNode',
+                    'type':'triangle',
+                    'frequency':{
+                      'value':0.5,
+                      'inputs':[]
                     },
-                    "detune":{
-                      "value":0,
-                      "inputs":[]
+                    'detune':{
+                      'value':0,
+                      'inputs':[]
                     },
-                    "inputs":[]
+                    'inputs':[]
                   }
                 ]
               },
-              "detune":{
-                "value":0,
-                "inputs":[]
+              'detune':{
+                'value':0,
+                'inputs':[]
               },
-              "inputs":[]
+              'inputs':[]
             }
           ]
         }
@@ -350,41 +353,41 @@ describe("virtualAudioGraph.update", function () {
     }]);
 
     expect(audioContext.toJSON()).toEqual({
-      "name":"AudioDestinationNode",
-      "inputs":[
+      'name':'AudioDestinationNode',
+      'inputs':[
         {
-          "name":"GainNode",
-          "gain":{
-            "value":1,
-            "inputs":[]
+          'name':'GainNode',
+          'gain':{
+            'value':1,
+            'inputs':[]
           },
-          "inputs":[
+          'inputs':[
             {
-              "name":"OscillatorNode",
-              "type":"sine",
-              "frequency":{
-                "value":440,
-                "inputs":[]
+              'name':'OscillatorNode',
+              'type':'sine',
+              'frequency':{
+                'value':440,
+                'inputs':[]
               },
-              "detune":{
-                "value":0,
-                "inputs":[
+              'detune':{
+                'value':0,
+                'inputs':[
                   {
-                    "name":"OscillatorNode",
-                    "type":"triangle",
-                    "frequency":{
-                      "value":0.5,
-                      "inputs":[]
+                    'name':'OscillatorNode',
+                    'type':'triangle',
+                    'frequency':{
+                      'value':0.5,
+                      'inputs':[]
                     },
-                    "detune":{
-                      "value":0,
-                      "inputs":[]
+                    'detune':{
+                      'value':0,
+                      'inputs':[]
                     },
-                    "inputs":[]
+                    'inputs':[]
                   }
                 ]
               },
-              "inputs":[]
+              'inputs':[]
             }
           ]
         }
@@ -397,20 +400,20 @@ describe("virtualAudioGraph.update", function () {
       output: 'output',
     }]);
     expect(audioContext.toJSON()).toEqual({
-      "name":"AudioDestinationNode",
-      "inputs":[
+      'name':'AudioDestinationNode',
+      'inputs':[
         {
-          "name":"OscillatorNode",
-          "type":"sine",
-          "frequency":{
-            "value":440,
-            "inputs":[]
+          'name':'OscillatorNode',
+          'type':'sine',
+          'frequency':{
+            'value':440,
+            'inputs':[]
           },
-          "detune":{
-            "value":0,
-            "inputs":[]
+          'detune':{
+            'value':0,
+            'inputs':[]
           },
-          "inputs":[]
+          'inputs':[]
         }
       ]
     });

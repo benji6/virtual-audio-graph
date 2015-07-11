@@ -40,7 +40,7 @@ describe('virtualAudioGraph.defineNode', function () {
         output: 'output',
         params: {
           gain: 0.5,
-        }
+        },
       },
       {
         id: 1,
@@ -50,7 +50,7 @@ describe('virtualAudioGraph.defineNode', function () {
           decay: 0.5,
           delayTime: 0.5,
           maxDelayTime: 0.5,
-        }
+        },
       },
       {
         id: 2,
@@ -95,7 +95,7 @@ describe('virtualAudioGraph.defineNode', function () {
         output: 'output',
         params: {
           gain: 0.5,
-        }
+        },
       },
       {
         id: 1,
@@ -128,7 +128,7 @@ describe('virtualAudioGraph.defineNode', function () {
         output: 'output',
         params: {
           gain: 0.5,
-        }
+        },
       },
       {
         id: 1,
@@ -138,7 +138,7 @@ describe('virtualAudioGraph.defineNode', function () {
           decay: 0.5,
           delayTime: 0.5,
           maxDelayTime: 0.5,
-        }
+        },
       },
       {
         id: 2,
@@ -168,7 +168,7 @@ describe('virtualAudioGraph.defineNode', function () {
         output: 'output',
         params: {
           gain: 0.5,
-        }
+        },
       },
       {
         id: 1,
@@ -178,7 +178,7 @@ describe('virtualAudioGraph.defineNode', function () {
           decay: 0.5,
           delayTime: 0.5,
           maxDelayTime: 0.5,
-        }
+        },
       },
       {
         id: 2,
