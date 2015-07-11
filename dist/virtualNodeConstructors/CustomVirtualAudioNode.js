@@ -13,11 +13,13 @@ var keys = _require.keys;
 var pick = _require.pick;
 var pluck = _require.pluck;
 var propEq = _require.propEq;
+var map = _require.map;
 var omit = _require.omit;
 var zipWith = _require.zipWith;
 
 var asArray = require('../tools/asArray');
 var connectAudioNodes = require('../tools/connectAudioNodes');
+var NativeVirtualAudioNode = require('../virtualNodeConstructors/NativeVirtualAudioNode');
 
 module.exports = (function () {
   function CustomVirtualAudioNode(virtualAudioGraph, _ref) {
@@ -32,8 +34,12 @@ module.exports = (function () {
     this.audioGraphParamsFactory = virtualAudioGraph.customNodes[node];
     this.connected = false;
     this.node = node;
-    this.virtualNodes = this.audioGraphParamsFactory(params);
-    this.virtualNodes = virtualAudioGraph.createVirtualAudioNodes(this.virtualNodes);
+    this.virtualNodes = map((function createVirtualAudioNode(virtualAudioNodeParam) {
+      if (this.customNodes[virtualAudioNodeParam.node]) return new CustomVirtualAudioNode(this, virtualAudioNodeParam);
+
+      return new NativeVirtualAudioNode(this, virtualAudioNodeParam);
+    }).bind(virtualAudioGraph), this.audioGraphParamsFactory(params));
+
     connectAudioNodes(CustomVirtualAudioNode, this.virtualNodes);
     this.id = id;
     this.output = output;
