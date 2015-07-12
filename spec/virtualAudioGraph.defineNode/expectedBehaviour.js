@@ -1,6 +1,6 @@
 const R = require('ramda');
-const VirtualAudioGraph = require('../dist/index.js');
-const pingPongDelayParamsFactory = require('./tools/pingPongDelayParamsFactory');
+const VirtualAudioGraph = require('../../dist/index.js');
+const pingPongDelayParamsFactory = require('../tools/pingPongDelayParamsFactory');
 
 describe('virtualAudioGraph.defineNode', function () {
   var audioContext;
@@ -16,12 +16,6 @@ describe('virtualAudioGraph.defineNode', function () {
 
   it('returns itself', function () {
     expect(virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay')).toBe(virtualAudioGraph);
-  });
-
-  it('throws if name provided is a standard node', function () {
-    expect(function () {
-      virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'gain');
-    }).toThrow();
   });
 
   it('creates a custom node internally', function () {
