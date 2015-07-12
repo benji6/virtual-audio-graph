@@ -2,7 +2,7 @@ const R = require('ramda');
 const VirtualAudioGraph = require('../../dist/index.js');
 const pingPongDelayParamsFactory = require('../tools/pingPongDelayParamsFactory');
 
-describe('virtualAudioGraph.defineNode', function () {
+describe('virtualAudioGraph.defineNode - expected behaviour', function () {
   var audioContext;
   var virtualAudioGraph;
 

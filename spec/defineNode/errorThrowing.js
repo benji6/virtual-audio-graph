@@ -1,7 +1,7 @@
 const VirtualAudioGraph = require('../../dist/index.js');
 const pingPongDelayParamsFactory = require('../tools/pingPongDelayParamsFactory');
 
-describe('virtualAudioGraph.defineNode', function () {
+describe('virtualAudioGraph.defineNode - error throwing', function () {
   var audioContext;
   var virtualAudioGraph;
 
