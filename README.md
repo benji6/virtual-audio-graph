@@ -291,3 +291,22 @@ Here is a list of standard virutal audio nodes implemented in virtual-audio-grap
   },
 }
 ```
+
+```javascript
+{
+  node: 'panner',
+  params: {
+    coneInnerAngle,
+    coneOuterAngle,
+    coneOuterGain,
+    distanceModel,
+    orientation, // applies an array of arguments with the corresponding AudioNode setter
+    panningModel,
+    position, // applies an array of arguments with the corresponding AudioNode setter
+    maxDistance,
+    refDistance,
+    rolloffFactor,
+  },
+  output: 'output',
+}
+```
