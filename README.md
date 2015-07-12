@@ -6,15 +6,17 @@
 
 ## Status
 
-Project is in early stages of development and API is likely to change.
+Project is in early stages of development and API may change.
 
 ## Overview
 
 Library for manipulating the Web Audio API.
 
-Abstracts away the pain of directly manipulating the Audio Graph in a similar fashion to the way in which react and virtual-dom abstract away DOM manipulation pain.
+Abstracts away the pain of directly manipulating the audio graph in a similar fashion to the way in which react and virtual-dom do for the DOM.
 
-Create and update an Audio Graph by generating a virtual audio graph with a JSON-compatible array of objects representing the nodes to be constructed and their relationships to each other.
+virtual-audio-graph aims to manage the state of the audio graph so this does not have to be done manually.
+
+Simply pass a data structure representing the desired audio graph and virtual-audio-graph takes care of the rest.
 
 ## Installation
 
@@ -41,9 +43,16 @@ const virtualAudioGraph = new VirtualAudioGraph({
 
 The `VirtualAudioGraph` constructor takes an object with two optional properties:
 
-- `audioContext` - an instance of AudioContext. If not provided then virtual-audio-graph will create its own instance of AudioContext. However, if you already have an instance of AudioContext it is best to pass it here here because the number of instances which can be created is limited.
+- `audioContext` - an instance of AudioContext. If not provided then virtual-audio-graph will create its own instance of AudioContext. Note that the number of instances of AudioContext is limited so if you have one it may be best to provide it here.
 
 - `output` - a valid AudioNode destination (e.g. `audioContext.destination` or `audioContext.createGain()`). If not provided then the audioContext destination will be used.
+
+### Public Interface
+- `virtualAudioGraph.currentTime` returns the currentTime of the audioContext instance which was either provided during construction or created internally.
+
+- `virtual-audio-graph.update` method described below.
+
+- `virtual-audio-graph.defineNode` method described below.
 
 ### Updating the Audio Graph
 
@@ -125,7 +134,7 @@ virtualAudioGraph.update([
 
 ```
 
-- `params` - is an object representing any properties which we would like to alter on the audio node created.
+- `params` - is an object representing any properties to alter on the audio node created.
 
 Calling `virtualAudioGraph.update` subsequently will diff the new state against the old state and make appropriate changes to the audio graph.
 
@@ -152,7 +161,7 @@ const pingPongDelayParamsFactory = (params = {}) => {
       output: 'output',
       params: {
         pan: -1,
-      }
+      },
     },
     {
       id: 1,
@@ -160,7 +169,7 @@ const pingPongDelayParamsFactory = (params = {}) => {
       output: 'output',
       params: {
         pan: 1,
-      }
+      },
     },
     {
       id: 2,
@@ -177,7 +186,7 @@ const pingPongDelayParamsFactory = (params = {}) => {
       output: 2,
       params: {
         gain: decay,
-      }
+      },
     },
     {
       id: 4,
@@ -195,7 +204,7 @@ const pingPongDelayParamsFactory = (params = {}) => {
       output: 4,
       params: {
         gain: decay,
-      }
+      },
     },
   ];
 };
