@@ -8,12 +8,19 @@ var createAudioNode = require('../tools/createAudioNode');
 
 var _require = require('ramda');
 
+var contains = _require.contains;
 var forEach = _require.forEach;
 var keys = _require.keys;
 var pick = _require.pick;
 var omit = _require.omit;
 
+var capitalize = require('capitalize');
+
 var constructorParamsKeys = ['maxDelayTime'];
+
+var audioParamProperties = ['delayTime', 'detune', 'frequency', 'gain', 'pan', 'Q'];
+
+var setters = ['position', 'orientation'];
 
 module.exports = (function () {
   function NativeVirtualAudioNode(virtualAudioGraph, virtualNodeParams) {
@@ -57,14 +64,15 @@ module.exports = (function () {
 
       params = omit(constructorParamsKeys, params);
       forEach(function (key) {
-        switch (key) {
-          case 'type':
-            _this.audioNode[key] = params[key];
-            return;
-          default:
-            _this.audioNode[key].value = params[key];
-            return;
+        if (contains(key, audioParamProperties)) {
+          _this.audioNode[key].value = params[key];
+          return;
         }
+        if (contains(key, setters)) {
+          _this.audioNode['set' + capitalize(key)].apply(_this.audioNode, params[key]);
+          return;
+        }
+        _this.audioNode[key] = params[key];
       }, keys(params));
     }
   }]);
