@@ -13,4 +13,10 @@ describe('VirtualAudioGraph', function () {
     }).output).toBe(audioContext.destination);
     expect(new VirtualAudioGraph({audioContext: audioContext}).output).toBe(audioContext.destination);
   });
+
+  it('has a property called currentTime which returns the audioContext currentTime', function () {
+    expect(new VirtualAudioGraph({
+      audioContext: audioContext,
+    }).currentTime).toBe(audioContext.currentTime);
+  });
 });
