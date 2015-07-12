@@ -1,8 +1,23 @@
 const createAudioNode = require('../tools/createAudioNode');
-const {forEach, keys, pick, omit} = require('ramda');
+const {contains, forEach, keys, pick, omit} = require('ramda');
+const capitalize = require('capitalize');
 
 const constructorParamsKeys = [
   'maxDelayTime',
+];
+
+const audioParamProperties = [
+ 'delayTime',
+ 'detune',
+ 'frequency',
+ 'gain',
+ 'pan',
+ 'Q',
+];
+
+const setters = [
+  'position',
+  'orientation',
 ];
 
 module.exports = class NativeVirtualAudioNode {
@@ -34,14 +49,15 @@ module.exports = class NativeVirtualAudioNode {
   updateAudioNode (params) {
     params = omit(constructorParamsKeys, params);
     forEach((key) => {
-      switch (key) {
-        case 'type':
-          this.audioNode[key] = params[key];
-          return;
-        default:
-          this.audioNode[key].value = params[key];
-          return;
+      if (contains(key, audioParamProperties)) {
+        this.audioNode[key].value = params[key];
+        return;
       }
+      if (contains(key, setters)) {
+        this.audioNode[`set${capitalize(key)}`].apply(this.audioNode, params[key]);
+        return;
+      }
+      this.audioNode[key] = params[key];
     }, keys(params));
   }
 };
