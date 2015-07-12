@@ -95,6 +95,11 @@ var VirtualAudioGraph = (function () {
 
       return this;
     }
+  }, {
+    key: 'currentTime',
+    get: function get() {
+      return this.audioContext.currentTime;
+    }
   }]);
 
   return VirtualAudioGraph;
