@@ -41,6 +41,10 @@ class VirtualAudioGraph {
     this.customNodes = {};
   }
 
+  get currentTime () {
+    return this.audioContext.currentTime;
+  }
+
   defineNode (customNodeParamsFactory, name) {
     if (this.audioContext[`create${capitalize(name)}`])
       throw new Error(`${name} is a standard audio node name and cannot be overwritten`);
