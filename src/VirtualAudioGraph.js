@@ -57,10 +57,14 @@ class VirtualAudioGraph {
     removeAudioNodesAndUpdateVirtualAudioGraph.call(this, virtualAudioNodeParams);
 
     forEach((virtualAudioNodeParam) => {
-      if (isNil(virtualAudioNodeParam.id))
-        throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
+      const {id} = virtualAudioNodeParam;
 
-      const virtualAudioNode = find(propEq('id', virtualAudioNodeParam.id))(this.virtualNodes);
+      if (isNil(id))
+        throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
+      if (id === 'output')
+        throw new Error(`'output' is not a valid id`);
+
+      const virtualAudioNode = find(propEq('id', id))(this.virtualNodes);
 
       if (virtualAudioNode) updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParam);
         else this.virtualNodes = append(createVirtualAudioNode.call(this, virtualAudioNodeParam), this.virtualNodes);
