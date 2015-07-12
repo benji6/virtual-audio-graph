@@ -13,33 +13,40 @@ describe('virtualAudioGraph.update - error throwing conditions', function () {
   });
 
   it('throws an error if no id is provided', function () {
-    const virtualNodeParams = [{
-      node: 'gain',
-      output: 'output',
-    }];
     expect(function () {
-      virtualAudioGraph.update(virtualNodeParams);
+      virtualAudioGraph.update([{
+        node: 'gain',
+        output: 'output',
+      }]);
     }).toThrow();
   });
 
   it('throws an error if no output is provided', function () {
-    const virtualNodeParams = [{
-      node: 'gain',
-      id: 1,
-    }];
     expect(function () {
-      virtualAudioGraph.update(virtualNodeParams);
+      virtualAudioGraph.update([{
+        node: 'gain',
+        id: 1,
+      }]);
     }).toThrow();
   });
 
   it('throws an error when virtual node name property is not recognised', function () {
-    const virtualNodeParams = [{
-      id: 0,
-      node: 'foobar',
-      output: 'output',
-    }];
     expect(function () {
-      virtualAudioGraph.update(virtualNodeParams);
+      virtualAudioGraph.update([{
+        id: 0,
+        node: 'foobar',
+        output: 'output',
+      }]);
+    }).toThrow();
+  });
+
+  it('throws an error when id is "output"', function () {
+    expect(function () {
+      virtualAudioGraph.update([{
+        id: 'output',
+        node: 'gain',
+        output: 'output',
+      }]);
     }).toThrow();
   });
 });
