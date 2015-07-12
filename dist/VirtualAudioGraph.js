@@ -82,9 +82,12 @@ var VirtualAudioGraph = (function () {
       removeAudioNodesAndUpdateVirtualAudioGraph.call(this, virtualAudioNodeParams);
 
       forEach(function (virtualAudioNodeParam) {
-        if (isNil(virtualAudioNodeParam.id)) throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
+        var id = virtualAudioNodeParam.id;
 
-        var virtualAudioNode = find(propEq('id', virtualAudioNodeParam.id))(_this.virtualNodes);
+        if (isNil(id)) throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
+        if (id === 'output') throw new Error('\'output\' is not a valid id');
+
+        var virtualAudioNode = find(propEq('id', id))(_this.virtualNodes);
 
         if (virtualAudioNode) updateAudioNodeAndVirtualAudioGraph.call(_this, virtualAudioNode, virtualAudioNodeParam);else _this.virtualNodes = append(createVirtualAudioNode.call(_this, virtualAudioNodeParam), _this.virtualNodes);
       }, virtualAudioNodeParams);
