@@ -116,4 +116,47 @@ describe('virtualAudioGraph.update - creating AudioNodes', function () {
     expect(audioNode.constructor.name).toBe('StereoPannerNode');
     expect(audioNode.pan.value).toBe(pan);
   });
+
+  it('creates PannerNode with all valid parameters', function () {
+    const distanceModel = 'inverse';
+    const panningModel = 'HRTF';
+    const refDistance = 1;
+    const maxDistance = 10000;
+    const rolloffFactor = 1;
+    const coneInnerAngle = 360;
+    const coneOuterAngle = 0;
+    const coneOuterGain = 0;
+    const position = [0, 0, 0];
+    const orientation = [1, 0, 0];
+
+    const virtualNodeParams = [{
+      id: 0,
+      node: 'panner',
+      params: {
+        coneInnerAngle: coneInnerAngle,
+        coneOuterAngle: coneOuterAngle,
+        coneOuterGain: coneOuterGain,
+        distanceModel: distanceModel,
+        orientation: orientation,
+        panningModel: panningModel,
+        position: position,
+        maxDistance: maxDistance,
+        refDistance: refDistance,
+        rolloffFactor: rolloffFactor,
+      },
+      output: 'output',
+    }];
+
+    virtualAudioGraph.update(virtualNodeParams);
+    const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
+    expect(audioNode.constructor.name).toBe('PannerNode');
+    expect(audioNode.coneInnerAngle).toBe(coneInnerAngle);
+    expect(audioNode.coneOuterAngle).toBe(coneOuterAngle);
+    expect(audioNode.coneOuterGain).toBe(coneOuterGain);
+    expect(audioNode.distanceModel).toBe(distanceModel);
+    expect(audioNode.panningModel).toBe(panningModel);
+    expect(audioNode.refDistance).toBe(refDistance);
+    expect(audioNode.rolloffFactor).toBe(rolloffFactor);
+    expect(audioNode.maxDistance).toBe(maxDistance);
+  });
 });
