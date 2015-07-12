@@ -11,7 +11,7 @@ module.exports = function (params) {
       output: 'output',
       params: {
         pan: -1,
-      }
+      },
     },
     {
       id: 1,
@@ -19,7 +19,7 @@ module.exports = function (params) {
       output: 'output',
       params: {
         pan: 1,
-      }
+      },
     },
     {
       id: 2,
@@ -36,7 +36,7 @@ module.exports = function (params) {
       output: 2,
       params: {
         gain: decay,
-      }
+      },
     },
     {
       id: 4,
@@ -54,7 +54,7 @@ module.exports = function (params) {
       output: 4,
       params: {
         gain: decay,
-      }
+      },
     },
   ];
 };
