@@ -20,16 +20,16 @@ module.exports = function (CustomVirtualAudioNode, virtualAudioNodes) {
         var id = connection.id;
         var destination = connection.destination;
 
-        var _destinationVirtualAudioNode = find(propEq('id', id))(virtualAudioNodes);
+        var _destinationVirtualAudioNode = find(propEq(id, 'id'))(virtualAudioNodes);
 
         return virtualAudioNode.connect(_destinationVirtualAudioNode.audioNode[destination]);
       }
 
-      var destinationVirtualAudioNode = find(propEq('id', connection))(virtualAudioNodes);
+      var destinationVirtualAudioNode = find(propEq(connection, 'id'))(virtualAudioNodes);
 
       if (destinationVirtualAudioNode instanceof CustomVirtualAudioNode) return forEach(virtualAudioNode.connect.bind(virtualAudioNode), destinationVirtualAudioNode.inputs);
 
       virtualAudioNode.connect(destinationVirtualAudioNode.audioNode);
     }, asArray(virtualAudioNode.output));
-  }, filter(propEq('connected', false), virtualAudioNodes));
+  }, filter(propEq(false, 'connected'), virtualAudioNodes));
 };
