@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/benji6/virtual-audio-graph",
   "devDependencies": {
-    "babel-runtime": "^5.6.15",
+    "babel-runtime": "^5.6.18",
     "benchmark": "^1.0.0",
     "del": "^1.2.0",
     "gulp": "^3.9.0",
@@ -27,8 +27,8 @@
     "gulp-plumber": "^1.0.1",
     "gulp-uglify": "^1.2.0",
     "run-sequence": "^1.1.1",
-    "virtual-audio-graph": "^0.3.2",
-    "web-audio-test-api": "^0.3.4"
+    "virtual-audio-graph": "^0.5.1",
+    "web-audio-test-api": "^0.3.5"
   },
   "eslintConfig": {
     "ecmaFeatures": {
@@ -67,6 +67,6 @@
   },
   "dependencies": {
     "capitalize": "^1.0.0",
-    "ramda": "^0.15.1"
+    "ramda": "^0.16.0"
   }
 }
