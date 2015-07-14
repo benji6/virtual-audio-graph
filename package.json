@@ -1,7 +1,16 @@
 {
   "name": "virtual-audio-graph",
   "version": "0.5.2",
-  "description": "virtual-audio-graph",
+  "description": "Library for manipulating the Web Audio API",
+  "keywords": [
+    "web",
+    "audio",
+    "api",
+    "virtual",
+    "audio",
+    "graph",
+    "virtual-audio-graph"
+  ],
   "main": "dist/index.js",
   "repository": {
     "type": "git",
