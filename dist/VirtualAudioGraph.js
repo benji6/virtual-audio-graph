@@ -7,7 +7,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _require = require('ramda');
 
 var append = _require.append;
-var equals = _require.equals;
 var find = _require.find;
 var forEach = _require.forEach;
 var isNil = _require.isNil;
@@ -17,23 +16,8 @@ var capitalize = require('capitalize');
 var CustomVirtualAudioNode = require('./virtualNodeConstructors/CustomVirtualAudioNode');
 var connectAudioNodes = require('./tools/connectAudioNodes');
 var createVirtualAudioNode = require('./tools/createVirtualAudioNode');
-var disconnectAndRemoveVirtualAudioNode = require('./tools/disconnectAndRemoveVirtualAudioNode');
 var removeAudioNodesAndUpdateVirtualAudioGraph = require('./tools/removeAudioNodesAndUpdateVirtualAudioGraph');
-
-var updateAudioNodeAndVirtualAudioGraph = function updateAudioNodeAndVirtualAudioGraph(virtualAudioNode, virtualAudioNodeParam) {
-  if (virtualAudioNodeParam.node !== virtualAudioNode.node) {
-    disconnectAndRemoveVirtualAudioNode.call(this, virtualAudioNode);
-    this.virtualNodes = append(createVirtualAudioNode.call(this, virtualAudioNodeParam), this.virtualNodes);
-    return;
-  }
-
-  if (!equals(virtualAudioNodeParam.output, virtualAudioNode.output)) {
-    virtualAudioNode.disconnect();
-    virtualAudioNode.output = virtualAudioNodeParam.output;
-  }
-
-  virtualAudioNode.updateAudioNode(virtualAudioNodeParam.params);
-};
+var updateAudioNodeAndVirtualAudioGraph = require('./tools/updateAudioNodeAndVirtualAudioGraph');
 
 var VirtualAudioGraph = (function () {
   function VirtualAudioGraph() {
