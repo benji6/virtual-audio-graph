@@ -6,7 +6,6 @@ var find = _require.find;
 var filter = _require.filter;
 var forEach = _require.forEach;
 var propEq = _require.propEq;
-var keys = _require.keys;
 
 var asArray = require('./asArray');
 

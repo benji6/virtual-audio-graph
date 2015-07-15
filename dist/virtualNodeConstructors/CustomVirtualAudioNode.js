@@ -9,12 +9,9 @@ var _require = require('ramda');
 var contains = _require.contains;
 var filter = _require.filter;
 var forEach = _require.forEach;
-var keys = _require.keys;
-var pick = _require.pick;
 var pluck = _require.pluck;
 var propEq = _require.propEq;
 var map = _require.map;
-var omit = _require.omit;
 var zipWith = _require.zipWith;
 
 var asArray = require('../tools/asArray');

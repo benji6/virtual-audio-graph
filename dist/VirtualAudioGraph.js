@@ -7,37 +7,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _require = require('ramda');
 
 var append = _require.append;
-var concat = _require.concat;
-var differenceWith = _require.differenceWith;
-var eqProps = _require.eqProps;
 var equals = _require.equals;
 var find = _require.find;
-var findIndex = _require.findIndex;
 var forEach = _require.forEach;
 var isNil = _require.isNil;
-var map = _require.map;
-var partition = _require.partition;
 var propEq = _require.propEq;
-var remove = _require.remove;
 
 var capitalize = require('capitalize');
-var NativeVirtualAudioNode = require('./virtualNodeConstructors/NativeVirtualAudioNode');
 var CustomVirtualAudioNode = require('./virtualNodeConstructors/CustomVirtualAudioNode');
 var connectAudioNodes = require('./tools/connectAudioNodes');
 var createVirtualAudioNode = require('./tools/createVirtualAudioNode');
-
-var disconnectAndRemoveVirtualAudioNode = function disconnectAndRemoveVirtualAudioNode(virtualNode) {
-  virtualNode.disconnect();
-  this.virtualNodes = remove(findIndex(propEq(virtualNode.id, 'id'))(this.virtualNodes), 1, this.virtualNodes);
-};
-
-var removeAudioNodesAndUpdateVirtualAudioGraph = function removeAudioNodesAndUpdateVirtualAudioGraph(virtualAudioNodeParams) {
-  var virtualNodesToBeRemoved = differenceWith(eqProps('id'), this.virtualNodes, virtualAudioNodeParams);
-
-  forEach(disconnectAndRemoveVirtualAudioNode.bind(this), virtualNodesToBeRemoved);
-
-  return virtualAudioNodeParams;
-};
+var disconnectAndRemoveVirtualAudioNode = require('./tools/disconnectAndRemoveVirtualAudioNode');
+var removeAudioNodesAndUpdateVirtualAudioGraph = require('./tools/removeAudioNodesAndUpdateVirtualAudioGraph');
 
 var updateAudioNodeAndVirtualAudioGraph = function updateAudioNodeAndVirtualAudioGraph(virtualAudioNode, virtualAudioNodeParam) {
   if (virtualAudioNodeParam.node !== virtualAudioNode.node) {
