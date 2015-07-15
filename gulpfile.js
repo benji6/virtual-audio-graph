@@ -1,5 +1,6 @@
 const babel = require('gulp-babel');
 const del = require('del');
+const eslint = require('gulp-eslint');
 const gulp = require('gulp');
 const jasmine = require('gulp-jasmine');
 const plumber = require('gulp-plumber');
@@ -14,10 +15,16 @@ gulp.task('clean', function () {
 });
 
 gulp.task('js', function () {
-  return gulp.src('src/**/*.js')
+  return gulp.src('src/**/*')
     .pipe(plumber())
     .pipe(babel())
     .pipe(gulp.dest(buildDestinationPath));
+});
+
+gulp.task('lint', function () {
+  return gulp.src(['spec/**/*', 'src/**/*'])
+    .pipe(eslint())
+    .pipe(eslint.formatEach());
 });
 
 gulp.task('spec', function () {
@@ -27,15 +34,15 @@ gulp.task('spec', function () {
 
 gulp.task('watch', function () {
   gulp.watch('src/**/*.js', function () {
-    return runSequence('js', 'spec');
+    return runSequence(['js', 'lint'], 'spec');
   });
-  gulp.watch('spec/**/*.js*', ['spec']);
+  gulp.watch('spec/**/*.js*', ['lint', 'spec']);
 });
 
 gulp.task('build', function () {
-  return runSequence('clean', 'js', 'spec');
+  return runSequence('clean', ['js', 'lint'], 'spec');
 });
 
 gulp.task('default', function () {
-  return runSequence('clean', ['js', 'watch'], 'spec');
+  return runSequence('clean', ['js', 'lint', 'watch'], 'spec');
 });
