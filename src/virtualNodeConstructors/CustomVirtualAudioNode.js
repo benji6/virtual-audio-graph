@@ -1,4 +1,4 @@
-const {contains, filter, forEach, keys, pick, pluck, propEq, map, omit, zipWith} = require('ramda');
+const {contains, filter, forEach, pluck, propEq, map, zipWith} = require('ramda');
 const asArray = require('../tools/asArray');
 const connectAudioNodes = require('../tools/connectAudioNodes');
 const NativeVirtualAudioNode = require('../virtualNodeConstructors/NativeVirtualAudioNode');

@@ -1,3 +1,4 @@
+/* global beforeEach describe expect it */
 const R = require('ramda');
 const VirtualAudioGraph = require('../../dist/index.js');
 const pingPongDelayParamsFactory = require('../tools/pingPongDelayParamsFactory');

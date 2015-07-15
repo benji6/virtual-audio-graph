@@ -1,7 +1,6 @@
-const {append, equals, find, findIndex, forEach, isNil, propEq} = require('ramda');
+const {append, equals, find, forEach, isNil, propEq} = require('ramda');
 const capitalize = require('capitalize');
 const CustomVirtualAudioNode = require('./virtualNodeConstructors/CustomVirtualAudioNode');
-const NativeVirtualAudioNode = require('./virtualNodeConstructors/NativeVirtualAudioNode');
 const connectAudioNodes = require('./tools/connectAudioNodes');
 const createVirtualAudioNode = require('./tools/createVirtualAudioNode');
 const disconnectAndRemoveVirtualAudioNode = require('./tools/disconnectAndRemoveVirtualAudioNode');

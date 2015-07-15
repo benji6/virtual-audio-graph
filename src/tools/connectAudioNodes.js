@@ -1,4 +1,4 @@
-const {find, filter, forEach, propEq, keys} = require('ramda');
+const {find, filter, forEach, propEq} = require('ramda');
 const asArray = require('./asArray');
 
 module.exports = (CustomVirtualAudioNode, virtualAudioNodes, handleConnectionToOutput = ()=>{}) =>

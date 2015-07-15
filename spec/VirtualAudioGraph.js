@@ -1,3 +1,4 @@
+/* global describe expect it */
 const VirtualAudioGraph = require('../dist/index.js');
 const audioContext = new AudioContext();
 
