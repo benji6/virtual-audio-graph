@@ -7,6 +7,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var _require = require('ramda');
 
 var append = _require.append;
+var differenceWith = _require.differenceWith;
+var eqProps = _require.eqProps;
 var find = _require.find;
 var forEach = _require.forEach;
 var isNil = _require.isNil;
@@ -16,7 +18,7 @@ var capitalize = require('capitalize');
 var CustomVirtualAudioNode = require('./virtualNodeConstructors/CustomVirtualAudioNode');
 var connectAudioNodes = require('./tools/connectAudioNodes');
 var createVirtualAudioNode = require('./tools/createVirtualAudioNode');
-var removeAudioNodesAndUpdateVirtualAudioGraph = require('./tools/removeAudioNodesAndUpdateVirtualAudioGraph');
+var disconnectAndRemoveVirtualAudioNode = require('./tools/disconnectAndRemoveVirtualAudioNode');
 var updateAudioNodeAndVirtualAudioGraph = require('./tools/updateAudioNodeAndVirtualAudioGraph');
 
 var VirtualAudioGraph = (function () {
@@ -44,7 +46,9 @@ var VirtualAudioGraph = (function () {
     value: function update(virtualAudioNodeParams) {
       var _this = this;
 
-      removeAudioNodesAndUpdateVirtualAudioGraph.call(this, virtualAudioNodeParams);
+      var virtualNodesToBeRemoved = differenceWith(eqProps('id'), this.virtualNodes, virtualAudioNodeParams);
+
+      forEach(disconnectAndRemoveVirtualAudioNode.bind(this), virtualNodesToBeRemoved);
 
       forEach(function (virtualAudioNodeParam) {
         var id = virtualAudioNodeParam.id;
@@ -57,7 +61,7 @@ var VirtualAudioGraph = (function () {
         if (virtualAudioNode) updateAudioNodeAndVirtualAudioGraph.call(_this, virtualAudioNode, virtualAudioNodeParam);else _this.virtualNodes = append(createVirtualAudioNode.call(_this, virtualAudioNodeParam), _this.virtualNodes);
       }, virtualAudioNodeParams);
 
-      connectAudioNodes(CustomVirtualAudioNode, this.virtualNodes, function (virtualAudioNode) {
+      connectAudioNodes.call(this, CustomVirtualAudioNode, function (virtualAudioNode) {
         return virtualAudioNode.connect(_this.output);
       });
 

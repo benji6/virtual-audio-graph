@@ -37,7 +37,7 @@ module.exports = (function () {
       return new NativeVirtualAudioNode(this, virtualAudioNodeParam);
     }).bind(virtualAudioGraph), this.audioGraphParamsFactory(params));
 
-    connectAudioNodes(CustomVirtualAudioNode, this.virtualNodes);
+    connectAudioNodes.call(this, CustomVirtualAudioNode);
     this.id = id;
     this.output = output;
   }

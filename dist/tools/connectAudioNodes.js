@@ -9,9 +9,12 @@ var propEq = _require.propEq;
 
 var asArray = require('./asArray');
 
-module.exports = function (CustomVirtualAudioNode, virtualAudioNodes) {
-  var handleConnectionToOutput = arguments[2] === undefined ? function () {} : arguments[2];
-  return forEach(function (virtualAudioNode) {
+module.exports = function (CustomVirtualAudioNode) {
+  var _this = this;
+
+  var handleConnectionToOutput = arguments[1] === undefined ? function () {} : arguments[1];
+
+  forEach(function (virtualAudioNode) {
     return forEach(function (connection) {
       if (connection === 'output') return handleConnectionToOutput(virtualAudioNode);
 
@@ -19,16 +22,16 @@ module.exports = function (CustomVirtualAudioNode, virtualAudioNodes) {
         var id = connection.id;
         var destination = connection.destination;
 
-        var _destinationVirtualAudioNode = find(propEq(id, 'id'))(virtualAudioNodes);
+        var _destinationVirtualAudioNode = find(propEq(id, 'id'))(_this.virtualNodes);
 
         return virtualAudioNode.connect(_destinationVirtualAudioNode.audioNode[destination]);
       }
 
-      var destinationVirtualAudioNode = find(propEq(connection, 'id'))(virtualAudioNodes);
+      var destinationVirtualAudioNode = find(propEq(connection, 'id'))(_this.virtualNodes);
 
       if (destinationVirtualAudioNode instanceof CustomVirtualAudioNode) return forEach(virtualAudioNode.connect.bind(virtualAudioNode), destinationVirtualAudioNode.inputs);
 
       virtualAudioNode.connect(destinationVirtualAudioNode.audioNode);
     }, asArray(virtualAudioNode.output));
-  }, filter(propEq(false, 'connected'), virtualAudioNodes));
+  }, filter(propEq(false, 'connected'), this.virtualNodes));
 };

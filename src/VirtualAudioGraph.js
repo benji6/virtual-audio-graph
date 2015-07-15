@@ -1,9 +1,9 @@
-const {append, find, forEach, isNil, propEq} = require('ramda');
+const {append, differenceWith, eqProps, find, forEach, isNil, propEq} = require('ramda');
 const capitalize = require('capitalize');
 const CustomVirtualAudioNode = require('./virtualNodeConstructors/CustomVirtualAudioNode');
 const connectAudioNodes = require('./tools/connectAudioNodes');
 const createVirtualAudioNode = require('./tools/createVirtualAudioNode');
-const removeAudioNodesAndUpdateVirtualAudioGraph = require('./tools/removeAudioNodesAndUpdateVirtualAudioGraph');
+const disconnectAndRemoveVirtualAudioNode = require('./tools/disconnectAndRemoveVirtualAudioNode');
 const updateAudioNodeAndVirtualAudioGraph = require('./tools/updateAudioNodeAndVirtualAudioGraph');
 
 class VirtualAudioGraph {
@@ -27,7 +27,9 @@ class VirtualAudioGraph {
   }
 
   update (virtualAudioNodeParams) {
-    removeAudioNodesAndUpdateVirtualAudioGraph.call(this, virtualAudioNodeParams);
+    const virtualNodesToBeRemoved = differenceWith(eqProps('id'), this.virtualNodes, virtualAudioNodeParams);
+
+    forEach(disconnectAndRemoveVirtualAudioNode.bind(this), virtualNodesToBeRemoved);
 
     forEach((virtualAudioNodeParam) => {
       const {id} = virtualAudioNodeParam;
@@ -43,7 +45,7 @@ class VirtualAudioGraph {
         else this.virtualNodes = append(createVirtualAudioNode.call(this, virtualAudioNodeParam), this.virtualNodes);
     }, virtualAudioNodeParams);
 
-    connectAudioNodes(CustomVirtualAudioNode, this.virtualNodes, (virtualAudioNode) =>
+    connectAudioNodes.call(this, CustomVirtualAudioNode, (virtualAudioNode) =>
       virtualAudioNode.connect(this.output));
 
     return this;
