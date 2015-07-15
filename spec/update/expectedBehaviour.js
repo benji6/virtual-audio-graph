@@ -86,14 +86,14 @@ describe('virtualAudioGraph.update - expected behaviour', function () {
 
   it('creates specified virtual nodes and stores them in virtualAudioGraph property', function () {
     const virtualNodeParams = [{
-      id: 1,
+      id: 0,
       node: 'gain',
       output: 'output',
     },
     {
-      id: 2,
+      id: 1,
       node: 'oscillator',
-      output: 1,
+      output: 0,
     }];
     virtualAudioGraph.update(virtualNodeParams);
     expect(Array.isArray(virtualAudioGraph.virtualNodes)).toBe(true);
@@ -102,14 +102,14 @@ describe('virtualAudioGraph.update - expected behaviour', function () {
 
   it('connects nodes to each other', function () {
     virtualAudioGraph.update([{
-      id: 1,
+      id: 0,
       node: 'gain',
       output: 'output',
     },
     {
-      id: 2,
+      id: 1,
       node: 'oscillator',
-      output: 1,
+      output: 0,
     }]);
     expect(audioContext.toJSON()).toEqual({
       name: 'AudioDestinationNode',

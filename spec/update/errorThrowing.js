@@ -26,7 +26,7 @@ describe('virtualAudioGraph.update - error throwing conditions', function () {
     expect(function () {
       virtualAudioGraph.update([{
         node: 'gain',
-        id: 1,
+        id: 0,
       }]);
     }).toThrow();
   });
