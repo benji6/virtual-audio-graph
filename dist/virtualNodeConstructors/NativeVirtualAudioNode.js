@@ -34,7 +34,6 @@ module.exports = (function () {
 
     params = params || {};
     var constructorParams = pick(constructorParamsKeys, params);
-    params = omit(constructorParamsKeys, params);
     this.audioNode = createAudioNode(virtualAudioGraph.audioContext, node, constructorParams);
     this.connected = false;
     this.node = node;
@@ -64,16 +63,18 @@ module.exports = (function () {
 
       params = omit(constructorParamsKeys, params);
       forEach(function (key) {
+        var param = params[key];
+        if (_this.params && _this.params[key] === param) return;
         if (contains(key, audioParamProperties)) {
-          _this.audioNode[key].value = params[key];
+          _this.audioNode[key].value = param;
           return;
         }
         if (contains(key, setters)) {
-          _this.audioNode['set' + capitalize(key)].apply(_this.audioNode, params[key]);
+          _this.audioNode['set' + capitalize(key)].apply(_this.audioNode, param);
           return;
         }
-        _this.audioNode[key] = params[key];
-      }, keys(params));
+        _this.audioNode[key] = param;
+      }, keys(omit(constructorParamsKeys, params)));
     }
   }]);
 
