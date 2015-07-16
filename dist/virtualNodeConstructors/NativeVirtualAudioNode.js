@@ -33,8 +33,11 @@ module.exports = (function () {
     var params = virtualNodeParams.params;
 
     params = params || {};
+    var startTime = params.startTime;
+    var stopTime = params.stopTime;
+
     var constructorParams = pick(constructorParamsKeys, params);
-    this.audioNode = createAudioNode(virtualAudioGraph.audioContext, node, constructorParams);
+    this.audioNode = createAudioNode(virtualAudioGraph.audioContext, node, constructorParams, { startTime: startTime, stopTime: stopTime });
     this.connected = false;
     this.node = node;
     this.updateAudioNode(params);
