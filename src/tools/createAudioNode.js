@@ -1,4 +1,5 @@
 const capitalize = require('capitalize');
+const {isNil} = require('ramda');
 
 const namesToParamsKey = {
   delay: 'maxDelayTime',
@@ -10,8 +11,14 @@ module.exports = (audioContext, name, constructorParams, {startTime, stopTime}) 
     audioContext[`create${capitalize(name)}`](constructorParams[constructorParamsKey]) :
     audioContext[`create${capitalize(name)}`]();
   if (name === 'oscillator') {
-    audioNode.start(startTime);
-    audioNode.stop(stopTime);
+    if (isNil(startTime)) {
+      audioNode.start();
+    } else {
+      audioNode.start(startTime);
+    }
+    if (!isNil(stopTime)) {
+      audioNode.stop(stopTime);
+    }
   }
   return audioNode;
 };
