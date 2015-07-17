@@ -167,4 +167,86 @@ describe('virtualAudioGraph.update - scheduling', function () {
       expect(audioNode.$stateAtTime('00:00.200')).toBe('FINISHED');
     }, virtualAudioGraph.virtualNodes);
   });
+
+  it('works when rescheduling multiple oscillators\' start and stop times', function () {
+    virtualAudioGraph.update([
+      {
+        id: 0,
+        node: 'oscillator',
+        output: 'output',
+      },
+      {
+        id: 1,
+        node: 'oscillator',
+        output: 'output',
+        params: {
+          startTime: 1,
+        },
+      },
+      {
+        id: 2,
+        node: 'oscillator',
+        output: 'output',
+        params: {
+          stopTime: 0.1,
+        },
+      },
+      {
+        id: 3,
+        node: 'oscillator',
+        output: 'output',
+        params: {
+          startTime: 1,
+          stopTime: 2,
+        },
+      },
+    ]);
+
+    virtualAudioGraph.update([
+      {
+        id: 0,
+        node: 'oscillator',
+        output: 'output',
+        params: {
+          startTime: 0.1,
+          stopTime: 0.2,
+        },
+      },
+      {
+        id: 1,
+        node: 'oscillator',
+        output: 'output',
+        params: {
+          startTime: 0.1,
+          stopTime: 0.2,
+        },
+      },
+      {
+        id: 2,
+        node: 'oscillator',
+        output: 'output',
+        params: {
+          startTime: 0.1,
+          stopTime: 0.2,
+        },
+      },
+      {
+        id: 3,
+        node: 'oscillator',
+        output: 'output',
+        params: {
+          startTime: 0.1,
+          stopTime: 0.2,
+        },
+      },
+    ]);
+    R.forEach(function (virtualNode) {
+      const audioNode = virtualNode.audioNode;
+      expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED');
+      expect(audioNode.$stateAtTime('00:00.099')).toBe('SCHEDULED');
+      expect(audioNode.$stateAtTime('00:00.100')).toBe('PLAYING');
+      expect(audioNode.$stateAtTime('00:00.199')).toBe('PLAYING');
+      expect(audioNode.$stateAtTime('00:00.200')).toBe('FINISHED');
+    }, virtualAudioGraph.virtualNodes);
+  });
 });
