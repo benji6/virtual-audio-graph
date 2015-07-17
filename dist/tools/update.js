@@ -16,25 +16,28 @@ var setters = require('../data/setters');
 
 module.exports = function update(virtualNode, params) {
   if (virtualNode.isCustomVirtualNode) {
-    return zipWith(function (childVirtualNode, _ref) {
+    zipWith(function (childVirtualNode, _ref) {
       var params = _ref.params;
       return update(childVirtualNode, params);
     }, virtualNode.virtualNodes, virtualNode.audioGraphParamsFactory(params));
+  } else {
+    params = omit(constructorParamsKeys, params);
+    forEach(function (key) {
+      var param = params[key];
+      if (virtualNode.params && virtualNode.params[key] === param) {
+        return;
+      }
+      if (contains(key, audioParamProperties)) {
+        virtualNode.audioNode[key].value = param;
+        return;
+      }
+      if (contains(key, setters)) {
+        virtualNode.audioNode['set' + capitalize(key)].apply(virtualNode.audioNode, param);
+        return;
+      }
+      virtualNode.audioNode[key] = param;
+    }, keys(omit(constructorParamsKeys, params)));
+    virtualNode.params = params;
   }
-  params = omit(constructorParamsKeys, params);
-  forEach(function (key) {
-    var param = params[key];
-    if (virtualNode.params && virtualNode.params[key] === param) {
-      return;
-    }
-    if (contains(key, audioParamProperties)) {
-      virtualNode.audioNode[key].value = param;
-      return;
-    }
-    if (contains(key, setters)) {
-      virtualNode.audioNode['set' + capitalize(key)].apply(virtualNode.audioNode, param);
-      return;
-    }
-    virtualNode.audioNode[key] = param;
-  }, keys(omit(constructorParamsKeys, params)));
+  return virtualNode;
 };
