@@ -1,10 +1,12 @@
 'use strict';
 
-var NativeVirtualAudioNode = require('../virtualNodeConstructors/NativeVirtualAudioNode');
-var CustomVirtualAudioNode = require('../virtualNodeConstructors/CustomVirtualAudioNode');
+var createNativeVirtualAudioNode = require('../virtualNodeFactories/createNativeVirtualAudioNode');
+var createCustomVirtualAudioNode = require('../virtualNodeFactories/createCustomVirtualAudioNode');
 
 module.exports = function (virtualAudioNodeParam) {
-  if (this.customNodes[virtualAudioNodeParam.node]) return new CustomVirtualAudioNode(this, virtualAudioNodeParam);
+  if (this.customNodes[virtualAudioNodeParam.node]) {
+    return createCustomVirtualAudioNode(this, virtualAudioNodeParam);
+  }
 
-  return new NativeVirtualAudioNode(this, virtualAudioNodeParam);
+  return createNativeVirtualAudioNode(this, virtualAudioNodeParam);
 };

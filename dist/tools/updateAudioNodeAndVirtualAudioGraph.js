@@ -7,6 +7,8 @@ var equals = _require.equals;
 
 var createVirtualAudioNode = require('./createVirtualAudioNode');
 var disconnectAndRemoveVirtualAudioNode = require('./disconnectAndRemoveVirtualAudioNode');
+var disconnect = require('./disconnect');
+var update = require('./update');
 
 module.exports = function (virtualAudioNode, virtualAudioNodeParam) {
   if (virtualAudioNodeParam.node !== virtualAudioNode.node) {
@@ -16,9 +18,9 @@ module.exports = function (virtualAudioNode, virtualAudioNodeParam) {
   }
 
   if (!equals(virtualAudioNodeParam.output, virtualAudioNode.output)) {
-    virtualAudioNode.disconnect();
+    disconnect(virtualAudioNode);
     virtualAudioNode.output = virtualAudioNodeParam.output;
   }
 
-  virtualAudioNode.updateAudioNode(virtualAudioNodeParam.params);
+  update(virtualAudioNode, virtualAudioNodeParam.params);
 };

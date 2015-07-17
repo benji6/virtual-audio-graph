@@ -15,7 +15,7 @@ var isNil = _require.isNil;
 var propEq = _require.propEq;
 
 var capitalize = require('capitalize');
-var CustomVirtualAudioNode = require('./virtualNodeConstructors/CustomVirtualAudioNode');
+var connect = require('./tools/connect');
 var connectAudioNodes = require('./tools/connectAudioNodes');
 var createVirtualAudioNode = require('./tools/createVirtualAudioNode');
 var disconnectAndRemoveVirtualAudioNode = require('./tools/disconnectAndRemoveVirtualAudioNode');
@@ -36,7 +36,9 @@ var VirtualAudioGraph = (function () {
   _createClass(VirtualAudioGraph, [{
     key: 'defineNode',
     value: function defineNode(customNodeParamsFactory, name) {
-      if (this.audioContext['create' + capitalize(name)]) throw new Error(name + ' is a standard audio node name and cannot be overwritten');
+      if (this.audioContext['create' + capitalize(name)]) {
+        throw new Error(name + ' is a standard audio node name and cannot be overwritten');
+      }
 
       this.customNodes[name] = customNodeParamsFactory;
       return this;
@@ -53,16 +55,24 @@ var VirtualAudioGraph = (function () {
       forEach(function (virtualAudioNodeParam) {
         var id = virtualAudioNodeParam.id;
 
-        if (isNil(id)) throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
-        if (id === 'output') throw new Error('\'output\' is not a valid id');
+        if (isNil(id)) {
+          throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
+        }
+        if (id === 'output') {
+          throw new Error('\'output\' is not a valid id');
+        }
 
         var virtualAudioNode = find(propEq(id, 'id'))(_this.virtualNodes);
 
-        if (virtualAudioNode) updateAudioNodeAndVirtualAudioGraph.call(_this, virtualAudioNode, virtualAudioNodeParam);else _this.virtualNodes = append(createVirtualAudioNode.call(_this, virtualAudioNodeParam), _this.virtualNodes);
+        if (virtualAudioNode) {
+          updateAudioNodeAndVirtualAudioGraph.call(_this, virtualAudioNode, virtualAudioNodeParam);
+        } else {
+          _this.virtualNodes = append(createVirtualAudioNode.call(_this, virtualAudioNodeParam), _this.virtualNodes);
+        }
       }, virtualAudioNodeParams);
 
-      connectAudioNodes.call(this, CustomVirtualAudioNode, function (virtualAudioNode) {
-        return virtualAudioNode.connect(_this.output);
+      connectAudioNodes(this.virtualNodes, function (virtualAudioNode) {
+        return connect(virtualAudioNode, _this.output);
       });
 
       return this;
