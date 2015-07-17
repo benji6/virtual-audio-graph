@@ -6,7 +6,7 @@ const createVirtualAudioNode = require('./tools/createVirtualAudioNode');
 const disconnectAndRemoveVirtualAudioNode = require('./tools/disconnectAndRemoveVirtualAudioNode');
 const updateAudioNodeAndVirtualAudioGraph = require('./tools/updateAudioNodeAndVirtualAudioGraph');
 
-const testWhetherNodeNeedsRemoving = (virtualNode, {id, params = {}}) => {
+const testWhetherNodeDoesNotNeedRemoving = (virtualNode, {id, params = {}}) => {
   const {startTime, stopTime} = params;
   if (virtualNode.id !== id) {
     return false;
@@ -42,7 +42,7 @@ class VirtualAudioGraph {
   }
 
   update (virtualAudioNodeParams) {
-    const virtualNodesToBeRemoved = differenceWith(testWhetherNodeNeedsRemoving,
+    const virtualNodesToBeRemoved = differenceWith(testWhetherNodeDoesNotNeedRemoving,
                                                    this.virtualNodes,
                                                    virtualAudioNodeParams);
 
