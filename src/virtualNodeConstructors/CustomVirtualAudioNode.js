@@ -9,8 +9,9 @@ module.exports = class CustomVirtualAudioNode {
     this.connected = false;
     this.node = node;
     this.virtualNodes = map(function createVirtualAudioNode (virtualAudioNodeParam) {
-      if (this.customNodes[virtualAudioNodeParam.node])
+      if (this.customNodes[virtualAudioNodeParam.node]) {
         return new CustomVirtualAudioNode(this, virtualAudioNodeParam);
+      }
 
       return new NativeVirtualAudioNode(this, virtualAudioNodeParam);
     }.bind(virtualAudioGraph), this.audioGraphParamsFactory(params));

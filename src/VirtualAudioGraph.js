@@ -19,8 +19,9 @@ class VirtualAudioGraph {
   }
 
   defineNode (customNodeParamsFactory, name) {
-    if (this.audioContext[`create${capitalize(name)}`])
+    if (this.audioContext[`create${capitalize(name)}`]) {
       throw new Error(`${name} is a standard audio node name and cannot be overwritten`);
+    }
 
     this.customNodes[name] = customNodeParamsFactory;
     return this;
@@ -34,15 +35,20 @@ class VirtualAudioGraph {
     forEach((virtualAudioNodeParam) => {
       const {id} = virtualAudioNodeParam;
 
-      if (isNil(id))
+      if (isNil(id)) {
         throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
-      if (id === 'output')
+      }
+      if (id === 'output') {
         throw new Error(`'output' is not a valid id`);
+      }
 
       const virtualAudioNode = find(propEq(id, 'id'))(this.virtualNodes);
 
-      if (virtualAudioNode) updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParam);
-        else this.virtualNodes = append(createVirtualAudioNode.call(this, virtualAudioNodeParam), this.virtualNodes);
+      if (virtualAudioNode) {
+        updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParam);
+      } else {
+        this.virtualNodes = append(createVirtualAudioNode.call(this, virtualAudioNodeParam), this.virtualNodes);
+      }
     }, virtualAudioNodeParams);
 
     connectAudioNodes.call(this, (virtualAudioNode) =>

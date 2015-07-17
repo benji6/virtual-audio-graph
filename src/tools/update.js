@@ -6,14 +6,16 @@ const setters = require('../data/setters');
 
 module.exports = function update (virtualNode, params) {
   if (virtualNode.isCustomVirtualNode) {
-    return zipWith((virtualNode, {params}) => update(virtualNode, params),
+    return zipWith((childVirtualNode, {params}) => update(childVirtualNode, params),
                    virtualNode.virtualNodes,
                    virtualNode.audioGraphParamsFactory(params));
   }
   params = omit(constructorParamsKeys, params);
   forEach((key) => {
     const param = params[key];
-    if (virtualNode.params && virtualNode.params[key] === param) return;
+    if (virtualNode.params && virtualNode.params[key] === param) {
+      return;
+    }
     if (contains(key, audioParamProperties)) {
       virtualNode.audioNode[key].value = param;
       return;

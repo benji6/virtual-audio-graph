@@ -5,8 +5,9 @@ const connect = require('./connect');
 module.exports = function (handleConnectionToOutput = ()=>{}) {
   forEach((virtualAudioNode) =>
     forEach((connection) => {
-      if (connection === 'output')
+      if (connection === 'output') {
         return handleConnectionToOutput(virtualAudioNode);
+      }
 
       if (Object.prototype.toString.call(connection) === '[object Object]') {
         const {id, destination} = connection;
@@ -18,11 +19,12 @@ module.exports = function (handleConnectionToOutput = ()=>{}) {
 
       const destinationVirtualAudioNode = find(propEq(connection, 'id'))(this.virtualNodes);
 
-      if (destinationVirtualAudioNode.isCustomVirtualNode)
+      if (destinationVirtualAudioNode.isCustomVirtualNode) {
         return forEach(connect(virtualAudioNode),
                        pluck('audioNode',
                              filter(propEq('input', 'input'),
                                     destinationVirtualAudioNode.virtualNodes)));
+      }
 
       connect(virtualAudioNode, destinationVirtualAudioNode.audioNode);
     }, asArray(virtualAudioNode.output)), filter(propEq(false, 'connected'),
