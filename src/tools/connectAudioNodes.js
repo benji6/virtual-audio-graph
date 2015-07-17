@@ -1,4 +1,4 @@
-const {find, filter, forEach, propEq} = require('ramda');
+const {find, filter, forEach, pluck, propEq} = require('ramda');
 const asArray = require('./asArray');
 const connect = require('./connect');
 
@@ -12,14 +12,19 @@ module.exports = function (handleConnectionToOutput = ()=>{}) {
         const {id, destination} = connection;
         const destinationVirtualAudioNode = find(propEq(id, 'id'))(this.virtualNodes);
 
-        return connect(virtualAudioNode, destinationVirtualAudioNode.audioNode[destination]);
+        return connect(virtualAudioNode,
+                       destinationVirtualAudioNode.audioNode[destination]);
       }
 
       const destinationVirtualAudioNode = find(propEq(connection, 'id'))(this.virtualNodes);
 
       if (destinationVirtualAudioNode.isCustomVirtualNode)
-        return forEach(connect(virtualAudioNode), destinationVirtualAudioNode.inputs);
+        return forEach(connect(virtualAudioNode),
+                       pluck('audioNode',
+                             filter(propEq('input', 'input'),
+                                    destinationVirtualAudioNode.virtualNodes)));
 
       connect(virtualAudioNode, destinationVirtualAudioNode.audioNode);
-    }, asArray(virtualAudioNode.output)), filter(propEq(false, 'connected'), this.virtualNodes));
+    }, asArray(virtualAudioNode.output)), filter(propEq(false, 'connected'),
+                                                 this.virtualNodes));
 };

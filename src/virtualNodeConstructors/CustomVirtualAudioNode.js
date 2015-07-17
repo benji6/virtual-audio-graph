@@ -1,4 +1,4 @@
-const {filter, pluck, propEq, map, zipWith} = require('ramda');
+const {map} = require('ramda');
 const connectAudioNodes = require('../tools/connectAudioNodes');
 const NativeVirtualAudioNode = require('../virtualNodeConstructors/NativeVirtualAudioNode');
 
@@ -19,13 +19,5 @@ module.exports = class CustomVirtualAudioNode {
     this.id = id;
     this.output = output;
     this.isCustomVirtualNode = true;
-  }
-
-  get inputs () {
-    return pluck('audioNode', filter(propEq('input', 'input'), this.virtualNodes));
-  }
-
-  updateAudioNode (params) {
-    zipWith((virtualNode, {params}) => virtualNode.updateAudioNode(params), this.virtualNodes, this.audioGraphParamsFactory(params));
   }
 };

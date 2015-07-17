@@ -1,23 +1,9 @@
+const {pick} = require('ramda');
 const createAudioNode = require('../tools/createAudioNode');
-const {contains, forEach, keys, pick, omit} = require('ramda');
-const capitalize = require('capitalize');
+const update = require('../tools/update');
 
 const constructorParamsKeys = [
   'maxDelayTime',
-];
-
-const audioParamProperties = [
- 'delayTime',
- 'detune',
- 'frequency',
- 'gain',
- 'pan',
- 'Q',
-];
-
-const setters = [
-  'position',
-  'orientation',
 ];
 
 module.exports = class NativeVirtualAudioNode {
@@ -29,28 +15,11 @@ module.exports = class NativeVirtualAudioNode {
     this.audioNode = createAudioNode(virtualAudioGraph.audioContext, node, constructorParams, {startTime, stopTime});
     this.connected = false;
     this.node = node;
-    this.updateAudioNode(params);
+    update(this, params);
     this.id = id;
     this.input = input;
     this.output = output;
     this.params = params;
     this.isCustomVirtualNode = false;
-  }
-
-  updateAudioNode (params) {
-    params = omit(constructorParamsKeys, params);
-    forEach((key) => {
-      const param = params[key];
-      if (this.params && this.params[key] === param) return;
-      if (contains(key, audioParamProperties)) {
-        this.audioNode[key].value = param;
-        return;
-      }
-      if (contains(key, setters)) {
-        this.audioNode[`set${capitalize(key)}`].apply(this.audioNode, param);
-        return;
-      }
-      this.audioNode[key] = param;
-    }, keys(omit(constructorParamsKeys, params)));
   }
 };
