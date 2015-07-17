@@ -34,16 +34,7 @@ module.exports = class NativeVirtualAudioNode {
     this.input = input;
     this.output = output;
     this.params = params;
-  }
-
-  connect (destination) {
-    this.audioNode.connect(destination);
-    this.connected = true;
-  }
-
-  disconnect () {
-    this.audioNode.disconnect();
-    this.connected = false;
+    this.isCustomVirtualNode = false;
   }
 
   updateAudioNode (params) {

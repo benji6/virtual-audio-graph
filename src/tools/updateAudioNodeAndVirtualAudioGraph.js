@@ -1,6 +1,7 @@
 const {append, equals} = require('ramda');
 const createVirtualAudioNode = require('./createVirtualAudioNode');
 const disconnectAndRemoveVirtualAudioNode = require('./disconnectAndRemoveVirtualAudioNode');
+const disconnect = require('./disconnect');
 
 module.exports = function (virtualAudioNode, virtualAudioNodeParam) {
   if (virtualAudioNodeParam.node !== virtualAudioNode.node) {
@@ -10,7 +11,7 @@ module.exports = function (virtualAudioNode, virtualAudioNodeParam) {
   }
 
   if (!equals(virtualAudioNodeParam.output, virtualAudioNode.output)) {
-    virtualAudioNode.disconnect();
+    disconnect(virtualAudioNode);
     virtualAudioNode.output = virtualAudioNodeParam.output;
   }
 
