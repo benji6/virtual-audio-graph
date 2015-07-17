@@ -56,9 +56,11 @@ The `VirtualAudioGraph` constructor takes an object with two optional properties
 
 ### Updating the Audio Graph
 
-Create two oscillators, put them through a gain node and attach the gain node to the destination:
+Create two oscillators, schedule their start and stop times, put them through a gain node and attach the gain node to the destination:
 
 ```javascript
+
+const {currentTime} = virtualAudioGraph;
 
 const virtualNodeParams = [
   {
@@ -76,6 +78,8 @@ const virtualNodeParams = [
     params: {
       type: 'square',
       frequency: 440,
+      startTime: currentTime + 1,
+      stopTime: currentTime + 2,
     },
   },
   {
@@ -84,8 +88,10 @@ const virtualNodeParams = [
     output: 0,
     params: {
       type: 'sawtooth',
-      frequency: 220,
+      frequency: 660,
       detune: 4,
+      startTime: currentTime + 1.5,
+      stopTime: currentTime + 2.5,
     },
   },
 ];
@@ -248,7 +254,7 @@ virtualAudioGraph.update([
 
 ### Standard Virtual Audio Nodes
 
-Here is a list of standard virutal audio nodes implemented in virtual-audio-graph and the params you can provide them with. You can build custom virtual audio nodes out of these as above. For more info check out https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.
+Here is a list of standard virtual audio nodes implemented in virtual-audio-graph and the params you can provide them with. You can build custom virtual audio nodes out of these as above. For more info check out https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.
 
 ```javascript
 {
@@ -257,6 +263,8 @@ Here is a list of standard virutal audio nodes implemented in virtual-audio-grap
     type,
     frequency,
     detune,
+    startTime, // time in seconds since virtualAudioGraph.currentTime was 0, if not provided then oscillator starts immediately
+    stopTime, // if not provided then oscillator does not stop
   }
 }
 ```
