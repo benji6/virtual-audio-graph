@@ -8,7 +8,6 @@ var _require = require('ramda');
 
 var append = _require.append;
 var differenceWith = _require.differenceWith;
-var eqProps = _require.eqProps;
 var find = _require.find;
 var forEach = _require.forEach;
 var isNil = _require.isNil;
@@ -20,6 +19,25 @@ var connectAudioNodes = require('./tools/connectAudioNodes');
 var createVirtualAudioNode = require('./tools/createVirtualAudioNode');
 var disconnectAndRemoveVirtualAudioNode = require('./tools/disconnectAndRemoveVirtualAudioNode');
 var updateAudioNodeAndVirtualAudioGraph = require('./tools/updateAudioNodeAndVirtualAudioGraph');
+
+var testWhetherNodeNeedsRemoving = function testWhetherNodeNeedsRemoving(virtualNode, _ref) {
+  var id = _ref.id;
+  var _ref$params = _ref.params;
+  var params = _ref$params === undefined ? {} : _ref$params;
+  var startTime = params.startTime;
+  var stopTime = params.stopTime;
+
+  if (virtualNode.id !== id) {
+    return false;
+  }
+  if (virtualNode.params.startTime !== startTime) {
+    return false;
+  }
+  if (virtualNode.params.stopTime !== stopTime) {
+    return false;
+  }
+  return true;
+};
 
 var VirtualAudioGraph = (function () {
   function VirtualAudioGraph() {
@@ -48,7 +66,7 @@ var VirtualAudioGraph = (function () {
     value: function update(virtualAudioNodeParams) {
       var _this = this;
 
-      var virtualNodesToBeRemoved = differenceWith(eqProps('id'), this.virtualNodes, virtualAudioNodeParams);
+      var virtualNodesToBeRemoved = differenceWith(testWhetherNodeNeedsRemoving, this.virtualNodes, virtualAudioNodeParams);
 
       forEach(disconnectAndRemoveVirtualAudioNode.bind(this), virtualNodesToBeRemoved);
 

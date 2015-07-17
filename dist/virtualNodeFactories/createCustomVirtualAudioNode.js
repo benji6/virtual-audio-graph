@@ -22,6 +22,7 @@ module.exports = function createCustomVirtualNode(virtualAudioGraph, _ref) {
     isCustomVirtualNode: true,
     node: node,
     output: output,
+    params: params,
     virtualNodes: map(function createVirtualAudioNode(virtualAudioNodeParam) {
       if (virtualAudioGraph.customNodes[virtualAudioNodeParam.node]) {
         return createCustomVirtualNode(virtualAudioGraph, virtualAudioNodeParam);

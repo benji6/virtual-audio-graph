@@ -14,14 +14,15 @@ var constructorParamsKeys = require('../data/constructorParamsKeys');
 var audioParamProperties = require('../data/audioParamProperties');
 var setters = require('../data/setters');
 
-module.exports = function update(virtualNode, params) {
+module.exports = function update(virtualNode) {
+  var params = arguments[1] === undefined ? {} : arguments[1];
+
   if (virtualNode.isCustomVirtualNode) {
     zipWith(function (childVirtualNode, _ref) {
       var params = _ref.params;
       return update(childVirtualNode, params);
     }, virtualNode.virtualNodes, virtualNode.audioGraphParamsFactory(params));
   } else {
-    params = omit(constructorParamsKeys, params);
     forEach(function (key) {
       var param = params[key];
       if (virtualNode.params && virtualNode.params[key] === param) {
@@ -37,7 +38,7 @@ module.exports = function update(virtualNode, params) {
       }
       virtualNode.audioNode[key] = param;
     }, keys(omit(constructorParamsKeys, params)));
-    virtualNode.params = params;
   }
+  virtualNode.params = params;
   return virtualNode;
 };
