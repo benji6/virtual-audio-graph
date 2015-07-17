@@ -19,7 +19,5 @@ module.exports = (virtualAudioGraph, {node, id, input, output, params}) => {
     node,
     output,
   };
-  update(virtualNode, params);
-  virtualNode.params = params;
-  return virtualNode;
+  return update(virtualNode, params);
 };
