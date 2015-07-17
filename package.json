@@ -36,7 +36,7 @@
     "gulp-plumber": "^1.0.1",
     "gulp-uglify": "^1.2.0",
     "run-sequence": "^1.1.1",
-    "virtual-audio-graph": "^0.5.8",
+    "virtual-audio-graph": "^0.5.9",
     "web-audio-test-api": "^0.3.6"
   },
   "eslintConfig": {
