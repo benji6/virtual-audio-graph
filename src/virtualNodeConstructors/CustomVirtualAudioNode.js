@@ -16,7 +16,7 @@ module.exports = class CustomVirtualAudioNode {
       return new NativeVirtualAudioNode(this, virtualAudioNodeParam);
     }.bind(virtualAudioGraph), this.audioGraphParamsFactory(params));
 
-    connectAudioNodes.call(this);
+    connectAudioNodes(this.virtualNodes);
     this.id = id;
     this.output = output;
     this.isCustomVirtualNode = true;

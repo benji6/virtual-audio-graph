@@ -51,7 +51,7 @@ class VirtualAudioGraph {
       }
     }, virtualAudioNodeParams);
 
-    connectAudioNodes.call(this, (virtualAudioNode) =>
+    connectAudioNodes(this.virtualNodes, (virtualAudioNode) =>
       connect(virtualAudioNode, this.output));
 
     return this;

@@ -7,19 +7,18 @@ const constructorParamsKeys = [
 ];
 
 module.exports = class NativeVirtualAudioNode {
-  constructor (virtualAudioGraph, virtualNodeParams) {
-    let {node, id, input, output, params} = virtualNodeParams;
+  constructor (virtualAudioGraph, {node, id, input, output, params}) {
     params = params || {};
     const {startTime, stopTime} = params;
     const constructorParams = pick(constructorParamsKeys, params);
     this.audioNode = createAudioNode(virtualAudioGraph.audioContext, node, constructorParams, {startTime, stopTime});
     this.connected = false;
-    this.node = node;
-    update(this, params);
+    this.isCustomVirtualNode = false;
     this.id = id;
     this.input = input;
+    this.node = node;
     this.output = output;
+    update(this, params);
     this.params = params;
-    this.isCustomVirtualNode = false;
   }
 };
