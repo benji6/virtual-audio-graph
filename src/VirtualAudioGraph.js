@@ -58,7 +58,7 @@ class VirtualAudioGraph {
         throw new Error(`'output' is not a valid id`);
       }
 
-      const virtualAudioNode = find(propEq(id, 'id'))(this.virtualNodes);
+      const virtualAudioNode = find(propEq('id', id))(this.virtualNodes);
 
       if (virtualAudioNode) {
         updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParam);

@@ -11,13 +11,13 @@ module.exports = function (virtualNodes, handleConnectionToOutput = ()=>{}) {
 
       if (Object.prototype.toString.call(connection) === '[object Object]') {
         const {id, destination} = connection;
-        const destinationVirtualAudioNode = find(propEq(id, 'id'))(virtualNodes);
+        const destinationVirtualAudioNode = find(propEq('id', id))(virtualNodes);
 
         return connect(virtualAudioNode,
                        destinationVirtualAudioNode.audioNode[destination]);
       }
 
-      const destinationVirtualAudioNode = find(propEq(connection, 'id'))(virtualNodes);
+      const destinationVirtualAudioNode = find(propEq('id', connection))(virtualNodes);
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
         return forEach(connect(virtualAudioNode),
@@ -27,6 +27,6 @@ module.exports = function (virtualNodes, handleConnectionToOutput = ()=>{}) {
       }
 
       connect(virtualAudioNode, destinationVirtualAudioNode.audioNode);
-    }, asArray(virtualAudioNode.output)), filter(propEq(false, 'connected'),
+    }, asArray(virtualAudioNode.output)), filter(propEq('connected', false),
                                                  virtualNodes));
 };
