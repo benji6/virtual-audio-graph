@@ -20,7 +20,7 @@ var createVirtualAudioNode = require('./tools/createVirtualAudioNode');
 var disconnectAndRemoveVirtualAudioNode = require('./tools/disconnectAndRemoveVirtualAudioNode');
 var updateAudioNodeAndVirtualAudioGraph = require('./tools/updateAudioNodeAndVirtualAudioGraph');
 
-var testWhetherNodeNeedsRemoving = function testWhetherNodeNeedsRemoving(virtualNode, _ref) {
+var testWhetherNodeDoesNotNeedRemoving = function testWhetherNodeDoesNotNeedRemoving(virtualNode, _ref) {
   var id = _ref.id;
   var _ref$params = _ref.params;
   var params = _ref$params === undefined ? {} : _ref$params;
@@ -66,7 +66,7 @@ var VirtualAudioGraph = (function () {
     value: function update(virtualAudioNodeParams) {
       var _this = this;
 
-      var virtualNodesToBeRemoved = differenceWith(testWhetherNodeNeedsRemoving, this.virtualNodes, virtualAudioNodeParams);
+      var virtualNodesToBeRemoved = differenceWith(testWhetherNodeDoesNotNeedRemoving, this.virtualNodes, virtualAudioNodeParams);
 
       forEach(disconnectAndRemoveVirtualAudioNode.bind(this), virtualNodesToBeRemoved);
 
@@ -80,7 +80,7 @@ var VirtualAudioGraph = (function () {
           throw new Error('\'output\' is not a valid id');
         }
 
-        var virtualAudioNode = find(propEq(id, 'id'))(_this.virtualNodes);
+        var virtualAudioNode = find(propEq('id', id))(_this.virtualNodes);
 
         if (virtualAudioNode) {
           updateAudioNodeAndVirtualAudioGraph.call(_this, virtualAudioNode, virtualAudioNodeParam);

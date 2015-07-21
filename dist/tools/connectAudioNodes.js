@@ -24,12 +24,12 @@ module.exports = function (virtualNodes) {
         var id = connection.id;
         var destination = connection.destination;
 
-        var _destinationVirtualAudioNode = find(propEq(id, 'id'))(virtualNodes);
+        var _destinationVirtualAudioNode = find(propEq('id', id))(virtualNodes);
 
         return connect(virtualAudioNode, _destinationVirtualAudioNode.audioNode[destination]);
       }
 
-      var destinationVirtualAudioNode = find(propEq(connection, 'id'))(virtualNodes);
+      var destinationVirtualAudioNode = find(propEq('id', connection))(virtualNodes);
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
         return forEach(connect(virtualAudioNode), pluck('audioNode', filter(propEq('input', 'input'), destinationVirtualAudioNode.virtualNodes)));
@@ -37,5 +37,5 @@ module.exports = function (virtualNodes) {
 
       connect(virtualAudioNode, destinationVirtualAudioNode.audioNode);
     }, asArray(virtualAudioNode.output));
-  }, filter(propEq(false, 'connected'), virtualNodes));
+  }, filter(propEq('connected', false), virtualNodes));
 };
