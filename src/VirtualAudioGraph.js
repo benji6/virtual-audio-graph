@@ -3,7 +3,6 @@ const capitalize = require('capitalize');
 const connect = require('./tools/connect');
 const connectAudioNodes = require('./tools/connectAudioNodes');
 const createVirtualAudioNode = require('./tools/createVirtualAudioNode');
-const disconnectAndRemoveVirtualAudioNode = require('./tools/disconnectAndRemoveVirtualAudioNode');
 const updateAudioNodeAndVirtualAudioGraph = require('./tools/updateAudioNodeAndVirtualAudioGraph');
 import disconnect from './tools/disconnect';
 
@@ -53,7 +52,8 @@ class VirtualAudioGraph {
         const paramStartTime = virtualAudioNodeParamParams.startTime;
         const paramStopTime = virtualAudioNodeParamParams.stopTime;
         if (paramStartTime !== startTime || paramStopTime !== stopTime) {
-          disconnectAndRemoveVirtualAudioNode(virtualAudioNode);
+          disconnect(virtualAudioNode);
+          delete this.virtualNodes[id];
         }
         updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParam);
       } else {
