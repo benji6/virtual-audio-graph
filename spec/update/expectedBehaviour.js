@@ -69,13 +69,13 @@ describe('virtualAudioGraph.update - expected behaviour', function () {
 
   it('handles random strings for ids', function () {
     virtualAudioGraph.update({
-      'foo': {
+      foo: {
         node: 'gain',
         output: 'output',
       },
-      'bar': {
+      bar: {
         node: 'oscillator',
-        output: 0,
+        output: 'foo',
       },
     });
     expect(audioContext.toJSON()).toEqual({
@@ -84,21 +84,21 @@ describe('virtualAudioGraph.update - expected behaviour', function () {
         name: 'GainNode',
         gain: {
           value: 1,
-          inputs: [{
-            name: 'OscillatorNode',
-            type: 'sine',
-            frequency: {
-              value: 440,
-              inputs: [],
-            },
-            detune: {
-              value: 0,
-              inputs: [],
-            },
-            inputs: [],
-          }],
+          inputs: [],
         },
-        inputs: [],
+        inputs: [{
+          name: 'OscillatorNode',
+          type: 'sine',
+          frequency: {
+            value: 440,
+            inputs: [],
+          },
+          detune: {
+            value: 0,
+            inputs: [],
+          },
+          inputs: [],
+        }],
       }],
     });
     virtualAudioGraph.update({});
