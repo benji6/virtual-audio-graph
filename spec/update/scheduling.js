@@ -100,7 +100,7 @@ describe('virtualAudioGraph.update - scheduling', function () {
 
   it('works when scheduling a single oscillator\'s start and stop times', function () {
     const virtualGraphParams = {
-      0: {
+      nodeA: {
         node: 'oscillator',
         output: 'output',
         params: {
@@ -111,7 +111,7 @@ describe('virtualAudioGraph.update - scheduling', function () {
     };
 
     virtualAudioGraph.update(virtualGraphParams);
-    const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
+    const audioNode = virtualAudioGraph.virtualNodes.nodeA.audioNode;
     expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED');
     expect(audioNode.$stateAtTime('00:00.099')).toBe('SCHEDULED');
     expect(audioNode.$stateAtTime('00:00.100')).toBe('PLAYING');
