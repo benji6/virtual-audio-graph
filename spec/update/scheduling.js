@@ -15,20 +15,18 @@ describe('virtualAudioGraph.update - scheduling', function () {
   });
 
   it('oscillators with no start or stop times are played immediately and forever', function () {
-    const virtualNodeParams = [
-      {
-        id: 0,
+    const virtualGraphParams = {
+      0: {
         node: 'oscillator',
         output: 'output',
       },
-      {
-        id: 1,
+      1: {
         node: 'oscillator',
         output: 'output',
       },
-    ];
+    };
 
-    virtualAudioGraph.update(virtualNodeParams);
+    virtualAudioGraph.update(virtualGraphParams);
     R.forEach(function (virtualNode) {
       const audioNode = virtualNode.audioNode;
       expect(audioNode.$stateAtTime('00:00.000')).toBe('PLAYING');
@@ -41,26 +39,24 @@ describe('virtualAudioGraph.update - scheduling', function () {
   });
 
   it('oscillators with no start times but with stop times are played immediately until their stop time', function () {
-    const virtualNodeParams = [
-      {
-        id: 0,
+    const virtualGraphParams = {
+      0: {
         node: 'oscillator',
         output: 'output',
         params: {
           stopTime: 0.2,
         },
       },
-      {
-        id: 1,
+      1: {
         node: 'oscillator',
         output: 'output',
         params: {
           stopTime: 0.2,
         },
       },
-    ];
+    };
 
-    virtualAudioGraph.update(virtualNodeParams);
+    virtualAudioGraph.update(virtualGraphParams);
     R.forEach(function (virtualNode) {
       const audioNode = virtualNode.audioNode;
       expect(audioNode.$stateAtTime('00:00.000')).toBe('PLAYING');
@@ -73,26 +69,24 @@ describe('virtualAudioGraph.update - scheduling', function () {
   });
 
   it('oscillators with start times but no stop times are played at their start time then forever', function () {
-    const virtualNodeParams = [
-      {
-        id: 0,
+    const virtualGraphParams = {
+      0: {
         node: 'oscillator',
         output: 'output',
         params: {
           startTime: 0.1,
         },
       },
-      {
-        id: 1,
+      1: {
         node: 'oscillator',
         output: 'output',
         params: {
           startTime: 0.1,
         },
       },
-    ];
+    };
 
-    virtualAudioGraph.update(virtualNodeParams);
+    virtualAudioGraph.update(virtualGraphParams);
     R.forEach(function (virtualNode) {
       const audioNode = virtualNode.audioNode;
       expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED');
@@ -105,9 +99,8 @@ describe('virtualAudioGraph.update - scheduling', function () {
   });
 
   it('works when scheduling a single oscillator\'s start and stop times', function () {
-    const virtualNodeParams = [
-      {
-        id: 0,
+    const virtualGraphParams = {
+      0: {
         node: 'oscillator',
         output: 'output',
         params: {
@@ -115,9 +108,9 @@ describe('virtualAudioGraph.update - scheduling', function () {
           stopTime: 0.2,
         },
       },
-    ];
+    };
 
-    virtualAudioGraph.update(virtualNodeParams);
+    virtualAudioGraph.update(virtualGraphParams);
     const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
     expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED');
     expect(audioNode.$stateAtTime('00:00.099')).toBe('SCHEDULED');
@@ -127,9 +120,8 @@ describe('virtualAudioGraph.update - scheduling', function () {
   });
 
   it('works when scheduling multiple oscillators\' start and stop times', function () {
-    const virtualNodeParams = [
-      {
-        id: 0,
+    const virtualGraphParams = {
+      0: {
         node: 'oscillator',
         output: 'output',
         params: {
@@ -137,8 +129,7 @@ describe('virtualAudioGraph.update - scheduling', function () {
           stopTime: 0.2,
         },
       },
-      {
-        id: 1,
+      1: {
         node: 'oscillator',
         output: 'output',
         params: {
@@ -146,8 +137,7 @@ describe('virtualAudioGraph.update - scheduling', function () {
           stopTime: 0.2,
         },
       },
-      {
-        id: 2,
+      2: {
         node: 'oscillator',
         output: 'output',
         params: {
@@ -155,9 +145,9 @@ describe('virtualAudioGraph.update - scheduling', function () {
           stopTime: 0.2,
         },
       },
-    ];
+    };
 
-    virtualAudioGraph.update(virtualNodeParams);
+    virtualAudioGraph.update(virtualGraphParams);
     R.forEach(function (virtualNode) {
       const audioNode = virtualNode.audioNode;
       expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED');
@@ -169,30 +159,26 @@ describe('virtualAudioGraph.update - scheduling', function () {
   });
 
   it('works when rescheduling multiple oscillators\' start and stop times', function () {
-    virtualAudioGraph.update([
-      {
-        id: 0,
+    virtualAudioGraph.update({
+      0: {
         node: 'oscillator',
         output: 'output',
       },
-      {
-        id: 1,
+      1: {
         node: 'oscillator',
         output: 'output',
         params: {
           startTime: 1,
         },
       },
-      {
-        id: 2,
+      2: {
         node: 'oscillator',
         output: 'output',
         params: {
           stopTime: 0.1,
         },
       },
-      {
-        id: 3,
+      3: {
         node: 'oscillator',
         output: 'output',
         params: {
@@ -200,11 +186,10 @@ describe('virtualAudioGraph.update - scheduling', function () {
           stopTime: 2,
         },
       },
-    ]);
+    });
 
-    virtualAudioGraph.update([
-      {
-        id: 0,
+    virtualAudioGraph.update({
+      0: {
         node: 'oscillator',
         output: 'output',
         params: {
@@ -212,8 +197,7 @@ describe('virtualAudioGraph.update - scheduling', function () {
           stopTime: 0.2,
         },
       },
-      {
-        id: 1,
+      1: {
         node: 'oscillator',
         output: 'output',
         params: {
@@ -221,8 +205,7 @@ describe('virtualAudioGraph.update - scheduling', function () {
           stopTime: 0.2,
         },
       },
-      {
-        id: 2,
+      2: {
         node: 'oscillator',
         output: 'output',
         params: {
@@ -230,8 +213,7 @@ describe('virtualAudioGraph.update - scheduling', function () {
           stopTime: 0.2,
         },
       },
-      {
-        id: 3,
+      3: {
         node: 'oscillator',
         output: 'output',
         params: {
@@ -239,7 +221,7 @@ describe('virtualAudioGraph.update - scheduling', function () {
           stopTime: 0.2,
         },
       },
-    ]);
+    });
     R.forEach(function (virtualNode) {
       const audioNode = virtualNode.audioNode;
       expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED');
