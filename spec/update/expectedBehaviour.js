@@ -43,21 +43,21 @@ describe('virtualAudioGraph.update - expected behaviour', function () {
         name: 'GainNode',
         gain: {
           value: 1,
-          inputs: [{
-            name: 'OscillatorNode',
-            type: 'sine',
-            frequency: {
-              value: 440,
-              inputs: [],
-            },
-            detune: {
-              value: 0,
-              inputs: [],
-            },
-            inputs: [],
-          }],
+          inputs: [],
         },
-        inputs: [],
+        inputs: [{
+          name: 'OscillatorNode',
+          type: 'sine',
+          frequency: {
+            value: 440,
+            inputs: [],
+          },
+          detune: {
+            value: 0,
+            inputs: [],
+          },
+          inputs: [],
+        }],
       }],
     });
     virtualAudioGraph.update({});
