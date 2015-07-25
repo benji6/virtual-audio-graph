@@ -6,7 +6,7 @@ const constructorParamsKeys = [
   'maxDelayTime',
 ];
 
-module.exports = (virtualAudioGraph, {node, id, input, output, params}) => {
+module.exports = (virtualAudioGraph, {node, input, output, params}) => {
   params = params || {};
   const {startTime, stopTime} = params;
   const constructorParams = pick(constructorParamsKeys, params);
@@ -14,7 +14,6 @@ module.exports = (virtualAudioGraph, {node, id, input, output, params}) => {
     audioNode: createAudioNode(virtualAudioGraph.audioContext, node, constructorParams, {startTime, stopTime}),
     connected: false,
     isCustomVirtualNode: false,
-    id,
     input,
     node,
     output,
