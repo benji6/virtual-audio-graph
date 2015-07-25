@@ -13,15 +13,6 @@ describe('virtualAudioGraph.update - error throwing conditions', function () {
     });
   });
 
-  it('throws an error if no id is provided', function () {
-    expect(function () {
-      virtualAudioGraph.update([{
-        node: 'gain',
-        output: 'output',
-      }]);
-    }).toThrow();
-  });
-
   it('throws an error if no output is provided', function () {
     expect(function () {
       virtualAudioGraph.update([{
