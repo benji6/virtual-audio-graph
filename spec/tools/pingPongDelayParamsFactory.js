@@ -4,25 +4,22 @@ module.exports = function (params) {
   var delayTime = params.delayTime !== undefined ? params.delayTime : 1 / 3;
   var maxDelayTime = params.maxDelayTime !== undefined ? params.maxDelayTime : 1 / 3;
 
-  return [
-    {
-      id: 0,
+  return {
+    zero: {
       node: 'stereoPanner',
       output: 'output',
       params: {
         pan: -1,
       },
     },
-    {
-      id: 1,
+    1: {
       node: 'stereoPanner',
       output: 'output',
       params: {
         pan: 1,
       },
     },
-    {
-      id: 2,
+    2: {
       node: 'delay',
       output: [1, 5],
       params: {
@@ -30,25 +27,22 @@ module.exports = function (params) {
         delayTime: delayTime,
       },
     },
-    {
-      id: 3,
+    3: {
       node: 'gain',
       output: 2,
       params: {
         gain: decay,
       },
     },
-    {
-      id: 4,
+    4: {
       node: 'delay',
-      output: [0, 3],
+      output: ['zero', 3],
       params: {
         maxDelayTime: maxDelayTime,
         delayTime: delayTime,
       },
     },
-    {
-      id: 5,
+    five: {
       input: 'input',
       node: 'gain',
       output: 4,
@@ -56,5 +50,5 @@ module.exports = function (params) {
         gain: decay,
       },
     },
-  ];
+  };
 };
