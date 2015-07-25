@@ -26,12 +26,54 @@ describe('virtualAudioGraph.update - expected behaviour', function () {
     expect(virtualAudioGraph.update(virtualNodeParams)).toBe(virtualAudioGraph);
   });
 
+  it('adds then removes nodes', function () {
+    virtualAudioGraph.update({
+      0: {
+        node: 'gain',
+        output: 'output',
+      },
+      1: {
+        node: 'oscillator',
+        output: 0,
+      },
+    });
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode',
+      inputs: [{
+        name: 'GainNode',
+        gain: {
+          value: 1,
+          inputs: [{
+            name: 'OscillatorNode',
+            type: 'sine',
+            frequency: {
+              value: 440,
+              inputs: [],
+            },
+            detune: {
+              value: 0,
+              inputs: [],
+            },
+            inputs: [],
+          }],
+        },
+        inputs: [],
+      }],
+    });
+    virtualAudioGraph.update({});
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode',
+      inputs: [],
+    });
+  });
+
   it('changes the node if passed params with same id but different node property', function () {
-    virtualAudioGraph.update([{
-      id: 0,
-      node: 'gain',
-      output: 'output',
-    }]);
+    virtualAudioGraph.update({
+      0: {
+        node: 'gain',
+        output: 'output',
+      },
+    });
 
     expect(audioContext.toJSON()).toEqual({
       name: 'AudioDestinationNode',
