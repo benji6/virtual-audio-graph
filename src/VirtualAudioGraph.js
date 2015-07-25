@@ -1,4 +1,4 @@
-const {append, differenceWith, find, forEach, isNil, propEq} = require('ramda');
+const {append, forEach, isNil, keys} = require('ramda');
 const capitalize = require('capitalize');
 const connect = require('./tools/connect');
 const connectAudioNodes = require('./tools/connectAudioNodes');
@@ -41,34 +41,36 @@ class VirtualAudioGraph {
     return this;
   }
 
-  update (virtualAudioNodeParams) {
-    const virtualNodesToBeRemoved = differenceWith(testWhetherNodeDoesNotNeedRemoving,
-                                                   this.virtualNodes,
-                                                   virtualAudioNodeParams);
+  update (virtualGraphParams) {
+    // const virtualNodesToBeRemoved = differenceWith(testWhetherNodeDoesNotNeedRemoving,
+    //                                                this.virtualNodes,
+    //                                                virtualGraphParams);
+    //
+    // forEach(disconnectAndRemoveVirtualAudioNode.bind(this), virtualNodesToBeRemoved);
 
-    forEach(disconnectAndRemoveVirtualAudioNode.bind(this), virtualNodesToBeRemoved);
+    forEach((id) => {
+      const virtualAudioNode = this.virtualNodes[id];
+      const virtualAudioNodeParam = virtualGraphParams[id];
 
-    forEach((virtualAudioNodeParam) => {
-      const {id} = virtualAudioNodeParam;
-
-      if (isNil(id)) {
-        throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
-      }
       if (id === 'output') {
         throw new Error(`'output' is not a valid id`);
       }
+      if (isNil(virtualAudioNodeParam.output)) {
+        throw new Error(`ouptput not specified for node id ${id}`);
+      }
 
-      const virtualAudioNode = find(propEq('id', id))(this.virtualNodes);
 
       if (virtualAudioNode) {
         updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParam);
       } else {
         this.virtualNodes = append(createVirtualAudioNode.call(this, virtualAudioNodeParam), this.virtualNodes);
+        this.virtualNodes[id] = createVirtualAudioNode.call(this, virtualAudioNodeParam);
       }
-    }, virtualAudioNodeParams);
+    }, keys(virtualGraphParams));
 
-    connectAudioNodes(this.virtualNodes, (virtualAudioNode) =>
-      connect(virtualAudioNode, this.output));
+    connectAudioNodes(this.virtualNodes,
+                      virtualAudioNode => connect(virtualAudioNode,
+                                                  this.output));
 
     return this;
   }
