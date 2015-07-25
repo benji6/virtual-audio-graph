@@ -21,7 +21,7 @@ module.exports = function (params) {
     },
     2: {
       node: 'delay',
-      output: [1, 5],
+      output: [1, 'five'],
       params: {
         maxDelayTime: maxDelayTime,
         delayTime: delayTime,
