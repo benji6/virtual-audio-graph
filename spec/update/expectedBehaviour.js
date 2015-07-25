@@ -67,6 +67,47 @@ describe('virtualAudioGraph.update - expected behaviour', function () {
     });
   });
 
+  it('handles random strings for ids', function () {
+    virtualAudioGraph.update({
+      'foo': {
+        node: 'gain',
+        output: 'output',
+      },
+      'bar': {
+        node: 'oscillator',
+        output: 0,
+      },
+    });
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode',
+      inputs: [{
+        name: 'GainNode',
+        gain: {
+          value: 1,
+          inputs: [{
+            name: 'OscillatorNode',
+            type: 'sine',
+            frequency: {
+              value: 440,
+              inputs: [],
+            },
+            detune: {
+              value: 0,
+              inputs: [],
+            },
+            inputs: [],
+          }],
+        },
+        inputs: [],
+      }],
+    });
+    virtualAudioGraph.update({});
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode',
+      inputs: [],
+    });
+  });
+
   it('changes the node if passed params with same id but different node property', function () {
     virtualAudioGraph.update({
       0: {
