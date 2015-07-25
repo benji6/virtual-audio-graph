@@ -167,22 +167,6 @@ describe('virtualAudioGraph.update - expected behaviour', function () {
     /* eslint-enable */
   });
 
-  it('creates specified virtual nodes and stores them in virtualAudioGraph property', function () {
-    const virtualNodeParams = [{
-      id: 0,
-      node: 'gain',
-      output: 'output',
-    },
-    {
-      id: 1,
-      node: 'oscillator',
-      output: 0,
-    }];
-    virtualAudioGraph.update(virtualNodeParams);
-    expect(Array.isArray(virtualAudioGraph.virtualNodes)).toBe(true);
-    expect(virtualAudioGraph.virtualNodes.length).toBe(2);
-  });
-
   it('connects nodes to each other', function () {
     virtualAudioGraph.update([{
       id: 0,
