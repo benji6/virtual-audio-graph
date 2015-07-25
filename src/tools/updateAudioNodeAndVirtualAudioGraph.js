@@ -6,7 +6,7 @@ const update = require('./update');
 
 module.exports = function (virtualAudioNode, virtualAudioNodeParam) {
   if (virtualAudioNodeParam.node !== virtualAudioNode.node) {
-    disconnectAndRemoveVirtualAudioNode.call(this, virtualAudioNode);
+    disconnectAndRemoveVirtualAudioNode(this.virtualNodes, virtualAudioNode);
     this.virtualNodes = append(createVirtualAudioNode.call(this, virtualAudioNodeParam), this.virtualNodes);
     return;
   }
