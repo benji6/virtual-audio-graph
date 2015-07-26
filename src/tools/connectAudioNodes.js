@@ -17,9 +17,9 @@ module.exports = (virtualGraph, handleConnectionToOutput = () => {}) =>
                       }
 
                       if (isPlainOldObject(output)) {
-                        const {id, destination} = output;
+                        const {key, destination} = output;
                         return connect(virtualNode,
-                                       virtualGraph[id].audioNode[destination]);
+                                       virtualGraph[key].audioNode[destination]);
                       }
 
                       const destinationVirtualAudioNode = virtualGraph[output];
