@@ -1,6 +1,7 @@
 /* global beforeEach describe expect it */
 const VirtualAudioGraph = require('../../dist/index.js');
 const pingPongDelayParamsFactory = require('../tools/pingPongDelayParamsFactory');
+const sineOscFactory = require('../tools/sineOscFactory');
 
 describe('virtualAudioGraph.update - expected behaviour', function () {
   var audioContext;
@@ -167,7 +168,7 @@ describe('virtualAudioGraph.update - expected behaviour', function () {
     /* eslint-enable */
   });
 
-  it('updates node if passed same id but different params', function () {
+  it('updates standard and custom nodes if passed same id but different params', function () {
     virtualAudioGraph.update({
       0: {
         node: 'oscillator',
@@ -221,6 +222,78 @@ describe('virtualAudioGraph.update - expected behaviour', function () {
           inputs: [],
         },
         inputs: [],
+      }],
+    });
+
+    virtualAudioGraph.defineNode(sineOscFactory, 'sineOscFactory');
+
+    virtualAudioGraph.update({
+      0: {
+        node: 'sineOscFactory',
+        params: {
+          frequency: 110,
+          gain: 0.5,
+        },
+        output: 'output',
+      },
+    });
+
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode',
+      inputs: [{
+        name: 'GainNode',
+        gain: {
+          value: 0.5,
+          inputs: [],
+        },
+        inputs: [{
+          name: 'OscillatorNode',
+          type: 'sine',
+          frequency: {
+            value: 110,
+            inputs: [],
+          },
+          detune: {
+            value: 0,
+            inputs: [],
+          },
+          inputs: [],
+        }],
+      }],
+    });
+
+    virtualAudioGraph.update({
+      0: {
+        node: 'sineOscFactory',
+        params: {
+          frequency: 660,
+          gain: 0.2,
+        },
+        output: 'output',
+      },
+    });
+
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode',
+      inputs: [{
+        name: 'GainNode',
+        gain: {
+          value: 0.2,
+          inputs: [],
+        },
+        inputs: [{
+          name: 'OscillatorNode',
+          type: 'sine',
+          frequency: {
+            value: 660,
+            inputs: [],
+          },
+          detune: {
+            value: 0,
+            inputs: [],
+          },
+          inputs: [],
+        }],
       }],
     });
   });
