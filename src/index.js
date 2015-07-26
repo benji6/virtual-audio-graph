@@ -1,4 +1,4 @@
-const {difference, forEach, isNil, keys} = require('ramda');
+const {compose, difference, forEach, isNil, keys, tap} = require('ramda');
 const capitalize = require('capitalize');
 const connect = require('./tools/connect');
 const connectAudioNodes = require('./tools/connectAudioNodes');
@@ -31,8 +31,9 @@ module.exports = class VirtualAudioGraph {
     const idsToRemove = difference(keys(this.virtualNodes),
                                    keys(virtualGraphParams));
 
-    forEach(id => disconnect(this.virtualNodes[id]), idsToRemove);
-    forEach(id => delete this.virtualNodes[id], idsToRemove);
+    forEach(compose(id => delete this.virtualNodes[id],
+                    tap(id => disconnect(this.virtualNodes[id]))),
+            idsToRemove);
 
     forEach(id => {
       const virtualAudioNode = this.virtualNodes[id];
