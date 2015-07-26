@@ -451,7 +451,7 @@ describe('virtualAudioGraph.update - expected behaviour', function () {
     {
       id: 2,
       node: 'oscillator',
-      output: {id: 1, destination: 'frequency'},
+      output: {key: 1, destination: 'frequency'},
       params: {
         frequency: 0.5,
         type: 'triangle',
@@ -514,10 +514,7 @@ describe('virtualAudioGraph.update - expected behaviour', function () {
       id: 2,
       node: 'oscillator',
       output: [
-        {
-          id: 1,
-          destination: 'detune',
-        },
+        {key: 1, destination: 'detune'},
       ],
       params: {
         frequency: 0.5,
