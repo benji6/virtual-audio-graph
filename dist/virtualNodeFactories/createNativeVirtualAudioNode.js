@@ -11,7 +11,6 @@ var constructorParamsKeys = ['maxDelayTime'];
 
 module.exports = function (virtualAudioGraph, _ref) {
   var node = _ref.node;
-  var id = _ref.id;
   var input = _ref.input;
   var output = _ref.output;
   var params = _ref.params;
@@ -25,7 +24,6 @@ module.exports = function (virtualAudioGraph, _ref) {
     audioNode: createAudioNode(virtualAudioGraph.audioContext, node, constructorParams, { startTime: startTime, stopTime: stopTime }),
     connected: false,
     isCustomVirtualNode: false,
-    id: id,
     input: input,
     node: node,
     output: output
