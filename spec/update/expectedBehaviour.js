@@ -167,6 +167,64 @@ describe('virtualAudioGraph.update - expected behaviour', function () {
     /* eslint-enable */
   });
 
+  it('updates node if passed same id but different params', function () {
+    virtualAudioGraph.update({
+      0: {
+        node: 'oscillator',
+        params: {
+          frequency: 220,
+          detune: -9,
+        },
+        output: 'output',
+      },
+    });
+
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode',
+      inputs: [{
+        name: 'OscillatorNode',
+        type: 'sine',
+        frequency: {
+          value: 220,
+          inputs: [],
+        },
+        detune: {
+          value: -9,
+          inputs: [],
+        },
+        inputs: [],
+      }],
+    });
+
+    virtualAudioGraph.update({
+      0: {
+        node: 'oscillator',
+        params: {
+          frequency: 880,
+          detune: 0,
+        },
+        output: 'output',
+      },
+    });
+
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode',
+      inputs: [{
+        name: 'OscillatorNode',
+        type: 'sine',
+        frequency: {
+          value: 880,
+          inputs: [],
+        },
+        detune: {
+          value: 0,
+          inputs: [],
+        },
+        inputs: [],
+      }],
+    });
+  });
+
   it('connects nodes to each other', function () {
     virtualAudioGraph.update([{
       id: 0,
