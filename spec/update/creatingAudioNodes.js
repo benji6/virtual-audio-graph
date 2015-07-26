@@ -9,7 +9,6 @@ describe('virtualAudioGraph.update - creating AudioNodes', function () {
     audioContext = new AudioContext();
     virtualAudioGraph = new VirtualAudioGraph({
       audioContext: audioContext,
-      output: audioContext.destination,
     });
   });
 
@@ -20,14 +19,15 @@ describe('virtualAudioGraph.update - creating AudioNodes', function () {
       detune: 4,
     };
 
-    const virtualNodeParams = [{
-      id: 0,
-      node: 'oscillator',
-      params: params,
-      output: 'output',
-    }];
+    const virtualGraphParams = {
+      0: {
+        node: 'oscillator',
+        params: params,
+        output: 'output',
+      },
+    };
 
-    virtualAudioGraph.update(virtualNodeParams);
+    virtualAudioGraph.update(virtualGraphParams);
     const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
     expect(audioNode.constructor).toBe(OscillatorNode);
     expect(audioNode.type).toBe(params.type);
@@ -38,16 +38,17 @@ describe('virtualAudioGraph.update - creating AudioNodes', function () {
   it('creates GainNode with all valid parameters', function () {
     const gain = 0.5;
 
-    const virtualNodeParams = [{
-      id: 0,
-      node: 'gain',
-      params: {
-        gain: gain,
+    const virtualGraphParams = {
+      0: {
+        node: 'gain',
+        params: {
+          gain: gain,
+        },
+        output: 'output',
       },
-      output: 'output',
-    }];
+    };
 
-    virtualAudioGraph.update(virtualNodeParams);
+    virtualAudioGraph.update(virtualGraphParams);
     const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
     expect(audioNode.constructor).toBe(GainNode);
     expect(audioNode.gain.value).toBe(gain);
@@ -59,19 +60,20 @@ describe('virtualAudioGraph.update - creating AudioNodes', function () {
     const detune = 6;
     const Q = 0.5;
 
-    const virtualNodeParams = [{
-      id: 0,
-      node: 'biquadFilter',
-      params: {
-        type: type,
-        frequency: frequency,
-        detune: detune,
-        Q: Q,
+    const virtualGraphParams = {
+      0: {
+        node: 'biquadFilter',
+        params: {
+          type: type,
+          frequency: frequency,
+          detune: detune,
+          Q: Q,
+        },
+        output: 'output',
       },
-      output: 'output',
-    }];
+    };
 
-    virtualAudioGraph.update(virtualNodeParams);
+    virtualAudioGraph.update(virtualGraphParams);
     const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
     expect(audioNode.constructor).toBe(BiquadFilterNode);
     expect(audioNode.type).toBe(type);
@@ -84,17 +86,18 @@ describe('virtualAudioGraph.update - creating AudioNodes', function () {
     const delayTime = 2;
     const maxDelayTime = 5;
 
-    const virtualNodeParams = [{
-      id: 0,
-      node: 'delay',
-      params: {
-        delayTime: delayTime,
-        maxDelayTime: maxDelayTime,
+    const virtualGraphParams = {
+      0: {
+        node: 'delay',
+        params: {
+          delayTime: delayTime,
+          maxDelayTime: maxDelayTime,
+        },
+        output: 'output',
       },
-      output: 'output',
-    }];
+    };
 
-    virtualAudioGraph.update(virtualNodeParams);
+    virtualAudioGraph.update(virtualGraphParams);
     const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
     expect(audioNode.constructor).toBe(DelayNode);
     expect(audioNode.delayTime.value).toBe(delayTime);
@@ -103,16 +106,17 @@ describe('virtualAudioGraph.update - creating AudioNodes', function () {
   it('creates StereoPannerNode with all valid parameters', function () {
     const pan = 1;
 
-    const virtualNodeParams = [{
-      id: 0,
-      node: 'stereoPanner',
-      params: {
-        pan: pan,
+    const virtualGraphParams = {
+      0: {
+        node: 'stereoPanner',
+        params: {
+          pan: pan,
+        },
+        output: 'output',
       },
-      output: 'output',
-    }];
+    };
 
-    virtualAudioGraph.update(virtualNodeParams);
+    virtualAudioGraph.update(virtualGraphParams);
     const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
     expect(audioNode.constructor.name).toBe('StereoPannerNode');
     expect(audioNode.pan.value).toBe(pan);
@@ -130,25 +134,26 @@ describe('virtualAudioGraph.update - creating AudioNodes', function () {
     const position = [0, 0, 0];
     const orientation = [1, 0, 0];
 
-    const virtualNodeParams = [{
-      id: 0,
-      node: 'panner',
-      params: {
-        coneInnerAngle: coneInnerAngle,
-        coneOuterAngle: coneOuterAngle,
-        coneOuterGain: coneOuterGain,
-        distanceModel: distanceModel,
-        orientation: orientation,
-        panningModel: panningModel,
-        position: position,
-        maxDistance: maxDistance,
-        refDistance: refDistance,
-        rolloffFactor: rolloffFactor,
+    const virtualGraphParams = {
+      0: {
+        node: 'panner',
+        params: {
+          coneInnerAngle: coneInnerAngle,
+          coneOuterAngle: coneOuterAngle,
+          coneOuterGain: coneOuterGain,
+          distanceModel: distanceModel,
+          orientation: orientation,
+          panningModel: panningModel,
+          position: position,
+          maxDistance: maxDistance,
+          refDistance: refDistance,
+          rolloffFactor: rolloffFactor,
+        },
+        output: 'output',
       },
-      output: 'output',
-    }];
+    };
 
-    virtualAudioGraph.update(virtualNodeParams);
+    virtualAudioGraph.update(virtualGraphParams);
     const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
     expect(audioNode.constructor.name).toBe('PannerNode');
     expect(audioNode.coneInnerAngle).toBe(coneInnerAngle);

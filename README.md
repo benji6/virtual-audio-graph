@@ -4,10 +4,6 @@
 [![npm version](https://badge.fury.io/js/virtual-audio-graph.svg)](http://badge.fury.io/js/virtual-audio-graph)
 [![dependencies](https://david-dm.org/benji6/virtual-audio-graph.svg)](https://david-dm.org/benji6/virtual-audio-graph.svg)
 
-## Status
-
-Project is in early stages of development and API may change.
-
 ## Overview
 
 Library for manipulating the Web Audio API.
@@ -23,6 +19,54 @@ Simply pass a data structure representing the desired audio graph and virtual-au
 ```bash
 $ npm install --save virtual-audio-graph
 ```
+
+## Breaking Changes
+
+Prior to version 0.7.x virtual-audio-graph parameters were an array of objects with id properties representing nodes like this:
+
+```javascript
+[
+  {
+    id: 0,
+    node: 'oscillator',
+    output: 'output',
+    params: {
+      frequency: 220,
+    }
+  }
+  {
+    id: 1,
+    node: 'oscillator',
+    output: {id: 0, destination: 'detune'},
+    params: {
+      frequency: 110,
+    }
+  }
+]
+```
+
+Now the parameters are a single object with keys which represent the node ids:
+
+```javascript
+{
+  0: {
+    node: 'oscillator',
+    output: 'output',
+    params: {
+      frequency: 220,
+    }
+  }
+  1: {
+    node: 'oscillator',
+    output: {key: 0, destination: 'detune'}, // NB. "key" property used to be "id"
+    params: {
+      frequency: 110,
+    }
+  }
+}
+```
+
+The new notation automatically ensures the id of each node exists and is unique. It is also more concise and allows for greater performance.
 
 ## API
 
@@ -62,17 +106,15 @@ Create two oscillators, schedule their start and stop times, put them through a 
 
 const {currentTime} = virtualAudioGraph;
 
-const virtualNodeParams = [
-  {
-    id: 0,
+const virtualNodeParams = {
+  0: {
     node: 'gain',
     output: 'output',
     params: {
       gain: 0.2,
     },
   },
-  {
-    id: 1,
+  1: {
     node: 'oscillator',
     output: 0,
     params: {
@@ -82,8 +124,7 @@ const virtualNodeParams = [
       stopTime: currentTime + 2,
     },
   },
-  {
-    id: 2,
+  2: {
     node: 'oscillator',
     output: 0,
     params: {
@@ -94,7 +135,7 @@ const virtualNodeParams = [
       stopTime: currentTime + 2.5,
     },
   },
-];
+};
 
 virtualAudioGraph.update(virtualNodeParams);
 
@@ -106,37 +147,32 @@ In the example above we create a single oscillatorNode, which is connected to a 
 
 - `node` - name of the node we are creating.
 
-- `id` - each virtual node needs an id for efficient diffing and allowing the relationships between nodes to be described. ```'output'``` is a reserved id which represents the ```virtualAudioGraph``` destination property.
-
-- `output` - an id or array of ids for nodes this node connects to. ```'output'``` connects this node to the virtualAudioGraph output. You can also connect a node to a valid AudioParam using an object with an `id` property corresponding to the destination virtual-node id and a `destination` property with a string value specifying the AudioParam destination. See below:
+- `output` - an key or array of keys for nodes this node connects to. ```'output'``` connects this node to the virtualAudioGraph output. You can also connect a node to a valid AudioParam using an object with a `key` property corresponding to the destination virtual-node key and a `destination` property with a string value specifying the AudioParam destination. See below:
 
 ```javascript
 
-virtualAudioGraph.update([
-  {
-    id: 0,
+virtualAudioGraph.update({
+  0: {
     node: 'oscillator',
-    output: 'output', // reserved id for virtual-audio-graph destination
+    output: 'output', // reserved value for virtual-audio-graph destination
   },
-  {
-    id: 1,
+  1: {
     node: 'gain',
     // below we are connecting to the frequency AudioParam of the oscillator above
-    output: {id: 0, destination: 'frequency'},
+    output: {key: 0, destination: 'frequency'},
     params: {
       gain: 10,
     },
   },
-  {
-    id: 2,
+  2: {
     node: 'oscillator',
-    output: 1, // connect to node id 1 (gain node above)
+    output: 1, // connect to node key 1 (gain node above)
     params: {
       type: 'triangle',
       frequency: 1,
     },
   },
-]);
+});
 
 ```
 
@@ -160,25 +196,22 @@ const pingPongDelayParamsFactory = (params = {}) => {
   delayTime = delayTime !== undefined ? delayTime : 1 / 3;
   maxDelayTime = maxDelayTime !== undefined ? maxDelayTime : 1 / 3;
 
-  return [
-    {
-      id: 0,
+  return {
+    0: {
       node: 'stereoPanner',
       output: 'output',
       params: {
         pan: -1,
       },
     },
-    {
-      id: 1,
+    1: {
       node: 'stereoPanner',
       output: 'output',
       params: {
         pan: 1,
       },
     },
-    {
-      id: 2,
+    2: {
       node: 'delay',
       output: [1, 5],
       params: {
@@ -186,16 +219,14 @@ const pingPongDelayParamsFactory = (params = {}) => {
         delayTime,
       },
     },
-    {
-      id: 3,
+    3: {
       node: 'gain',
       output: 2,
       params: {
         gain: decay,
       },
     },
-    {
-      id: 4,
+    4: {
       node: 'delay',
       output: [0, 3],
       params: {
@@ -203,8 +234,7 @@ const pingPongDelayParamsFactory = (params = {}) => {
         delayTime,
       },
     },
-    {
-      id: 5,
+    5: {
       input: 'input',
       node: 'gain',
       output: 4,
@@ -212,16 +242,15 @@ const pingPongDelayParamsFactory = (params = {}) => {
         gain: decay,
       },
     },
-  ];
+  };
 };
 
 //define a custom node like this:
 virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
 
 //and now this instance of virtual-audio-graph will recognize it as a valid node:
-virtualAudioGraph.update([
-  {
-    id: 0,
+virtualAudioGraph.update({
+  0: {
     node: 'pingPongDelay',
     output: 'output',
     //with custom parameters as defined in above factory
@@ -231,16 +260,14 @@ virtualAudioGraph.update([
       maxDelayTime: 1,
     },
   },
-  {
-    id: 1,
+  1: {
     node: 'gain',
     output: [0, 'output'],
     params: {
       gain: 1 / 4,
     },
   },
-  {
-    id: 2,
+  2: {
     node: 'oscillator',
     output: 1,
     params: {
@@ -248,7 +275,7 @@ virtualAudioGraph.update([
       type: 'square',
     },
   },
-]);
+});
 
 ```
 

@@ -5,6 +5,7 @@ const audioContext = new AudioContext();
 describe('VirtualAudioGraph', function () {
   it('optionally takes audioContext property', function () {
     expect(new VirtualAudioGraph({audioContext: audioContext}).audioContext).toBe(audioContext);
+    expect(new VirtualAudioGraph({audioContext: audioContext}).output).toBe(audioContext.destination);
     expect(new VirtualAudioGraph().audioContext instanceof AudioContext).toBe(true);
   });
 

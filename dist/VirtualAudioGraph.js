@@ -2,42 +2,26 @@
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _toolsDisconnect = require('./tools/disconnect');
+
+var _toolsDisconnect2 = _interopRequireDefault(_toolsDisconnect);
 
 var _require = require('ramda');
 
-var append = _require.append;
-var differenceWith = _require.differenceWith;
-var find = _require.find;
+var difference = _require.difference;
 var forEach = _require.forEach;
 var isNil = _require.isNil;
-var propEq = _require.propEq;
+var keys = _require.keys;
 
 var capitalize = require('capitalize');
 var connect = require('./tools/connect');
 var connectAudioNodes = require('./tools/connectAudioNodes');
 var createVirtualAudioNode = require('./tools/createVirtualAudioNode');
-var disconnectAndRemoveVirtualAudioNode = require('./tools/disconnectAndRemoveVirtualAudioNode');
 var updateAudioNodeAndVirtualAudioGraph = require('./tools/updateAudioNodeAndVirtualAudioGraph');
-
-var testWhetherNodeDoesNotNeedRemoving = function testWhetherNodeDoesNotNeedRemoving(virtualNode, _ref) {
-  var id = _ref.id;
-  var _ref$params = _ref.params;
-  var params = _ref$params === undefined ? {} : _ref$params;
-  var startTime = params.startTime;
-  var stopTime = params.stopTime;
-
-  if (virtualNode.id !== id) {
-    return false;
-  }
-  if (virtualNode.params.startTime !== startTime) {
-    return false;
-  }
-  if (virtualNode.params.stopTime !== stopTime) {
-    return false;
-  }
-  return true;
-};
 
 var VirtualAudioGraph = (function () {
   function VirtualAudioGraph() {
@@ -47,7 +31,7 @@ var VirtualAudioGraph = (function () {
 
     this.audioContext = params.audioContext || new AudioContext();
     this.output = params.output || this.audioContext.destination;
-    this.virtualNodes = [];
+    this.virtualNodes = {};
     this.customNodes = {};
   }
 
@@ -63,31 +47,46 @@ var VirtualAudioGraph = (function () {
     }
   }, {
     key: 'update',
-    value: function update(virtualAudioNodeParams) {
+    value: function update(virtualGraphParams) {
       var _this = this;
 
-      var virtualNodesToBeRemoved = differenceWith(testWhetherNodeDoesNotNeedRemoving, this.virtualNodes, virtualAudioNodeParams);
+      var idsToRemove = difference(keys(this.virtualNodes), keys(virtualGraphParams));
 
-      forEach(disconnectAndRemoveVirtualAudioNode.bind(this), virtualNodesToBeRemoved);
+      forEach(function (id) {
+        return (0, _toolsDisconnect2['default'])(_this.virtualNodes[id]);
+      }, idsToRemove);
+      forEach(function (id) {
+        return delete _this.virtualNodes[id];
+      }, idsToRemove);
 
-      forEach(function (virtualAudioNodeParam) {
-        var id = virtualAudioNodeParam.id;
+      forEach(function (id) {
+        var virtualAudioNode = _this.virtualNodes[id];
+        var virtualAudioNodeParam = virtualGraphParams[id];
 
-        if (isNil(id)) {
-          throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
-        }
         if (id === 'output') {
           throw new Error('\'output\' is not a valid id');
         }
-
-        var virtualAudioNode = find(propEq('id', id))(_this.virtualNodes);
+        if (isNil(virtualAudioNodeParam.output)) {
+          throw new Error('ouptput not specified for node id ' + id);
+        }
 
         if (virtualAudioNode) {
+          var params = virtualAudioNode.params || {};
+          var startTime = params.startTime;
+          var stopTime = params.stopTime;
+
+          var virtualAudioNodeParamParams = virtualAudioNodeParam.params || {};
+          var paramStartTime = virtualAudioNodeParamParams.startTime;
+          var paramStopTime = virtualAudioNodeParamParams.stopTime;
+          if (paramStartTime !== startTime || paramStopTime !== stopTime) {
+            (0, _toolsDisconnect2['default'])(virtualAudioNode);
+            delete _this.virtualNodes[id];
+          }
           updateAudioNodeAndVirtualAudioGraph.call(_this, virtualAudioNode, virtualAudioNodeParam);
         } else {
-          _this.virtualNodes = append(createVirtualAudioNode.call(_this, virtualAudioNodeParam), _this.virtualNodes);
+          _this.virtualNodes[id] = createVirtualAudioNode.call(_this, virtualAudioNodeParam);
         }
-      }, virtualAudioNodeParams);
+      }, keys(virtualGraphParams));
 
       connectAudioNodes(this.virtualNodes, function (virtualAudioNode) {
         return connect(virtualAudioNode, _this.output);

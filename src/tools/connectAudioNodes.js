@@ -1,32 +1,38 @@
-const {find, filter, forEach, pluck, propEq} = require('ramda');
+const {equals, filter, forEach, keys, pluck, propEq, values} = require('ramda');
 const asArray = require('./asArray');
 const connect = require('./connect');
 
-module.exports = function (virtualNodes, handleConnectionToOutput = ()=>{}) {
-  forEach((virtualAudioNode) =>
-    forEach((connection) => {
-      if (connection === 'output') {
-        return handleConnectionToOutput(virtualAudioNode);
-      }
+const isPlainOldObject = x => equals(Object.prototype.toString.call(x),
+                                     '[object Object]');
 
-      if (Object.prototype.toString.call(connection) === '[object Object]') {
-        const {id, destination} = connection;
-        const destinationVirtualAudioNode = find(propEq('id', id))(virtualNodes);
+module.exports = (virtualGraph, handleConnectionToOutput = () => {}) =>
+  forEach(id => {
+            const virtualNode = virtualGraph[id];
+            if (virtualNode.connected) {
+              return;
+            }
+            forEach(output => {
+                      if (output === 'output') {
+                        return handleConnectionToOutput(virtualNode);
+                      }
 
-        return connect(virtualAudioNode,
-                       destinationVirtualAudioNode.audioNode[destination]);
-      }
+                      if (isPlainOldObject(output)) {
+                        const {key, destination} = output;
+                        return connect(virtualNode,
+                                       virtualGraph[key].audioNode[destination]);
+                      }
 
-      const destinationVirtualAudioNode = find(propEq('id', connection))(virtualNodes);
+                      const destinationVirtualAudioNode = virtualGraph[output];
 
-      if (destinationVirtualAudioNode.isCustomVirtualNode) {
-        return forEach(connect(virtualAudioNode),
-                       pluck('audioNode',
-                             filter(propEq('input', 'input'),
-                                    destinationVirtualAudioNode.virtualNodes)));
-      }
+                      if (destinationVirtualAudioNode.isCustomVirtualNode) {
+                        return forEach(connect(virtualNode),
+                                       pluck('audioNode',
+                                             filter(propEq('input', 'input'),
+                                                    values(destinationVirtualAudioNode.virtualNodes))));
+                      }
 
-      connect(virtualAudioNode, destinationVirtualAudioNode.audioNode);
-    }, asArray(virtualAudioNode.output)), filter(propEq('connected', false),
-                                                 virtualNodes));
-};
+                      connect(virtualNode, destinationVirtualAudioNode.audioNode);
+                    },
+                    asArray(virtualNode.output));
+          },
+          keys(virtualGraph));

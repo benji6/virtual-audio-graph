@@ -1,30 +1,16 @@
-const {append, differenceWith, find, forEach, isNil, propEq} = require('ramda');
+const {difference, forEach, isNil, keys} = require('ramda');
 const capitalize = require('capitalize');
 const connect = require('./tools/connect');
 const connectAudioNodes = require('./tools/connectAudioNodes');
 const createVirtualAudioNode = require('./tools/createVirtualAudioNode');
-const disconnectAndRemoveVirtualAudioNode = require('./tools/disconnectAndRemoveVirtualAudioNode');
 const updateAudioNodeAndVirtualAudioGraph = require('./tools/updateAudioNodeAndVirtualAudioGraph');
-
-const testWhetherNodeDoesNotNeedRemoving = (virtualNode, {id, params = {}}) => {
-  const {startTime, stopTime} = params;
-  if (virtualNode.id !== id) {
-    return false;
-  }
-  if (virtualNode.params.startTime !== startTime) {
-    return false;
-  }
-  if (virtualNode.params.stopTime !== stopTime) {
-    return false;
-  }
-  return true;
-};
+import disconnect from './tools/disconnect';
 
 class VirtualAudioGraph {
   constructor (params = {}) {
     this.audioContext = params.audioContext || new AudioContext();
     this.output = params.output || this.audioContext.destination;
-    this.virtualNodes = [];
+    this.virtualNodes = {};
     this.customNodes = {};
   }
 
@@ -41,34 +27,43 @@ class VirtualAudioGraph {
     return this;
   }
 
-  update (virtualAudioNodeParams) {
-    const virtualNodesToBeRemoved = differenceWith(testWhetherNodeDoesNotNeedRemoving,
-                                                   this.virtualNodes,
-                                                   virtualAudioNodeParams);
+  update (virtualGraphParams) {
+    const idsToRemove = difference(keys(this.virtualNodes),
+                                   keys(virtualGraphParams));
 
-    forEach(disconnectAndRemoveVirtualAudioNode.bind(this), virtualNodesToBeRemoved);
+    forEach(id => disconnect(this.virtualNodes[id]), idsToRemove);
+    forEach(id => delete this.virtualNodes[id], idsToRemove);
 
-    forEach((virtualAudioNodeParam) => {
-      const {id} = virtualAudioNodeParam;
+    forEach(id => {
+      const virtualAudioNode = this.virtualNodes[id];
+      const virtualAudioNodeParam = virtualGraphParams[id];
 
-      if (isNil(id)) {
-        throw new Error('Every virtualAudioNode needs an id for efficient diffing and determining relationships between nodes');
-      }
       if (id === 'output') {
         throw new Error(`'output' is not a valid id`);
       }
-
-      const virtualAudioNode = find(propEq('id', id))(this.virtualNodes);
+      if (isNil(virtualAudioNodeParam.output)) {
+        throw new Error(`ouptput not specified for node id ${id}`);
+      }
 
       if (virtualAudioNode) {
+        const params = virtualAudioNode.params || {};
+        const {startTime, stopTime} = params;
+        const virtualAudioNodeParamParams = virtualAudioNodeParam.params || {};
+        const paramStartTime = virtualAudioNodeParamParams.startTime;
+        const paramStopTime = virtualAudioNodeParamParams.stopTime;
+        if (paramStartTime !== startTime || paramStopTime !== stopTime) {
+          disconnect(virtualAudioNode);
+          delete this.virtualNodes[id];
+        }
         updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParam);
       } else {
-        this.virtualNodes = append(createVirtualAudioNode.call(this, virtualAudioNodeParam), this.virtualNodes);
+        this.virtualNodes[id] = createVirtualAudioNode.call(this, virtualAudioNodeParam);
       }
-    }, virtualAudioNodeParams);
+    }, keys(virtualGraphParams));
 
-    connectAudioNodes(this.virtualNodes, (virtualAudioNode) =>
-      connect(virtualAudioNode, this.output));
+    connectAudioNodes(this.virtualNodes,
+                      virtualAudioNode => connect(virtualAudioNode,
+                                                  this.output));
 
     return this;
   }
