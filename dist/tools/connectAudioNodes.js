@@ -30,10 +30,10 @@ module.exports = function (virtualGraph) {
       }
 
       if (isPlainOldObject(output)) {
-        var _id = output.id;
+        var key = output.key;
         var destination = output.destination;
 
-        return connect(virtualNode, virtualGraph[_id].audioNode[destination]);
+        return connect(virtualNode, virtualGraph[key].audioNode[destination]);
       }
 
       var destinationVirtualAudioNode = virtualGraph[output];

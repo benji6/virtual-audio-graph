@@ -163,7 +163,7 @@ virtualAudioGraph.update({
   1: {
     node: 'gain',
     // below we are connecting to the frequency AudioParam of the oscillator above
-    output: {id: 0, destination: 'frequency'},
+    output: {key: 0, destination: 'frequency'},
     params: {
       gain: 10,
     },
