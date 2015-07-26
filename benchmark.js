@@ -3,7 +3,7 @@ require('web-audio-test-api');
 WebAudioTestAPI.setState('AudioContext#createStereoPanner', 'enabled');
 const Benchmark = require('benchmark');
 const PublishedVirtualAudioGraph = require('virtual-audio-graph');
-const DevelopmentVirtualAudioGraph = require('./dist/VirtualAudioGraph');
+const DevelopmentVirtualAudioGraph = require('./dist/index');
 const pingPongDelayParamsFactory = require('./spec/tools/pingPongDelayParamsFactory');
 
 const runBenchmarkCode = function (virtualAudioGraph) {
