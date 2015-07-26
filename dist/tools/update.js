@@ -8,6 +8,7 @@ var contains = _require.contains;
 var forEach = _require.forEach;
 var keys = _require.keys;
 var omit = _require.omit;
+var values = _require.values;
 var zipWith = _require.zipWith;
 
 var constructorParamsKeys = require('../data/constructorParamsKeys');
@@ -21,7 +22,7 @@ module.exports = function update(virtualNode) {
     zipWith(function (childVirtualNode, _ref) {
       var params = _ref.params;
       return update(childVirtualNode, params);
-    }, virtualNode.virtualNodes, virtualNode.audioGraphParamsFactory(params));
+    }, values(virtualNode.virtualNodes), values(virtualNode.audioGraphParamsFactory(params)));
   } else {
     forEach(function (key) {
       var param = params[key];
