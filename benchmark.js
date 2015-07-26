@@ -1,4 +1,5 @@
 require('web-audio-test-api');
+/* global WebAudioTestAPI*/
 WebAudioTestAPI.setState('AudioContext#createStereoPanner', 'enabled');
 const Benchmark = require('benchmark');
 const PublishedVirtualAudioGraph = require('virtual-audio-graph');
@@ -7,77 +8,70 @@ const pingPongDelayParamsFactory = require('./spec/tools/pingPongDelayParamsFact
 
 const runBenchmarkCode = function (virtualAudioGraph) {
   const quietpingPongDelayParamsFactory = function () {
-    return [
-      {
-        id: 0,
+    return {
+      0: {
         node: 'gain',
         output: 'output',
       },
-      {
-        id: 1,
+      1: {
         node: 'pingPongDelay',
         output: 0,
       },
-      {
-        id: 2,
+      2: {
         node: 'oscillator',
         output: 1,
       },
-    ];
+    };
   };
 
   virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
   virtualAudioGraph.defineNode(quietpingPongDelayParamsFactory, 'quietPingPongDelay');
 
-  virtualAudioGraph.update([{
-    id: 0,
-    node: 'gain',
-    output: 'output',
-  }]);
+  virtualAudioGraph.update({
+    0: {
+      node: 'gain',
+      output: 'output',
+    },
+  });
 
-  virtualAudioGraph.update([
-    {
-      id: 0,
+  virtualAudioGraph.update({
+    0: {
       node: 'gain',
       output: 'output',
       params: {
         gain: 0.5,
       },
     },
-    {
-      id: 1,
+    1: {
       node: 'quietPingPongDelay',
       output: 0,
     },
-    {
-      id: 2,
+    2: {
       node: 'pingPongDelay',
       output: 1,
     },
-    {
-      id: 3,
+    3: {
       node: 'oscillator',
       output: 2,
     },
-  ]);
+  });
 
-  virtualAudioGraph.update([{
-    id: 0,
-    node: 'gain',
-    output: 'output',
-  }]);
+  virtualAudioGraph.update({
+    0: {
+      node: 'gain',
+      output: 'output',
+    },
+  });
 
-  virtualAudioGraph.update([
-    {
-      id: 0,
+  virtualAudioGraph.update({
+    0: {
       node: 'gain',
       output: 'output',
       params: {
         gain: 0.5,
       },
     },
-    {
-      id: 1,
+    1: {
       node: 'oscillator',
       output: 0,
       params: {
@@ -86,8 +80,7 @@ const runBenchmarkCode = function (virtualAudioGraph) {
         detune: 14,
       },
     },
-    {
-      id: 2,
+    2: {
       node: 'oscillator',
       output: 0,
       params: {
@@ -96,8 +89,7 @@ const runBenchmarkCode = function (virtualAudioGraph) {
         detune: -2,
       },
     },
-    {
-      id: 3,
+    3: {
       node: 'oscillator',
       output: 0,
       params: {
@@ -106,8 +98,7 @@ const runBenchmarkCode = function (virtualAudioGraph) {
         detune: 1,
       },
     },
-    {
-      id: 4,
+    4: {
       node: 'oscillator',
       output: 0,
       params: {
@@ -116,30 +107,28 @@ const runBenchmarkCode = function (virtualAudioGraph) {
         detune: -20,
       },
     },
-  ]);
+  });
 
-  virtualAudioGraph.update([{
-    id: 0,
-    node: 'gain',
-    output: 'output',
-  }]);
+  virtualAudioGraph.update({
+    0: {
+      node: 'gain',
+      output: 'output',
+    },
+  });
 
-  virtualAudioGraph.update([
-    {
-      id: 0,
+  virtualAudioGraph.update({
+    0: {
       node: 'gain',
       output: 'output',
       params: {
         gain: 0.5,
       },
     },
-    {
-      id: 1,
+    1: {
       node: 'pingPongDelay',
       output: 0,
     },
-    {
-      id: 2,
+    2: {
       node: 'oscillator',
       output: 1,
       params: {
@@ -148,8 +137,7 @@ const runBenchmarkCode = function (virtualAudioGraph) {
         detune: 14,
       },
     },
-    {
-      id: 3,
+    3: {
       node: 'oscillator',
       output: 1,
       params: {
@@ -158,8 +146,7 @@ const runBenchmarkCode = function (virtualAudioGraph) {
         detune: -2,
       },
     },
-    {
-      id: 4,
+    4: {
       node: 'oscillator',
       output: 1,
       params: {
@@ -168,8 +155,7 @@ const runBenchmarkCode = function (virtualAudioGraph) {
         detune: 1,
       },
     },
-    {
-      id: 5,
+    5: {
       node: 'oscillator',
       output: 1,
       params: {
@@ -178,13 +164,14 @@ const runBenchmarkCode = function (virtualAudioGraph) {
         detune: -20,
       },
     },
-  ]);
+  });
 
-  virtualAudioGraph.update([{
-    id: 0,
-    node: 'gain',
-    output: 'output',
-  }]);
+  virtualAudioGraph.update({
+    0: {
+      node: 'gain',
+      output: 'output',
+    },
+  });
 };
 
 new Benchmark.Suite()
