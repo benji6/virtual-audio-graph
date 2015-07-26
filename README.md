@@ -4,6 +4,22 @@
 [![npm version](https://badge.fury.io/js/virtual-audio-graph.svg)](http://badge.fury.io/js/virtual-audio-graph)
 [![dependencies](https://david-dm.org/benji6/virtual-audio-graph.svg)](https://david-dm.org/benji6/virtual-audio-graph.svg)
 
+## Overview
+
+Library for manipulating the Web Audio API.
+
+Abstracts away the pain of directly manipulating the audio graph in a similar fashion to the way in which react and virtual-dom do for the DOM.
+
+virtual-audio-graph aims to manage the state of the audio graph so this does not have to be done manually.
+
+Simply pass a data structure representing the desired audio graph and virtual-audio-graph takes care of the rest.
+
+## Installation
+
+```bash
+$ npm install --save virtual-audio-graph
+```
+
 ## Breaking Changes
 
 Prior to version 0.7.x virtual-audio-graph parameters were an array of objects with id properties representing nodes like this:
@@ -21,13 +37,12 @@ Prior to version 0.7.x virtual-audio-graph parameters were an array of objects w
   {
     id: 1,
     node: 'oscillator',
-    output: 'output',
+    output: {id: 0, destination: 'detune'},
     params: {
-      frequency: 440,
+      frequency: 110,
     }
   }
 ]
-
 ```
 
 Now the parameters are a single object with keys which represent the node ids:
@@ -43,32 +58,15 @@ Now the parameters are a single object with keys which represent the node ids:
   }
   1: {
     node: 'oscillator',
-    output: 'output',
+    output: {key: 0, destination: 'detune'}, // NB. "key" property used to be "id"
     params: {
-      frequency: 440,
+      frequency: 110,
     }
   }
 }
-
 ```
 
-The new notation automatically ensures the id of each node exists and is unique. It is also more concise and makes virtual-audio-graph more performant.
-
-## Overview
-
-Library for manipulating the Web Audio API.
-
-Abstracts away the pain of directly manipulating the audio graph in a similar fashion to the way in which react and virtual-dom do for the DOM.
-
-virtual-audio-graph aims to manage the state of the audio graph so this does not have to be done manually.
-
-Simply pass a data structure representing the desired audio graph and virtual-audio-graph takes care of the rest.
-
-## Installation
-
-```bash
-$ npm install --save virtual-audio-graph
-```
+The new notation automatically ensures the id of each node exists and is unique. It is also more concise and allows for greater performance.
 
 ## API
 
@@ -149,16 +147,14 @@ In the example above we create a single oscillatorNode, which is connected to a 
 
 - `node` - name of the node we are creating.
 
-- `id` - each virtual node needs an id for efficient diffing and allowing the relationships between nodes to be described. ```'output'``` is a reserved id which represents the ```virtualAudioGraph``` destination property.
-
-- `output` - an id or array of ids for nodes this node connects to. ```'output'``` connects this node to the virtualAudioGraph output. You can also connect a node to a valid AudioParam using an object with an `id` property corresponding to the destination virtual-node id and a `destination` property with a string value specifying the AudioParam destination. See below:
+- `output` - an key or array of keys for nodes this node connects to. ```'output'``` connects this node to the virtualAudioGraph output. You can also connect a node to a valid AudioParam using an object with a `key` property corresponding to the destination virtual-node key and a `destination` property with a string value specifying the AudioParam destination. See below:
 
 ```javascript
 
 virtualAudioGraph.update({
   0: {
     node: 'oscillator',
-    output: 'output', // reserved id for virtual-audio-graph destination
+    output: 'output', // reserved value for virtual-audio-graph destination
   },
   1: {
     node: 'gain',
@@ -170,7 +166,7 @@ virtualAudioGraph.update({
   },
   2: {
     node: 'oscillator',
-    output: 1, // connect to node id 1 (gain node above)
+    output: 1, // connect to node key 1 (gain node above)
     params: {
       type: 'triangle',
       frequency: 1,
