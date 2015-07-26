@@ -34,7 +34,7 @@ class VirtualAudioGraph {
     forEach(id => disconnect(this.virtualNodes[id]), idsToRemove);
     forEach(id => delete this.virtualNodes[id], idsToRemove);
 
-    forEach((id) => {
+    forEach(id => {
       const virtualAudioNode = this.virtualNodes[id];
       const virtualAudioNodeParam = virtualGraphParams[id];
 
