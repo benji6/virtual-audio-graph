@@ -6,6 +6,7 @@ var equals = _require.equals;
 var filter = _require.filter;
 var forEach = _require.forEach;
 var keys = _require.keys;
+var isNil = _require.isNil;
 var pluck = _require.pluck;
 var propEq = _require.propEq;
 var values = _require.values;
@@ -33,6 +34,9 @@ module.exports = function (virtualGraph) {
         var key = output.key;
         var destination = output.destination;
 
+        if (isNil(key)) {
+          throw new Error('id: ' + id + ' - output object requires a key property');
+        }
         return connect(virtualNode, virtualGraph[key].audioNode[destination]);
       }
 

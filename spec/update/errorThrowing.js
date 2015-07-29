@@ -44,4 +44,39 @@ describe('virtualAudioGraph.update - error throwing conditions', function () {
       });
     }).toThrow();
   });
+
+  it('throws an error when output is an object and key is not specified', function () {
+    expect(function () {
+      virtualAudioGraph.update({
+        0: {
+          node: 'gain',
+          output: ['output'],
+          params: {
+            gain: 0.2,
+          },
+        },
+        1: {
+          node: 'oscillator',
+          output: 0,
+          params: {
+            frequency: 120,
+          },
+        },
+        2: {
+          node: 'gain',
+          output: {id: 1, destination: 'frequency'},
+          params: {
+            gain: 1024,
+          },
+        },
+        3: {
+          node: 'oscillator',
+          output: 2,
+          params: {
+            frequency: 100,
+          },
+        },
+      });
+    }).toThrow();
+  });
 });

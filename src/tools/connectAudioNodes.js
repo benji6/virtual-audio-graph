@@ -1,4 +1,4 @@
-const {equals, filter, forEach, keys, pluck, propEq, values} = require('ramda');
+const {equals, filter, forEach, keys, isNil, pluck, propEq, values} = require('ramda');
 const asArray = require('./asArray');
 const connect = require('./connect');
 
@@ -18,6 +18,9 @@ module.exports = (virtualGraph, handleConnectionToOutput = () => {}) =>
 
                       if (isPlainOldObject(output)) {
                         const {key, destination} = output;
+                        if (isNil(key)) {
+                          throw new Error(`id: ${id} - output object requires a key property`);
+                        }
                         return connect(virtualNode,
                                        virtualGraph[key].audioNode[destination]);
                       }
