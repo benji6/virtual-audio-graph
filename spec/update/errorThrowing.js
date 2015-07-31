@@ -37,10 +37,34 @@ describe('virtualAudioGraph.update - error throwing conditions', function () {
   it('throws an error when id is "output"', function () {
     expect(function () {
       virtualAudioGraph.update({
+        0: {
           output: {
-          node: 'gain',
+            node: 'gain',
+            output: 'output',
+          },
+        },
+      });
+    }).toThrow();
+  });
+
+  it('throws an error if a node param is null or undefined', function () {
+    expect(function () {
+      virtualAudioGraph.update({
+        0: {
+          node: 'oscillator',
           output: 'output',
         },
+        1: undefined,
+      });
+    }).toThrow();
+
+    expect(function () {
+      virtualAudioGraph.update({
+        0: {
+          node: 'oscillator',
+          output: 'output',
+        },
+        1: null,
       });
     }).toThrow();
   });
