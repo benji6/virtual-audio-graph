@@ -8,7 +8,7 @@ const isPlainOldObject = x => equals(Object.prototype.toString.call(x),
 module.exports = (virtualGraph, handleConnectionToOutput = () => {}) =>
   forEach(id => {
             const virtualNode = virtualGraph[id];
-            if (virtualNode.connected) {
+            if (isNil(virtualNode) || virtualNode.connected) {
               return;
             }
             forEach(output => {

@@ -22,7 +22,7 @@ module.exports = function (virtualGraph) {
   var handleConnectionToOutput = arguments[1] === undefined ? function () {} : arguments[1];
   return forEach(function (id) {
     var virtualNode = virtualGraph[id];
-    if (virtualNode.connected) {
+    if (isNil(virtualNode) || virtualNode.connected) {
       return;
     }
     forEach(function (output) {
