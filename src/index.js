@@ -50,7 +50,7 @@ module.exports = class VirtualAudioGraph {
                                disconnect(virtualAudioNode);
                                delete this.virtualNodes[id];
                              }
-                             updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParam);
+                             updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParam, id);
                            }),
                     tap(({id, virtualAudioNodeParam}) => isNil(virtualAudioNodeParam.output) &&
                       throwError(`ouptput not specified for node id ${id}`)),
