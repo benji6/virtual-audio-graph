@@ -82,7 +82,7 @@ module.exports = (function () {
           (0, _toolsDisconnect2['default'])(virtualAudioNode);
           delete _this.virtualNodes[id];
         }
-        updateAudioNodeAndVirtualAudioGraph.call(_this, virtualAudioNode, virtualAudioNodeParam);
+        updateAudioNodeAndVirtualAudioGraph.call(_this, virtualAudioNode, virtualAudioNodeParam, id);
       }), tap(function (_ref3) {
         var id = _ref3.id;
         var virtualAudioNodeParam = _ref3.virtualAudioNodeParam;
