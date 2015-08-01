@@ -1,12 +1,12 @@
 const {append, equals} = require('ramda');
 const createVirtualAudioNode = require('./createVirtualAudioNode');
-const disconnectAndRemoveVirtualAudioNode = require('./disconnectAndRemoveVirtualAudioNode');
 const disconnect = require('./disconnect');
 const update = require('./update');
 
 module.exports = function (virtualAudioNode, virtualAudioNodeParam) {
   if (virtualAudioNodeParam.node !== virtualAudioNode.node) {
-    disconnectAndRemoveVirtualAudioNode.call(this, virtualAudioNode);
+    disconnect(virtualAudioNode);
+    delete this.virtualNodes[virtualAudioNode.id];
     this.virtualNodes = append(createVirtualAudioNode.call(this, virtualAudioNodeParam), this.virtualNodes);
     return;
   }
