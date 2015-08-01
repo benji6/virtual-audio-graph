@@ -4,7 +4,7 @@ const pingPongDelayParamsFactory = require('../tools/pingPongDelayParamsFactory'
 const sineOscFactory = require('../tools/sineOscFactory');
 const squareOscFactory = require('../tools/squareOscFactory');
 
-describe('virtualAudioGraph.defineNode - expected behaviour', function () {
+describe('virtualAudioGraph.defineNode - expected behaviour: ', function () {
   var audioContext;
   var virtualAudioGraph;
 

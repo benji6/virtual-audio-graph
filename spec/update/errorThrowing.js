@@ -1,7 +1,7 @@
 /* global beforeEach describe expect it */
 const VirtualAudioGraph = require('../../dist/index.js');
 
-describe('virtualAudioGraph.update - error throwing conditions', function () {
+describe('virtualAudioGraph.update - error throwing conditions: ', function () {
   var audioContext;
   var virtualAudioGraph;
 

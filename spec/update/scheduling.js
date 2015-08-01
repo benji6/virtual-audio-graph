@@ -2,7 +2,7 @@
 const R = require('ramda');
 const VirtualAudioGraph = require('../../dist/index.js');
 
-describe('virtualAudioGraph.update - scheduling', function () {
+describe('virtualAudioGraph.update - scheduling: ', function () {
   var audioContext;
   var virtualAudioGraph;
 
