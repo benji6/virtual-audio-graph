@@ -1,6 +1,8 @@
 /* global beforeEach describe expect it */
 const VirtualAudioGraph = require('../../dist/index.js');
 const pingPongDelayParamsFactory = require('../tools/pingPongDelayParamsFactory');
+const sineOscFactory = require('../tools/sineOscFactory');
+const squareOscFactory = require('../tools/squareOscFactory');
 
 describe('virtualAudioGraph.defineNode - expected behaviour', function () {
   var audioContext;
@@ -201,5 +203,56 @@ describe('virtualAudioGraph.defineNode - expected behaviour', function () {
         },
       ],
     });
+  });
+  it('can define a custom node which can be replaced with another on update', function () {
+    virtualAudioGraph.defineNode(sineOscFactory, 'sineOscFactory');
+    virtualAudioGraph.defineNode(squareOscFactory, 'squareOscFactory');
+
+    virtualAudioGraph.update({
+      0: {
+        node: 'gain',
+        output: 'output',
+        params: {
+          gain: 0.5,
+        },
+      },
+      1: {
+        node: 'squareOscFactory',
+        output: 0,
+        params: {
+          gain: 0.5,
+          frequency: 220,
+          startTime: 1,
+          stopTime: 2,
+        },
+      },
+    });
+
+    /* eslint-disable */
+    expect(audioContext.toJSON()).toEqual({"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"OscillatorNode","type":"square","frequency":{"value":220,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]},{"name":"OscillatorNode","type":"square","frequency":{"value":220,"inputs":[]},"detune":{"value":3,"inputs":[]},"inputs":[]}]}]}]});
+    /* eslint-enable */
+
+    virtualAudioGraph.update({
+      0: {
+        node: 'gain',
+        output: 'output',
+        params: {
+          gain: 0.5,
+        },
+      },
+      1: {
+        node: 'sineOscFactory',
+        output: 0,
+        params: {
+          gain: 0.5,
+          frequency: 220,
+          startTime: 1,
+          stopTime: 2,
+        },
+      },
+    });
+    /* eslint-disable */
+    expect(audioContext.toJSON()).toEqual({"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"OscillatorNode","type":"sine","frequency":{"value":220,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]});
+    /* eslint-enable */
   });
 });
