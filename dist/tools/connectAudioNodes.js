@@ -19,7 +19,7 @@ var isPlainOldObject = function isPlainOldObject(x) {
 };
 
 module.exports = function (virtualGraph) {
-  var handleConnectionToOutput = arguments[1] === undefined ? function () {} : arguments[1];
+  var handleConnectionToOutput = arguments.length <= 1 || arguments[1] === undefined ? function () {} : arguments[1];
   return forEach(function (id) {
     var virtualNode = virtualGraph[id];
     if (virtualNode.connected) {

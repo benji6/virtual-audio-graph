@@ -1,6 +1,4 @@
-const {
-  both, compose, difference, equals, forEach, ifElse, isNil, keys, partial, path, tap,
-} = require('ramda');
+const {compose, difference, forEach, isNil, keys, path, tap} = require('ramda');
 const capitalize = require('capitalize');
 const connect = require('./tools/connect');
 const connectAudioNodes = require('./tools/connectAudioNodes');
@@ -10,9 +8,6 @@ import disconnect from './tools/disconnect';
 
 const startTimePath = path(['params', 'startTime']);
 const stopTimePath = path(['params', 'stopTime']);
-const throwError = function (str) {
-  throw new Error(str);
-};
 
 module.exports = class VirtualAudioGraph {
   constructor (params = {}) {
@@ -41,24 +36,26 @@ module.exports = class VirtualAudioGraph {
             difference(keys(this.virtualNodes),
                        keys(virtualGraphParams)));
 
-    forEach(compose(ifElse(compose(isNil, path(['virtualAudioNode'])),
-                           ({id, virtualAudioNodeParam}) =>
-                             this.virtualNodes[id] = createVirtualAudioNode.call(this, virtualAudioNodeParam),
-                           ({id, virtualAudioNode, virtualAudioNodeParam}) => {
-                             if (startTimePath(virtualAudioNodeParam) !== startTimePath(virtualAudioNode) ||
-                               stopTimePath(virtualAudioNodeParam) !== stopTimePath(virtualAudioNode)) {
-                               disconnect(virtualAudioNode);
-                               delete this.virtualNodes[id];
-                             }
-                             updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParam, id);
-                           }),
-                    tap(({id, virtualAudioNodeParam}) => isNil(virtualAudioNodeParam.output) &&
-                      throwError(`ouptput not specified for node id ${id}`)),
-                    id => ({id,
-                            virtualAudioNodeParam: virtualGraphParams[id],
-                            virtualAudioNode: this.virtualNodes[id]}),
-                    tap(both(equals('output'), partial(throwError, `'output' is not a valid id`)))),
-            keys(virtualGraphParams));
+    forEach(key => {
+      if (key === 'output') {
+        throw new Error(`'output' is not a valid id`);
+      }
+      const virtualAudioNodeParam = virtualGraphParams[key];
+      if (isNil(virtualAudioNodeParam.output)) {
+        throw new Error(`ouptput not specified for node key ${key}`);
+      }
+      const virtualAudioNode = this.virtualNodes[key];
+      if (isNil(virtualAudioNode)) {
+        this.virtualNodes[key] = createVirtualAudioNode.call(this, virtualAudioNodeParam);
+        return;
+      }
+      if (startTimePath(virtualAudioNodeParam) !== startTimePath(virtualAudioNode) ||
+        stopTimePath(virtualAudioNodeParam) !== stopTimePath(virtualAudioNode)) {
+        disconnect(virtualAudioNode);
+        delete this.virtualNodes[key];
+      }
+      updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParam, key);
+    }, keys(virtualGraphParams));
 
     connectAudioNodes(this.virtualNodes,
                       virtualAudioNode => connect(virtualAudioNode,

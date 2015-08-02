@@ -16,7 +16,7 @@ var audioParamProperties = require('../data/audioParamProperties');
 var setters = require('../data/setters');
 
 module.exports = function update(virtualNode) {
-  var params = arguments[1] === undefined ? {} : arguments[1];
+  var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
   if (virtualNode.isCustomVirtualNode) {
     zipWith(function (childVirtualNode, _ref) {

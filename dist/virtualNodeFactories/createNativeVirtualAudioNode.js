@@ -16,8 +16,9 @@ module.exports = function (virtualAudioGraph, _ref) {
   var params = _ref.params;
 
   params = params || {};
-  var startTime = params.startTime;
-  var stopTime = params.stopTime;
+  var _params = params;
+  var startTime = _params.startTime;
+  var stopTime = _params.stopTime;
 
   var constructorParams = pick(constructorParamsKeys, params);
   var virtualNode = {
