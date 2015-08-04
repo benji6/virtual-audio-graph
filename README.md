@@ -6,13 +6,17 @@
 
 ## Overview
 
-Library for manipulating the Web Audio API.
+Library for declaratively manipulating the Web Audio API.
 
 Abstracts away the pain of directly manipulating the audio graph in a similar fashion to the way in which react and virtual-dom do for the DOM.
 
 virtual-audio-graph aims to manage the state of the audio graph so this does not have to be done manually.
 
 Simply pass a data structure representing the desired audio graph and virtual-audio-graph takes care of the rest.
+
+## Status
+
+Project is in development and API is not yet stable
 
 ## Installation
 
