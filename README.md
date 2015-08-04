@@ -32,16 +32,16 @@ Prior to version 0.7.x virtual-audio-graph parameters were an array of objects w
     output: 'output',
     params: {
       frequency: 220,
-    }
-  }
+    },
+  },
   {
     id: 1,
     node: 'oscillator',
     output: {id: 0, destination: 'detune'},
     params: {
       frequency: 110,
-    }
-  }
+    },
+  },
 ]
 ```
 
@@ -54,15 +54,15 @@ Now the parameters are a single object with keys which represent the node ids:
     output: 'output',
     params: {
       frequency: 220,
-    }
-  }
+    },
+  },
   1: {
     node: 'oscillator',
     output: {key: 0, destination: 'detune'}, // NB. "key" property used to be "id"
     params: {
       frequency: 110,
-    }
-  }
+    },
+  },
 }
 ```
 
