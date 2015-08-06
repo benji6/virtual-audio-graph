@@ -1,8 +1,6 @@
 const asArray = require('./asArray');
 const connect = require('./connect');
 
-const isPlainOldObject = x => Object.prototype.toString.call(x) === '[object Object]';
-
 module.exports = (virtualGraph, handleConnectionToOutput = () => {}) =>
   Object.keys(virtualGraph).forEach(id => {
     const virtualNode = virtualGraph[id];
@@ -15,7 +13,7 @@ module.exports = (virtualGraph, handleConnectionToOutput = () => {}) =>
           return handleConnectionToOutput(virtualNode);
         }
 
-        if (isPlainOldObject(output)) {
+        if (Object.prototype.toString.call(output) === '[object Object]') {
           const {key, destination} = output;
           if (key == null) {
             throw new Error(`id: ${id} - output object requires a key property`);
@@ -28,8 +26,9 @@ module.exports = (virtualGraph, handleConnectionToOutput = () => {}) =>
 
         if (destinationVirtualAudioNode.isCustomVirtualNode) {
           const {virtualNodes} = destinationVirtualAudioNode;
-          return Object.keys(destinationVirtualAudioNode.virtualNodes).map(key => virtualNodes[key])
-            .forEach(node => {
+          return Object.keys(destinationVirtualAudioNode.virtualNodes)
+            .forEach(key => {
+              const node = virtualNodes[key];
               if (node.input !== 'input') {
                 return;
               }
