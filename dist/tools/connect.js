@@ -6,9 +6,7 @@ var mapObj = require('./mapObj');
 module.exports = function (virtualNode, destination) {
   if (virtualNode.isCustomVirtualNode) {
     mapObj(function (childVirtualNode) {
-      var output = childVirtualNode.output;
-
-      if (asArray(output).indexOf('output') !== -1) {
+      if (asArray(childVirtualNode.output).indexOf('output') !== -1) {
         childVirtualNode.audioNode.connect(destination);
       }
     }, virtualNode.virtualNodes);

@@ -2,19 +2,14 @@
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var _toolsDisconnect = require('./tools/disconnect');
-
-var _toolsDisconnect2 = _interopRequireDefault(_toolsDisconnect);
 
 var capitalize = require('capitalize');
 var connect = require('./tools/connect');
 var connectAudioNodes = require('./tools/connectAudioNodes');
 var createVirtualAudioNode = require('./tools/createVirtualAudioNode');
 var updateAudioNodeAndVirtualAudioGraph = require('./tools/updateAudioNodeAndVirtualAudioGraph');
+var disconnect = require('./tools/disconnect');
 
 var startTimePath = function startTimePath(obj) {
   return obj.params && obj.params.startTime;
@@ -56,7 +51,7 @@ module.exports = (function () {
       var _this = this;
 
       difference(Object.keys(this.virtualNodes), Object.keys(virtualGraphParams)).forEach(function (id) {
-        (0, _toolsDisconnect2['default'])(_this.virtualNodes[id]);
+        disconnect(_this.virtualNodes[id]);
         delete _this.virtualNodes[id];
       });
 
@@ -74,14 +69,14 @@ module.exports = (function () {
           return;
         }
         if (startTimePath(virtualAudioNodeParam) !== startTimePath(virtualAudioNode) || stopTimePath(virtualAudioNodeParam) !== stopTimePath(virtualAudioNode)) {
-          (0, _toolsDisconnect2['default'])(virtualAudioNode);
+          disconnect(virtualAudioNode);
           delete _this.virtualNodes[key];
         }
         updateAudioNodeAndVirtualAudioGraph.call(_this, virtualAudioNode, virtualAudioNodeParam, key);
       });
 
-      connectAudioNodes(this.virtualNodes, function (virtualAudioNode) {
-        return connect(virtualAudioNode, _this.output);
+      connectAudioNodes(this.virtualNodes, function (virtualNode) {
+        return connect(virtualNode, _this.output);
       });
 
       return this;

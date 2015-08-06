@@ -11,12 +11,6 @@ var values = function values(obj) {
   });
 };
 
-var zipWith = function zipWith(fn, arr0, arr1) {
-  arr0.map(function (x, i) {
-    return fn(x, arr1[i]);
-  });
-};
-
 module.exports = function update(virtualNode) {
   var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 

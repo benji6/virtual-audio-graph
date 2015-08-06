@@ -38,12 +38,11 @@ module.exports = function (virtualGraph) {
           return {
             v: Object.keys(destinationVirtualAudioNode.virtualNodes).map(function (key) {
               return virtualNodes[key];
-            }).filter(function (node) {
-              return node.input === 'input';
-            }).map(function (node) {
-              return node.audioNode;
-            }).forEach(function (audioNode) {
-              return connect(virtualNode, audioNode);
+            }).forEach(function (node) {
+              if (node.input !== 'input') {
+                return;
+              }
+              connect(virtualNode, node.audioNode);
             })
           };
         })();

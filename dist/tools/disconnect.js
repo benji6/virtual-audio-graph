@@ -5,10 +5,9 @@ module.exports = function disconnect(virtualNode) {
     (function () {
       var virtualNodes = virtualNode.virtualNodes;
 
-      Object.keys(virtualNodes).map(function (key) {
-        return virtualNodes[key];
-      }).forEach(function (childVirtualNode) {
-        return disconnect(childVirtualNode);
+      Object.keys(virtualNodes).forEach(function (key) {
+        var childVirtualNode = virtualNodes[key];
+        disconnect(childVirtualNode);
       });
     })();
   } else {

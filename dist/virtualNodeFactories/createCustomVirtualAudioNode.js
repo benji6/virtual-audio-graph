@@ -11,11 +11,10 @@ module.exports = function createCustomVirtualNode(virtualAudioGraph, _ref) {
 
   params = params || {};
   var audioGraphParamsFactory = virtualAudioGraph.customNodes[node];
-  var virtualNodes = mapObj(function createVirtualAudioNode(virtualAudioNodeParam) {
+  var virtualNodes = mapObj(function (virtualAudioNodeParam) {
     if (virtualAudioGraph.customNodes[virtualAudioNodeParam.node]) {
       return createCustomVirtualNode(virtualAudioGraph, virtualAudioNodeParam);
     }
-
     return createNativeVirtualAudioNode(virtualAudioGraph, virtualAudioNodeParam);
   }, audioGraphParamsFactory(params));
 
