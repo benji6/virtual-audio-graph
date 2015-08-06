@@ -1,19 +1,26 @@
 const capitalize = require('capitalize');
-const {omit, zipWith} = require('ramda');
 const constructorParamsKeys = require('../data/constructorParamsKeys');
 const audioParamProperties = require('../data/audioParamProperties');
 const setters = require('../data/setters');
 
 const values = obj => Object.keys(obj).map(key => obj[key]);
 
+const zipWith = (fn, arr0, arr1) => {
+  arr0.map((x, i) => fn(x, arr1[i]))
+};
+
 module.exports = function update (virtualNode, params = {}) {
   if (virtualNode.isCustomVirtualNode) {
-    zipWith((childVirtualNode, {params}) => update(childVirtualNode, params),
-            values(virtualNode.virtualNodes),
-            values(virtualNode.audioGraphParamsFactory(params)));
+    const audioGraphParamsFactoryValues = values(virtualNode.audioGraphParamsFactory(params));
+    values(virtualNode.virtualNodes)
+      .forEach((childVirtualNode, i) =>
+        update(childVirtualNode, audioGraphParamsFactoryValues[i].params));
   } else {
-    Object.keys(omit(constructorParamsKeys, params))
+    Object.keys(params)
       .forEach(key => {
+        if (constructorParamsKeys.indexOf(key) !== -1) {
+          return;
+        }
         const param = params[key];
         if (virtualNode.params && virtualNode.params[key] === param) {
           return;
