@@ -64,7 +64,6 @@
     }
   },
   "dependencies": {
-    "capitalize": "^1.0.0",
-    "ramda": "^0.17.1"
+    "capitalize": "^1.0.0"
   }
 }
