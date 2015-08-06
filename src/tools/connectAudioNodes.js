@@ -30,7 +30,7 @@ module.exports = (virtualGraph, handleConnectionToOutput = () => {}) =>
                 return Object.keys(destinationVirtualAudioNode.virtualNodes).map(key => virtualNodes[key])
                   .filter(node => node.input === 'input')
                   .map(node => node.audioNode)
-                  .forEach(connect(virtualNode));
+                  .forEach(audioNode => connect(virtualNode, audioNode));
               }
 
               connect(virtualNode, destinationVirtualAudioNode.audioNode);

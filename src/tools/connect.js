@@ -1,8 +1,7 @@
-const {curry} = require('ramda');
 const asArray = require('./asArray');
 const mapObj = require('./mapObj');
 
-module.exports = curry((virtualNode, destination) => {
+module.exports = (virtualNode, destination) => {
   if (virtualNode.isCustomVirtualNode) {
     mapObj(childVirtualNode => {
       const {output} = childVirtualNode;
@@ -14,4 +13,4 @@ module.exports = curry((virtualNode, destination) => {
     virtualNode.audioNode.connect(destination);
   }
   virtualNode.connected = true;
-});
+};
