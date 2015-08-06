@@ -2,10 +2,6 @@
 
 var capitalize = require('capitalize');
 
-var _require = require('ramda');
-
-var isNil = _require.isNil;
-
 var namesToParamsKey = {
   delay: 'maxDelayTime'
 };
@@ -17,12 +13,12 @@ module.exports = function (audioContext, name, constructorParams, _ref) {
   var constructorParamsKey = namesToParamsKey[name];
   var audioNode = constructorParamsKey ? audioContext['create' + capitalize(name)](constructorParams[constructorParamsKey]) : audioContext['create' + capitalize(name)]();
   if (name === 'oscillator') {
-    if (isNil(startTime)) {
+    if (startTime == null) {
       audioNode.start();
     } else {
       audioNode.start(startTime);
     }
-    if (!isNil(stopTime)) {
+    if (stopTime != null) {
       audioNode.stop(stopTime);
     }
   }

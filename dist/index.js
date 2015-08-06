@@ -10,24 +10,23 @@ var _toolsDisconnect = require('./tools/disconnect');
 
 var _toolsDisconnect2 = _interopRequireDefault(_toolsDisconnect);
 
-var _require = require('ramda');
-
-var compose = _require.compose;
-var difference = _require.difference;
-var forEach = _require.forEach;
-var isNil = _require.isNil;
-var keys = _require.keys;
-var path = _require.path;
-var tap = _require.tap;
-
 var capitalize = require('capitalize');
 var connect = require('./tools/connect');
 var connectAudioNodes = require('./tools/connectAudioNodes');
 var createVirtualAudioNode = require('./tools/createVirtualAudioNode');
 var updateAudioNodeAndVirtualAudioGraph = require('./tools/updateAudioNodeAndVirtualAudioGraph');
 
-var startTimePath = path(['params', 'startTime']);
-var stopTimePath = path(['params', 'stopTime']);
+var startTimePath = function startTimePath(obj) {
+  return obj.params && obj.params.startTime;
+};
+var stopTimePath = function stopTimePath(obj) {
+  return obj.params && obj.params.stopTime;
+};
+var difference = function difference(arr0, arr1) {
+  return arr0.filter(function (x) {
+    return arr1.indexOf(x) === -1;
+  });
+};
 
 module.exports = (function () {
   function VirtualAudioGraph() {
@@ -56,22 +55,21 @@ module.exports = (function () {
     value: function update(virtualGraphParams) {
       var _this = this;
 
-      forEach(compose(function (id) {
-        return delete _this.virtualNodes[id];
-      }, tap(function (id) {
-        return (0, _toolsDisconnect2['default'])(_this.virtualNodes[id]);
-      })), difference(keys(this.virtualNodes), keys(virtualGraphParams)));
+      difference(Object.keys(this.virtualNodes), Object.keys(virtualGraphParams)).forEach(function (id) {
+        (0, _toolsDisconnect2['default'])(_this.virtualNodes[id]);
+        delete _this.virtualNodes[id];
+      });
 
-      forEach(function (key) {
+      Object.keys(virtualGraphParams).forEach(function (key) {
         if (key === 'output') {
           throw new Error('\'output\' is not a valid id');
         }
         var virtualAudioNodeParam = virtualGraphParams[key];
-        if (isNil(virtualAudioNodeParam.output)) {
+        if (virtualAudioNodeParam.output == null) {
           throw new Error('ouptput not specified for node key ' + key);
         }
         var virtualAudioNode = _this.virtualNodes[key];
-        if (isNil(virtualAudioNode)) {
+        if (virtualAudioNode == null) {
           _this.virtualNodes[key] = createVirtualAudioNode.call(_this, virtualAudioNodeParam);
           return;
         }
@@ -80,7 +78,7 @@ module.exports = (function () {
           delete _this.virtualNodes[key];
         }
         updateAudioNodeAndVirtualAudioGraph.call(_this, virtualAudioNode, virtualAudioNodeParam, key);
-      }, keys(virtualGraphParams));
+      });
 
       connectAudioNodes(this.virtualNodes, function (virtualAudioNode) {
         return connect(virtualAudioNode, _this.output);

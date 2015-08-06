@@ -1,6 +1,6 @@
-const {mapObj} = require('ramda');
 const connectAudioNodes = require('../tools/connectAudioNodes');
 const createNativeVirtualAudioNode = require('../virtualNodeFactories/createNativeVirtualAudioNode');
+const mapObj = require('../tools/mapObj');
 
 module.exports = function createCustomVirtualNode (virtualAudioGraph, {node, output, params}) {
   params = params || {};

@@ -1,15 +1,16 @@
-'use strict';
+"use strict";
 
-var _require = require('ramda');
-
-// VirtualNode -> nil
-var forEach = _require.forEach;
-var values = _require.values;
 module.exports = function disconnect(virtualNode) {
   if (virtualNode.isCustomVirtualNode) {
-    forEach(function (childVirtualNode) {
-      return disconnect(childVirtualNode);
-    }, values(virtualNode.virtualNodes));
+    (function () {
+      var virtualNodes = virtualNode.virtualNodes;
+
+      Object.keys(virtualNodes).map(function (key) {
+        return virtualNodes[key];
+      }).forEach(function (childVirtualNode) {
+        return disconnect(childVirtualNode);
+      });
+    })();
   } else {
     virtualNode.audioNode.disconnect();
   }

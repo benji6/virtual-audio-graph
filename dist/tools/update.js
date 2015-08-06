@@ -1,44 +1,51 @@
 'use strict';
 
 var capitalize = require('capitalize');
-
-var _require = require('ramda');
-
-var contains = _require.contains;
-var forEach = _require.forEach;
-var keys = _require.keys;
-var omit = _require.omit;
-var values = _require.values;
-var zipWith = _require.zipWith;
-
 var constructorParamsKeys = require('../data/constructorParamsKeys');
 var audioParamProperties = require('../data/audioParamProperties');
 var setters = require('../data/setters');
+
+var values = function values(obj) {
+  return Object.keys(obj).map(function (key) {
+    return obj[key];
+  });
+};
+
+var zipWith = function zipWith(fn, arr0, arr1) {
+  arr0.map(function (x, i) {
+    return fn(x, arr1[i]);
+  });
+};
 
 module.exports = function update(virtualNode) {
   var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
   if (virtualNode.isCustomVirtualNode) {
-    zipWith(function (childVirtualNode, _ref) {
-      var params = _ref.params;
-      return update(childVirtualNode, params);
-    }, values(virtualNode.virtualNodes), values(virtualNode.audioGraphParamsFactory(params)));
+    (function () {
+      var audioGraphParamsFactoryValues = values(virtualNode.audioGraphParamsFactory(params));
+      values(virtualNode.virtualNodes).forEach(function (childVirtualNode, i) {
+        return update(childVirtualNode, audioGraphParamsFactoryValues[i].params);
+      });
+    })();
   } else {
-    forEach(function (key) {
+    Object.keys(params).forEach(function (key) {
+      if (constructorParamsKeys.indexOf(key) !== -1) {
+        return;
+      }
       var param = params[key];
       if (virtualNode.params && virtualNode.params[key] === param) {
         return;
       }
-      if (contains(key, audioParamProperties)) {
+      if (audioParamProperties.indexOf(key) !== -1) {
         virtualNode.audioNode[key].value = param;
         return;
       }
-      if (contains(key, setters)) {
+      if (setters.indexOf(key) !== -1) {
         virtualNode.audioNode['set' + capitalize(key)].apply(virtualNode.audioNode, param);
         return;
       }
       virtualNode.audioNode[key] = param;
-    }, keys(omit(constructorParamsKeys, params)));
+    });
   }
   virtualNode.params = params;
   return virtualNode;

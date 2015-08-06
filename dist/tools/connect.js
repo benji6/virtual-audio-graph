@@ -1,19 +1,14 @@
 'use strict';
 
-var _require = require('ramda');
-
-var contains = _require.contains;
-var curry = _require.curry;
-var mapObj = _require.mapObj;
-
 var asArray = require('./asArray');
+var mapObj = require('./mapObj');
 
-module.exports = curry(function (virtualNode, destination) {
+module.exports = function (virtualNode, destination) {
   if (virtualNode.isCustomVirtualNode) {
     mapObj(function (childVirtualNode) {
       var output = childVirtualNode.output;
 
-      if (contains('output', asArray(output))) {
+      if (asArray(output).indexOf('output') !== -1) {
         childVirtualNode.audioNode.connect(destination);
       }
     }, virtualNode.virtualNodes);
@@ -21,4 +16,4 @@ module.exports = curry(function (virtualNode, destination) {
     virtualNode.audioNode.connect(destination);
   }
   virtualNode.connected = true;
-});
+};

@@ -1,9 +1,9 @@
-const {forEach, values} = require('ramda');
-
-// VirtualNode -> nil
 module.exports = function disconnect (virtualNode) {
   if (virtualNode.isCustomVirtualNode) {
-    forEach(childVirtualNode => disconnect(childVirtualNode), values(virtualNode.virtualNodes));
+    const {virtualNodes} = virtualNode;
+    Object.keys(virtualNodes)
+      .map(key => virtualNodes[key])
+      .forEach(childVirtualNode => disconnect(childVirtualNode));
   } else {
     virtualNode.audioNode.disconnect();
   }
