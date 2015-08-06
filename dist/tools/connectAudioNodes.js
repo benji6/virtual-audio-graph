@@ -1,31 +1,20 @@
 'use strict';
 
-var _require = require('ramda');
-
-var equals = _require.equals;
-var filter = _require.filter;
-var forEach = _require.forEach;
-var keys = _require.keys;
-var isNil = _require.isNil;
-var pluck = _require.pluck;
-var propEq = _require.propEq;
-var values = _require.values;
-
 var asArray = require('./asArray');
 var connect = require('./connect');
 
 var isPlainOldObject = function isPlainOldObject(x) {
-  return equals(Object.prototype.toString.call(x), '[object Object]');
+  return Object.prototype.toString.call(x) === '[object Object]';
 };
 
 module.exports = function (virtualGraph) {
   var handleConnectionToOutput = arguments.length <= 1 || arguments[1] === undefined ? function () {} : arguments[1];
-  return forEach(function (id) {
+  return Object.keys(virtualGraph).forEach(function (id) {
     var virtualNode = virtualGraph[id];
     if (virtualNode.connected) {
       return;
     }
-    forEach(function (output) {
+    asArray(virtualNode.output).forEach(function (output) {
       if (output === 'output') {
         return handleConnectionToOutput(virtualNode);
       }
@@ -34,7 +23,7 @@ module.exports = function (virtualGraph) {
         var key = output.key;
         var destination = output.destination;
 
-        if (isNil(key)) {
+        if (key == null) {
           throw new Error('id: ' + id + ' - output object requires a key property');
         }
         return connect(virtualNode, virtualGraph[key].audioNode[destination]);
@@ -43,10 +32,26 @@ module.exports = function (virtualGraph) {
       var destinationVirtualAudioNode = virtualGraph[output];
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
-        return forEach(connect(virtualNode), pluck('audioNode', filter(propEq('input', 'input'), values(destinationVirtualAudioNode.virtualNodes))));
+        var _ret = (function () {
+          var virtualNodes = destinationVirtualAudioNode.virtualNodes;
+
+          return {
+            v: Object.keys(destinationVirtualAudioNode.virtualNodes).map(function (key) {
+              return virtualNodes[key];
+            }).filter(function (node) {
+              return node.input === 'input';
+            }).map(function (node) {
+              return node.audioNode;
+            }).forEach(function (audioNode) {
+              return connect(virtualNode, audioNode);
+            })
+          };
+        })();
+
+        if (typeof _ret === 'object') return _ret.v;
       }
 
       connect(virtualNode, destinationVirtualAudioNode.audioNode);
-    }, asArray(virtualNode.output));
-  }, keys(virtualGraph));
+    });
+  });
 };

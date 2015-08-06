@@ -1,11 +1,8 @@
 'use strict';
 
-var _require = require('ramda');
-
-var mapObj = _require.mapObj;
-
 var connectAudioNodes = require('../tools/connectAudioNodes');
 var createNativeVirtualAudioNode = require('../virtualNodeFactories/createNativeVirtualAudioNode');
+var mapObj = require('../tools/mapObj');
 
 module.exports = function createCustomVirtualNode(virtualAudioGraph, _ref) {
   var node = _ref.node;

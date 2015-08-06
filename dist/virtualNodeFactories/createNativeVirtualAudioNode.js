@@ -1,11 +1,19 @@
 'use strict';
 
-var _require = require('ramda');
-
-var pick = _require.pick;
-
 var createAudioNode = require('../tools/createAudioNode');
 var update = require('../tools/update');
+
+var pick = function pick(names, obj) {
+  var result = {};
+  var idx = 0;
+  while (idx < names.length) {
+    if (names[idx] in obj) {
+      result[names[idx]] = obj[names[idx]];
+    }
+    idx += 1;
+  }
+  return result;
+};
 
 var constructorParamsKeys = ['maxDelayTime'];
 
