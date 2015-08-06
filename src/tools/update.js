@@ -5,10 +5,6 @@ const setters = require('../data/setters');
 
 const values = obj => Object.keys(obj).map(key => obj[key]);
 
-const zipWith = (fn, arr0, arr1) => {
-  arr0.map((x, i) => fn(x, arr1[i]))
-};
-
 module.exports = function update (virtualNode, params = {}) {
   if (virtualNode.isCustomVirtualNode) {
     const audioGraphParamsFactoryValues = values(virtualNode.audioGraphParamsFactory(params));

@@ -5,11 +5,10 @@ const mapObj = require('../tools/mapObj');
 module.exports = function createCustomVirtualNode (virtualAudioGraph, {node, output, params}) {
   params = params || {};
   const audioGraphParamsFactory = virtualAudioGraph.customNodes[node];
-  const virtualNodes = mapObj(function createVirtualAudioNode (virtualAudioNodeParam) {
+  const virtualNodes = mapObj(virtualAudioNodeParam => {
     if (virtualAudioGraph.customNodes[virtualAudioNodeParam.node]) {
       return createCustomVirtualNode(virtualAudioGraph, virtualAudioNodeParam);
     }
-
     return createNativeVirtualAudioNode(virtualAudioGraph, virtualAudioNodeParam);
   }, audioGraphParamsFactory(params));
 

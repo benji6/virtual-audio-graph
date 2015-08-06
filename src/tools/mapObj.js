@@ -1,6 +1,5 @@
-module.exports = (fn, obj) => {
-  return Object.keys(obj).reduce((acc, key) => {
+module.exports = (fn, obj) => Object.keys(obj)
+  .reduce((acc, key) => {
     acc[key] = fn(obj[key]);
     return acc;
   }, {});
-};

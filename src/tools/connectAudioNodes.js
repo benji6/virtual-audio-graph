@@ -9,30 +9,34 @@ module.exports = (virtualGraph, handleConnectionToOutput = () => {}) =>
     if (virtualNode.connected) {
       return;
     }
-    asArray(virtualNode.output).forEach(output => {
-              if (output === 'output') {
-                return handleConnectionToOutput(virtualNode);
+    asArray(virtualNode.output)
+      .forEach(output => {
+        if (output === 'output') {
+          return handleConnectionToOutput(virtualNode);
+        }
+
+        if (isPlainOldObject(output)) {
+          const {key, destination} = output;
+          if (key == null) {
+            throw new Error(`id: ${id} - output object requires a key property`);
+          }
+          return connect(virtualNode,
+                         virtualGraph[key].audioNode[destination]);
+        }
+
+        const destinationVirtualAudioNode = virtualGraph[output];
+
+        if (destinationVirtualAudioNode.isCustomVirtualNode) {
+          const {virtualNodes} = destinationVirtualAudioNode;
+          return Object.keys(destinationVirtualAudioNode.virtualNodes).map(key => virtualNodes[key])
+            .forEach(node => {
+              if (node.input !== 'input') {
+                return;
               }
-
-              if (isPlainOldObject(output)) {
-                const {key, destination} = output;
-                if (key == null) {
-                  throw new Error(`id: ${id} - output object requires a key property`);
-                }
-                return connect(virtualNode,
-                               virtualGraph[key].audioNode[destination]);
-              }
-
-              const destinationVirtualAudioNode = virtualGraph[output];
-
-              if (destinationVirtualAudioNode.isCustomVirtualNode) {
-                const {virtualNodes} = destinationVirtualAudioNode;
-                return Object.keys(destinationVirtualAudioNode.virtualNodes).map(key => virtualNodes[key])
-                  .filter(node => node.input === 'input')
-                  .map(node => node.audioNode)
-                  .forEach(audioNode => connect(virtualNode, audioNode));
-              }
-
-              connect(virtualNode, destinationVirtualAudioNode.audioNode);
+              connect(virtualNode, node.audioNode)
             });
+        }
+
+        connect(virtualNode, destinationVirtualAudioNode.audioNode);
+      });
   });
