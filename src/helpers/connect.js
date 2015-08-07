@@ -1,5 +1,5 @@
-const asArray = require('./asArray');
-const mapObj = require('./mapObj');
+const asArray = require('../tools/asArray');
+const mapObj = require('../tools/mapObj');
 
 module.exports = (virtualNode, destination) => {
   if (virtualNode.isCustomVirtualNode) {

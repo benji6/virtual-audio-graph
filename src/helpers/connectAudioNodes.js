@@ -1,4 +1,4 @@
-const asArray = require('./asArray');
+const asArray = require('../tools/asArray');
 const connect = require('./connect');
 
 module.exports = (virtualGraph, handleConnectionToOutput = () => {}) =>

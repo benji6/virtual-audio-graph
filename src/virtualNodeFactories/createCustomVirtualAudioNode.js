@@ -1,4 +1,4 @@
-const connectAudioNodes = require('../tools/connectAudioNodes');
+const connectAudioNodes = require('../helpers/connectAudioNodes');
 const createNativeVirtualAudioNode = require('../virtualNodeFactories/createNativeVirtualAudioNode');
 const mapObj = require('../tools/mapObj');
 

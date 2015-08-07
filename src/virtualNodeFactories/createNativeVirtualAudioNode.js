@@ -1,5 +1,5 @@
-const createAudioNode = require('../tools/createAudioNode');
-const update = require('../tools/update');
+const createAudioNode = require('../helpers/createAudioNode');
+const update = require('../helpers/update');
 
 const pick = (names, obj) => {
   const result = {};

@@ -1,9 +1,9 @@
 const capitalize = require('capitalize');
-const connect = require('./tools/connect');
-const connectAudioNodes = require('./tools/connectAudioNodes');
-const createVirtualAudioNode = require('./tools/createVirtualAudioNode');
-const updateAudioNodeAndVirtualAudioGraph = require('./tools/updateAudioNodeAndVirtualAudioGraph');
-const disconnect = require('./tools/disconnect');
+const connect = require('./helpers/connect');
+const connectAudioNodes = require('./helpers/connectAudioNodes');
+const createVirtualAudioNode = require('./helpers/createVirtualAudioNode');
+const updateAudioNodeAndVirtualAudioGraph = require('./helpers/updateAudioNodeAndVirtualAudioGraph');
+const disconnect = require('./helpers/disconnect');
 
 const startTimePath = obj => obj.params && obj.params.startTime;
 const stopTimePath = obj => obj.params && obj.params.stopTime;
