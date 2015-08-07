@@ -195,60 +195,57 @@ When defining virtual audio node parameters include a property `input` and value
 
 ```javascript
 
-const pingPongDelayParamsFactory = (params = {}) => {
-  let {decay, delayTime, maxDelayTime} = params;
-  decay = decay !== undefined ? decay : 1 / 3;
-  delayTime = delayTime !== undefined ? delayTime : 1 / 3;
-  maxDelayTime = maxDelayTime !== undefined ? maxDelayTime : 1 / 3;
-
-  return {
-    0: {
-      node: 'stereoPanner',
-      output: 'output',
-      params: {
-        pan: -1,
-      },
+const pingPongDelayParamsFactory = ({
+  decay = 1 / 3,
+  delayTime = 1 / 3,
+  maxDelayTime = 1 / 3,
+} = {}) => ({
+  zero: {
+    node: 'stereoPanner',
+    output: 'output',
+    params: {
+      pan: -1,
     },
-    1: {
-      node: 'stereoPanner',
-      output: 'output',
-      params: {
-        pan: 1,
-      },
+  },
+  1: {
+    node: 'stereoPanner',
+    output: 'output',
+    params: {
+      pan: 1,
     },
-    2: {
-      node: 'delay',
-      output: [1, 5],
-      params: {
-        maxDelayTime,
-        delayTime,
-      },
+  },
+  2: {
+    node: 'delay',
+    output: [1, 'five'],
+    params: {
+      maxDelayTime: maxDelayTime,
+      delayTime: delayTime,
     },
-    3: {
-      node: 'gain',
-      output: 2,
-      params: {
-        gain: decay,
-      },
+  },
+  3: {
+    node: 'gain',
+    output: 2,
+    params: {
+      gain: decay,
     },
-    4: {
-      node: 'delay',
-      output: [0, 3],
-      params: {
-        maxDelayTime,
-        delayTime,
-      },
+  },
+  4: {
+    node: 'delay',
+    output: ['zero', 3],
+    params: {
+      maxDelayTime: maxDelayTime,
+      delayTime: delayTime,
     },
-    5: {
-      input: 'input',
-      node: 'gain',
-      output: 4,
-      params: {
-        gain: decay,
-      },
+  },
+  five: {
+    input: 'input',
+    node: 'gain',
+    output: 4,
+    params: {
+      gain: decay,
     },
-  };
-};
+  },
+});
 
 //define a custom node like this:
 virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
