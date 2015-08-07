@@ -28,7 +28,7 @@ module.exports = function update (virtualNode, params = {}) {
           return;
         }
         if (setters.indexOf(key) !== -1) {
-          virtualNode.audioNode[`set${capitalize(key)}`].apply(virtualNode.audioNode, param);
+          virtualNode.audioNode[`set${capitalize(key)}`](...param);
           return;
         }
         virtualNode.audioNode[key] = param;
