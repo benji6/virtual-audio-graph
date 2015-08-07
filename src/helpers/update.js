@@ -8,9 +8,11 @@ const values = obj => Object.keys(obj).map(key => obj[key]);
 module.exports = function update (virtualNode, params = {}) {
   if (virtualNode.isCustomVirtualNode) {
     const audioGraphParamsFactoryValues = values(virtualNode.audioGraphParamsFactory(params));
-    values(virtualNode.virtualNodes)
-      .forEach((childVirtualNode, i) =>
-        update(childVirtualNode, audioGraphParamsFactoryValues[i].params));
+    Object.keys(virtualNode.virtualNodes)
+      .forEach((key, i) => {
+        const childVirtualNode = virtualNode.virtualNodes[key];
+        update(childVirtualNode, audioGraphParamsFactoryValues[i].params);
+      });
   } else {
     Object.keys(params)
       .forEach(key => {
