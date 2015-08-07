@@ -5,11 +5,11 @@ var _createClass = (function () { function defineProperties(target, props) { for
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 var capitalize = require('capitalize');
-var connect = require('./tools/connect');
-var connectAudioNodes = require('./tools/connectAudioNodes');
-var createVirtualAudioNode = require('./tools/createVirtualAudioNode');
-var updateAudioNodeAndVirtualAudioGraph = require('./tools/updateAudioNodeAndVirtualAudioGraph');
-var disconnect = require('./tools/disconnect');
+var connect = require('./helpers/connect');
+var connectAudioNodes = require('./helpers/connectAudioNodes');
+var createVirtualAudioNode = require('./helpers/createVirtualAudioNode');
+var updateAudioNodeAndVirtualAudioGraph = require('./helpers/updateAudioNodeAndVirtualAudioGraph');
+var disconnect = require('./helpers/disconnect');
 
 var startTimePath = function startTimePath(obj) {
   return obj.params && obj.params.startTime;

@@ -1,11 +1,7 @@
 'use strict';
 
-var asArray = require('./asArray');
+var asArray = require('../tools/asArray');
 var connect = require('./connect');
-
-var isPlainOldObject = function isPlainOldObject(x) {
-  return Object.prototype.toString.call(x) === '[object Object]';
-};
 
 module.exports = function (virtualGraph) {
   var handleConnectionToOutput = arguments.length <= 1 || arguments[1] === undefined ? function () {} : arguments[1];
@@ -19,7 +15,7 @@ module.exports = function (virtualGraph) {
         return handleConnectionToOutput(virtualNode);
       }
 
-      if (isPlainOldObject(output)) {
+      if (Object.prototype.toString.call(output) === '[object Object]') {
         var key = output.key;
         var destination = output.destination;
 
@@ -36,9 +32,8 @@ module.exports = function (virtualGraph) {
           var virtualNodes = destinationVirtualAudioNode.virtualNodes;
 
           return {
-            v: Object.keys(destinationVirtualAudioNode.virtualNodes).map(function (key) {
-              return virtualNodes[key];
-            }).forEach(function (node) {
+            v: Object.keys(destinationVirtualAudioNode.virtualNodes).forEach(function (key) {
+              var node = virtualNodes[key];
               if (node.input !== 'input') {
                 return;
               }

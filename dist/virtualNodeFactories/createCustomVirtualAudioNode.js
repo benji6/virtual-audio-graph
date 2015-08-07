@@ -1,6 +1,6 @@
 'use strict';
 
-var connectAudioNodes = require('../tools/connectAudioNodes');
+var connectAudioNodes = require('../helpers/connectAudioNodes');
 var createNativeVirtualAudioNode = require('../virtualNodeFactories/createNativeVirtualAudioNode');
 var mapObj = require('../tools/mapObj');
 

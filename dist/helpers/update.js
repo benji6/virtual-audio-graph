@@ -17,8 +17,9 @@ module.exports = function update(virtualNode) {
   if (virtualNode.isCustomVirtualNode) {
     (function () {
       var audioGraphParamsFactoryValues = values(virtualNode.audioGraphParamsFactory(params));
-      values(virtualNode.virtualNodes).forEach(function (childVirtualNode, i) {
-        return update(childVirtualNode, audioGraphParamsFactoryValues[i].params);
+      Object.keys(virtualNode.virtualNodes).forEach(function (key, i) {
+        var childVirtualNode = virtualNode.virtualNodes[key];
+        update(childVirtualNode, audioGraphParamsFactoryValues[i].params);
       });
     })();
   } else {

@@ -1,7 +1,7 @@
 'use strict';
 
-var asArray = require('./asArray');
-var mapObj = require('./mapObj');
+var asArray = require('../tools/asArray');
+var mapObj = require('../tools/mapObj');
 
 module.exports = function (virtualNode, destination) {
   if (virtualNode.isCustomVirtualNode) {

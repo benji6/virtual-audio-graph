@@ -1,7 +1,7 @@
 'use strict';
 
-var createAudioNode = require('../tools/createAudioNode');
-var update = require('../tools/update');
+var createAudioNode = require('../helpers/createAudioNode');
+var update = require('../helpers/update');
 
 var pick = function pick(names, obj) {
   var result = {};
