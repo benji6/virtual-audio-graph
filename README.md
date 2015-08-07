@@ -22,7 +22,7 @@ Project is in development and API is not yet stable
 ## Installation
 
 ```bash
-$ npm install --save virtual-audio-graph
+$ npm i -S virtual-audio-graph
 ```
 
 ## Breaking Changes
