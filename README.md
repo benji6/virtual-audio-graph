@@ -17,61 +17,13 @@ Simply pass a data structure representing the desired audio graph and virtual-au
 
 ## Status
 
-Project is in development and API is not yet stable
+Project is in development and API is not yet stable. See [Changelog](/CHANGELOG.md) if upgrading from a previous version.
 
 ## Installation
 
 ```bash
-$ npm i -S virtual-audio-graph
+npm i -S virtual-audio-graph
 ```
-
-## Breaking Changes
-
-Prior to version 0.7.x virtual-audio-graph parameters were an array of objects with id properties representing nodes like this:
-
-```javascript
-[
-  {
-    id: 0,
-    node: 'oscillator',
-    output: 'output',
-    params: {
-      frequency: 220,
-    },
-  },
-  {
-    id: 1,
-    node: 'oscillator',
-    output: {id: 0, destination: 'detune'},
-    params: {
-      frequency: 110,
-    },
-  },
-]
-```
-
-Now the parameters are a single object with keys which represent the node ids:
-
-```javascript
-{
-  0: {
-    node: 'oscillator',
-    output: 'output',
-    params: {
-      frequency: 220,
-    },
-  },
-  1: {
-    node: 'oscillator',
-    output: {key: 0, destination: 'detune'}, // NB. "key" property used to be "id"
-    params: {
-      frequency: 110,
-    },
-  },
-}
-```
-
-The new notation automatically ensures the id of each node exists and is unique. It is also more concise and allows for greater performance.
 
 ## API
 
