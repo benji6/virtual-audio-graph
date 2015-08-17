@@ -51,6 +51,8 @@ The `VirtualAudioGraph` constructor takes an object with two optional properties
 
 - `virtual-audio-graph.defineNode` method described below.
 
+- `virtual-audio-graph.getAudioNodeById` takes an id and returns the audioNode relating to that id or undefined if no such audioNode exists. This is useful if the node has methods like the analyserNode. If you adjust any properties on nodes retrieved using this method virtual-audio-graph will not know so be careful!
+
 ### Updating the Audio Graph
 
 Create two oscillators, schedule their start and stop times, put them through a gain node and attach the gain node to the destination:
@@ -231,27 +233,18 @@ virtualAudioGraph.update({
 
 ### Standard Virtual Audio Nodes
 
-Here is a list of standard virtual audio nodes implemented in virtual-audio-graph and the params you can provide them with. You can build custom virtual audio nodes out of these as above. For more info check out https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.
+Here is a list of standard virtual audio nodes implemented in virtual-audio-graph and the params you can provide them with. You can build custom virtual audio nodes out of these as above. For more info on audioNodes and the parameters they can accept see: https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.
 
 ```javascript
 {
-  node: 'oscillator',
+  node: 'analyser',
   params: {
-    type,
-    frequency,
-    detune,
-    startTime, // time in seconds since virtualAudioGraph.currentTime was 0, if not provided then oscillator starts immediately
-    stopTime, // if not provided then oscillator does not stop
-  }
-}
-```
-
-```javascript
-{
-  node: 'gain',
-  params: {
-    gain,
-  }
+    fftSize,
+    minDecibels,
+    maxDecibels,
+    smoothingTimeConstant,
+  },
+  output: 'output',
 }
 ```
 
@@ -279,10 +272,23 @@ Here is a list of standard virtual audio nodes implemented in virtual-audio-grap
 
 ```javascript
 {
-  node: 'stereoPanner',
+  node: 'gain',
   params: {
-    pan,
-  },
+    gain,
+  }
+}
+```
+
+```javascript
+{
+  node: 'oscillator',
+  params: {
+    type,
+    frequency,
+    detune,
+    startTime, // time in seconds since virtualAudioGraph.currentTime was 0, if not provided then oscillator starts immediately
+    stopTime, // if not provided then oscillator does not stop
+  }
 }
 ```
 
@@ -302,5 +308,14 @@ Here is a list of standard virtual audio nodes implemented in virtual-audio-grap
     rolloffFactor,
   },
   output: 'output',
+}
+```
+
+```javascript
+{
+  node: 'stereoPanner',
+  params: {
+    pan,
+  },
 }
 ```

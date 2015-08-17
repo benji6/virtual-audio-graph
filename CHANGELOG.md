@@ -1,5 +1,12 @@
 # Release Notes
 
+## 0.8.x
+
+Added getAudioNodeById method to virtualAudioGraph
+
+Added support for:
+- AnalyserNode
+
 ## 0.7.x
 
 Prior to version 0.7.x virtual-audio-graph parameters were an array of objects with id properties representing nodes like this:
