@@ -30,6 +30,10 @@ export default class VirtualAudioGraph {
     return this;
   }
 
+  getAudioNodeById (id) {
+    return this.virtualNodes[id].audioNode;
+  }
+
   update (virtualGraphParams) {
     difference(Object.keys(this.virtualNodes), Object.keys(virtualGraphParams))
       .forEach(id => {

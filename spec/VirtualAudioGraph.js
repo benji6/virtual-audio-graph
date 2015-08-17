@@ -21,4 +21,19 @@ describe('VirtualAudioGraph', function () {
       audioContext: audioContext,
     }).currentTime).toBe(audioContext.currentTime);
   });
+
+  it('has a method called getAudioNodeById which returns an AudioNode of with the given id', function () {
+    const virtualAudioGraph = new VirtualAudioGraph({
+      audioContext: audioContext,
+    });
+
+    virtualAudioGraph.update({
+      0: {
+        node: 'gain',
+        output: 'output',
+      },
+    });
+
+    expect(virtualAudioGraph.getAudioNodeById(0).constructor).toBe(GainNode);
+  });
 });
