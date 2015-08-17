@@ -1,11 +1,11 @@
-const capitalize = require('capitalize');
-const constructorParamsKeys = require('../data/constructorParamsKeys');
-const audioParamProperties = require('../data/audioParamProperties');
-const setters = require('../data/setters');
+import capitalize from 'capitalize';
+import constructorParamsKeys from '../data/constructorParamsKeys';
+import audioParamProperties from '../data/audioParamProperties';
+import setters from '../data/setters';
 
 const values = obj => Object.keys(obj).map(key => obj[key]);
 
-module.exports = function update (virtualNode, params = {}) {
+export default function update (virtualNode, params = {}) {
   if (virtualNode.isCustomVirtualNode) {
     const audioGraphParamsFactoryValues = values(virtualNode.audioGraphParamsFactory(params));
     Object.keys(virtualNode.virtualNodes)

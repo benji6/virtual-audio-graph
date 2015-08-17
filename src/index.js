@@ -1,15 +1,15 @@
-const capitalize = require('capitalize');
-const connect = require('./helpers/connect');
-const connectAudioNodes = require('./helpers/connectAudioNodes');
-const createVirtualAudioNode = require('./helpers/createVirtualAudioNode');
-const updateAudioNodeAndVirtualAudioGraph = require('./helpers/updateAudioNodeAndVirtualAudioGraph');
-const disconnect = require('./helpers/disconnect');
+import capitalize from 'capitalize';
+import connect from './helpers/connect';
+import connectAudioNodes from './helpers/connectAudioNodes';
+import createVirtualAudioNode from './helpers/createVirtualAudioNode';
+import updateAudioNodeAndVirtualAudioGraph from './helpers/updateAudioNodeAndVirtualAudioGraph';
+import disconnect from './helpers/disconnect';
 
 const startTimePath = obj => obj.params && obj.params.startTime;
 const stopTimePath = obj => obj.params && obj.params.stopTime;
 const difference = (arr0, arr1) => arr0.filter(x => arr1.indexOf(x) === -1);
 
-module.exports = class VirtualAudioGraph {
+export default class VirtualAudioGraph {
   constructor (params = {}) {
     this.audioContext = params.audioContext || new AudioContext();
     this.output = params.output || this.audioContext.destination;

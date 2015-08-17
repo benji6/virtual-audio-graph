@@ -1,4 +1,4 @@
-module.exports = [
+export default [
  'delayTime',
  'detune',
  'frequency',

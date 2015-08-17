@@ -1,4 +1,4 @@
-module.exports = function disconnect (virtualNode) {
+export default function disconnect (virtualNode) {
   if (virtualNode.isCustomVirtualNode) {
     const {virtualNodes} = virtualNode;
     Object.keys(virtualNodes)

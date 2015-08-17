@@ -1,7 +1,7 @@
-const createNativeVirtualAudioNode = require('../virtualNodeFactories/createNativeVirtualAudioNode');
-const createCustomVirtualAudioNode = require('../virtualNodeFactories/createCustomVirtualAudioNode');
+import createNativeVirtualAudioNode from '../virtualNodeFactories/createNativeVirtualAudioNode';
+import createCustomVirtualAudioNode from '../virtualNodeFactories/createCustomVirtualAudioNode';
 
-module.exports = function (virtualAudioNodeParam) {
+export default function (virtualAudioNodeParam) {
   if (this.customNodes[virtualAudioNodeParam.node]) {
     return createCustomVirtualAudioNode(this, virtualAudioNodeParam);
   }

@@ -1,7 +1,7 @@
-const asArray = require('../tools/asArray');
-const mapObj = require('../tools/mapObj');
+import asArray from '../tools/asArray';
+import mapObj from '../tools/mapObj';
 
-module.exports = (virtualNode, destination) => {
+export default (virtualNode, destination) => {
   if (virtualNode.isCustomVirtualNode) {
     mapObj(childVirtualNode => {
       if (asArray(childVirtualNode.output).indexOf('output') !== -1) {

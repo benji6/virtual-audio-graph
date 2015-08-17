@@ -1,7 +1,7 @@
-const asArray = require('../tools/asArray');
-const connect = require('./connect');
+import asArray from '../tools/asArray';
+import connect from './connect';
 
-module.exports = (virtualGraph, handleConnectionToOutput = () => {}) =>
+export default (virtualGraph, handleConnectionToOutput = () => {}) =>
   Object.keys(virtualGraph).forEach(id => {
     const virtualNode = virtualGraph[id];
     if (virtualNode.connected) {

@@ -1,5 +1,5 @@
-const createAudioNode = require('../helpers/createAudioNode');
-const update = require('../helpers/update');
+import createAudioNode from '../helpers/createAudioNode';
+import update from '../helpers/update';
 
 const pick = (names, obj) => {
   const result = {};
@@ -17,7 +17,7 @@ const constructorParamsKeys = [
   'maxDelayTime',
 ];
 
-module.exports = (virtualAudioGraph, {node, input, output, params}) => {
+export default (virtualAudioGraph, {node, input, output, params}) => {
   params = params || {};
   const {startTime, stopTime} = params;
   const constructorParams = pick(constructorParamsKeys, params);

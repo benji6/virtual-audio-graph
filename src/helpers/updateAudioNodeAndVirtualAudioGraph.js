@@ -1,6 +1,6 @@
-const createVirtualAudioNode = require('./createVirtualAudioNode');
-const disconnect = require('./disconnect');
-const update = require('./update');
+import createVirtualAudioNode from './createVirtualAudioNode';
+import disconnect from  './disconnect';
+import update from './update';
 
 function checkOutputsEqual (output0, output1) {
   if (Array.isArray(output0)) {
@@ -12,7 +12,7 @@ function checkOutputsEqual (output0, output1) {
   return output0 === output1;
 }
 
-module.exports = function (virtualAudioNode, virtualAudioNodeParam, id) {
+export default function (virtualAudioNode, virtualAudioNodeParam, id) {
   if (virtualAudioNodeParam.node !== virtualAudioNode.node) {
     disconnect(virtualAudioNode);
     this.virtualNodes[id] = createVirtualAudioNode.call(this, virtualAudioNodeParam);

@@ -1,8 +1,8 @@
-const connectAudioNodes = require('../helpers/connectAudioNodes');
-const createNativeVirtualAudioNode = require('../virtualNodeFactories/createNativeVirtualAudioNode');
-const mapObj = require('../tools/mapObj');
+import connectAudioNodes from '../helpers/connectAudioNodes';
+import createNativeVirtualAudioNode from '../virtualNodeFactories/createNativeVirtualAudioNode';
+import mapObj from '../tools/mapObj';
 
-module.exports = function createCustomVirtualNode (virtualAudioGraph, {node, output, params}) {
+export default function createCustomVirtualNode (virtualAudioGraph, {node, output, params}) {
   params = params || {};
   const audioGraphParamsFactory = virtualAudioGraph.customNodes[node];
   const virtualNodes = mapObj(virtualAudioNodeParam => {

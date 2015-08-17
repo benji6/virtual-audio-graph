@@ -1,1 +1,1 @@
-module.exports = (x) => Array.isArray(x) ? x : [x];
+export default x => Array.isArray(x) ? x : [x];
