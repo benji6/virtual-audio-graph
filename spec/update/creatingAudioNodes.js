@@ -12,6 +12,37 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', function () {
     });
   });
 
+  it('creates AnalyserNode with all valid parameters', function () {
+    const params = {
+      fftSize: 2048,
+      minDecibels: -90,
+      maxDecibels: -10,
+      smoothingTimeConstant: 1,
+    };
+
+    const virtualGraphParams = {
+      0: {
+        node: 'analyser',
+        params: params,
+        output: 'output',
+      },
+    };
+
+    virtualAudioGraph.update(virtualGraphParams);
+    const audioNode = virtualAudioGraph.getAudioNodeById(0);
+    expect(audioNode.constructor).toBe(AnalyserNode);
+    expect(audioNode.type).toBe(params.type);
+    expect(audioNode.fftSize).toBe(params.fftSize);
+    expect(audioNode.frequencyBinCount).toBe(params.fftSize / 2);
+    expect(audioNode.minDecibels).toBe(params.minDecibels);
+    expect(audioNode.maxDecibels).toBe(params.maxDecibels);
+    expect(audioNode.smoothingTimeConstant).toBe(params.smoothingTimeConstant);
+    expect(audioNode.getFloatFrequencyData(new Float32Array(audioNode.frequencyBinCount))).toBeUndefined();
+    expect(audioNode.getByteFrequencyData(new Uint8Array(audioNode.frequencyBinCount))).toBeUndefined();
+    expect(audioNode.getFloatTimeDomainData(new Float32Array(audioNode.fftSize))).toBeUndefined();
+    expect(audioNode.getByteTimeDomainData(new Uint8Array(audioNode.fftSize))).toBeUndefined();
+  });
+
   it('creates OscillatorNode with all valid parameters', function () {
     const params = {
       type: 'square',
