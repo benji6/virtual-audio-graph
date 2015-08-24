@@ -28,17 +28,17 @@
   "devDependencies": {
     "babel-runtime": "^5.8.20",
     "benchmark": "^1.0.0",
-    "del": "^1.2.0",
-    "eslint": "^1.0.0",
+    "del": "^1.2.1",
+    "eslint": "^1.2.1",
     "gulp": "^3.9.0",
-    "gulp-babel": "^5.2.0",
+    "gulp-babel": "^5.2.1",
     "gulp-eslint": "^1.0.0",
     "gulp-jasmine": "^2.0.1",
     "gulp-plumber": "^1.0.1",
     "gulp-uglify": "^1.2.0",
     "ramda": "^0.17.1",
     "run-sequence": "^1.1.2",
-    "virtual-audio-graph": "^0.7.10",
+    "virtual-audio-graph": "^0.7.12",
     "web-audio-test-api": "^0.3.6"
   },
   "eslintConfig": {
