@@ -10,4 +10,4 @@ export default function disconnect (virtualNode) {
     virtualNode.audioNode.disconnect();
   }
   virtualNode.connected = false;
-};
+}

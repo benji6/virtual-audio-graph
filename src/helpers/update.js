@@ -36,4 +36,4 @@ export default function update (virtualNode, params = {}) {
   }
   virtualNode.params = params;
   return virtualNode;
-};
+}

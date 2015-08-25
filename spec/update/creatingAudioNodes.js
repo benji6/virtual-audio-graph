@@ -31,7 +31,6 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', function () {
     virtualAudioGraph.update(virtualGraphParams);
     const audioNode = virtualAudioGraph.getAudioNodeById(0);
     expect(audioNode.constructor).toBe(AnalyserNode);
-    expect(audioNode.type).toBe(params.type);
     expect(audioNode.fftSize).toBe(params.fftSize);
     expect(audioNode.frequencyBinCount).toBe(params.fftSize / 2);
     expect(audioNode.minDecibels).toBe(params.minDecibels);

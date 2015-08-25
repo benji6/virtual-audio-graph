@@ -25,4 +25,4 @@ export default function (virtualAudioNode, virtualAudioNodeParam, id) {
   }
 
   update(virtualAudioNode, virtualAudioNodeParam.params);
-};
+}

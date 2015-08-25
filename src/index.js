@@ -68,4 +68,4 @@ export default class VirtualAudioGraph {
 
     return this;
   }
-};
+}

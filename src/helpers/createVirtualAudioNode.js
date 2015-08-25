@@ -6,4 +6,4 @@ export default function (virtualAudioNodeParam) {
     return createCustomVirtualAudioNode(this, virtualAudioNodeParam);
   }
   return createNativeVirtualAudioNode(this, virtualAudioNodeParam);
-};
+}

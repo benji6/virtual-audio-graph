@@ -23,4 +23,4 @@ export default function createCustomVirtualNode (virtualAudioGraph, {node, outpu
     params,
     virtualNodes,
   };
-};
+}
