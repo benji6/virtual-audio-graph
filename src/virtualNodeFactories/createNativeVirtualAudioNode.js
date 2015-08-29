@@ -25,6 +25,7 @@ export default (virtualAudioGraph, {node, input, output, params}) => {
     input,
     node,
     output,
+    stopCalled: stopTime !== undefined,
   };
   return update(virtualNode, params);
 };

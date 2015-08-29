@@ -20,7 +20,7 @@ export default function (virtualAudioNode, virtualAudioNodeParam, id) {
   }
 
   if (!checkOutputsEqual(virtualAudioNodeParam.output, virtualAudioNode.output)) {
-    disconnect(virtualAudioNode);
+    disconnect(virtualAudioNode, true);
     virtualAudioNode.output = virtualAudioNodeParam.output;
   }
 
