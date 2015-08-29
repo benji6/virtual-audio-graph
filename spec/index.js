@@ -5,5 +5,9 @@ WebAudioTestAPI.setState({
   'AnalyserNode#getFloatTimeDomainData': 'enabled',
 });
 import './VirtualAudioGraph';
-import './defineNode/index';
-import './update/index';
+import './defineNode/errorThrowing';
+import './defineNode/expectedBehaviour';
+import './update/creatingAudioNodes';
+import './update/errorThrowing';
+import './update/expectedBehaviour';
+import './update/scheduling';
