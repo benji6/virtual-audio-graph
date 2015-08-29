@@ -1,5 +1,5 @@
 import connectAudioNodes from '../helpers/connectAudioNodes';
-import createNativeVirtualAudioNode from '../virtualNodeFactories/createNativeVirtualAudioNode';
+import createStandardVirtualAudioNode from '../virtualNodeFactories/createStandardVirtualAudioNode';
 import mapObj from '../tools/mapObj';
 
 export default function createCustomVirtualNode (virtualAudioGraph, {node, output, params}) {
@@ -9,7 +9,7 @@ export default function createCustomVirtualNode (virtualAudioGraph, {node, outpu
     if (virtualAudioGraph.customNodes[virtualAudioNodeParam.node]) {
       return createCustomVirtualNode(virtualAudioGraph, virtualAudioNodeParam);
     }
-    return createNativeVirtualAudioNode(virtualAudioGraph, virtualAudioNodeParam);
+    return createStandardVirtualAudioNode(virtualAudioGraph, virtualAudioNodeParam);
   }, audioGraphParamsFactory(params));
 
   connectAudioNodes(virtualNodes);
