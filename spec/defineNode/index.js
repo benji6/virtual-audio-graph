@@ -1,2 +1,2 @@
-require('./errorThrowing');
-require('./expectedBehaviour');
+import './errorThrowing';
+import './expectedBehaviour';

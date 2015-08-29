@@ -1,4 +1,4 @@
-require('./creatingAudioNodes');
-require('./errorThrowing');
-require('./expectedBehaviour');
-require('./scheduling');
+import './creatingAudioNodes';
+import './errorThrowing';
+import './expectedBehaviour';
+import './scheduling';

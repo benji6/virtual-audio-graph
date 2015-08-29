@@ -1,9 +1,9 @@
 /* global WebAudioTestAPI */
-require('web-audio-test-api');
+import 'web-audio-test-api';
 WebAudioTestAPI.setState({
   'AudioContext#createStereoPanner': 'enabled',
   'AnalyserNode#getFloatTimeDomainData': 'enabled',
 });
-require('./VirtualAudioGraph');
-require('./defineNode/index');
-require('./update/index');
+import './VirtualAudioGraph';
+import './defineNode/index';
+import './update/index';

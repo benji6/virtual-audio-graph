@@ -1,21 +1,21 @@
 /* global beforeEach describe expect it */
-const VirtualAudioGraph = require('../../dist/index.js');
-const pingPongDelayParamsFactory = require('../tools/pingPongDelayParamsFactory');
-const sineOscFactory = require('../tools/sineOscFactory');
+import VirtualAudioGraph from '../../dist/index.js';
+import pingPongDelayParamsFactory from '../tools/pingPongDelayParamsFactory';
+import sineOscFactory from '../tools/sineOscFactory';
 
-describe('virtualAudioGraph.update - expected behaviour: ', function () {
-  var audioContext;
-  var virtualAudioGraph;
+describe('virtualAudioGraph.update - expected behaviour: ', () => {
+  let audioContext;
+  let virtualAudioGraph;
 
-  beforeEach(function () {
+  beforeEach(() => {
     audioContext = new AudioContext();
     virtualAudioGraph = new VirtualAudioGraph({
-      audioContext: audioContext,
+      audioContext,
       output: audioContext.destination,
     });
   });
 
-  it('returns itself', function () {
+  it('returns itself', () => {
     const virtualNodeParams = [{
       id: 0,
       node: 'oscillator',
@@ -27,7 +27,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', function () {
     expect(virtualAudioGraph.update(virtualNodeParams)).toBe(virtualAudioGraph);
   });
 
-  it('adds then removes nodes', function () {
+  it('adds then removes nodes', () => {
     virtualAudioGraph.update({
       0: {
         node: 'gain',
@@ -68,7 +68,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', function () {
     });
   });
 
-  it('handles random strings for ids', function () {
+  it('handles random strings for ids', () => {
     virtualAudioGraph.update({
       foo: {
         node: 'gain',
@@ -109,7 +109,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', function () {
     });
   });
 
-  it('changes the node if passed params with same id but different node property', function () {
+  it('changes the node if passed params with same id but different node property', () => {
     virtualAudioGraph.update({
       0: {
         node: 'gain',
@@ -169,7 +169,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', function () {
     /* eslint-enable */
   });
 
-  it('updates standard and custom nodes if passed same id but different params', function () {
+  it('updates standard and custom nodes if passed same id but different params', () => {
     virtualAudioGraph.update({
       0: {
         node: 'oscillator',
@@ -299,7 +299,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', function () {
     });
   });
 
-  it('connects nodes to each other', function () {
+  it('connects nodes to each other', () => {
     virtualAudioGraph.update([{
       id: 0,
       node: 'gain',
@@ -362,7 +362,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', function () {
     });
   });
 
-  it('reconnects nodes to each other', function () {
+  it('reconnects nodes to each other', () => {
     virtualAudioGraph.update([{
       id: 0,
       node: 'gain',
@@ -438,7 +438,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', function () {
     });
   });
 
-  it('connects and reconnects nodes to audioParams', function () {
+  it('connects and reconnects nodes to audioParams', () => {
     virtualAudioGraph.update([{
       id: 0,
       node: 'gain',
