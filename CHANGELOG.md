@@ -2,10 +2,11 @@
 
 ## 0.8.x
 
-Added getAudioNodeById method to virtualAudioGraph
+- Added getAudioNodeById method to virtualAudioGraph
 
-Added support for:
-- AnalyserNode
+- Added support for:
+  - AnalyserNode
+  - AudioBufferSourceNode
 
 ## 0.7.x
 

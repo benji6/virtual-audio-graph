@@ -243,6 +243,28 @@ Here is a list of standard virtual audio nodes implemented in virtual-audio-grap
 ```
 ___
 
+#### [AudioBufferSourceNode](https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode)
+
+```javascript
+const {audioContext, audioContext: {sampleRate}} = virtualAudioGraph;
+const buffer = audioContext.createBuffer(2, sampleRate * 2, sampleRate);
+{
+  node: 'bufferSource',
+  params: {
+    buffer,
+    loop,
+    loopEnd,
+    loopStart,
+    onended,
+    playbackRate,
+    startTime, // time in seconds since virtualAudioGraph.currentTime was 0, if not provided then node starts immediately
+    stopTime, // if not provided then stop is not called on node until it is disconnected
+  },
+  output: 'output',
+}
+```
+___
+
 #### [BiquadFilterNode](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode)
 
 ```javascript
@@ -292,8 +314,8 @@ ___
     type,
     frequency,
     detune,
-    startTime, // time in seconds since virtualAudioGraph.currentTime was 0, if not provided then oscillator starts immediately
-    stopTime, // if not provided then oscillator does not stop
+    startTime, // time in seconds since virtualAudioGraph.currentTime was 0, if not provided then node starts immediately
+    stopTime, // if not provided then stop is not called on node until it is disconnected
   }
 }
 ```

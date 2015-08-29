@@ -2,7 +2,7 @@
 import {forEach} from 'ramda';
 import VirtualAudioGraph from '../../src/index.js';
 
-describe('virtualAudioGraph.update - scheduling: ', () => {
+const testSchedulingForNode = node => describe('virtualAudioGraph.update - scheduling: ', () => {
   let audioContext;
   let virtualAudioGraph;
 
@@ -11,14 +11,14 @@ describe('virtualAudioGraph.update - scheduling: ', () => {
     virtualAudioGraph = new VirtualAudioGraph({audioContext});
   });
 
-  it('oscillators with no start or stop times are played immediately and forever', () => {
+  it(`${node}s with no start or stop times are played immediately and forever`, () => {
     const virtualGraphParams = {
       0: {
-        node: 'oscillator',
+        node,
         output: 'output',
       },
       1: {
-        node: 'oscillator',
+        node,
         output: 'output',
       },
     };
@@ -35,17 +35,17 @@ describe('virtualAudioGraph.update - scheduling: ', () => {
     }, virtualAudioGraph.virtualNodes);
   });
 
-  it('oscillators with no start times but with stop times are played immediately until their stop time', () => {
+  it(`${node}s with no start times but with stop times are played immediately until their stop time`, () => {
     const virtualGraphParams = {
       0: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           stopTime: 0.2,
         },
       },
       1: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           stopTime: 0.2,
@@ -65,17 +65,17 @@ describe('virtualAudioGraph.update - scheduling: ', () => {
     }, virtualAudioGraph.virtualNodes);
   });
 
-  it('oscillators with start times but no stop times are played at their start time then forever', () => {
+  it(`${node}s with start times but no stop times are played at their start time then forever`, () => {
     const virtualGraphParams = {
       0: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           startTime: 0.1,
         },
       },
       1: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           startTime: 0.1,
@@ -95,10 +95,10 @@ describe('virtualAudioGraph.update - scheduling: ', () => {
     }, virtualAudioGraph.virtualNodes);
   });
 
-  it('works when scheduling a single oscillator\'s start and stop times', () => {
+  it(`works when scheduling a single ${node}'s start and stop times`, () => {
     const virtualGraphParams = {
       nodeA: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           startTime: 0.1,
@@ -116,10 +116,10 @@ describe('virtualAudioGraph.update - scheduling: ', () => {
     expect(audioNode.$stateAtTime('00:00.200')).toBe('FINISHED');
   });
 
-  it('works when scheduling multiple oscillators\' start and stop times', () => {
+  it(`works when scheduling multiple ${node}s' start and stop times`, () => {
     const virtualGraphParams = {
       0: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           startTime: 0.1,
@@ -127,7 +127,7 @@ describe('virtualAudioGraph.update - scheduling: ', () => {
         },
       },
       1: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           startTime: 0.1,
@@ -135,7 +135,7 @@ describe('virtualAudioGraph.update - scheduling: ', () => {
         },
       },
       2: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           startTime: 0.1,
@@ -155,28 +155,28 @@ describe('virtualAudioGraph.update - scheduling: ', () => {
     }, virtualAudioGraph.virtualNodes);
   });
 
-  it('works when rescheduling multiple oscillators\' start and stop times', () => {
+  it(`works when rescheduling multiple ${node}' start and stop times`, () => {
     virtualAudioGraph.update({
       0: {
-        node: 'oscillator',
+        node,
         output: 'output',
       },
       1: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           startTime: 1,
         },
       },
       2: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           stopTime: 0.1,
         },
       },
       3: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           startTime: 1,
@@ -187,7 +187,7 @@ describe('virtualAudioGraph.update - scheduling: ', () => {
 
     virtualAudioGraph.update({
       0: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           startTime: 0.1,
@@ -195,7 +195,7 @@ describe('virtualAudioGraph.update - scheduling: ', () => {
         },
       },
       1: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           startTime: 0.1,
@@ -203,7 +203,7 @@ describe('virtualAudioGraph.update - scheduling: ', () => {
         },
       },
       2: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           startTime: 0.1,
@@ -211,7 +211,7 @@ describe('virtualAudioGraph.update - scheduling: ', () => {
         },
       },
       3: {
-        node: 'oscillator',
+        node,
         output: 'output',
         params: {
           startTime: 0.1,
@@ -229,3 +229,6 @@ describe('virtualAudioGraph.update - scheduling: ', () => {
     }, virtualAudioGraph.virtualNodes);
   });
 });
+
+testSchedulingForNode('oscillator');
+testSchedulingForNode('bufferSource');

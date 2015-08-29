@@ -40,6 +40,37 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', () => {
     expect(audioNode.getByteTimeDomainData(new Uint8Array(audioNode.fftSize))).toBeUndefined();
   });
 
+  it('creates BufferSourceNode with all valid parameters', () => {
+    const {audioContext, audioContext: {sampleRate}} = virtualAudioGraph;
+
+    const params = {
+      buffer: audioContext.createBuffer(2, sampleRate * 2, sampleRate),
+      loop: true,
+      loopEnd: 2,
+      loopStart: 1,
+      onended: () => {},
+      playbackRate: 2,
+    };
+
+    const virtualGraphParams = {
+      0: {
+        node: 'bufferSource',
+        params,
+        output: 'output',
+      },
+    };
+
+    virtualAudioGraph.update(virtualGraphParams);
+    const audioNode = virtualAudioGraph.getAudioNodeById(0);
+    expect(audioNode.constructor.name).toBe('AudioBufferSourceNode');
+    expect(audioNode.buffer).toBe(params.buffer);
+    expect(audioNode.loop).toBe(params.loop);
+    expect(audioNode.loopEnd).toBe(params.loopEnd);
+    expect(audioNode.loopStart).toBe(params.loopStart);
+    expect(audioNode.onended).toBe(params.onended);
+    expect(audioNode.playbackRate.value).toBe(params.playbackRate);
+  });
+
   it('creates OscillatorNode with all valid parameters', () => {
     const params = {
       type: 'square',
