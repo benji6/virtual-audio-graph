@@ -225,7 +225,9 @@ virtualAudioGraph.update({
 
 ### Standard Virtual Audio Nodes
 
-Here is a list of standard virtual audio nodes implemented in virtual-audio-graph and the params you can provide them with. You can build custom virtual audio nodes out of these as above. For more info on audioNodes and the parameters they can accept see: https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.
+Here is a list of standard virtual audio nodes implemented in virtual-audio-graph and the params you can provide them with. You can build custom virtual audio nodes out of these as above.
+
+#### [AnalyserNode](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode)
 
 ```javascript
 {
@@ -239,6 +241,9 @@ Here is a list of standard virtual audio nodes implemented in virtual-audio-grap
   output: 'output',
 }
 ```
+___
+
+#### [BiquadFilterNode](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode)
 
 ```javascript
 {
@@ -251,6 +256,9 @@ Here is a list of standard virtual audio nodes implemented in virtual-audio-grap
   },
 }
 ```
+___
+
+#### [DelayNode](https://developer.mozilla.org/en-US/docs/Web/API/DelayNode)
 
 ```javascript
 {
@@ -261,6 +269,9 @@ Here is a list of standard virtual audio nodes implemented in virtual-audio-grap
   },
 }
 ```
+___
+
+#### [GainNode](https://developer.mozilla.org/en-US/docs/Web/API/GainNode)
 
 ```javascript
 {
@@ -270,6 +281,9 @@ Here is a list of standard virtual audio nodes implemented in virtual-audio-grap
   }
 }
 ```
+___
+
+#### [OscillatorNode](https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode)
 
 ```javascript
 {
@@ -283,6 +297,9 @@ Here is a list of standard virtual audio nodes implemented in virtual-audio-grap
   }
 }
 ```
+___
+
+#### [PannerNode](https://developer.mozilla.org/en-US/docs/Web/API/PannerNode)
 
 ```javascript
 {
@@ -302,12 +319,13 @@ Here is a list of standard virtual audio nodes implemented in virtual-audio-grap
   output: 'output',
 }
 ```
+___
+
+#### [StereoPannerNode](https://developer.mozilla.org/en-US/docs/Web/API/StereoPannerNode)
 
 ```javascript
 {
   node: 'stereoPanner',
-  params: {
-    pan,
-  },
+  params: {pan},
 }
 ```
