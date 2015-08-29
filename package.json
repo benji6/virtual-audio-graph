@@ -17,7 +17,9 @@
   },
   "scripts": {
     "benchmark": "node benchmark",
-    "test": "gulp spec"
+    "build": "node_modules/.bin/babel-node node_modules/.bin/gulp build",
+    "dev": "node_modules/.bin/babel-node node_modules/.bin/gulp",
+    "test": "node_modules/.bin/babel-node node_modules/.bin/gulp spec"
   },
   "author": "Ben Hall",
   "license": "MIT",
@@ -26,6 +28,7 @@
   },
   "homepage": "https://github.com/benji6/virtual-audio-graph",
   "devDependencies": {
+    "babel": "^5.8.23",
     "babel-eslint": "^4.1.0",
     "babel-runtime": "^5.8.20",
     "benchmark": "^1.0.0",
