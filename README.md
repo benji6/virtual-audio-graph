@@ -153,47 +153,39 @@ const pingPongDelayParamsFactory = ({
   zero: {
     node: 'stereoPanner',
     output: 'output',
-    params: {
-      pan: -1,
-    },
+    params: {pan: -1},
   },
   1: {
     node: 'stereoPanner',
     output: 'output',
-    params: {
-      pan: 1,
-    },
+    params: {pan: 1},
   },
   2: {
     node: 'delay',
     output: [1, 'five'],
     params: {
-      maxDelayTime: maxDelayTime,
-      delayTime: delayTime,
+      maxDelayTime,
+      delayTime,
     },
   },
   3: {
     node: 'gain',
     output: 2,
-    params: {
-      gain: decay,
-    },
+    params: {gain: decay},
   },
   4: {
     node: 'delay',
     output: ['zero', 3],
     params: {
-      maxDelayTime: maxDelayTime,
-      delayTime: delayTime,
+      maxDelayTime,
+      delayTime,
     },
   },
   five: {
     input: 'input',
     node: 'gain',
     output: 4,
-    params: {
-      gain: decay,
-    },
+    params: {gain: decay},
   },
 });
 
