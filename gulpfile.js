@@ -21,10 +21,9 @@ gulp.task('lint', () => gulp
   .pipe(eslint())
   .pipe(eslint.formatEach()));
 
-gulp.task('spec', function () {
-  return gulp.src('spec/index.js')
-    .pipe(jasmine());
-});
+gulp.task('spec', () => gulp
+  .src('spec/index.js')
+  .pipe(jasmine()));
 
 gulp.task('watch', () => {
   gulp.watch('src/**/*.js', () => runSequence(['js', 'lint'], 'spec'));
