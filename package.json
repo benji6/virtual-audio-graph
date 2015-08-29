@@ -16,7 +16,7 @@
     "url": "https://github.com/benji6/virtual-audio-graph.git"
   },
   "scripts": {
-    "benchmark": "node benchmark",
+    "benchmark": "node_modules/.bin/babel-node benchmark",
     "build": "node_modules/.bin/babel-node node_modules/.bin/gulp build",
     "dev": "node_modules/.bin/babel-node node_modules/.bin/gulp",
     "test": "node_modules/.bin/babel-node node_modules/.bin/gulp spec"
