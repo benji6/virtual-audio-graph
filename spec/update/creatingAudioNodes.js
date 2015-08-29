@@ -1,5 +1,5 @@
 /* global beforeEach describe expect it */
-import VirtualAudioGraph from '../../dist/index.js';
+import VirtualAudioGraph from '../../src/index.js';
 
 describe('virtualAudioGraph.update - creating AudioNodes: ', () => {
   let audioContext;

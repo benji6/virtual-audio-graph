@@ -1,6 +1,6 @@
 /* global beforeEach describe expect it */
 import {forEach} from 'ramda';
-import VirtualAudioGraph from '../../dist/index.js';
+import VirtualAudioGraph from '../../src/index.js';
 
 describe('virtualAudioGraph.update - scheduling: ', () => {
   let audioContext;

@@ -1,5 +1,5 @@
 /* global describe expect it */
-import VirtualAudioGraph from '../dist/index.js';
+import VirtualAudioGraph from '../src/index.js';
 const audioContext = new AudioContext();
 
 describe('VirtualAudioGraph', () => {

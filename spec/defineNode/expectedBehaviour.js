@@ -1,5 +1,5 @@
 /* global beforeEach describe expect it */
-import VirtualAudioGraph from '../../dist/index.js';
+import VirtualAudioGraph from '../../src/index.js';
 import pingPongDelayParamsFactory from '../tools/pingPongDelayParamsFactory';
 import sineOscFactory from '../tools/sineOscFactory';
 import squareOscFactory from '../tools/squareOscFactory';
