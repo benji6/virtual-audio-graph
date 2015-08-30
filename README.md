@@ -51,7 +51,7 @@ The `VirtualAudioGraph` constructor takes an object with two optional properties
 
 - `virtual-audio-graph.defineNode` method described below.
 
-- `virtual-audio-graph.getAudioNodeById` takes an id and returns the audioNode relating to that id or undefined if no such audioNode exists. This is useful if the node has methods like the analyserNode. If you adjust any properties on nodes retrieved using this method virtual-audio-graph will not know so be careful!
+- `virtual-audio-graph.getAudioNodeById` takes an id and returns the audioNode relating to that id or undefined if no such audioNode exists. This is useful if the node has methods (e.g. `AnalyserNode.getFloatFrequencyData` & `OscillatorNode.setPeriodicWave`). If you adjust any properties on nodes retrieved using this method virtual-audio-graph will not know so be careful!
 
 ### Updating the Audio Graph
 
