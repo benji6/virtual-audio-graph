@@ -1,18 +1,30 @@
 'use strict';
 
-var capitalize = require('capitalize');
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _capitalize = require('capitalize');
+
+var _capitalize2 = _interopRequireDefault(_capitalize);
+
+var _dataStartAndStopNodes = require('../data/startAndStopNodes');
+
+var _dataStartAndStopNodes2 = _interopRequireDefault(_dataStartAndStopNodes);
 
 var namesToParamsKey = {
   delay: 'maxDelayTime'
 };
 
-module.exports = function (audioContext, name, constructorParams, _ref) {
+exports['default'] = function (audioContext, name, constructorParams, _ref) {
   var startTime = _ref.startTime;
   var stopTime = _ref.stopTime;
 
   var constructorParamsKey = namesToParamsKey[name];
-  var audioNode = constructorParamsKey ? audioContext['create' + capitalize(name)](constructorParams[constructorParamsKey]) : audioContext['create' + capitalize(name)]();
-  if (name === 'oscillator') {
+  var audioNode = constructorParamsKey ? audioContext['create' + (0, _capitalize2['default'])(name)](constructorParams[constructorParamsKey]) : audioContext['create' + (0, _capitalize2['default'])(name)]();
+  if (_dataStartAndStopNodes2['default'].indexOf(name) !== -1) {
     if (startTime == null) {
       audioNode.start();
     } else {
@@ -24,3 +36,5 @@ module.exports = function (audioContext, name, constructorParams, _ref) {
   }
   return audioNode;
 };
+
+module.exports = exports['default'];

@@ -4,5 +4,6 @@ export default [
  'frequency',
  'gain',
  'pan',
+ 'playbackRate',
  'Q',
 ];

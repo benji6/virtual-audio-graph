@@ -1,16 +1,27 @@
 'use strict';
 
-var asArray = require('../tools/asArray');
-var connect = require('./connect');
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-module.exports = function (virtualGraph) {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _toolsAsArray = require('../tools/asArray');
+
+var _toolsAsArray2 = _interopRequireDefault(_toolsAsArray);
+
+var _connect = require('./connect');
+
+var _connect2 = _interopRequireDefault(_connect);
+
+exports['default'] = function (virtualGraph) {
   var handleConnectionToOutput = arguments.length <= 1 || arguments[1] === undefined ? function () {} : arguments[1];
   return Object.keys(virtualGraph).forEach(function (id) {
     var virtualNode = virtualGraph[id];
     if (virtualNode.connected) {
       return;
     }
-    asArray(virtualNode.output).forEach(function (output) {
+    (0, _toolsAsArray2['default'])(virtualNode.output).forEach(function (output) {
       if (output === 'output') {
         return handleConnectionToOutput(virtualNode);
       }
@@ -22,7 +33,7 @@ module.exports = function (virtualGraph) {
         if (key == null) {
           throw new Error('id: ' + id + ' - output object requires a key property');
         }
-        return connect(virtualNode, virtualGraph[key].audioNode[destination]);
+        return (0, _connect2['default'])(virtualNode, virtualGraph[key].audioNode[destination]);
       }
 
       var destinationVirtualAudioNode = virtualGraph[output];
@@ -37,7 +48,7 @@ module.exports = function (virtualGraph) {
               if (node.input !== 'input') {
                 return;
               }
-              connect(virtualNode, node.audioNode);
+              (0, _connect2['default'])(virtualNode, node.audioNode);
             })
           };
         })();
@@ -45,7 +56,9 @@ module.exports = function (virtualGraph) {
         if (typeof _ret === 'object') return _ret.v;
       }
 
-      connect(virtualNode, destinationVirtualAudioNode.audioNode);
+      (0, _connect2['default'])(virtualNode, destinationVirtualAudioNode.audioNode);
     });
   });
 };
+
+module.exports = exports['default'];

@@ -1,0 +1,18 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "comma-dangle": [1, "always-multiline"],
+    "no-shadow": 0,
+    "no-extra-semi": 2,
+    "no-undef" : [2],
+    "no-unused-vars": [2, {"vars": "all", "args": "after-used"}],
+    "quotes": [1, "single"],
+    "semi": [1, "always"],
+    "strict": 0
+  }
+}

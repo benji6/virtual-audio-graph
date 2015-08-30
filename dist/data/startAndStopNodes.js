@@ -3,5 +3,5 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports['default'] = ['maxDelayTime'];
+exports['default'] = ['oscillator', 'bufferSource'];
 module.exports = exports['default'];

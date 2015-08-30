@@ -1,4 +1,4 @@
-export default function disconnect (virtualNode) {
+export default function disconnect (virtualNode, doNotStop) {
   if (virtualNode.isCustomVirtualNode) {
     const {virtualNodes} = virtualNode;
     Object.keys(virtualNodes)
@@ -7,7 +7,11 @@ export default function disconnect (virtualNode) {
         disconnect(childVirtualNode);
       });
   } else {
-    virtualNode.audioNode.disconnect();
+    const {audioNode} = virtualNode;
+    if (audioNode.stop && !virtualNode.stopCalled && !doNotStop) {
+      audioNode.stop();
+    }
+    audioNode.disconnect();
   }
   virtualNode.connected = false;
-};
+}

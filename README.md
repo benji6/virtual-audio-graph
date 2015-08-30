@@ -51,6 +51,8 @@ The `VirtualAudioGraph` constructor takes an object with two optional properties
 
 - `virtual-audio-graph.defineNode` method described below.
 
+- `virtual-audio-graph.getAudioNodeById` takes an id and returns the audioNode relating to that id or undefined if no such audioNode exists. This is useful if the node has methods like the analyserNode. If you adjust any properties on nodes retrieved using this method virtual-audio-graph will not know so be careful!
+
 ### Updating the Audio Graph
 
 Create two oscillators, schedule their start and stop times, put them through a gain node and attach the gain node to the destination:
@@ -151,47 +153,39 @@ const pingPongDelayParamsFactory = ({
   zero: {
     node: 'stereoPanner',
     output: 'output',
-    params: {
-      pan: -1,
-    },
+    params: {pan: -1},
   },
   1: {
     node: 'stereoPanner',
     output: 'output',
-    params: {
-      pan: 1,
-    },
+    params: {pan: 1},
   },
   2: {
     node: 'delay',
     output: [1, 'five'],
     params: {
-      maxDelayTime: maxDelayTime,
-      delayTime: delayTime,
+      maxDelayTime,
+      delayTime,
     },
   },
   3: {
     node: 'gain',
     output: 2,
-    params: {
-      gain: decay,
-    },
+    params: {gain: decay},
   },
   4: {
     node: 'delay',
     output: ['zero', 3],
     params: {
-      maxDelayTime: maxDelayTime,
-      delayTime: delayTime,
+      maxDelayTime,
+      delayTime,
     },
   },
   five: {
     input: 'input',
     node: 'gain',
     output: 4,
-    params: {
-      gain: decay,
-    },
+    params: {gain: decay},
   },
 });
 
@@ -231,29 +225,47 @@ virtualAudioGraph.update({
 
 ### Standard Virtual Audio Nodes
 
-Here is a list of standard virtual audio nodes implemented in virtual-audio-graph and the params you can provide them with. You can build custom virtual audio nodes out of these as above. For more info check out https://developer.mozilla.org/en-US/docs/Web/API/AudioNode.
+Here is a list of standard virtual audio nodes implemented in virtual-audio-graph and the params you can provide them with. You can build custom virtual audio nodes out of these as above.
+
+#### [AnalyserNode](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode)
 
 ```javascript
 {
-  node: 'oscillator',
+  node: 'analyser',
   params: {
-    type,
-    frequency,
-    detune,
-    startTime, // time in seconds since virtualAudioGraph.currentTime was 0, if not provided then oscillator starts immediately
-    stopTime, // if not provided then oscillator does not stop
-  }
+    fftSize,
+    minDecibels,
+    maxDecibels,
+    smoothingTimeConstant,
+  },
+  output: 'output',
 }
 ```
+___
+
+#### [AudioBufferSourceNode](https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode)
 
 ```javascript
+const {audioContext, audioContext: {sampleRate}} = virtualAudioGraph;
+const buffer = audioContext.createBuffer(2, sampleRate * 2, sampleRate);
 {
-  node: 'gain',
+  node: 'bufferSource',
   params: {
-    gain,
-  }
+    buffer,
+    loop,
+    loopEnd,
+    loopStart,
+    onended,
+    playbackRate,
+    startTime, // time in seconds since virtualAudioGraph.currentTime was 0, if not provided then node starts immediately
+    stopTime, // if not provided then stop is not called on node until it is disconnected
+  },
+  output: 'output',
 }
 ```
+___
+
+#### [BiquadFilterNode](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode)
 
 ```javascript
 {
@@ -266,6 +278,9 @@ Here is a list of standard virtual audio nodes implemented in virtual-audio-grap
   },
 }
 ```
+___
+
+#### [DelayNode](https://developer.mozilla.org/en-US/docs/Web/API/DelayNode)
 
 ```javascript
 {
@@ -276,15 +291,37 @@ Here is a list of standard virtual audio nodes implemented in virtual-audio-grap
   },
 }
 ```
+___
+
+#### [GainNode](https://developer.mozilla.org/en-US/docs/Web/API/GainNode)
 
 ```javascript
 {
-  node: 'stereoPanner',
+  node: 'gain',
   params: {
-    pan,
-  },
+    gain,
+  }
 }
 ```
+___
+
+#### [OscillatorNode](https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode)
+
+```javascript
+{
+  node: 'oscillator',
+  params: {
+    type,
+    frequency,
+    detune,
+    startTime, // time in seconds since virtualAudioGraph.currentTime was 0, if not provided then node starts immediately
+    stopTime, // if not provided then stop is not called on node until it is disconnected
+  }
+}
+```
+___
+
+#### [PannerNode](https://developer.mozilla.org/en-US/docs/Web/API/PannerNode)
 
 ```javascript
 {
@@ -302,5 +339,15 @@ Here is a list of standard virtual audio nodes implemented in virtual-audio-grap
     rolloffFactor,
   },
   output: 'output',
+}
+```
+___
+
+#### [StereoPannerNode](https://developer.mozilla.org/en-US/docs/Web/API/StereoPannerNode)
+
+```javascript
+{
+  node: 'stereoPanner',
+  params: {pan},
 }
 ```

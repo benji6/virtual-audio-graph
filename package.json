@@ -16,8 +16,10 @@
     "url": "https://github.com/benji6/virtual-audio-graph.git"
   },
   "scripts": {
-    "benchmark": "node benchmark",
-    "test": "gulp spec"
+    "benchmark": "node_modules/.bin/babel-node benchmark",
+    "build": "node_modules/.bin/babel-node node_modules/.bin/gulp build",
+    "dev": "node_modules/.bin/babel-node node_modules/.bin/gulp",
+    "test": "node_modules/.bin/babel-node node_modules/.bin/gulp spec"
   },
   "author": "Ben Hall",
   "license": "MIT",
@@ -26,43 +28,21 @@
   },
   "homepage": "https://github.com/benji6/virtual-audio-graph",
   "devDependencies": {
+    "babel": "^5.8.23",
+    "babel-eslint": "^4.1.0",
     "babel-runtime": "^5.8.20",
     "benchmark": "^1.0.0",
-    "del": "^1.2.0",
-    "eslint": "^1.0.0",
+    "del": "^1.2.1",
+    "eslint": "^1.3.0",
     "gulp": "^3.9.0",
-    "gulp-babel": "^5.2.0",
+    "gulp-babel": "^5.2.1",
     "gulp-eslint": "^1.0.0",
     "gulp-jasmine": "^2.0.1",
     "gulp-plumber": "^1.0.1",
-    "gulp-uglify": "^1.2.0",
     "ramda": "^0.17.1",
     "run-sequence": "^1.1.2",
-    "virtual-audio-graph": "^0.7.10",
+    "virtual-audio-graph": "^0.7.12",
     "web-audio-test-api": "^0.3.6"
-  },
-  "eslintConfig": {
-    "ecmaFeatures": {
-      "modules": true
-    },
-    "env": {
-      "browser": true,
-      "es6": true,
-      "node": true
-    },
-    "rules": {
-      "comma-dangle": [
-        1,
-        "always-multiline"
-      ],
-      "quotes": [
-        1,
-        "single"
-      ],
-      "no-shadow": [
-        0
-      ]
-    }
   },
   "dependencies": {
     "capitalize": "^1.0.0"

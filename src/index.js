@@ -10,9 +10,10 @@ const stopTimePath = obj => obj.params && obj.params.stopTime;
 const difference = (arr0, arr1) => arr0.filter(x => arr1.indexOf(x) === -1);
 
 export default class VirtualAudioGraph {
-  constructor (params = {}) {
-    this.audioContext = params.audioContext || new AudioContext();
-    this.output = params.output || this.audioContext.destination;
+  constructor ({audioContext = new AudioContext(),
+                output = audioContext.destination} = {}) {
+    this.audioContext = audioContext;
+    this.output = output;
     this.virtualNodes = {};
     this.customNodes = {};
   }
@@ -68,4 +69,4 @@ export default class VirtualAudioGraph {
 
     return this;
   }
-};
+}

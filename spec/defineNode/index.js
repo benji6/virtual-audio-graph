@@ -1,2 +1,0 @@
-require('./errorThrowing');
-require('./expectedBehaviour');

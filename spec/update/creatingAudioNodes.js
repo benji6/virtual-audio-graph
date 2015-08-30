@@ -1,18 +1,77 @@
 /* global beforeEach describe expect it */
-const VirtualAudioGraph = require('../../dist/index.js');
+import VirtualAudioGraph from '../../src/index.js';
 
-describe('virtualAudioGraph.update - creating AudioNodes: ', function () {
-  var audioContext;
-  var virtualAudioGraph;
+describe('virtualAudioGraph.update - creating AudioNodes: ', () => {
+  let audioContext;
+  let virtualAudioGraph;
 
-  beforeEach(function () {
+  beforeEach(() => {
     audioContext = new AudioContext();
-    virtualAudioGraph = new VirtualAudioGraph({
-      audioContext: audioContext,
-    });
+    virtualAudioGraph = new VirtualAudioGraph({audioContext});
   });
 
-  it('creates OscillatorNode with all valid parameters', function () {
+  it('creates AnalyserNode with all valid parameters', () => {
+    const params = {
+      fftSize: 2048,
+      minDecibels: -90,
+      maxDecibels: -10,
+      smoothingTimeConstant: 1,
+    };
+
+    const virtualGraphParams = {
+      0: {
+        node: 'analyser',
+        params,
+        output: 'output',
+      },
+    };
+
+    virtualAudioGraph.update(virtualGraphParams);
+    const audioNode = virtualAudioGraph.getAudioNodeById(0);
+    expect(audioNode.constructor).toBe(AnalyserNode);
+    expect(audioNode.fftSize).toBe(params.fftSize);
+    expect(audioNode.frequencyBinCount).toBe(params.fftSize / 2);
+    expect(audioNode.minDecibels).toBe(params.minDecibels);
+    expect(audioNode.maxDecibels).toBe(params.maxDecibels);
+    expect(audioNode.smoothingTimeConstant).toBe(params.smoothingTimeConstant);
+    expect(audioNode.getFloatFrequencyData(new Float32Array(audioNode.frequencyBinCount))).toBeUndefined();
+    expect(audioNode.getByteFrequencyData(new Uint8Array(audioNode.frequencyBinCount))).toBeUndefined();
+    expect(audioNode.getFloatTimeDomainData(new Float32Array(audioNode.fftSize))).toBeUndefined();
+    expect(audioNode.getByteTimeDomainData(new Uint8Array(audioNode.fftSize))).toBeUndefined();
+  });
+
+  it('creates BufferSourceNode with all valid parameters', () => {
+    const {audioContext, audioContext: {sampleRate}} = virtualAudioGraph;
+
+    const params = {
+      buffer: audioContext.createBuffer(2, sampleRate * 2, sampleRate),
+      loop: true,
+      loopEnd: 2,
+      loopStart: 1,
+      onended: () => {},
+      playbackRate: 2,
+    };
+
+    const virtualGraphParams = {
+      0: {
+        node: 'bufferSource',
+        params,
+        output: 'output',
+      },
+    };
+
+    virtualAudioGraph.update(virtualGraphParams);
+    const audioNode = virtualAudioGraph.getAudioNodeById(0);
+    expect(audioNode.constructor.name).toBe('AudioBufferSourceNode');
+    expect(audioNode.buffer).toBe(params.buffer);
+    expect(audioNode.loop).toBe(params.loop);
+    expect(audioNode.loopEnd).toBe(params.loopEnd);
+    expect(audioNode.loopStart).toBe(params.loopStart);
+    expect(audioNode.onended).toBe(params.onended);
+    expect(audioNode.playbackRate.value).toBe(params.playbackRate);
+  });
+
+  it('creates OscillatorNode with all valid parameters', () => {
     const params = {
       type: 'square',
       frequency: 440,
@@ -22,7 +81,7 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', function () {
     const virtualGraphParams = {
       0: {
         node: 'oscillator',
-        params: params,
+        params,
         output: 'output',
       },
     };
@@ -35,15 +94,13 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', function () {
     expect(audioNode.detune.value).toBe(params.detune);
   });
 
-  it('creates GainNode with all valid parameters', function () {
+  it('creates GainNode with all valid parameters', () => {
     const gain = 0.5;
 
     const virtualGraphParams = {
       0: {
         node: 'gain',
-        params: {
-          gain: gain,
-        },
+        params: {gain},
         output: 'output',
       },
     };
@@ -54,7 +111,7 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', function () {
     expect(audioNode.gain.value).toBe(gain);
   });
 
-  it('creates BiquadFilterNode with all valid parameters', function () {
+  it('creates BiquadFilterNode with all valid parameters', () => {
     const type = 'peaking';
     const frequency = 500;
     const detune = 6;
@@ -64,10 +121,10 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', function () {
       0: {
         node: 'biquadFilter',
         params: {
-          type: type,
-          frequency: frequency,
-          detune: detune,
-          Q: Q,
+          type,
+          frequency,
+          detune,
+          Q,
         },
         output: 'output',
       },
@@ -82,7 +139,7 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', function () {
     expect(audioNode.Q.value).toBe(Q);
   });
 
-  it('creates DelayNode with all valid parameters', function () {
+  it('creates DelayNode with all valid parameters', () => {
     const delayTime = 2;
     const maxDelayTime = 5;
 
@@ -90,8 +147,8 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', function () {
       0: {
         node: 'delay',
         params: {
-          delayTime: delayTime,
-          maxDelayTime: maxDelayTime,
+          delayTime,
+          maxDelayTime,
         },
         output: 'output',
       },
@@ -103,15 +160,13 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', function () {
     expect(audioNode.delayTime.value).toBe(delayTime);
   });
 
-  it('creates StereoPannerNode with all valid parameters', function () {
+  it('creates StereoPannerNode with all valid parameters', () => {
     const pan = 1;
 
     const virtualGraphParams = {
       0: {
         node: 'stereoPanner',
-        params: {
-          pan: pan,
-        },
+        params: {pan},
         output: 'output',
       },
     };
@@ -122,7 +177,7 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', function () {
     expect(audioNode.pan.value).toBe(pan);
   });
 
-  it('creates PannerNode with all valid parameters', function () {
+  it('creates PannerNode with all valid parameters', () => {
     const distanceModel = 'inverse';
     const panningModel = 'HRTF';
     const refDistance = 1;
@@ -138,16 +193,16 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', function () {
       0: {
         node: 'panner',
         params: {
-          coneInnerAngle: coneInnerAngle,
-          coneOuterAngle: coneOuterAngle,
-          coneOuterGain: coneOuterGain,
-          distanceModel: distanceModel,
-          orientation: orientation,
-          panningModel: panningModel,
-          position: position,
-          maxDistance: maxDistance,
-          refDistance: refDistance,
-          rolloffFactor: rolloffFactor,
+          coneInnerAngle,
+          coneOuterAngle,
+          coneOuterGain,
+          distanceModel,
+          orientation,
+          panningModel,
+          position,
+          maxDistance,
+          refDistance,
+          rolloffFactor,
         },
         output: 'output',
       },

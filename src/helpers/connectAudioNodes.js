@@ -32,7 +32,7 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
               if (node.input !== 'input') {
                 return;
               }
-              connect(virtualNode, node.audioNode)
+              connect(virtualNode, node.audioNode);
             });
         }
 
