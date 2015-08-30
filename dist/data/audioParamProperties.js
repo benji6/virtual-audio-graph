@@ -1,3 +1,7 @@
 'use strict';
 
-module.exports = ['delayTime', 'detune', 'frequency', 'gain', 'pan', 'Q'];
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports['default'] = ['delayTime', 'detune', 'frequency', 'gain', 'pan', 'playbackRate', 'Q'];
+module.exports = exports['default'];

@@ -1,12 +1,23 @@
 'use strict';
 
-var asArray = require('../tools/asArray');
-var mapObj = require('../tools/mapObj');
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 
-module.exports = function (virtualNode, destination) {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _toolsAsArray = require('../tools/asArray');
+
+var _toolsAsArray2 = _interopRequireDefault(_toolsAsArray);
+
+var _toolsMapObj = require('../tools/mapObj');
+
+var _toolsMapObj2 = _interopRequireDefault(_toolsMapObj);
+
+exports['default'] = function (virtualNode, destination) {
   if (virtualNode.isCustomVirtualNode) {
-    mapObj(function (childVirtualNode) {
-      if (asArray(childVirtualNode.output).indexOf('output') !== -1) {
+    (0, _toolsMapObj2['default'])(function (childVirtualNode) {
+      if ((0, _toolsAsArray2['default'])(childVirtualNode.output).indexOf('output') !== -1) {
         childVirtualNode.audioNode.connect(destination);
       }
     }, virtualNode.virtualNodes);
@@ -15,3 +26,5 @@ module.exports = function (virtualNode, destination) {
   }
   virtualNode.connected = true;
 };
+
+module.exports = exports['default'];
