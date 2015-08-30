@@ -305,6 +305,23 @@ ___
 ```
 ___
 
+#### [DynamicsCompressorNode](https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode)
+
+```javascript
+{
+  node: 'dynamicsCompressor',
+  params: {
+    attack,
+    knee,
+    ratio,
+    reduction,
+    release,
+    threshold,
+  },
+}
+```
+___
+
 #### [GainNode](https://developer.mozilla.org/en-US/docs/Web/API/GainNode)
 
 ```javascript

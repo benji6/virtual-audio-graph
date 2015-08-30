@@ -142,6 +142,35 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', () => {
     expect(audioNode.delayTime.value).toBe(delayTime);
   });
 
+  it('creates DynamicsCompressorNode with all valid parameters', () => {
+    const params = {
+      attack: 0,
+      knee: 40,
+      ratio: 12,
+      reduction: -20,
+      release: 0.25,
+      threshold: -50,
+    };
+
+    const virtualGraphParams = {
+      'random string id': {
+        node: 'dynamicsCompressor',
+        params,
+        output: 'output',
+      },
+    };
+
+    virtualAudioGraph.update(virtualGraphParams);
+    const audioNode = virtualAudioGraph.getAudioNodeById('random string id');
+    expect(audioNode.constructor.name).toBe('DynamicsCompressorNode');
+    expect(audioNode.attack.value).toBe(params.attack);
+    expect(audioNode.knee.value).toBe(params.knee);
+    expect(audioNode.ratio.value).toBe(params.ratio);
+    expect(audioNode.reduction.value).toBe(params.reduction);
+    expect(audioNode.release.value).toBe(params.release);
+    expect(audioNode.threshold.value).toBe(params.threshold);
+  });
+
   it('creates GainNode with all valid parameters', () => {
     const gain = 0.5;
 
