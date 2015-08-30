@@ -279,6 +279,18 @@ ___
 }
 ```
 ___
+#### [ConvolverNode](https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode)
+
+```javascript
+{
+  node: 'convolver',
+  params: {
+    buffer,
+    normalize,
+  },
+}
+```
+___
 
 #### [DelayNode](https://developer.mozilla.org/en-US/docs/Web/API/DelayNode)
 

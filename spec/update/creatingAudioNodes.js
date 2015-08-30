@@ -71,6 +71,28 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', () => {
     expect(audioNode.playbackRate.value).toBe(params.playbackRate);
   });
 
+  it('creates ConvolverNode with all valid parameters', () => {
+    const {audioContext: {sampleRate}} = virtualAudioGraph;
+    const params = {
+      buffer: audioContext.createBuffer(2, sampleRate * 2, sampleRate),
+      normalize: false,
+    };
+
+    const virtualGraphParams = {
+      0: {
+        node: 'convolver',
+        params,
+        output: 'output',
+      },
+    };
+
+    virtualAudioGraph.update(virtualGraphParams);
+    const audioNode = virtualAudioGraph.getAudioNodeById(0);
+    expect(audioNode.constructor.name).toBe('ConvolverNode');
+    expect(audioNode.buffer).toBe(params.buffer);
+    expect(audioNode.normalize).toBe(params.normalize);
+  });
+
   it('creates OscillatorNode with all valid parameters', () => {
     const params = {
       type: 'square',

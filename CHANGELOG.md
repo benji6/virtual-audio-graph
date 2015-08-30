@@ -1,5 +1,10 @@
 # Release Notes
 
+## 0.9.x
+
+- Added support for:
+  - ConvolverNode
+
 ## 0.8.x
 
 - Added getAudioNodeById method to virtualAudioGraph
