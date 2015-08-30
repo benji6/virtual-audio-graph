@@ -51,7 +51,7 @@ The `VirtualAudioGraph` constructor takes an object with two optional properties
 
 - `virtual-audio-graph.defineNode` method described below.
 
-- `virtual-audio-graph.getAudioNodeById` takes an id and returns the audioNode relating to that id or undefined if no such audioNode exists. This is useful if the node has methods like the analyserNode. If you adjust any properties on nodes retrieved using this method virtual-audio-graph will not know so be careful!
+- `virtual-audio-graph.getAudioNodeById` takes an id and returns the audioNode relating to that id or undefined if no such audioNode exists. This is useful if the node has methods (e.g. `AnalyserNode.getFloatFrequencyData` & `OscillatorNode.setPeriodicWave`). If you adjust any properties on nodes retrieved using this method virtual-audio-graph will not know so be careful!
 
 ### Updating the Audio Graph
 
@@ -279,6 +279,18 @@ ___
 }
 ```
 ___
+#### [ConvolverNode](https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode)
+
+```javascript
+{
+  node: 'convolver',
+  params: {
+    buffer,
+    normalize,
+  },
+}
+```
+___
 
 #### [DelayNode](https://developer.mozilla.org/en-US/docs/Web/API/DelayNode)
 
@@ -288,6 +300,23 @@ ___
   params: {
     delayTime,
     maxDelayTime, //special parameter which must be set when node is first created, it cannot be altered thereafter
+  },
+}
+```
+___
+
+#### [DynamicsCompressorNode](https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode)
+
+```javascript
+{
+  node: 'dynamicsCompressor',
+  params: {
+    attack,
+    knee,
+    ratio,
+    reduction,
+    release,
+    threshold,
   },
 }
 ```
@@ -348,6 +377,21 @@ ___
 ```javascript
 {
   node: 'stereoPanner',
-  params: {pan},
+  params: {
+    pan,
+  },
+}
+```
+___
+
+#### [WaveShaperNode](https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode)
+
+```javascript
+{
+  node: 'waveShaper',
+  params: {
+    curve,
+    oversample,
+  },
 }
 ```

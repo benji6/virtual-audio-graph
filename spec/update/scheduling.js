@@ -1,5 +1,4 @@
 /* global beforeEach describe expect it */
-import {forEach} from 'ramda';
 import VirtualAudioGraph from '../../src/index.js';
 
 const testSchedulingForNode = node => describe('virtualAudioGraph.update - scheduling: ', () => {
@@ -24,7 +23,7 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
     };
 
     virtualAudioGraph.update(virtualGraphParams);
-    forEach(virtualNode => {
+    [...virtualAudioGraph.virtualNodes].forEach(virtualNode => {
       const audioNode = virtualNode.audioNode;
       expect(audioNode.$stateAtTime('00:00.000')).toBe('PLAYING');
       expect(audioNode.$stateAtTime('00:00.099')).toBe('PLAYING');
@@ -32,7 +31,7 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
       expect(audioNode.$stateAtTime('00:00.199')).toBe('PLAYING');
       expect(audioNode.$stateAtTime('00:00.200')).toBe('PLAYING');
       expect(audioNode.$stateAtTime('23:59.999')).toBe('PLAYING');
-    }, virtualAudioGraph.virtualNodes);
+    });
   });
 
   it(`${node}s with no start times but with stop times are played immediately until their stop time`, () => {
@@ -54,7 +53,7 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
     };
 
     virtualAudioGraph.update(virtualGraphParams);
-    forEach(virtualNode => {
+    [...virtualAudioGraph.virtualNodes].forEach(virtualNode => {
       const audioNode = virtualNode.audioNode;
       expect(audioNode.$stateAtTime('00:00.000')).toBe('PLAYING');
       expect(audioNode.$stateAtTime('00:00.099')).toBe('PLAYING');
@@ -62,7 +61,7 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
       expect(audioNode.$stateAtTime('00:00.199')).toBe('PLAYING');
       expect(audioNode.$stateAtTime('00:00.200')).toBe('FINISHED');
       expect(audioNode.$stateAtTime('23:59.999')).toBe('FINISHED');
-    }, virtualAudioGraph.virtualNodes);
+    });
   });
 
   it(`${node}s with start times but no stop times are played at their start time then forever`, () => {
@@ -84,7 +83,7 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
     };
 
     virtualAudioGraph.update(virtualGraphParams);
-    forEach(virtualNode => {
+    [...virtualAudioGraph.virtualNodes].forEach(virtualNode => {
       const audioNode = virtualNode.audioNode;
       expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED');
       expect(audioNode.$stateAtTime('00:00.099')).toBe('SCHEDULED');
@@ -145,14 +144,14 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
     };
 
     virtualAudioGraph.update(virtualGraphParams);
-    forEach(virtualNode => {
+    [...virtualAudioGraph.virtualNodes].forEach(virtualNode => {
       const audioNode = virtualNode.audioNode;
       expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED');
       expect(audioNode.$stateAtTime('00:00.099')).toBe('SCHEDULED');
       expect(audioNode.$stateAtTime('00:00.100')).toBe('PLAYING');
       expect(audioNode.$stateAtTime('00:00.199')).toBe('PLAYING');
       expect(audioNode.$stateAtTime('00:00.200')).toBe('FINISHED');
-    }, virtualAudioGraph.virtualNodes);
+    });
   });
 
   it(`works when rescheduling multiple ${node}' start and stop times`, () => {
@@ -219,14 +218,14 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
         },
       },
     });
-    forEach(virtualNode => {
+    [...virtualAudioGraph.virtualNodes].forEach(virtualNode => {
       const audioNode = virtualNode.audioNode;
       expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED');
       expect(audioNode.$stateAtTime('00:00.099')).toBe('SCHEDULED');
       expect(audioNode.$stateAtTime('00:00.100')).toBe('PLAYING');
       expect(audioNode.$stateAtTime('00:00.199')).toBe('PLAYING');
       expect(audioNode.$stateAtTime('00:00.200')).toBe('FINISHED');
-    }, virtualAudioGraph.virtualNodes);
+    });
   });
 });
 

@@ -1,9 +1,15 @@
 export default [
+ 'attack',
  'delayTime',
  'detune',
  'frequency',
  'gain',
+ 'knee',
  'pan',
  'playbackRate',
+ 'ratio',
+ 'reduction',
+ 'release',
+ 'threshold',
  'Q',
 ];

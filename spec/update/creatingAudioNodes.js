@@ -40,6 +40,34 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', () => {
     expect(audioNode.getByteTimeDomainData(new Uint8Array(audioNode.fftSize))).toBeUndefined();
   });
 
+  it('creates BiquadFilterNode with all valid parameters', () => {
+    const type = 'peaking';
+    const frequency = 500;
+    const detune = 6;
+    const Q = 0.5;
+
+    const virtualGraphParams = {
+      0: {
+        node: 'biquadFilter',
+        params: {
+          type,
+          frequency,
+          detune,
+          Q,
+        },
+        output: 'output',
+      },
+    };
+
+    virtualAudioGraph.update(virtualGraphParams);
+    const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
+    expect(audioNode.constructor).toBe(BiquadFilterNode);
+    expect(audioNode.type).toBe(type);
+    expect(audioNode.frequency.value).toBe(frequency);
+    expect(audioNode.detune.value).toBe(detune);
+    expect(audioNode.Q.value).toBe(Q);
+  });
+
   it('creates BufferSourceNode with all valid parameters', () => {
     const {audioContext, audioContext: {sampleRate}} = virtualAudioGraph;
 
@@ -71,72 +99,26 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', () => {
     expect(audioNode.playbackRate.value).toBe(params.playbackRate);
   });
 
-  it('creates OscillatorNode with all valid parameters', () => {
+  it('creates ConvolverNode with all valid parameters', () => {
+    const {audioContext: {sampleRate}} = virtualAudioGraph;
     const params = {
-      type: 'square',
-      frequency: 440,
-      detune: 4,
+      buffer: audioContext.createBuffer(2, sampleRate * 2, sampleRate),
+      normalize: false,
     };
 
     const virtualGraphParams = {
       0: {
-        node: 'oscillator',
+        node: 'convolver',
         params,
         output: 'output',
       },
     };
 
     virtualAudioGraph.update(virtualGraphParams);
-    const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
-    expect(audioNode.constructor).toBe(OscillatorNode);
-    expect(audioNode.type).toBe(params.type);
-    expect(audioNode.frequency.value).toBe(params.frequency);
-    expect(audioNode.detune.value).toBe(params.detune);
-  });
-
-  it('creates GainNode with all valid parameters', () => {
-    const gain = 0.5;
-
-    const virtualGraphParams = {
-      0: {
-        node: 'gain',
-        params: {gain},
-        output: 'output',
-      },
-    };
-
-    virtualAudioGraph.update(virtualGraphParams);
-    const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
-    expect(audioNode.constructor).toBe(GainNode);
-    expect(audioNode.gain.value).toBe(gain);
-  });
-
-  it('creates BiquadFilterNode with all valid parameters', () => {
-    const type = 'peaking';
-    const frequency = 500;
-    const detune = 6;
-    const Q = 0.5;
-
-    const virtualGraphParams = {
-      0: {
-        node: 'biquadFilter',
-        params: {
-          type,
-          frequency,
-          detune,
-          Q,
-        },
-        output: 'output',
-      },
-    };
-
-    virtualAudioGraph.update(virtualGraphParams);
-    const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
-    expect(audioNode.constructor).toBe(BiquadFilterNode);
-    expect(audioNode.type).toBe(type);
-    expect(audioNode.frequency.value).toBe(frequency);
-    expect(audioNode.detune.value).toBe(detune);
-    expect(audioNode.Q.value).toBe(Q);
+    const audioNode = virtualAudioGraph.getAudioNodeById(0);
+    expect(audioNode.constructor.name).toBe('ConvolverNode');
+    expect(audioNode.buffer).toBe(params.buffer);
+    expect(audioNode.normalize).toBe(params.normalize);
   });
 
   it('creates DelayNode with all valid parameters', () => {
@@ -160,21 +142,73 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', () => {
     expect(audioNode.delayTime.value).toBe(delayTime);
   });
 
-  it('creates StereoPannerNode with all valid parameters', () => {
-    const pan = 1;
+  it('creates DynamicsCompressorNode with all valid parameters', () => {
+    const params = {
+      attack: 0,
+      knee: 40,
+      ratio: 12,
+      reduction: -20,
+      release: 0.25,
+      threshold: -50,
+    };
+
+    const virtualGraphParams = {
+      'random string id': {
+        node: 'dynamicsCompressor',
+        params,
+        output: 'output',
+      },
+    };
+
+    virtualAudioGraph.update(virtualGraphParams);
+    const audioNode = virtualAudioGraph.getAudioNodeById('random string id');
+    expect(audioNode.constructor.name).toBe('DynamicsCompressorNode');
+    expect(audioNode.attack.value).toBe(params.attack);
+    expect(audioNode.knee.value).toBe(params.knee);
+    expect(audioNode.ratio.value).toBe(params.ratio);
+    expect(audioNode.reduction.value).toBe(params.reduction);
+    expect(audioNode.release.value).toBe(params.release);
+    expect(audioNode.threshold.value).toBe(params.threshold);
+  });
+
+  it('creates GainNode with all valid parameters', () => {
+    const gain = 0.5;
 
     const virtualGraphParams = {
       0: {
-        node: 'stereoPanner',
-        params: {pan},
+        node: 'gain',
+        params: {gain},
         output: 'output',
       },
     };
 
     virtualAudioGraph.update(virtualGraphParams);
     const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
-    expect(audioNode.constructor.name).toBe('StereoPannerNode');
-    expect(audioNode.pan.value).toBe(pan);
+    expect(audioNode.constructor).toBe(GainNode);
+    expect(audioNode.gain.value).toBe(gain);
+  });
+
+  it('creates OscillatorNode with all valid parameters', () => {
+    const params = {
+      type: 'square',
+      frequency: 440,
+      detune: 4,
+    };
+
+    const virtualGraphParams = {
+      0: {
+        node: 'oscillator',
+        params,
+        output: 'output',
+      },
+    };
+
+    virtualAudioGraph.update(virtualGraphParams);
+    const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
+    expect(audioNode.constructor).toBe(OscillatorNode);
+    expect(audioNode.type).toBe(params.type);
+    expect(audioNode.frequency.value).toBe(params.frequency);
+    expect(audioNode.detune.value).toBe(params.detune);
   });
 
   it('creates PannerNode with all valid parameters', () => {
@@ -219,5 +253,43 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', () => {
     expect(audioNode.refDistance).toBe(refDistance);
     expect(audioNode.rolloffFactor).toBe(rolloffFactor);
     expect(audioNode.maxDistance).toBe(maxDistance);
+  });
+
+  it('creates StereoPannerNode with all valid parameters', () => {
+    const pan = 1;
+
+    const virtualGraphParams = {
+      0: {
+        node: 'stereoPanner',
+        params: {pan},
+        output: 'output',
+      },
+    };
+
+    virtualAudioGraph.update(virtualGraphParams);
+    const audioNode = virtualAudioGraph.virtualNodes[0].audioNode;
+    expect(audioNode.constructor.name).toBe('StereoPannerNode');
+    expect(audioNode.pan.value).toBe(pan);
+  });
+
+  it('creates WaveShaperNode with all valid parameters', () => {
+    const params = {
+      curve: new Float32Array(44100),
+      oversample: '4x',
+    };
+
+    const virtualGraphParams = {
+      0: {
+        node: 'waveShaper',
+        params,
+        output: 'output',
+      },
+    };
+
+    virtualAudioGraph.update(virtualGraphParams);
+    const audioNode = virtualAudioGraph.getAudioNodeById(0);
+    expect(audioNode.constructor.name).toBe('WaveShaperNode');
+    expect(audioNode.curve).toBe(params.curve);
+    expect(audioNode.oversample).toBe(params.oversample);
   });
 });
