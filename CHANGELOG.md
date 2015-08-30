@@ -5,6 +5,7 @@
 - Added support for:
   - ConvolverNode
   - DynamicsCompressorNode
+  - WaveShaperNode
 
 ## 0.8.x
 

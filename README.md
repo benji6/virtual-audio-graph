@@ -377,6 +377,21 @@ ___
 ```javascript
 {
   node: 'stereoPanner',
-  params: {pan},
+  params: {
+    pan,
+  },
+}
+```
+___
+
+#### [WaveShaperNode](https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode)
+
+```javascript
+{
+  node: 'waveShaper',
+  params: {
+    curve,
+    oversample,
+  },
 }
 ```

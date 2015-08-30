@@ -271,4 +271,25 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', () => {
     expect(audioNode.constructor.name).toBe('StereoPannerNode');
     expect(audioNode.pan.value).toBe(pan);
   });
+
+  it('creates WaveShaperNode with all valid parameters', () => {
+    const params = {
+      curve: new Float32Array(44100),
+      oversample: '4x',
+    };
+
+    const virtualGraphParams = {
+      0: {
+        node: 'waveShaper',
+        params,
+        output: 'output',
+      },
+    };
+
+    virtualAudioGraph.update(virtualGraphParams);
+    const audioNode = virtualAudioGraph.getAudioNodeById(0);
+    expect(audioNode.constructor.name).toBe('WaveShaperNode');
+    expect(audioNode.curve).toBe(params.curve);
+    expect(audioNode.oversample).toBe(params.oversample);
+  });
 });
