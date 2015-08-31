@@ -27,7 +27,7 @@ npm i -S virtual-audio-graph
 
 ```javascript
 
-const VirtualAudioGraph = require('virtual-audio-graph');
+import VirtualAudioGraph from 'virtual-audio-graph';
 
 const audioContext = new AudioContext();
 
