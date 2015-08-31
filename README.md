@@ -333,6 +333,16 @@ ___
 }
 ```
 ___
+#### [MediaStreamAudioDestinationNode](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioDestinationNode)
+
+This node has no output as it is a destination. It also takes no parameters. Use virtualAudioGraph.getAudioNodeById method to access the node's stream property
+
+```javascript
+{
+  node: 'mediaStreamDestination',
+}
+```
+___
 #### [MediaStreamAudioSourceNode](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
 
 ```javascript

@@ -184,24 +184,34 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', () => {
 
     virtualAudioGraph.update(virtualGraphParams);
     const audioNode = virtualAudioGraph.getAudioNodeById(0);
-    expect(audioNode.constructor).toBe(GainNode);
+    expect(audioNode.constructor.name).toBe('GainNode');
     expect(audioNode.gain.value).toBe(gain);
   });
 
-  it('creates MediaStreamAudioSourceNode with all valid parameters', () => {
+  it('creates MediaStreamAudioDestinationNode with all valid parameters', () => {
+    virtualAudioGraph.update({
+      0: {
+        node: 'mediaStreamDestination',
+      },
+    });
+    const audioNode = virtualAudioGraph.getAudioNodeById(0);
+    expect(audioNode.constructor.name).toBe('MediaStreamAudioDestinationNode');
+  });
+
+  it('creates MediaStreamAudioDestinationNode with all valid parameters', () => {
     const {HTMLMediaElement, MediaStream} = WebAudioTestAPI;
 
-        virtualAudioGraph.update({
-        0: {
-          node: 'mediaElementSource',
-          params: {
-            mediaElement: new HTMLMediaElement(),
-          },
-          output: 'output',
+    virtualAudioGraph.update({
+      0: {
+        node: 'mediaElementSource',
+        params: {
+          mediaElement: new HTMLMediaElement(),
         },
-      });
-      expect(virtualAudioGraph.getAudioNodeById(0).constructor.name)
-        .toBe('MediaElementAudioSourceNode');
+        output: 'output',
+      },
+    });
+    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name)
+      .toBe('MediaElementAudioSourceNode');
 
     virtualAudioGraph.update({
       0: {
