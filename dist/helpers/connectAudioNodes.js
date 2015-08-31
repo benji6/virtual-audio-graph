@@ -18,10 +18,12 @@ exports['default'] = function (virtualGraph) {
   var handleConnectionToOutput = arguments.length <= 1 || arguments[1] === undefined ? function () {} : arguments[1];
   return Object.keys(virtualGraph).forEach(function (id) {
     var virtualNode = virtualGraph[id];
-    if (virtualNode.connected) {
+    var output = virtualNode.output;
+
+    if (virtualNode.connected || output == null) {
       return;
     }
-    (0, _toolsAsArray2['default'])(virtualNode.output).forEach(function (output) {
+    (0, _toolsAsArray2['default'])(output).forEach(function (output) {
       if (output === 'output') {
         return handleConnectionToOutput(virtualNode);
       }

@@ -21,7 +21,7 @@ function disconnect(virtualNode, doNotStop) {
     if (audioNode.stop && !virtualNode.stopCalled && !doNotStop) {
       audioNode.stop();
     }
-    audioNode.disconnect();
+    audioNode.disconnect && audioNode.disconnect();
   }
   virtualNode.connected = false;
 }
