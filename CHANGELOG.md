@@ -1,5 +1,10 @@
 # Release Notes
 
+## 0.10.x
+
+- Added support for:
+  - MediaStreamAudioSourceNode
+
 ## 0.9.x
 
 - Added support for:

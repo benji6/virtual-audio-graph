@@ -333,6 +333,19 @@ ___
 }
 ```
 ___
+#### [MediaStreamAudioSourceNode](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
+
+```javascript
+{
+  node: 'mediaElementSource',
+  params: {
+    // both these params can only be set once and only one should be set:
+    mediaElement, // EITHER set this if constructing from an HTMLMediaElement
+    mediaStream, // OR set this if constructing from a MediaStream
+  }
+}
+```
+___
 
 #### [OscillatorNode](https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode)
 
