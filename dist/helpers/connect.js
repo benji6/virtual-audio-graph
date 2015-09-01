@@ -18,11 +18,15 @@ exports['default'] = function (virtualNode, destination) {
   if (virtualNode.isCustomVirtualNode) {
     (0, _toolsMapObj2['default'])(function (childVirtualNode) {
       if ((0, _toolsAsArray2['default'])(childVirtualNode.output).indexOf('output') !== -1) {
-        childVirtualNode.audioNode.connect(destination);
+        var audioNode = childVirtualNode.audioNode;
+
+        audioNode.connect && audioNode.connect(destination);
       }
     }, virtualNode.virtualNodes);
   } else {
-    virtualNode.audioNode.connect(destination);
+    var audioNode = virtualNode.audioNode;
+
+    audioNode.connect && audioNode.connect(destination);
   }
   virtualNode.connected = true;
 };

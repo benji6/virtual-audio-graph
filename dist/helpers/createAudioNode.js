@@ -14,16 +14,11 @@ var _dataStartAndStopNodes = require('../data/startAndStopNodes');
 
 var _dataStartAndStopNodes2 = _interopRequireDefault(_dataStartAndStopNodes);
 
-var namesToParamsKey = {
-  delay: 'maxDelayTime'
-};
-
-exports['default'] = function (audioContext, name, constructorParams, _ref) {
+exports['default'] = function (audioContext, name, constructorParam, _ref) {
   var startTime = _ref.startTime;
   var stopTime = _ref.stopTime;
 
-  var constructorParamsKey = namesToParamsKey[name];
-  var audioNode = constructorParamsKey ? audioContext['create' + (0, _capitalize2['default'])(name)](constructorParams[constructorParamsKey]) : audioContext['create' + (0, _capitalize2['default'])(name)]();
+  var audioNode = constructorParam ? audioContext['create' + (0, _capitalize2['default'])(name)](constructorParam) : audioContext['create' + (0, _capitalize2['default'])(name)]();
   if (_dataStartAndStopNodes2['default'].indexOf(name) !== -1) {
     if (startTime == null) {
       audioNode.start();

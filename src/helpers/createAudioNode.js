@@ -1,14 +1,9 @@
 import capitalize from 'capitalize';
 import startAndStopNodes from '../data/startAndStopNodes';
 
-const namesToParamsKey = {
-  delay: 'maxDelayTime',
-};
-
-export default (audioContext, name, constructorParams, {startTime, stopTime}) => {
-  const constructorParamsKey = namesToParamsKey[name];
-  const audioNode = constructorParamsKey ?
-    audioContext[`create${capitalize(name)}`](constructorParams[constructorParamsKey]) :
+export default (audioContext, name, constructorParam, {startTime, stopTime}) => {
+  const audioNode = constructorParam ?
+    audioContext[`create${capitalize(name)}`](constructorParam) :
     audioContext[`create${capitalize(name)}`]();
   if (startAndStopNodes.indexOf(name) !== -1) {
     if (startTime == null) {

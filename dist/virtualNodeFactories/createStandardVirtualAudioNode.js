@@ -18,18 +18,6 @@ var _dataConstructorParamsKeys = require('../data/constructorParamsKeys');
 
 var _dataConstructorParamsKeys2 = _interopRequireDefault(_dataConstructorParamsKeys);
 
-var pick = function pick(names, obj) {
-  var result = {};
-  var idx = 0;
-  while (idx < names.length) {
-    if (names[idx] in obj) {
-      result[names[idx]] = obj[names[idx]];
-    }
-    idx += 1;
-  }
-  return result;
-};
-
 exports['default'] = function (virtualAudioGraph, _ref) {
   var node = _ref.node;
   var input = _ref.input;
@@ -41,9 +29,11 @@ exports['default'] = function (virtualAudioGraph, _ref) {
   var startTime = _params.startTime;
   var stopTime = _params.stopTime;
 
-  var constructorParams = pick(_dataConstructorParamsKeys2['default'], params);
+  var constructorParam = params[Object.keys(params).filter(function (key) {
+    return _dataConstructorParamsKeys2['default'].indexOf(key) !== -1;
+  })[0]];
   var virtualNode = {
-    audioNode: (0, _helpersCreateAudioNode2['default'])(virtualAudioGraph.audioContext, node, constructorParams, { startTime: startTime, stopTime: stopTime }),
+    audioNode: (0, _helpersCreateAudioNode2['default'])(virtualAudioGraph.audioContext, node, constructorParam, { startTime: startTime, stopTime: stopTime }),
     connected: false,
     isCustomVirtualNode: false,
     input: input,

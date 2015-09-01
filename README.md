@@ -27,7 +27,7 @@ npm i -S virtual-audio-graph
 
 ```javascript
 
-const VirtualAudioGraph = require('virtual-audio-graph');
+import VirtualAudioGraph from 'virtual-audio-graph';
 
 const audioContext = new AudioContext();
 
@@ -329,6 +329,29 @@ ___
   node: 'gain',
   params: {
     gain,
+  }
+}
+```
+___
+#### [MediaStreamAudioDestinationNode](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioDestinationNode)
+
+This node has no output as it is a destination. It also takes no parameters. Use virtualAudioGraph.getAudioNodeById method to access the node's stream property
+
+```javascript
+{
+  node: 'mediaStreamDestination',
+}
+```
+___
+#### [MediaStreamAudioSourceNode](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
+
+```javascript
+{
+  node: 'mediaElementSource',
+  params: {
+    // both these params can only be set once and only one should be set:
+    mediaElement, // EITHER set this if constructing from an HTMLMediaElement
+    mediaStream, // OR set this if constructing from a MediaStream
   }
 }
 ```

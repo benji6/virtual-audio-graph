@@ -4,10 +4,11 @@ import connect from './connect';
 export default (virtualGraph, handleConnectionToOutput = () => {}) =>
   Object.keys(virtualGraph).forEach(id => {
     const virtualNode = virtualGraph[id];
-    if (virtualNode.connected) {
+    const {output} = virtualNode;
+    if (virtualNode.connected || output == null) {
       return;
     }
-    asArray(virtualNode.output)
+    asArray(output)
       .forEach(output => {
         if (output === 'output') {
           return handleConnectionToOutput(virtualNode);

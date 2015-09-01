@@ -93,8 +93,11 @@ var VirtualAudioGraph = (function () {
           throw new Error('\'output\' is not a valid id');
         }
         var virtualAudioNodeParam = virtualGraphParams[key];
-        if (virtualAudioNodeParam.output == null) {
-          throw new Error('ouptput not specified for node key ' + key);
+        var output = virtualAudioNodeParam.output;
+        var node = virtualAudioNodeParam.node;
+
+        if (output == null && node !== 'mediaStreamDestination') {
+          throw new Error('output not specified for node key ' + key);
         }
         var virtualAudioNode = _this.virtualNodes[key];
         if (virtualAudioNode == null) {
