@@ -135,7 +135,7 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', () => {
       2: {
         node: 'channelSplitter',
         params,
-        output: {key: 0, outputs: [0, 1], inputs: [1, 0]}, // working on implementing and documenting this
+        output: {key: 0, outputs: [0, 1], inputs: [1, 0]},
       },
     });
   });
