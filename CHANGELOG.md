@@ -1,5 +1,11 @@
 # Release Notes
 
+## 0.11.x
+
+- Added support for:
+  - ChannelMergerNode
+  - ChannelSplitterNode
+
 ## 0.10.x
 
 - Added support for:

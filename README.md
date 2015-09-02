@@ -96,13 +96,13 @@ virtualAudioGraph.update(virtualNodeParams);
 
 ```
 
-`virtualAudioGraph.update` takes an array of virtual audio node parameters, then internally it creates a virtual audio graph which it compares to any previous updates and updates the actual audio graph accordingly.
+`virtualAudioGraph.update` takes an object representing the desired audio graph, then internally it creates a virtual audio graph which it compares to any previous updates and updates the actual audio graph accordingly.
 
 In the example above we create a single oscillatorNode, which is connected to a single gainNode which in turn is connected to the virtualAudioGraph output. Below is an explanation of properties for virtualAudioNode parameter objects:
 
 - `node` - name of the node we are creating.
 
-- `output` - an key or array of keys for nodes this node connects to. ```'output'``` connects this node to the virtualAudioGraph output. You can also connect a node to a valid AudioParam using an object with a `key` property corresponding to the destination virtual-node key and a `destination` property with a string value specifying the AudioParam destination. See below:
+- `output` - a key or array of keys for nodes this node connects to. ```'output'``` connects this node to the virtualAudioGraph output. You can also connect a node to a valid AudioParam using an object with a `key` property corresponding to the destination virtual-node key and a `destination` property with a string value specifying the AudioParam destination. See below:
 
 ```javascript
 
@@ -276,6 +276,31 @@ ___
     detune,
     Q,
   },
+}
+```
+___
+#### [ChannelMergerNode](https://developer.mozilla.org/en-US/docs/Web/API/ChannelMergerNode)
+
+```javascript
+{
+  node: 'channelMerger',
+  params: {
+    numberOfOutputs,
+  },
+}
+```
+___
+#### [ChannelSplitterNode](https://developer.mozilla.org/en-US/docs/Web/API/ChannelSplitterNode)
+
+NB ChannelSplitter has it's own syntax for the output parameter. Because the channel is split it means each node can have multiple outputs. Each output is indexed and the outputs property should be an array of these indices. Then the inputs property should be an array of indices corresponding to the inputs of the destination node. Check out the spec and the link above for more info.
+
+```javascript
+{
+  node: 'channelSplitter',
+  params: {
+    numberOfOutputs,
+  },
+  output: {key, outputs, inputs},
 }
 ```
 ___

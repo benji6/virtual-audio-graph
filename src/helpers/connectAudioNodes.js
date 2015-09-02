@@ -15,12 +15,19 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
         }
 
         if (Object.prototype.toString.call(output) === '[object Object]') {
-          const {key, destination} = output;
+          const {key, destination, inputs, outputs} = output;
+
           if (key == null) {
             throw new Error(`id: ${id} - output object requires a key property`);
           }
-          return connect(virtualNode,
-                         virtualGraph[key].audioNode[destination]);
+          if (inputs) {
+            if (inputs.length !== outputs.length) {
+              throw new Error(`id: ${id} - outputs and inputs arrays are not the same length`);
+            }
+            return inputs.forEach((input, i) =>
+              connect(virtualNode, virtualGraph[key].audioNode, outputs[i], input));
+          }
+          return connect(virtualNode, virtualGraph[key].audioNode[destination]);
         }
 
         const destinationVirtualAudioNode = virtualGraph[output];

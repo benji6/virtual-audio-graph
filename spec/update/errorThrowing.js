@@ -91,4 +91,25 @@ describe('virtualAudioGraph.update - error throwing conditions: ', () => {
       },
     })).toThrow();
   });
+
+  it('throws an error if outputs and inputs of channelSplitter are different lengths', () => {
+    const params = {numberOfOutputs: 2};
+
+    expect(() => virtualAudioGraph.update({
+      0: {
+        node: 'channelMerger',
+        params,
+        output: 'output',
+      },
+      1: {
+        node: 'oscillator',
+        output: 'output',
+      },
+      2: {
+        node: 'channelSplitter',
+        params,
+        output: {key: 0, outputs: [0, 1, 2], inputs: [1, 0]},
+      },
+    })).toThrow();
+  });
 });

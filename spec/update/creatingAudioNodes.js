@@ -99,6 +99,47 @@ describe('virtualAudioGraph.update - creating AudioNodes: ', () => {
     expect(audioNode.playbackRate.value).toBe(params.playbackRate);
   });
 
+  it('creates ChannelSplitterNode and ChannelMergerNode with all valid parameters and connects them correctly', () => {
+    const params = {numberOfOutputs: 2};
+
+    virtualAudioGraph.update({
+      0: {
+        node: 'channelMerger',
+        params,
+        output: 'output',
+      },
+    });
+    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name)
+      .toBe('ChannelMergerNode');
+
+    virtualAudioGraph.update({
+      0: {
+        node: 'channelSplitter',
+        params,
+        output: 'output',
+      },
+    });
+    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name)
+      .toBe('ChannelSplitterNode');
+
+    virtualAudioGraph.update({
+      0: {
+        node: 'channelMerger',
+        params,
+        output: 'output',
+      },
+      1: {
+        node: 'oscillator',
+        output: 'output',
+      },
+      2: {
+        node: 'channelSplitter',
+        params,
+        output: {key: 0, outputs: [0, 1], inputs: [1, 0]}, // working on implementing and documenting this
+      },
+    });
+  });
+
   it('creates ConvolverNode with all valid parameters', () => {
     const {audioContext: {sampleRate}} = virtualAudioGraph;
     const params = {
