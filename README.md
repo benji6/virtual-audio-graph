@@ -32,7 +32,7 @@ import VirtualAudioGraph from 'virtual-audio-graph';
 const audioContext = new AudioContext();
 
 const virtualAudioGraph = new VirtualAudioGraph({
-  audioContext: audioContext,
+  audioContext,
   output: audioContext.destination,
 });
 
