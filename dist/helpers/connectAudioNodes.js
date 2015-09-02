@@ -29,19 +29,37 @@ exports['default'] = function (virtualGraph) {
       }
 
       if (Object.prototype.toString.call(output) === '[object Object]') {
-        var key = output.key;
-        var destination = output.destination;
+        var _ret = (function () {
+          var key = output.key;
+          var destination = output.destination;
+          var inputs = output.inputs;
+          var outputs = output.outputs;
 
-        if (key == null) {
-          throw new Error('id: ' + id + ' - output object requires a key property');
-        }
-        return (0, _connect2['default'])(virtualNode, virtualGraph[key].audioNode[destination]);
+          if (key == null) {
+            throw new Error('id: ' + id + ' - output object requires a key property');
+          }
+          if (inputs) {
+            if (inputs.length !== outputs.length) {
+              throw new Error('id: ' + id + ' - outputs and inputs arrays are not the same length');
+            }
+            return {
+              v: inputs.forEach(function (input, i) {
+                return (0, _connect2['default'])(virtualNode, virtualGraph[key].audioNode, outputs[i], input);
+              })
+            };
+          }
+          return {
+            v: (0, _connect2['default'])(virtualNode, virtualGraph[key].audioNode[destination])
+          };
+        })();
+
+        if (typeof _ret === 'object') return _ret.v;
       }
 
       var destinationVirtualAudioNode = virtualGraph[output];
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
-        var _ret = (function () {
+        var _ret2 = (function () {
           var virtualNodes = destinationVirtualAudioNode.virtualNodes;
 
           return {
@@ -55,7 +73,7 @@ exports['default'] = function (virtualGraph) {
           };
         })();
 
-        if (typeof _ret === 'object') return _ret.v;
+        if (typeof _ret2 === 'object') return _ret2.v;
       }
 
       (0, _connect2['default'])(virtualNode, destinationVirtualAudioNode.audioNode);
