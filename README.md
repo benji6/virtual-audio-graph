@@ -11,15 +11,15 @@ Library for declaratively manipulating the Web Audio API.
 
 virtual-audio-graph manages the state of the audio graph so this does not have to be done manually. Simply declare what you would like the audio graph to look like and virtual-audio-graph takes care of the rest.
 
-## Status
-
-Project is in development and API is not yet stable. See [Changelog](/CHANGELOG.md) if upgrading from a previous version.
-
 ## Installation
 
 ```bash
 npm i -S virtual-audio-graph
 ```
+
+## Upgrading
+
+See [changelog](/CHANGELOG.md).
 
 ## API
 
@@ -94,7 +94,7 @@ In the example above we create a single oscillatorNode, which is connected to a 
 
 virtualAudioGraph.update({
   0: ['oscillator', 'output'], // output is a reserved value for virtual-audio-graph destination
-  1: ['gain', {key: 0, destination: 'frequency'}, params: {gain: 10}], // connecting to the frequency AudioParam of the oscillator above
+  1: ['gain', {key: 0, destination: 'frequency'}, {gain: 10}], // connecting to the frequency AudioParam of the oscillator above
   2: ['oscillator', 1, {type: 'triangle', frequency: 1}], // connect to node key 1 (gain node above)
 });
 
@@ -119,43 +119,12 @@ const pingPongDelayParamsFactory = ({
   delayTime = 1 / 3,
   maxDelayTime = 1 / 3,
 } = {}) => ({
-  zero: {
-    node: 'stereoPanner',
-    output: 'output',
-    params: {pan: -1},
-  },
-  1: {
-    node: 'stereoPanner',
-    output: 'output',
-    params: {pan: 1},
-  },
-  2: {
-    node: 'delay',
-    output: [1, 'five'],
-    params: {
-      maxDelayTime,
-      delayTime,
-    },
-  },
-  3: {
-    node: 'gain',
-    output: 2,
-    params: {gain: decay},
-  },
-  4: {
-    node: 'delay',
-    output: ['zero', 3],
-    params: {
-      maxDelayTime,
-      delayTime,
-    },
-  },
-  five: {
-    input: 'input',
-    node: 'gain',
-    output: 4,
-    params: {gain: decay},
-  },
+  zero: ['stereoPanner', 'output', {pan: -1}],
+  1: ['stereoPanner', 'output', {pan: 1}],
+  2: ['delay', [1, 'five'], {maxDelayTime, delayTime}],
+  3: ['gain', 2, {gain: decay}],
+  4: ['delay', ['zero', 3], {maxDelayTime, delayTime}],
+  five: ['gain', 4, {gain: decay}, 'input']
 });
 
 //define a custom node like this:
@@ -163,31 +132,11 @@ virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
 
 //and now this instance of virtual-audio-graph will recognize it as a valid node:
 virtualAudioGraph.update({
-  0: {
-    node: 'pingPongDelay',
-    output: 'output',
-    //with custom parameters as defined in above factory
-    params: {
-      decay: 1 / 4,
-      delayTime: 1 / 3,
-      maxDelayTime: 1,
-    },
-  },
-  1: {
-    node: 'gain',
-    output: [0, 'output'],
-    params: {
-      gain: 1 / 4,
-    },
-  },
-  2: {
-    node: 'oscillator',
-    output: 1,
-    params: {
-      frequency: 440,
-      type: 'square',
-    },
-  },
+  0: ['pingPongDelay',
+      'output',
+      {decay: 1 / 4, delayTime: 1 / 3, maxDelayTime: 1}], // with custom parameters as defined in above factory
+  1: ['gain', [0, 'output'], {gain: 1 / 4}],
+  2: ['oscillator', 1, {frequency: 440, type: 'square'}],
 });
 
 ```
