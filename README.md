@@ -62,34 +62,20 @@ Create two oscillators, schedule their start and stop times, put them through a 
 const {currentTime} = virtualAudioGraph;
 
 const virtualNodeParams = {
-  0: {
-    node: 'gain',
-    output: 'output',
-    params: {
-      gain: 0.2,
-    },
-  },
-  1: {
-    node: 'oscillator',
-    output: 0,
-    params: {
-      type: 'square',
-      frequency: 440,
-      startTime: currentTime + 1,
-      stopTime: currentTime + 2,
-    },
-  },
-  2: {
-    node: 'oscillator',
-    output: 0,
-    params: {
-      type: 'sawtooth',
-      frequency: 660,
-      detune: 4,
-      startTime: currentTime + 1.5,
-      stopTime: currentTime + 2.5,
-    },
-  },
+  0: ['gain', 'output', params: {gain: 0.2}],
+  1: ['oscillator', 0, {
+    type: 'square',
+    frequency: 440,
+    startTime: currentTime + 1,
+    stopTime: currentTime + 2,
+  }],
+  2: ['oscillator', 0, {
+    type: 'sawtooth',
+    frequency: 660,
+    detune: 4,
+    startTime: currentTime + 1.5,
+    stopTime: currentTime + 2.5,
+  }],
 };
 
 virtualAudioGraph.update(virtualNodeParams);
@@ -107,26 +93,9 @@ In the example above we create a single oscillatorNode, which is connected to a 
 ```javascript
 
 virtualAudioGraph.update({
-  0: {
-    node: 'oscillator',
-    output: 'output', // reserved value for virtual-audio-graph destination
-  },
-  1: {
-    node: 'gain',
-    // below we are connecting to the frequency AudioParam of the oscillator above
-    output: {key: 0, destination: 'frequency'},
-    params: {
-      gain: 10,
-    },
-  },
-  2: {
-    node: 'oscillator',
-    output: 1, // connect to node key 1 (gain node above)
-    params: {
-      type: 'triangle',
-      frequency: 1,
-    },
-  },
+  0: ['oscillator', 'output'], // output is a reserved value for virtual-audio-graph destination
+  1: ['gain', {key: 0, destination: 'frequency'}, params: {gain: 10}], // connecting to the frequency AudioParam of the oscillator above
+  2: ['oscillator', 1, {type: 'triangle', frequency: 1}], // connect to node key 1 (gain node above)
 });
 
 ```
