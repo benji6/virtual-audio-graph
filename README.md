@@ -93,9 +93,12 @@ In the example above we create a single oscillatorNode, which is connected to a 
 ```javascript
 
 virtualAudioGraph.update({
-  0: ['oscillator', 'output'], // output is a reserved value for virtual-audio-graph destination
-  1: ['gain', {key: 0, destination: 'frequency'}, {gain: 10}], // connecting to the frequency AudioParam of the oscillator above
-  2: ['oscillator', 1, {type: 'triangle', frequency: 1}], // connect to node key 1 (gain node above)
+  // output is a reserved value for virtual-audio-graph destination
+  0: ['oscillator', 'output'],
+  // connecting to the frequency AudioParam of the oscillator above
+  1: ['gain', {key: 0, destination: 'frequency'}, {gain: 10}],
+  // connect to node key 1 (gain node above)
+  2: ['oscillator', 1, {type: 'triangle', frequency: 1}],
 });
 
 ```
@@ -121,9 +124,9 @@ const pingPongDelayParamsFactory = ({
 } = {}) => ({
   zero: ['stereoPanner', 'output', {pan: -1}],
   1: ['stereoPanner', 'output', {pan: 1}],
-  2: ['delay', [1, 'five'], {maxDelayTime, delayTime}],
+  2: ['delay', [1, 'five'], {maxDelayTime}],
   3: ['gain', 2, {gain: decay}],
-  4: ['delay', ['zero', 3], {maxDelayTime, delayTime}],
+  4: ['delay', ['zero', 3], {maxDelayTime}],
   five: ['gain', 4, {gain: decay}, 'input']
 });
 
@@ -134,7 +137,8 @@ virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
 virtualAudioGraph.update({
   0: ['pingPongDelay',
       'output',
-      {decay: 1 / 4, delayTime: 1 / 3, maxDelayTime: 1}], // with custom parameters as defined in above factory
+      // with custom parameters as defined in above factory
+      {decay: 1 / 4, delayTime: 1 / 3, maxDelayTime: 1}],
   1: ['gain', [0, 'output'], {gain: 1 / 4}],
   2: ['oscillator', 1, {frequency: 440, type: 'square'}],
 });
@@ -148,16 +152,10 @@ Here is a list of standard virtual audio nodes implemented in virtual-audio-grap
 #### [AnalyserNode](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode)
 
 ```javascript
-{
-  node: 'analyser',
-  params: {
-    fftSize,
-    minDecibels,
-    maxDecibels,
-    smoothingTimeConstant,
-  },
-  output: 'output',
-}
+['analyser', output, {fftSize,
+                      minDecibels,
+                      maxDecibels,
+                      smoothingTimeConstant}]
 ```
 ___
 
@@ -166,46 +164,31 @@ ___
 ```javascript
 const {audioContext, audioContext: {sampleRate}} = virtualAudioGraph;
 const buffer = audioContext.createBuffer(2, sampleRate * 2, sampleRate);
-{
-  node: 'bufferSource',
-  params: {
-    buffer,
-    loop,
-    loopEnd,
-    loopStart,
-    onended,
-    playbackRate,
-    startTime, // time in seconds since virtualAudioGraph.currentTime was 0, if not provided then node starts immediately
-    stopTime, // if not provided then stop is not called on node until it is disconnected
-  },
-  output: 'output',
-}
+['bufferSource', output, {buffer,
+                          loop,
+                          loopEnd,
+                          loopStart,
+                          onended,
+                          playbackRate,
+                          // time in seconds since virtualAudioGraph.currentTime
+                          // was 0, if not provided then node starts immediately
+                          startTime,
+                          // if not provided then stop is not called on node
+                          // until it is disconnected
+                          stopTime}]
 ```
 ___
 
 #### [BiquadFilterNode](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode)
 
 ```javascript
-{
-  node: 'biquadFilter',
-  params: {
-    type,
-    frequency,
-    detune,
-    Q,
-  },
-}
+['biquadFilter', output, {type, frequency, detune, Q}]
 ```
 ___
 #### [ChannelMergerNode](https://developer.mozilla.org/en-US/docs/Web/API/ChannelMergerNode)
 
 ```javascript
-{
-  node: 'channelMerger',
-  params: {
-    numberOfOutputs,
-  },
-}
+['channelMerger', output, {numberOfOutputs}]
 ```
 ___
 #### [ChannelSplitterNode](https://developer.mozilla.org/en-US/docs/Web/API/ChannelSplitterNode)
@@ -213,67 +196,40 @@ ___
 NB ChannelSplitter has it's own syntax for the output parameter. Because the channel is split it means each node can have multiple outputs. Each output is indexed and the outputs property should be an array of these indices. Then the inputs property should be an array of indices corresponding to the inputs of the destination node. Check out the spec and the link above for more info.
 
 ```javascript
-{
-  node: 'channelSplitter',
-  params: {
-    numberOfOutputs,
-  },
-  output: {key, outputs, inputs},
-}
+['channelSplitter', {key, outputs, inputs}, {numberOfOutputs}]
 ```
 ___
 #### [ConvolverNode](https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode)
 
 ```javascript
-{
-  node: 'convolver',
-  params: {
-    buffer,
-    normalize,
-  },
-}
+['convolver', output, {buffer, normalize}]
 ```
 ___
 
 #### [DelayNode](https://developer.mozilla.org/en-US/docs/Web/API/DelayNode)
+NB maxDelayTime must be set when node is first created but cannot be updated. A new node will have to be inserted if a different maxDelayTime is required.
 
 ```javascript
-{
-  node: 'delay',
-  params: {
-    delayTime,
-    maxDelayTime, //special parameter which must be set when node is first created, it cannot be altered thereafter
-  },
-}
+['delay', output, {delayTime, maxDelayTime}]
 ```
 ___
 
 #### [DynamicsCompressorNode](https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode)
 
 ```javascript
-{
-  node: 'dynamicsCompressor',
-  params: {
-    attack,
-    knee,
-    ratio,
-    reduction,
-    release,
-    threshold,
-  },
-}
+['dynamicsCompressor', output, {attack,
+                                knee,
+                                ratio,
+                                reduction,
+                                release,
+                                threshold}]
 ```
 ___
 
 #### [GainNode](https://developer.mozilla.org/en-US/docs/Web/API/GainNode)
 
 ```javascript
-{
-  node: 'gain',
-  params: {
-    gain,
-  }
-}
+['gain', output, {gain}]
 ```
 ___
 #### [MediaStreamAudioDestinationNode](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioDestinationNode)
@@ -281,83 +237,59 @@ ___
 This node has no output as it is a destination. It also takes no parameters. Use virtualAudioGraph.getAudioNodeById method to access the node's stream property
 
 ```javascript
-{
-  node: 'mediaStreamDestination',
-}
+['mediaStreamDestination']
 ```
 ___
 #### [MediaStreamAudioSourceNode](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
-
+NB Both params can only be set once and only one should be set
 ```javascript
-{
-  node: 'mediaElementSource',
-  params: {
-    // both these params can only be set once and only one should be set:
-    mediaElement, // EITHER set this if constructing from an HTMLMediaElement
-    mediaStream, // OR set this if constructing from a MediaStream
-  }
-}
+['mediaElementSource', output, {
+  mediaElement, // EITHER set this if constructing from an HTMLMediaElement
+  mediaStream, // OR set this if constructing from a MediaStream
+}]
 ```
 ___
 
 #### [OscillatorNode](https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode)
 
 ```javascript
-{
-  node: 'oscillator',
-  params: {
-    type,
-    frequency,
-    detune,
-    startTime, // time in seconds since virtualAudioGraph.currentTime was 0, if not provided then node starts immediately
-    stopTime, // if not provided then stop is not called on node until it is disconnected
-  }
-}
+['oscillator', output, {
+  type,
+  frequency,
+  detune,
+  startTime, // time in seconds since virtualAudioGraph.currentTime was 0, if not provided then node starts immediately
+  stopTime, // if not provided then stop is not called on node until it is disconnected
+}]
 ```
 ___
 
 #### [PannerNode](https://developer.mozilla.org/en-US/docs/Web/API/PannerNode)
 
 ```javascript
-{
-  node: 'panner',
-  params: {
-    coneInnerAngle,
-    coneOuterAngle,
-    coneOuterGain,
-    distanceModel,
-    orientation, // applies an array of arguments with the corresponding AudioNode setter
-    panningModel,
-    position, // applies an array of arguments with the corresponding AudioNode setter
-    maxDistance,
-    refDistance,
-    rolloffFactor,
-  },
-  output: 'output',
-}
+['panner', output, {
+  coneInnerAngle,
+  coneOuterAngle,
+  coneOuterGain,
+  distanceModel,
+  orientation, // applies an array of arguments with the corresponding AudioNode setter
+  panningModel,
+  position, // applies an array of arguments with the corresponding AudioNode setter
+  maxDistance,
+  refDistance,
+  rolloffFactor,
+}]
 ```
 ___
 
 #### [StereoPannerNode](https://developer.mozilla.org/en-US/docs/Web/API/StereoPannerNode)
 
 ```javascript
-{
-  node: 'stereoPanner',
-  params: {
-    pan,
-  },
-}
+['stereoPanner', output, {pan}]
 ```
 ___
 
 #### [WaveShaperNode](https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode)
 
 ```javascript
-{
-  node: 'waveShaper',
-  params: {
-    curve,
-    oversample,
-  },
-}
+['waveShaper', output, {curve, oversample}]
 ```
