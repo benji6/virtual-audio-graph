@@ -15,80 +15,40 @@ describe('virtualAudioGraph.update - error throwing conditions: ', () => {
 
   it('throws an error if no output is provided', () => {
     expect(() => virtualAudioGraph.update({
-      0: {
-        node: 'gain',
-      },
+      0: ['gain'],
     })).toThrow();
   });
 
   it('throws an error when virtual node name property is not recognised', () => {
     expect(() => virtualAudioGraph.update({
-      0: {
-        node: 'foobar',
-        output: 'output',
-      },
+      0: ['foobar', 'output'],
     })).toThrow();
   });
 
   it('throws an error when id is "output"', () => {
     expect(() => virtualAudioGraph.update({
-      0: {
-        output: {
-          node: 'gain',
-          output: 'output',
-        },
-      },
+      'output': ['gain', 'output'],
     })).toThrow();
   });
 
   it('throws an error if a node param is null or undefined', () => {
     expect(() => virtualAudioGraph.update({
-      0: {
-        node: 'oscillator',
-        output: 'output',
-      },
+      0: ['oscillator', 'output'],
       1: undefined,
     })).toThrow();
 
     expect(() => virtualAudioGraph.update({
-      0: {
-        node: 'oscillator',
-        output: 'output',
-      },
+      0: ['oscillator', 'output'],
       1: null,
     })).toThrow();
   });
 
   it('throws an error when output is an object and key is not specified', () => {
     expect(() => virtualAudioGraph.update({
-      0: {
-        node: 'gain',
-        output: ['output'],
-        params: {
-          gain: 0.2,
-        },
-      },
-      1: {
-        node: 'oscillator',
-        output: 0,
-        params: {
-          frequency: 120,
-        },
-      },
-      2: {
-        node: 'gain',
-        output: {id: 1, destination: 'frequency'},
-        params: {
-          gain: 1024,
-        },
-      },
-      3: {
-        node: 'oscillator',
-        output: 2,
-        params: {
-          frequency: 100,
-        },
-      },
+      0: ['gain', ['output'], {gain: 0.2}],
+      1: ['oscillator', 0, {frequency: 120}],
+      2: ['gain', {id: 1, destination: 'frequency'}, {gain: 1024}],
+      3: ['oscillator', 2, {frequency: 100}],
     })).toThrow();
   });
 
@@ -96,20 +56,9 @@ describe('virtualAudioGraph.update - error throwing conditions: ', () => {
     const params = {numberOfOutputs: 2};
 
     expect(() => virtualAudioGraph.update({
-      0: {
-        node: 'channelMerger',
-        params,
-        output: 'output',
-      },
-      1: {
-        node: 'oscillator',
-        output: 'output',
-      },
-      2: {
-        node: 'channelSplitter',
-        params,
-        output: {key: 0, outputs: [0, 1, 2], inputs: [1, 0]},
-      },
+      0: ['channelMerger', 'output', params],
+      1: ['oscillator', 'output'],
+      2: ['channelSplitter', {key: 0, outputs: [0, 1, 2], inputs: [1, 0]}, params],
     })).toThrow();
   });
 });
