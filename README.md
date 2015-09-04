@@ -63,19 +63,15 @@ const {currentTime} = virtualAudioGraph;
 
 const virtualNodeParams = {
   0: ['gain', 'output', params: {gain: 0.2}],
-  1: ['oscillator', 0, {
-    type: 'square',
-    frequency: 440,
-    startTime: currentTime + 1,
-    stopTime: currentTime + 2,
-  }],
-  2: ['oscillator', 0, {
-    type: 'sawtooth',
-    frequency: 660,
-    detune: 4,
-    startTime: currentTime + 1.5,
-    stopTime: currentTime + 2.5,
-  }],
+  1: ['oscillator', 0, {type: 'square',
+                        frequency: 440,
+                        startTime: currentTime + 1,
+                        stopTime: currentTime + 2}],
+  2: ['oscillator', 0, {type: 'sawtooth',
+                        frequency: 660,
+                        detune: 4,
+                        startTime: currentTime + 1.5,
+                        stopTime: currentTime + 2.5}],
 };
 
 virtualAudioGraph.update(virtualNodeParams);
