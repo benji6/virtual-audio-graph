@@ -29,26 +29,9 @@ describe('virtualAudioGraph.defineNode - expected behaviour: ', () => {
     virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
 
     const virtualGraphParams = {
-      0: {
-        node: 'gain',
-        output: 'output',
-        params: {
-          gain: 0.5,
-        },
-      },
-      1: {
-        node: 'pingPongDelay',
-        output: 0,
-        params: {
-          decay: 0.5,
-          delayTime: 0.5,
-          maxDelayTime: 0.5,
-        },
-      },
-      2: {
-        node: 'oscillator',
-        output: 1,
-      },
+      0: ['gain', 'output', {gain: 0.5}],
+      1: ['pingPongDelay', 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
+      2: ['oscillator', 1],
     };
 
     expect(virtualAudioGraph.update(virtualGraphParams)).toBe(virtualAudioGraph);
@@ -60,45 +43,19 @@ describe('virtualAudioGraph.defineNode - expected behaviour: ', () => {
   it('can define a custom node built of other custom nodes', () => {
     virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
 
-    const quietpingPongDelayParamsFactory = () => {
-      return {
-        0: {
-          node: 'gain',
-          output: 'output',
-        },
-        1: {
-          node: 'pingPongDelay',
-          output: 0,
-        },
-        2: {
-          node: 'oscillator',
-          output: 1,
-        },
-      };
-    };
+    const quietpingPongDelayParamsFactory = () => ({
+      0: ['gain', 'output'],
+      1: ['pingPongDelay', 0],
+      2: ['oscillator', 1],
+    });
 
     virtualAudioGraph.defineNode(quietpingPongDelayParamsFactory, 'quietPingPongDelay');
 
     const virtualGraphParams = {
-      0: {
-        node: 'gain',
-        output: 'output',
-        params: {
-          gain: 0.5,
-        },
-      },
-      1: {
-        node: 'quietPingPongDelay',
-        output: 0,
-      },
-      2: {
-        node: 'pingPongDelay',
-        output: 1,
-      },
-      3: {
-        node: 'oscillator',
-        output: 2,
-      },
+      0: ['gain', 'output', {gain: 0.5}],
+      1: ['quietPingPongDelay', 0],
+      2: ['pingPongDelay', 1],
+      3: ['oscillator', 2],
     };
 
     expect(virtualAudioGraph.update(virtualGraphParams)).toBe(virtualAudioGraph);
@@ -111,26 +68,9 @@ describe('virtualAudioGraph.defineNode - expected behaviour: ', () => {
     virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
 
     const virtualGraphParams = {
-      0: {
-        node: 'gain',
-        output: 'output',
-        params: {
-          gain: 0.5,
-        },
-      },
-      1: {
-        node: 'pingPongDelay',
-        output: 0,
-        params: {
-          decay: 0.5,
-          delayTime: 0.5,
-          maxDelayTime: 0.5,
-        },
-      },
-      2: {
-        node: 'oscillator',
-        output: 1,
-      },
+      0: ['gain', 'output', {gain: 0.5}],
+      1: ['pingPongDelay', 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
+      2: ['oscillator', 1],
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -138,7 +78,7 @@ describe('virtualAudioGraph.defineNode - expected behaviour: ', () => {
     /* eslint-disable */
     expect(audioContext.toJSON()).toEqual({ name: 'AudioDestinationNode', inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'StereoPannerNode', pan: Object({ value: 1, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ '<circular:DelayNode>', Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] }) ] }) ] }) ] }) ] }), Object({ name: 'StereoPannerNode', pan: Object({ value: -1, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ '<circular:DelayNode>' ] }) ] }), Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] }) ] }) ] }) ] }) ] });
     /* eslint-enable */
-    virtualGraphParams[1].params.decay = 0.6;
+    virtualGraphParams[1][2].decay = 0.6;
 
     virtualAudioGraph.update(virtualGraphParams);
     /* eslint-disable */
@@ -150,26 +90,9 @@ describe('virtualAudioGraph.defineNode - expected behaviour: ', () => {
     virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
 
     const virtualGraphParams = {
-      0: {
-        node: 'gain',
-        output: 'output',
-        params: {
-          gain: 0.5,
-        },
-      },
-      1: {
-        node: 'pingPongDelay',
-        output: 0,
-        params: {
-          decay: 0.5,
-          delayTime: 0.5,
-          maxDelayTime: 0.5,
-        },
-      },
-      2: {
-        node: 'oscillator',
-        output: 1,
-      },
+      0: ['gain', 'output', {gain: 0.5}],
+      1: ['pingPongDelay', 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
+      2: ['oscillator', 1],
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -177,16 +100,10 @@ describe('virtualAudioGraph.defineNode - expected behaviour: ', () => {
     /* eslint-disable */
     expect(audioContext.toJSON()).toEqual({ name: 'AudioDestinationNode', inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'StereoPannerNode', pan: Object({ value: 1, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ '<circular:DelayNode>', Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] }) ] }) ] }) ] }) ] }), Object({ name: 'StereoPannerNode', pan: Object({ value: -1, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ '<circular:DelayNode>' ] }) ] }), Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] }) ] }) ] }) ] }) ] });
     /* eslint-enable */
-    virtualGraphParams[1].params.decay = 0.6;
+    virtualGraphParams[1][2].decay = 0.6;
 
     virtualAudioGraph.update({
-      0: {
-        node: 'gain',
-        output: 'output',
-        params: {
-          gain: 0.5,
-        },
-      },
+      0: ['gain', 'output', {gain: 0.5}],
     });
 
     expect(audioContext.toJSON()).toEqual({
@@ -208,23 +125,11 @@ describe('virtualAudioGraph.defineNode - expected behaviour: ', () => {
     virtualAudioGraph.defineNode(squareOscFactory, 'squareOscFactory');
 
     virtualAudioGraph.update({
-      0: {
-        node: 'gain',
-        output: 'output',
-        params: {
-          gain: 0.5,
-        },
-      },
-      1: {
-        node: 'squareOscFactory',
-        output: 0,
-        params: {
-          gain: 0.5,
-          frequency: 220,
-          startTime: 1,
-          stopTime: 2,
-        },
-      },
+      0: ['gain', 'output', {gain: 0.5}],
+      1: ['squareOscFactory', 0, {gain: 0.5,
+                                  frequency: 220,
+                                  startTime: 1,
+                                  stopTime: 2}],
     });
 
     /* eslint-disable */
@@ -232,23 +137,11 @@ describe('virtualAudioGraph.defineNode - expected behaviour: ', () => {
     /* eslint-enable */
 
     virtualAudioGraph.update({
-      0: {
-        node: 'gain',
-        output: 'output',
-        params: {
-          gain: 0.5,
-        },
-      },
-      1: {
-        node: 'sineOscFactory',
-        output: 0,
-        params: {
-          gain: 0.5,
-          frequency: 220,
-          startTime: 1,
-          stopTime: 2,
-        },
-      },
+      0: ['gain', 'output', {gain: 0.5}],
+      1: ['sineOscFactory', 0, {gain: 0.5,
+                                frequency: 220,
+                                startTime: 1,
+                                stopTime: 2}],
     });
     /* eslint-disable */
     expect(audioContext.toJSON()).toEqual({"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"OscillatorNode","type":"sine","frequency":{"value":220,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]});
