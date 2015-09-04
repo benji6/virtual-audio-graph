@@ -12,14 +12,8 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
 
   it(`${node}s with no start or stop times are played immediately and forever`, () => {
     const virtualGraphParams = {
-      0: {
-        node,
-        output: 'output',
-      },
-      1: {
-        node,
-        output: 'output',
-      },
+      0: [node, 'output'],
+      1: [node, 'output'],
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -36,20 +30,8 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
 
   it(`${node}s with no start times but with stop times are played immediately until their stop time`, () => {
     const virtualGraphParams = {
-      0: {
-        node,
-        output: 'output',
-        params: {
-          stopTime: 0.2,
-        },
-      },
-      1: {
-        node,
-        output: 'output',
-        params: {
-          stopTime: 0.2,
-        },
-      },
+      0: [node, 'output', {stopTime: 0.2}],
+      1: [node, 'output', {stopTime: 0.2}],
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -66,20 +48,8 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
 
   it(`${node}s with start times but no stop times are played at their start time then forever`, () => {
     const virtualGraphParams = {
-      0: {
-        node,
-        output: 'output',
-        params: {
-          startTime: 0.1,
-        },
-      },
-      1: {
-        node,
-        output: 'output',
-        params: {
-          startTime: 0.1,
-        },
-      },
+      0: [node, 'output', {startTime: 0.1}],
+      1: [node, 'output', {startTime: 0.1}],
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -96,14 +66,7 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
 
   it(`works when scheduling a single ${node}'s start and stop times`, () => {
     const virtualGraphParams = {
-      nodeA: {
-        node,
-        output: 'output',
-        params: {
-          startTime: 0.1,
-          stopTime: 0.2,
-        },
-      },
+      nodeA: [node, 'output', {startTime: 0.1, stopTime: 0.2}],
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -117,30 +80,9 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
 
   it(`works when scheduling multiple ${node}s' start and stop times`, () => {
     const virtualGraphParams = {
-      0: {
-        node,
-        output: 'output',
-        params: {
-          startTime: 0.1,
-          stopTime: 0.2,
-        },
-      },
-      1: {
-        node,
-        output: 'output',
-        params: {
-          startTime: 0.1,
-          stopTime: 0.2,
-        },
-      },
-      2: {
-        node,
-        output: 'output',
-        params: {
-          startTime: 0.1,
-          stopTime: 0.2,
-        },
-      },
+      0: [node, 'output', {startTime: 0.1, stopTime: 0.2}],
+      1: [node, 'output', {startTime: 0.1, stopTime: 0.2}],
+      2: [node, 'output', {startTime: 0.1, stopTime: 0.2}],
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -156,67 +98,17 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
 
   it(`works when rescheduling multiple ${node}' start and stop times`, () => {
     virtualAudioGraph.update({
-      0: {
-        node,
-        output: 'output',
-      },
-      1: {
-        node,
-        output: 'output',
-        params: {
-          startTime: 1,
-        },
-      },
-      2: {
-        node,
-        output: 'output',
-        params: {
-          stopTime: 0.1,
-        },
-      },
-      3: {
-        node,
-        output: 'output',
-        params: {
-          startTime: 1,
-          stopTime: 2,
-        },
-      },
+      0: [node, 'output'],
+      1: [node, 'output', {startTime: 1}],
+      2: [node, 'output', {stopTime: 0.1}],
+      3: [node, 'output', {startTime: 1, stopTime: 2}],
     });
 
     virtualAudioGraph.update({
-      0: {
-        node,
-        output: 'output',
-        params: {
-          startTime: 0.1,
-          stopTime: 0.2,
-        },
-      },
-      1: {
-        node,
-        output: 'output',
-        params: {
-          startTime: 0.1,
-          stopTime: 0.2,
-        },
-      },
-      2: {
-        node,
-        output: 'output',
-        params: {
-          startTime: 0.1,
-          stopTime: 0.2,
-        },
-      },
-      3: {
-        node,
-        output: 'output',
-        params: {
-          startTime: 0.1,
-          stopTime: 0.2,
-        },
-      },
+      0: [node, 'output', {startTime: 0.1, stopTime: 0.2}],
+      1: [node, 'output', {startTime: 0.1, stopTime: 0.2}],
+      2: [node, 'output', {startTime: 0.1, stopTime: 0.2}],
+      3: [node, 'output', {startTime: 0.1, stopTime: 0.2}],
     });
     [...virtualAudioGraph.virtualNodes].forEach(virtualNode => {
       const audioNode = virtualNode.audioNode;

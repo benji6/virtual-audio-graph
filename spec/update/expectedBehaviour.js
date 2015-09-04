@@ -17,27 +17,15 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
 
   it('returns itself', () => {
     const virtualNodeParams = {
-      0: {
-        node: 'oscillator',
-        params: {
-          type: 'square',
-        },
-        output: 'output',
-      },
+      0: ['oscillator', 'output', {type: 'square'}],
     };
     expect(virtualAudioGraph.update(virtualNodeParams)).toBe(virtualAudioGraph);
   });
 
   it('adds then removes nodes', () => {
     virtualAudioGraph.update({
-      0: {
-        node: 'gain',
-        output: 'output',
-      },
-      1: {
-        node: 'oscillator',
-        output: 0,
-      },
+      0: ['gain', 'output'],
+      1: ['oscillator', 0],
     });
     expect(audioContext.toJSON()).toEqual({
       name: 'AudioDestinationNode',
@@ -71,14 +59,8 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
 
   it('handles random strings for ids', () => {
     virtualAudioGraph.update({
-      foo: {
-        node: 'gain',
-        output: 'output',
-      },
-      bar: {
-        node: 'oscillator',
-        output: 'foo',
-      },
+      foo: ['gain', 'output'],
+      bar: ['oscillator', 'foo'],
     });
     expect(audioContext.toJSON()).toEqual({
       name: 'AudioDestinationNode',
@@ -112,10 +94,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
 
   it('changes the node if passed params with same id but different node property', () => {
     virtualAudioGraph.update({
-      0: {
-        node: 'gain',
-        output: 'output',
-      },
+      0: ['gain', 'output'],
     });
 
     expect(audioContext.toJSON()).toEqual({
@@ -133,10 +112,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
     });
 
     virtualAudioGraph.update({
-      0: {
-        node: 'oscillator',
-        output: 'output',
-      },
+      0: ['oscillator', 'output'],
     });
 
     expect(audioContext.toJSON()).toEqual({
@@ -161,10 +137,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
     virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
 
     virtualAudioGraph.update({
-      0: {
-        node: 'pingPongDelay',
-        output: 'output',
-      },
+      0: ['pingPongDelay', 'output'],
     });
 
      /* eslint-disable */
@@ -174,14 +147,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
 
   it('updates standard and custom nodes if passed same id but different params', () => {
     virtualAudioGraph.update({
-      0: {
-        node: 'oscillator',
-        params: {
-          frequency: 220,
-          detune: -9,
-        },
-        output: 'output',
-      },
+      0: ['oscillator', 'output', {frequency: 220, detune: -9}],
     });
 
     expect(audioContext.toJSON()).toEqual({
@@ -202,14 +168,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
     });
 
     virtualAudioGraph.update({
-      0: {
-        node: 'oscillator',
-        params: {
-          frequency: 880,
-          detune: 0,
-        },
-        output: 'output',
-      },
+      0: ['oscillator', 'output', {frequency: 880, detune: 0}],
     });
 
     expect(audioContext.toJSON()).toEqual({
@@ -232,14 +191,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
     virtualAudioGraph.defineNode(sineOscFactory, 'sineOscFactory');
 
     virtualAudioGraph.update({
-      0: {
-        node: 'sineOscFactory',
-        params: {
-          frequency: 110,
-          gain: 0.5,
-        },
-        output: 'output',
-      },
+      0: ['sineOscFactory', 'output', {frequency: 110, gain: 0.5}],
     });
 
     expect(audioContext.toJSON()).toEqual({
@@ -267,14 +219,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
     });
 
     virtualAudioGraph.update({
-      0: {
-        node: 'sineOscFactory',
-        params: {
-          frequency: 660,
-          gain: 0.2,
-        },
-        output: 'output',
-      },
+      0: ['sineOscFactory', 'output', {frequency: 660, gain: 0.2}],
     });
 
     expect(audioContext.toJSON()).toEqual({
@@ -304,14 +249,8 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
 
   it('connects nodes to each other', () => {
     virtualAudioGraph.update({
-      0: {
-        node: 'gain',
-        output: 'output',
-      },
-      1: {
-        node: 'oscillator',
-        output: 0,
-      },
+      0: ['gain', 'output'],
+      1: ['oscillator', 0],
     });
     expect(audioContext.toJSON()).toEqual({
       name: 'AudioDestinationNode',
@@ -341,10 +280,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
       ],
     });
     virtualAudioGraph.update({
-      0: {
-        node: 'oscillator',
-        output: 'output',
-      },
+      0: ['oscillator', 'output'],
     });
     expect(audioContext.toJSON()).toEqual({
       name: 'AudioDestinationNode',
@@ -368,14 +304,8 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
 
   it('reconnects nodes to each other', () => {
     virtualAudioGraph.update({
-      0: {
-        node: 'gain',
-        output: 'output',
-      },
-      1: {
-        node: 'oscillator',
-        output: 0,
-      },
+      0: ['gain', 'output'],
+      1: ['oscillator', 0],
     });
     expect(audioContext.toJSON()).toEqual({
       name: 'AudioDestinationNode',
@@ -405,14 +335,8 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
       ],
     });
     virtualAudioGraph.update({
-      0: {
-        node: 'gain',
-        output: 'output',
-      },
-      1: {
-        node: 'oscillator',
-        output: 'output',
-      },
+      0: ['gain', 'output'],
+      1: ['oscillator', 'output'],
     });
     expect(audioContext.toJSON()).toEqual({
       name: 'AudioDestinationNode',
@@ -444,22 +368,11 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
 
   it('connects and reconnects nodes to audioParams', () => {
     virtualAudioGraph.update({
-      0: {
-        node: 'gain',
-        output: 'output',
-      },
-      1: {
-        node: 'oscillator',
-        output: 0,
-      },
-      2: {
-        node: 'oscillator',
-        output: {key: 1, destination: 'frequency'},
-        params: {
-          frequency: 0.5,
-          type: 'triangle',
-        },
-      },
+      0: ['gain', 'output'],
+      1: ['oscillator', 0],
+      2: ['oscillator',
+          {key: 1, destination: 'frequency'},
+          {frequency: 0.5, type: 'triangle'}],
     });
 
     expect(audioContext.toJSON()).toEqual({
@@ -505,24 +418,11 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
     });
 
     virtualAudioGraph.update({
-      0: {
-        node: 'gain',
-        output: 'output',
-      },
-      1: {
-        node: 'oscillator',
-        output: 0,
-      },
-      2: {
-        node: 'oscillator',
-        output: [
-          {key: 1, destination: 'detune'},
-        ],
-        params: {
-          frequency: 0.5,
-          type: 'triangle',
-        },
-      },
+      0: ['gain', 'output'],
+      1: ['oscillator', 0],
+      2: ['oscillator',
+          [{key: 1, destination: 'detune'}],
+          {frequency: 0.5, type: 'triangle'}],
     });
 
     expect(audioContext.toJSON()).toEqual({
@@ -568,10 +468,7 @@ describe('virtualAudioGraph.update - expected behaviour: ', () => {
     });
 
     virtualAudioGraph.update({
-      0: {
-        node: 'oscillator',
-        output: 'output',
-      },
+      0: ['oscillator', 'output'],
     });
     expect(audioContext.toJSON()).toEqual({
       name: 'AudioDestinationNode',
