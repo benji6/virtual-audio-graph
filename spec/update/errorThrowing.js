@@ -1,7 +1,7 @@
 /* global beforeEach describe expect it */
 import VirtualAudioGraph from '../../src/index.js';
 
-describe('virtualAudioGraph.update - error throwing conditions: ', () => {
+describe('virtualAudioGraph.update - error throwing conditions:', () => {
   let audioContext;
   let virtualAudioGraph;
 

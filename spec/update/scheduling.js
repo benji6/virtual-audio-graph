@@ -1,7 +1,7 @@
 /* global beforeEach describe expect it */
 import VirtualAudioGraph from '../../src/index.js';
 
-const testSchedulingForNode = node => describe('virtualAudioGraph.update - scheduling: ', () => {
+const testSchedulingForNode = node => describe('virtualAudioGraph.update - scheduling:', () => {
   let audioContext;
   let virtualAudioGraph;
 

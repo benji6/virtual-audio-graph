@@ -4,7 +4,7 @@ import pingPongDelayParamsFactory from '../tools/pingPongDelayParamsFactory';
 import sineOscFactory from '../tools/sineOscFactory';
 import squareOscFactory from '../tools/squareOscFactory';
 
-describe('virtualAudioGraph.defineNode - expected behaviour: ', () => {
+describe('virtualAudioGraph.defineNode - expected behaviour:', () => {
   let audioContext;
   let virtualAudioGraph;
 

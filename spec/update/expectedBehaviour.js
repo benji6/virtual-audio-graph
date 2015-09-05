@@ -3,7 +3,7 @@ import VirtualAudioGraph from '../../src/index.js';
 import pingPongDelayParamsFactory from '../tools/pingPongDelayParamsFactory';
 import sineOscFactory from '../tools/sineOscFactory';
 
-describe('virtualAudioGraph.update - expected behaviour: ', () => {
+describe('virtualAudioGraph.update - expected behaviour:', () => {
   let audioContext;
   let virtualAudioGraph;
 
