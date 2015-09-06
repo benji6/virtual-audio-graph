@@ -103,17 +103,17 @@ Each key in the object passed to `update` is used as a unique reference to the c
   });
   ```
 
-- `2` optional object representing any properties to set/alter on the audio node created (details on properties available to standard nodes [here](#standard-virtual-audio-nodes)).
+- `2` optional object representing any properties to set/alter on the audio node created (details on properties available to standard nodes [here](#standard-nodes)).
 
 - `3` optionally specify this node as an input of a custom node by assigning `'input'` at this index. Only valid when defining nodes (see [below](#defining-custom-nodes)).
 
 ### Defining Custom Nodes
 
-The virtual audio graph is composed of standard virtual audio nodes (see [below](#standard-virtual-audio-nodes)) and custom virtual audio nodes which in their simplest form are built out of standard audio nodes.
+The virtual audio graph is composed of standard nodes (see [below](#standard-nodes)) and custom nodes which in their simplest form are built out of standard nodes.
 
-`virtualAudioGraph.defineNode` allows you to define your own custom nodes, it takes two arguments, the first is a function which returns an object of virtual audio node parameters and the second is the name of the custom node. The function can optionally take an object as an argument with properties corresponding to variable parameters for the node.
+`virtualAudioGraph.defineNode` allows you to define your own custom nodes, it takes two arguments, the first is a function which returns an object of virtual node parameters and the second is the name of the custom node. The function can optionally take an object as an argument with properties corresponding to variable parameters for the node.
 
-When defining virtual audio node parameters include a property `input` and value `'input'` which specifies the input points of the custom virtual node:
+When defining virtual node parameters include a property `input` and value `'input'` which specifies the input points of the custom virtual node:
 
 ```javascript
 
@@ -151,9 +151,9 @@ If an `'input'` node has no parameters specify `null` like this:
   five: ['gain', 4, null, 'input']
 ```
 
-### Standard Virtual Audio Nodes
+### Standard Nodes
 
-Here is a list of standard virtual audio nodes implemented in virtual-audio-graph and the params you can provide them with. You can build custom virtual audio nodes out of these as above.
+Here is a list of standard nodes implemented in virtual-audio-graph and the params you can provide them with. You can build custom nodes out of these as above.
 
 #### [AnalyserNode](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode)
 
