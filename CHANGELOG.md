@@ -1,16 +1,58 @@
 # Release Notes
 
+## 0.12.x
+
+Breaking API change:
+
+```javascript
+const newAPI = {
+  0: ['oscillator', 'output'],
+  1: ['gain', {key: 0, destination: 'detune'}, {gain: 0.5}, 'input'],
+  2: ['oscillator', 1, {frequency: 110}],
+};
+```
+
+```javascript
+const oldAPI = {
+  0: {
+    node: 'oscillator',
+    output: 'output',
+  },
+  1: {
+    input: 'input',
+    node: 'gain',
+    output: {key: 0, destination: 'detune'},
+    params: {
+      gain: 0.5,
+    },
+  },
+  2: {
+    node: 'oscillator',
+    output: 1,
+    params: {
+      frequency: 110,
+    },
+  },
+}
+```
+
+___
+
 ## 0.11.x
 
 - Added support for:
   - ChannelMergerNode
   - ChannelSplitterNode
 
+___
+
 ## 0.10.x
 
 - Added support for:
   - MediaStreamAudioDestinationNode
   - MediaStreamAudioSourceNode
+
+___
 
 ## 0.9.x
 
@@ -19,6 +61,8 @@
   - DynamicsCompressorNode
   - WaveShaperNode
 
+___
+
 ## 0.8.x
 
 - Added getAudioNodeById method to virtualAudioGraph
@@ -26,6 +70,8 @@
 - Added support for:
   - AnalyserNode
   - AudioBufferSourceNode
+
+___
 
 ## 0.7.x
 
