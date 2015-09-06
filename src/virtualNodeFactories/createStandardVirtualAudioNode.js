@@ -1,8 +1,8 @@
 import createAudioNode from '../helpers/createAudioNode';
-import update from '../helpers/update';
 import constructorParamsKeys from '../data/constructorParamsKeys';
+import update from '../helpers/update';
 
-export default (virtualAudioGraph, {node, input, output, params}) => {
+export default (virtualAudioGraph, [node, output, params, input]) => {
   params = params || {};
   const {startTime, stopTime} = params;
   const constructorParam = params[Object.keys(params)

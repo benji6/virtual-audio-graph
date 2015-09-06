@@ -2,7 +2,7 @@ import createStandardVirtualAudioNode from '../virtualNodeFactories/createStanda
 import createCustomVirtualAudioNode from '../virtualNodeFactories/createCustomVirtualAudioNode';
 
 export default function (virtualAudioNodeParam) {
-  if (this.customNodes[virtualAudioNodeParam.node]) {
+  if (this.customNodes[virtualAudioNodeParam[0]]) {
     return createCustomVirtualAudioNode(this, virtualAudioNodeParam);
   }
   return createStandardVirtualAudioNode(this, virtualAudioNodeParam);

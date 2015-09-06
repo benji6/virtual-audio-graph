@@ -7,7 +7,6 @@ import disconnect from './helpers/disconnect';
 
 const startTimePath = obj => obj.params && obj.params.startTime;
 const stopTimePath = obj => obj.params && obj.params.stopTime;
-const difference = (arr0, arr1) => arr0.filter(x => arr1.indexOf(x) === -1);
 
 export default class VirtualAudioGraph {
   constructor ({audioContext = new AudioContext(),
@@ -36,33 +35,36 @@ export default class VirtualAudioGraph {
   }
 
   update (virtualGraphParams) {
-    difference(Object.keys(this.virtualNodes), Object.keys(virtualGraphParams))
-      .forEach(id => {
-                 disconnect(this.virtualNodes[id]);
-                 delete this.virtualNodes[id];
-               });
+    const virtualGraphParamsKeys = Object.keys(virtualGraphParams);
 
-    Object.keys(virtualGraphParams)
+    Object.keys(this.virtualNodes).forEach(id => {
+      if (virtualGraphParamsKeys.indexOf(id) === -1) {
+        disconnect(this.virtualNodes[id]);
+        delete this.virtualNodes[id];
+      }
+    });
+
+    virtualGraphParamsKeys
       .forEach(key => {
         if (key === 'output') {
           throw new Error(`'output' is not a valid id`);
         }
-        const virtualAudioNodeParam = virtualGraphParams[key];
-        const {output, node} = virtualAudioNodeParam;
+        const virtualAudioNodeParams = virtualGraphParams[key];
+        const [node, output] = virtualAudioNodeParams;
         if (output == null && node !== 'mediaStreamDestination') {
           throw new Error(`output not specified for node key ${key}`);
         }
         const virtualAudioNode = this.virtualNodes[key];
         if (virtualAudioNode == null) {
-          this.virtualNodes[key] = createVirtualAudioNode.call(this, virtualAudioNodeParam);
+          this.virtualNodes[key] = createVirtualAudioNode.call(this, virtualAudioNodeParams);
           return;
         }
-        if (startTimePath(virtualAudioNodeParam) !== startTimePath(virtualAudioNode) ||
-          stopTimePath(virtualAudioNodeParam) !== stopTimePath(virtualAudioNode)) {
+        if (startTimePath(virtualAudioNodeParams) !== startTimePath(virtualAudioNode) ||
+          stopTimePath(virtualAudioNodeParams) !== stopTimePath(virtualAudioNode)) {
           disconnect(virtualAudioNode);
           delete this.virtualNodes[key];
         }
-        updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParam, key);
+        updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParams, key);
       });
 
     connectAudioNodes(this.virtualNodes,
