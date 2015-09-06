@@ -11,6 +11,8 @@ Library for declaratively manipulating the Web Audio API.
 
 virtual-audio-graph manages the state of the audio graph so this does not have to be done manually. Simply declare what you would like the audio graph to look like and virtual-audio-graph takes care of the rest.
 
+Inspired by [virtual-dom](https://github.com/Matt-Esch/virtual-dom) and [React](https://github.com/facebook/react).
+
 ## Installation
 
 ```bash
