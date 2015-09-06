@@ -15,7 +15,7 @@ var _virtualNodeFactoriesCreateCustomVirtualAudioNode = require('../virtualNodeF
 var _virtualNodeFactoriesCreateCustomVirtualAudioNode2 = _interopRequireDefault(_virtualNodeFactoriesCreateCustomVirtualAudioNode);
 
 exports['default'] = function (virtualAudioNodeParam) {
-  if (this.customNodes[virtualAudioNodeParam.node]) {
+  if (this.customNodes[virtualAudioNodeParam[0]]) {
     return (0, _virtualNodeFactoriesCreateCustomVirtualAudioNode2['default'])(this, virtualAudioNodeParam);
   }
   return (0, _virtualNodeFactoriesCreateStandardVirtualAudioNode2['default'])(this, virtualAudioNodeParam);

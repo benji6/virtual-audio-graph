@@ -18,7 +18,7 @@ var _update = require('./update');
 
 var _update2 = _interopRequireDefault(_update);
 
-function checkOutputsEqual(output0, output1) {
+var checkOutputsEqual = function checkOutputsEqual(output0, output1) {
   if (Array.isArray(output0)) {
     if (!Array.isArray(output1)) {
       return false;
@@ -28,21 +28,21 @@ function checkOutputsEqual(output0, output1) {
     });
   }
   return output0 === output1;
-}
+};
 
 exports['default'] = function (virtualAudioNode, virtualAudioNodeParam, id) {
-  if (virtualAudioNodeParam.node !== virtualAudioNode.node) {
+  if (virtualAudioNodeParam[0] !== virtualAudioNode.node) {
     (0, _disconnect2['default'])(virtualAudioNode);
     this.virtualNodes[id] = _createVirtualAudioNode2['default'].call(this, virtualAudioNodeParam);
     return;
   }
 
-  if (!checkOutputsEqual(virtualAudioNodeParam.output, virtualAudioNode.output)) {
+  if (!checkOutputsEqual(virtualAudioNodeParam[1], virtualAudioNode.output)) {
     (0, _disconnect2['default'])(virtualAudioNode, true);
-    virtualAudioNode.output = virtualAudioNodeParam.output;
+    virtualAudioNode.output = virtualAudioNodeParam[1];
   }
 
-  (0, _update2['default'])(virtualAudioNode, virtualAudioNodeParam.params);
+  (0, _update2['default'])(virtualAudioNode, virtualAudioNodeParam[2]);
 };
 
 module.exports = exports['default'];
