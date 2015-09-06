@@ -99,7 +99,7 @@ virtualAudioGraph.update({
 
 - `2` - an object representing any properties to set/alter on the audio node created (details on properties available to standard nodes [here](#standard-virtual-audio-nodes)).
 
-- `3` - specify whether this node is an an input of a custom node. Only valid when defining nodes (see [below](#defining-custom-nodes).
+- `3` - specify whether this node is an an input of a custom node. Only valid when defining nodes (see [below](#defining-custom-nodes)).
 
 Calling `virtualAudioGraph.update` subsequently will diff the new state against the old state and make appropriate changes to the audio graph.
 
