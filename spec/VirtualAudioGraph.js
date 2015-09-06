@@ -24,10 +24,7 @@ describe('VirtualAudioGraph', () => {
     const virtualAudioGraph = new VirtualAudioGraph({audioContext});
 
     virtualAudioGraph.update({
-      0: {
-        node: 'gain',
-        output: 'output',
-      },
+      0: ['gain', 'output'],
     });
 
     expect(virtualAudioGraph.getAudioNodeById(0).constructor).toBe(GainNode);

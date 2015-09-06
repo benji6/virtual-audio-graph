@@ -39,7 +39,7 @@ function update(virtualNode) {
       var audioGraphParamsFactoryValues = values(virtualNode.audioGraphParamsFactory(params));
       Object.keys(virtualNode.virtualNodes).forEach(function (key, i) {
         var childVirtualNode = virtualNode.virtualNodes[key];
-        update(childVirtualNode, audioGraphParamsFactoryValues[i].params);
+        update(childVirtualNode, audioGraphParamsFactoryValues[i][2]);
       });
     })();
   } else {

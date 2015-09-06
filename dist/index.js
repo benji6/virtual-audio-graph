@@ -4,6 +4,8 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -39,11 +41,6 @@ var startTimePath = function startTimePath(obj) {
 };
 var stopTimePath = function stopTimePath(obj) {
   return obj.params && obj.params.stopTime;
-};
-var difference = function difference(arr0, arr1) {
-  return arr0.filter(function (x) {
-    return arr1.indexOf(x) === -1;
-  });
 };
 
 var VirtualAudioGraph = (function () {
@@ -83,32 +80,39 @@ var VirtualAudioGraph = (function () {
     value: function update(virtualGraphParams) {
       var _this = this;
 
-      difference(Object.keys(this.virtualNodes), Object.keys(virtualGraphParams)).forEach(function (id) {
-        (0, _helpersDisconnect2['default'])(_this.virtualNodes[id]);
-        delete _this.virtualNodes[id];
+      var virtualGraphParamsKeys = Object.keys(virtualGraphParams);
+
+      Object.keys(this.virtualNodes).forEach(function (id) {
+        if (virtualGraphParamsKeys.indexOf(id) === -1) {
+          (0, _helpersDisconnect2['default'])(_this.virtualNodes[id]);
+          delete _this.virtualNodes[id];
+        }
       });
 
-      Object.keys(virtualGraphParams).forEach(function (key) {
+      virtualGraphParamsKeys.forEach(function (key) {
         if (key === 'output') {
           throw new Error('\'output\' is not a valid id');
         }
-        var virtualAudioNodeParam = virtualGraphParams[key];
-        var output = virtualAudioNodeParam.output;
-        var node = virtualAudioNodeParam.node;
+        var virtualAudioNodeParams = virtualGraphParams[key];
+
+        var _virtualAudioNodeParams = _slicedToArray(virtualAudioNodeParams, 2);
+
+        var node = _virtualAudioNodeParams[0];
+        var output = _virtualAudioNodeParams[1];
 
         if (output == null && node !== 'mediaStreamDestination') {
           throw new Error('output not specified for node key ' + key);
         }
         var virtualAudioNode = _this.virtualNodes[key];
         if (virtualAudioNode == null) {
-          _this.virtualNodes[key] = _helpersCreateVirtualAudioNode2['default'].call(_this, virtualAudioNodeParam);
+          _this.virtualNodes[key] = _helpersCreateVirtualAudioNode2['default'].call(_this, virtualAudioNodeParams);
           return;
         }
-        if (startTimePath(virtualAudioNodeParam) !== startTimePath(virtualAudioNode) || stopTimePath(virtualAudioNodeParam) !== stopTimePath(virtualAudioNode)) {
+        if (startTimePath(virtualAudioNodeParams) !== startTimePath(virtualAudioNode) || stopTimePath(virtualAudioNodeParams) !== stopTimePath(virtualAudioNode)) {
           (0, _helpersDisconnect2['default'])(virtualAudioNode);
           delete _this.virtualNodes[key];
         }
-        _helpersUpdateAudioNodeAndVirtualAudioGraph2['default'].call(_this, virtualAudioNode, virtualAudioNodeParam, key);
+        _helpersUpdateAudioNodeAndVirtualAudioGraph2['default'].call(_this, virtualAudioNode, virtualAudioNodeParams, key);
       });
 
       (0, _helpersConnectAudioNodes2['default'])(this.virtualNodes, function (virtualNode) {

@@ -11,7 +11,7 @@ export default function update (virtualNode, params = {}) {
     Object.keys(virtualNode.virtualNodes)
       .forEach((key, i) => {
         const childVirtualNode = virtualNode.virtualNodes[key];
-        update(childVirtualNode, audioGraphParamsFactoryValues[i].params);
+        update(childVirtualNode, audioGraphParamsFactoryValues[i][2]);
       });
   } else {
     Object.keys(params)
