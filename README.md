@@ -55,14 +55,16 @@ The `VirtualAudioGraph` constructor takes an object with two optional properties
 
 ### Updating the Audio Graph
 
-Create two oscillators, schedule their start and stop times, put them through a gain node and attach the gain node to the destination:
+`virtualAudioGraph.update` takes an object representing the desired audio graph, then internally compares this against any previous updates and efficiently modifies the audio-graph to exactly what was specified.
+
+Here we create two oscillators, schedule their start and stop times, put them through a gain node and attach the gain node to the destination:
 
 ```javascript
 
 const {currentTime} = virtualAudioGraph;
 
 const virtualNodeParams = {
-  0: ['gain', 'output', params: {gain: 0.2}],
+  0: ['gain', 'output', {gain: 0.2}],
   1: ['oscillator', 0, {type: 'square',
                         frequency: 440,
                         startTime: currentTime + 1,
@@ -78,30 +80,32 @@ virtualAudioGraph.update(virtualNodeParams);
 
 ```
 
-`virtualAudioGraph.update` takes an object representing the desired audio graph, then internally it creates a virtual audio graph which it compares to any previous updates and updates the actual audio graph accordingly. Each key in this object is used as a unique reference to the corresponding virtualAudioNode and each value is an array which contains parameters for the virtualAudioNode. For each index these keys are as follows:
+Each key in the object passed to `update` is used as a unique reference to the corresponding node and each value is an array which contains parameters for the node. This array can be up to a length of 4 and values for each index are specified below:
 
-- `0` - name of the node we are creating.
+- `0` string specifying name of the node we are creating (e.g. `'oscillator'`).
 
-- `1` - Here we specify where this node is outputting to. In it's simplest form this could be a key for another audioNode or the reserved word `output` which connects to virtualAudioGraph's destination. You can also connect a node to a valid AudioParam using an object with a `key` property corresponding to the destination virtual-node key and a `destination` property with a string value specifying the AudioParam destination. Finally the output property could be an array of any of these values if the node has multiple outputs. Here are some examples:
+- `1` value specifying where this node is outputting to. This could be:
+ - the reserved string `'output'` which connects to virtualAudioGraph's destination.
+ - a string or number corresponding to a key for another node.
+ - an object with a `key` property corresponding to the destination node key and a `destination` property with a string value specifying the AudioParam destination for connecting to a valid AudioParam.
+ - an array comprised by one or more of the above for specifying multiple outputs
 
-```javascript
+ Here are some examples:
 
-virtualAudioGraph.update({
-  // output is a reserved value for virtual-audio-graph destination
-  0: ['oscillator', 'output'],
-  // connecting to the frequency AudioParam of the oscillator above
-  1: ['gain', {key: 0, destination: 'frequency'}, {gain: 10}],
-  // connect to node key 1 (gain node above) and output
-  2: ['oscillator', [1, 'output'], {type: 'triangle', frequency: 1}],
-});
+  ```javascript
+  virtualAudioGraph.update({
+    // output is a reserved value for virtual-audio-graph destination
+    0: ['oscillator', 'output'],
+    // connecting to the frequency AudioParam of the oscillator above
+    1: ['gain', {key: 0, destination: 'frequency'}, {gain: 10}],
+    // connect to node key 1 (gain node above) and output
+    2: ['oscillator', [1, 'output'], {type: 'triangle', frequency: 1}],
+  });
+  ```
 
-```
+- `2` optional object representing any properties to set/alter on the audio node created (details on properties available to standard nodes [here](#standard-virtual-audio-nodes)).
 
-- `2` - an object representing any properties to set/alter on the audio node created (details on properties available to standard nodes [here](#standard-virtual-audio-nodes)).
-
-- `3` - specify whether this node is an an input of a custom node. Only valid when defining nodes (see [below](#defining-custom-nodes)).
-
-Calling `virtualAudioGraph.update` subsequently will diff the new state against the old state and make appropriate changes to the audio graph.
+- `3` optionally specify this node as an input of a custom node by assigning `'input'` at this index. Only valid when defining nodes (see [below](#defining-custom-nodes)).
 
 ### Defining Custom Nodes
 
@@ -259,8 +263,11 @@ ___
   type,
   frequency,
   detune,
-  startTime, // time in seconds since virtualAudioGraph.currentTime was 0, if not provided then node starts immediately
-  stopTime, // if not provided then stop is not called on node until it is disconnected
+  // time in seconds since virtualAudioGraph.currentTime
+  // was 0, if not provided then node starts immediately
+  startTime,
+  // if not provided then stop is not called on node until it is disconnected
+  stopTime,
 }]
 ```
 ___
@@ -273,9 +280,11 @@ ___
   coneOuterAngle,
   coneOuterGain,
   distanceModel,
-  orientation, // applies an array of arguments with the corresponding AudioNode setter
+  // applies an array of arguments with the corresponding AudioNode setter:
+  orientation,
   panningModel,
-  position, // applies an array of arguments with the corresponding AudioNode setter
+  // applies an array of arguments with the corresponding AudioNode setter:
+  position,
   maxDistance,
   refDistance,
   rolloffFactor,
