@@ -36,11 +36,11 @@ var _helpersDisconnect = require('./helpers/disconnect');
 
 var _helpersDisconnect2 = _interopRequireDefault(_helpersDisconnect);
 
-var startTimePath = function startTimePath(obj) {
-  return obj.params && obj.params.startTime;
+var startTimePath = function startTimePath(params) {
+  return params[2] && params[2].startTime;
 };
-var stopTimePath = function stopTimePath(obj) {
-  return obj.params && obj.params.stopTime;
+var stopTimePath = function stopTimePath(params) {
+  return params[2] && params[2].stopTime;
 };
 
 var VirtualAudioGraph = (function () {
