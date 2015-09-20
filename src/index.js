@@ -5,8 +5,8 @@ import createVirtualAudioNode from './helpers/createVirtualAudioNode';
 import updateAudioNodeAndVirtualAudioGraph from './helpers/updateAudioNodeAndVirtualAudioGraph';
 import disconnect from './helpers/disconnect';
 
-const startTimePath = obj => obj.params && obj.params.startTime;
-const stopTimePath = obj => obj.params && obj.params.stopTime;
+const startTimePath = params => params[2] && params[2].startTime;
+const stopTimePath = params => params[2] && params[2].stopTime;
 
 export default class VirtualAudioGraph {
   constructor ({audioContext = new AudioContext(),
