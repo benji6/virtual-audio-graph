@@ -36,11 +36,17 @@ var _helpersDisconnect = require('./helpers/disconnect');
 
 var _helpersDisconnect2 = _interopRequireDefault(_helpersDisconnect);
 
-var startTimePath = function startTimePath(params) {
+var startTimePathParams = function startTimePathParams(params) {
   return params[2] && params[2].startTime;
 };
-var stopTimePath = function stopTimePath(params) {
+var stopTimePathParams = function stopTimePathParams(params) {
   return params[2] && params[2].stopTime;
+};
+var startTimePathStored = function startTimePathStored(virtualNode) {
+  return virtualNode.params && virtualNode.params.startTime;
+};
+var stopTimePathStored = function stopTimePathStored(virtualNode) {
+  return virtualNode.params && virtualNode.params.stopTime;
 };
 
 var VirtualAudioGraph = (function () {
@@ -108,7 +114,7 @@ var VirtualAudioGraph = (function () {
           _this.virtualNodes[key] = _helpersCreateVirtualAudioNode2['default'].call(_this, virtualAudioNodeParams);
           return;
         }
-        if (startTimePath(virtualAudioNodeParams) !== startTimePath(virtualAudioNode) || stopTimePath(virtualAudioNodeParams) !== stopTimePath(virtualAudioNode)) {
+        if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) || stopTimePathParams(virtualAudioNodeParams) !== stopTimePathStored(virtualAudioNode)) {
           (0, _helpersDisconnect2['default'])(virtualAudioNode);
           delete _this.virtualNodes[key];
         }
