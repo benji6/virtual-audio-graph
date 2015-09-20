@@ -5,8 +5,10 @@ import createVirtualAudioNode from './helpers/createVirtualAudioNode';
 import updateAudioNodeAndVirtualAudioGraph from './helpers/updateAudioNodeAndVirtualAudioGraph';
 import disconnect from './helpers/disconnect';
 
-const startTimePath = params => params[2] && params[2].startTime;
-const stopTimePath = params => params[2] && params[2].stopTime;
+const startTimePathParams = params => params[2] && params[2].startTime;
+const stopTimePathParams = params => params[2] && params[2].stopTime;
+const startTimePathStored = virtualNode => virtualNode.params && virtualNode.params.startTime;
+const stopTimePathStored = virtualNode => virtualNode.params && virtualNode.params.stopTime;
 
 export default class VirtualAudioGraph {
   constructor ({audioContext = new AudioContext(),
@@ -59,8 +61,8 @@ export default class VirtualAudioGraph {
           this.virtualNodes[key] = createVirtualAudioNode.call(this, virtualAudioNodeParams);
           return;
         }
-        if (startTimePath(virtualAudioNodeParams) !== startTimePath(virtualAudioNode) ||
-          stopTimePath(virtualAudioNodeParams) !== stopTimePath(virtualAudioNode)) {
+        if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) ||
+          stopTimePathParams(virtualAudioNodeParams) !== stopTimePathStored(virtualAudioNode)) {
           disconnect(virtualAudioNode);
           delete this.virtualNodes[key];
         }
