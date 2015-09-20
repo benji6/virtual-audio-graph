@@ -1,5 +1,5 @@
 import createVirtualAudioNode from './createVirtualAudioNode';
-import disconnect from  './disconnect';
+import disconnect from './disconnect';
 import update from './update';
 
 const checkOutputsEqual = (output0, output1) => {

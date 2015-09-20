@@ -13,7 +13,7 @@ describe('VirtualAudioGraph', () => {
     expect(new VirtualAudioGraph({
       output: audioContext.destination,
     }).output).toBe(audioContext.destination);
-    expect(new VirtualAudioGraph({audioContext: audioContext}).output).toBe(audioContext.destination);
+    expect(new VirtualAudioGraph({audioContext}).output).toBe(audioContext.destination);
   });
 
   it('has a property called currentTime which returns the audioContext currentTime', () => {

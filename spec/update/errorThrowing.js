@@ -27,7 +27,7 @@ describe('virtualAudioGraph.update - error throwing conditions:', () => {
 
   it('throws an error when id is "output"', () => {
     expect(() => virtualAudioGraph.update({
-      'output': ['gain', 'output'],
+      output: ['gain', 'output'],
     })).toThrow();
   });
 
