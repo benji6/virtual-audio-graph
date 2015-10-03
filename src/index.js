@@ -11,17 +11,16 @@ const startTimePathStored = virtualNode => virtualNode.params && virtualNode.par
 const stopTimePathStored = virtualNode => virtualNode.params && virtualNode.params.stopTime;
 
 export default ({audioContext = new AudioContext(),
-                 output = audioContext.destination} = {}) =>
-  ({
+                 output = audioContext.destination} = {}) => {
+  return {
     audioContext,
-    output,
     virtualNodes: {},
     customNodes: {},
     get currentTime () {
-      return this.audioContext.currentTime;
+      return audioContext.currentTime;
     },
     defineNode (customNodeParamsFactory, name) {
-      if (this.audioContext[`create${capitalize(name)}`]) {
+      if (audioContext[`create${capitalize(name)}`]) {
         throw new Error(`${name} is a standard audio node name and cannot be overwritten`);
       }
 
@@ -65,8 +64,9 @@ export default ({audioContext = new AudioContext(),
         });
 
       connectAudioNodes(this.virtualNodes,
-                        virtualNode => connect(virtualNode, this.output));
+                        virtualNode => connect(virtualNode, output));
 
       return this;
     },
-  });
+  };
+};
