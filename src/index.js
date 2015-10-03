@@ -52,7 +52,7 @@ export default ({audioContext = new AudioContext(),
           }
           const virtualAudioNode = this.virtualNodes[key];
           if (virtualAudioNode == null) {
-            this.virtualNodes[key] = createVirtualAudioNode.call(this, virtualAudioNodeParams);
+            this.virtualNodes[key] = createVirtualAudioNode(audioContext, this.customNodes, virtualAudioNodeParams);
             return;
           }
           if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) ||
@@ -60,7 +60,7 @@ export default ({audioContext = new AudioContext(),
             disconnect(virtualAudioNode);
             delete this.virtualNodes[key];
           }
-          updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParams, key);
+          updateAudioNodeAndVirtualAudioGraph.call(this, audioContext, virtualAudioNode, virtualAudioNodeParams, key);
         });
 
       connectAudioNodes(this.virtualNodes,

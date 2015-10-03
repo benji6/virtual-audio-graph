@@ -2,13 +2,13 @@ import createAudioNode from '../helpers/createAudioNode';
 import constructorParamsKeys from '../data/constructorParamsKeys';
 import update from '../helpers/update';
 
-export default (virtualAudioGraph, [node, output, params, input]) => {
+export default (audioContext, [node, output, params, input]) => {
   params = params || {};
   const {startTime, stopTime} = params;
   const constructorParam = params[Object.keys(params)
     .filter(key => constructorParamsKeys.indexOf(key) !== -1)[0]];
   const virtualNode = {
-    audioNode: createAudioNode(virtualAudioGraph.audioContext, node, constructorParam, {startTime, stopTime}),
+    audioNode: createAudioNode(audioContext, node, constructorParam, {startTime, stopTime}),
     connected: false,
     isCustomVirtualNode: false,
     input,

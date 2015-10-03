@@ -12,10 +12,10 @@ const checkOutputsEqual = (output0, output1) => {
   return output0 === output1;
 };
 
-export default function (virtualAudioNode, virtualAudioNodeParam, id) {
+export default function (audioContext, virtualAudioNode, virtualAudioNodeParam, id) {
   if (virtualAudioNodeParam[0] !== virtualAudioNode.node) {
     disconnect(virtualAudioNode);
-    this.virtualNodes[id] = createVirtualAudioNode.call(this, virtualAudioNodeParam);
+    this.virtualNodes[id] = createVirtualAudioNode(audioContext, this.customNodes, virtualAudioNodeParam);
     return;
   }
 
