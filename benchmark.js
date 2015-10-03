@@ -74,16 +74,8 @@ const runBenchmarkCode = function (virtualAudioGraph) {
 };
 
 new Benchmark.Suite()
-  .add('PublishedVirtualAudioGraph', function () {
-    runBenchmarkCode(new PublishedVirtualAudioGraph());
-  })
-  .add('DevelopmentVirtualAudioGraph', function() {
-    runBenchmarkCode(new DevelopmentVirtualAudioGraph());
-  })
-  .on('cycle', function(event) {
-    console.log(String(event.target));
-  })
-  .on('complete', function() {
-    console.log('Fastest is ' + this.filter('fastest').pluck('name'));
-  })
-  .run({'async': true});
+  .add('PublishedVirtualAudioGraph', () => runBenchmarkCode(new PublishedVirtualAudioGraph()))
+  .add('DevelopmentVirtualAudioGraph', () => runBenchmarkCode(new DevelopmentVirtualAudioGraph()))
+  .on('cycle', event => console.log(String(event.target)))
+  .on('complete', () => console.log(`Fastest is ${this.filter('fastest').pluck('name')}`))
+  .run({async: true});
