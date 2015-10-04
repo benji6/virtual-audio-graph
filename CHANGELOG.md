@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.14.x
+
+Added support for AudioParam methods
+
 ## 0.13.x
 
 `virtual-audio-graph` now exports a factory instead of a constructor

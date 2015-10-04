@@ -47,6 +47,7 @@
     "web-audio-test-api": "^0.3.6"
   },
   "dependencies": {
-    "capitalize": "^1.0.0"
+    "capitalize": "^1.0.0",
+    "deep-equal": "^1.0.1"
   }
 }

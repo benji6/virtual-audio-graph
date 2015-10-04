@@ -105,7 +105,55 @@ Each key in the object passed to `update` is used as a unique reference to the c
   });
   ```
 
-- `2` optional object representing any properties to set/alter on the audio node created (details on properties available to standard nodes [here](#standard-nodes)).
+- `2` optional object representing any properties to set/alter on the audio node created (details on properties available to standard nodes [here](#standard-nodes)). If the property you are setting is an AudioParam you may either assign it a value, or you can use AudioParam methods to specify behaviour of the parameter over time. To do so specify an array where the first element is the method name and the remaining elements are the arguments for that method. If scheduling multiple values specify an array of these arrays. [See here for more info on AudioParam methods](https://developer.mozilla.org/en-US/docs/Web/API/AudioParam). Here are examples of all supported methods:
+  - specify an ordinary value
+  ```javascript
+  virtualAudioGraph.update({
+    0: ['gain', 'output', {gain: 0.5}],
+  });
+  ```
+  - specify setValueAtTime
+  ```javascript
+  virtualAudioGraph.update({
+    0: ['gain', 'output', {gain: ['setValueAtTime', 0.5, 1]}],
+  });
+  ```
+  - specify setValueAtTime multiple times
+  ```javascript
+  virtualAudioGraph.update({
+    0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
+                                  ['setValueAtTime', 1, 1],
+                                  ['setValueAtTime', 0.5, 2]]}],
+  });
+  ```
+  - linearRampToValueAtTime
+  ```javascript
+  virtualAudioGraph.update({
+    0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
+                                  ['linearRampToValueAtTime', 1, 1]]}],
+  });
+  ```
+  - exponentialRampToValueAtTime
+  ```javascript
+  virtualAudioGraph.update({
+    0: ['oscillator', 'output', {frequency: [['setValueAtTime', 440, 0],
+                                             ['exponentialRampToValueAtTime', 880, 1]]}],
+  });
+  ```
+  - setTargetAtTime
+  ```javascript
+  virtualAudioGraph.update({
+    0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
+                                  ['setTargetAtTime', 1, 1, 0.5]]}],
+  });
+  ```
+  - setValueCurveAtTime
+  ```javascript
+  virtualAudioGraph.update({
+    0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
+                                  ['setValueCurveAtTime', Float32Array.of(0.5, 0.75, 0.25, 1), 1, 1]]}],
+  });
+  ```
 
 - `3` optionally specify this node as an input of a custom node by assigning `'input'` at this index. Only valid when defining nodes (see [below](#defining-custom-nodes)).
 
