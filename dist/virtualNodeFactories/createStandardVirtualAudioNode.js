@@ -20,7 +20,7 @@ var _helpersUpdate = require('../helpers/update');
 
 var _helpersUpdate2 = _interopRequireDefault(_helpersUpdate);
 
-exports['default'] = function (virtualAudioGraph, _ref) {
+exports['default'] = function (audioContext, _ref) {
   var _ref2 = _slicedToArray(_ref, 4);
 
   var node = _ref2[0];
@@ -37,7 +37,7 @@ exports['default'] = function (virtualAudioGraph, _ref) {
     return _dataConstructorParamsKeys2['default'].indexOf(key) !== -1;
   })[0]];
   var virtualNode = {
-    audioNode: (0, _helpersCreateAudioNode2['default'])(virtualAudioGraph.audioContext, node, constructorParam, { startTime: startTime, stopTime: stopTime }),
+    audioNode: (0, _helpersCreateAudioNode2['default'])(audioContext, node, constructorParam, { startTime: startTime, stopTime: stopTime }),
     connected: false,
     isCustomVirtualNode: false,
     input: input,

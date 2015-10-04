@@ -6,11 +6,7 @@ Object.defineProperty(exports, '__esModule', {
 
 var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 var _capitalize = require('capitalize');
 
@@ -49,41 +45,31 @@ var stopTimePathStored = function stopTimePathStored(virtualNode) {
   return virtualNode.params && virtualNode.params.stopTime;
 };
 
-var VirtualAudioGraph = (function () {
-  function VirtualAudioGraph() {
-    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+exports['default'] = function () {
+  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-    var _ref$audioContext = _ref.audioContext;
-    var audioContext = _ref$audioContext === undefined ? new AudioContext() : _ref$audioContext;
-    var _ref$output = _ref.output;
-    var output = _ref$output === undefined ? audioContext.destination : _ref$output;
+  var _ref$audioContext = _ref.audioContext;
+  var audioContext = _ref$audioContext === undefined ? new AudioContext() : _ref$audioContext;
+  var _ref$output = _ref.output;
+  var output = _ref$output === undefined ? audioContext.destination : _ref$output;
 
-    _classCallCheck(this, VirtualAudioGraph);
+  var customNodes = {};
+  return Object.defineProperties({
+    audioContext: audioContext,
+    virtualNodes: {},
 
-    this.audioContext = audioContext;
-    this.output = output;
-    this.virtualNodes = {};
-    this.customNodes = {};
-  }
-
-  _createClass(VirtualAudioGraph, [{
-    key: 'defineNode',
-    value: function defineNode(customNodeParamsFactory, name) {
-      if (this.audioContext['create' + (0, _capitalize2['default'])(name)]) {
+    defineNode: function defineNode(customNodeParamsFactory, name) {
+      if (audioContext['create' + (0, _capitalize2['default'])(name)]) {
         throw new Error(name + ' is a standard audio node name and cannot be overwritten');
       }
 
-      this.customNodes[name] = customNodeParamsFactory;
+      customNodes[name] = customNodeParamsFactory;
       return this;
-    }
-  }, {
-    key: 'getAudioNodeById',
-    value: function getAudioNodeById(id) {
+    },
+    getAudioNodeById: function getAudioNodeById(id) {
       return this.virtualNodes[id].audioNode;
-    }
-  }, {
-    key: 'update',
-    value: function update(virtualGraphParams) {
+    },
+    update: function update(virtualGraphParams) {
       var _this = this;
 
       var virtualGraphParamsKeys = Object.keys(virtualGraphParams);
@@ -111,31 +97,31 @@ var VirtualAudioGraph = (function () {
         }
         var virtualAudioNode = _this.virtualNodes[key];
         if (virtualAudioNode == null) {
-          _this.virtualNodes[key] = _helpersCreateVirtualAudioNode2['default'].call(_this, virtualAudioNodeParams);
+          _this.virtualNodes[key] = (0, _helpersCreateVirtualAudioNode2['default'])(audioContext, customNodes, virtualAudioNodeParams);
           return;
         }
         if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) || stopTimePathParams(virtualAudioNodeParams) !== stopTimePathStored(virtualAudioNode)) {
           (0, _helpersDisconnect2['default'])(virtualAudioNode);
           delete _this.virtualNodes[key];
         }
-        _helpersUpdateAudioNodeAndVirtualAudioGraph2['default'].call(_this, virtualAudioNode, virtualAudioNodeParams, key);
+        (0, _helpersUpdateAudioNodeAndVirtualAudioGraph2['default'])(audioContext, _this.virtualNodes, customNodes, virtualAudioNode, virtualAudioNodeParams, key);
       });
 
       (0, _helpersConnectAudioNodes2['default'])(this.virtualNodes, function (virtualNode) {
-        return (0, _helpersConnect2['default'])(virtualNode, _this.output);
+        return (0, _helpersConnect2['default'])(virtualNode, output);
       });
 
       return this;
     }
   }, {
-    key: 'currentTime',
-    get: function get() {
-      return this.audioContext.currentTime;
+    currentTime: {
+      get: function get() {
+        return audioContext.currentTime;
+      },
+      configurable: true,
+      enumerable: true
     }
-  }]);
+  });
+};
 
-  return VirtualAudioGraph;
-})();
-
-exports['default'] = VirtualAudioGraph;
 module.exports = exports['default'];

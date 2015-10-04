@@ -30,10 +30,10 @@ var checkOutputsEqual = function checkOutputsEqual(output0, output1) {
   return output0 === output1;
 };
 
-exports['default'] = function (virtualAudioNode, virtualAudioNodeParam, id) {
+exports['default'] = function (audioContext, virtualNodes, customNodes, virtualAudioNode, virtualAudioNodeParam, id) {
   if (virtualAudioNodeParam[0] !== virtualAudioNode.node) {
     (0, _disconnect2['default'])(virtualAudioNode);
-    this.virtualNodes[id] = _createVirtualAudioNode2['default'].call(this, virtualAudioNodeParam);
+    virtualNodes[id] = (0, _createVirtualAudioNode2['default'])(audioContext, customNodes, virtualAudioNodeParam);
     return;
   }
 
