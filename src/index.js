@@ -12,10 +12,10 @@ const stopTimePathStored = virtualNode => virtualNode.params && virtualNode.para
 
 export default ({audioContext = new AudioContext(),
                  output = audioContext.destination} = {}) => {
+  const customNodes = {};
   return {
     audioContext,
     virtualNodes: {},
-    customNodes: {},
     get currentTime () {
       return audioContext.currentTime;
     },
@@ -24,7 +24,7 @@ export default ({audioContext = new AudioContext(),
         throw new Error(`${name} is a standard audio node name and cannot be overwritten`);
       }
 
-      this.customNodes[name] = customNodeParamsFactory;
+      customNodes[name] = customNodeParamsFactory;
       return this;
     },
     getAudioNodeById (id) {
@@ -52,7 +52,7 @@ export default ({audioContext = new AudioContext(),
           }
           const virtualAudioNode = this.virtualNodes[key];
           if (virtualAudioNode == null) {
-            this.virtualNodes[key] = createVirtualAudioNode(audioContext, this.customNodes, virtualAudioNodeParams);
+            this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
             return;
           }
           if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) ||
@@ -60,7 +60,7 @@ export default ({audioContext = new AudioContext(),
             disconnect(virtualAudioNode);
             delete this.virtualNodes[key];
           }
-          updateAudioNodeAndVirtualAudioGraph.call(this, audioContext, virtualAudioNode, virtualAudioNodeParams, key);
+          updateAudioNodeAndVirtualAudioGraph(audioContext, this.virtualNodes, customNodes, virtualAudioNode, virtualAudioNodeParams, key);
         });
 
       connectAudioNodes(this.virtualNodes,
