@@ -7,6 +7,7 @@ WebAudioTestAPI.setState({
 import './VirtualAudioGraph';
 import './defineNode/errorThrowing';
 import './defineNode/expectedBehaviour';
+import './update/audioParamMethods';
 import './update/creatingAudioNodes';
 import './update/errorThrowing';
 import './update/expectedBehaviour';
