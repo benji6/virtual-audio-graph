@@ -1,5 +1,5 @@
 /* global beforeEach describe expect it */
-import VirtualAudioGraph from '../../src/index.js';
+import createVirtualAudioGraph from '../../src/index.js';
 import gainWithNoParams from '../tools/gainWithNoParams';
 import pingPongDelayParamsFactory from '../tools/pingPongDelayParamsFactory';
 import sineOscFactory from '../tools/sineOscFactory';
@@ -11,7 +11,7 @@ describe('virtualAudioGraph.defineNode - expected behaviour:', () => {
 
   beforeEach(() => {
     audioContext = new AudioContext();
-    virtualAudioGraph = new VirtualAudioGraph({
+    virtualAudioGraph = createVirtualAudioGraph({
       audioContext,
       output: audioContext.destination,
     });

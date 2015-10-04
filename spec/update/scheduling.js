@@ -1,5 +1,5 @@
 /* global beforeEach describe expect it */
-import VirtualAudioGraph from '../../src/index.js';
+import createVirtualAudioGraph from '../../src/index.js';
 
 const testSchedulingForNode = node => describe('virtualAudioGraph.update - scheduling:', () => {
   let audioContext;
@@ -7,7 +7,7 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
 
   beforeEach(() => {
     audioContext = new AudioContext();
-    virtualAudioGraph = new VirtualAudioGraph({audioContext});
+    virtualAudioGraph = createVirtualAudioGraph({audioContext});
   });
 
   it(`${node}s with no start or stop times are played immediately and forever`, () => {

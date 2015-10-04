@@ -1,5 +1,5 @@
 /* global beforeEach describe expect it WebAudioTestAPI */
-import VirtualAudioGraph from '../../src/index.js';
+import createVirtualAudioGraph from '../../src/index.js';
 
 describe('virtualAudioGraph.update - creating AudioNodes:', () => {
   let audioContext;
@@ -7,7 +7,7 @@ describe('virtualAudioGraph.update - creating AudioNodes:', () => {
 
   beforeEach(() => {
     audioContext = new AudioContext();
-    virtualAudioGraph = new VirtualAudioGraph({audioContext});
+    virtualAudioGraph = createVirtualAudioGraph({audioContext});
   });
 
   it('creates AnalyserNode with all valid parameters', () => {

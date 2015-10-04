@@ -1,5 +1,5 @@
 /* global beforeEach describe expect it */
-import VirtualAudioGraph from '../../src/index.js';
+import createVirtualAudioGraph from '../../src/index.js';
 
 describe('virtualAudioGraph.update - error throwing conditions:', () => {
   let audioContext;
@@ -7,7 +7,7 @@ describe('virtualAudioGraph.update - error throwing conditions:', () => {
 
   beforeEach(() => {
     audioContext = new AudioContext();
-    virtualAudioGraph = new VirtualAudioGraph({
+    virtualAudioGraph = createVirtualAudioGraph({
       audioContext,
       output: audioContext.destination,
     });

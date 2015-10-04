@@ -1,11 +1,11 @@
 /* global describe expect it */
-import VirtualAudioGraph from '../../src/index.js';
+import createVirtualAudioGraph from '../../src/index.js';
 import pingPongDelayParamsFactory from '../tools/pingPongDelayParamsFactory';
 
 describe('virtualAudioGraph.defineNode - error throwing:', () => {
   it('throws if name provided is a standard node', () => {
     const audioContext = new AudioContext();
-    const virtualAudioGraph = new VirtualAudioGraph({
+    const virtualAudioGraph = createVirtualAudioGraph({
       audioContext,
       output: audioContext.destination,
     });
