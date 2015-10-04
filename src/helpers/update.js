@@ -24,6 +24,13 @@ export default function update (virtualNode, params = {}) {
           return;
         }
         if (audioParamProperties.indexOf(key) !== -1) {
+          if (Array.isArray(param)) {
+            const callMethod = ([methodName, ...args]) => virtualNode.audioNode[key][methodName](...args);
+            Array.isArray(param[0]) ?
+              param.forEach(callMethod) :
+              callMethod(param);
+            return;
+          }
           virtualNode.audioNode[key].value = param;
           return;
         }
