@@ -1,27 +1,53 @@
 /* global describe expect it */
-import VirtualAudioGraph from '../src/index.js';
+import createVirtualAudioGraph from '../src/index.js';
 const audioContext = new AudioContext();
 
-describe('VirtualAudioGraph', () => {
+describe('createVirtualAudioGraph', () => {
   it('optionally takes audioContext property', () => {
-    expect(new VirtualAudioGraph({audioContext}).audioContext).toBe(audioContext);
-    expect(new VirtualAudioGraph({audioContext}).output).toBe(audioContext.destination);
-    expect(new VirtualAudioGraph().audioContext instanceof AudioContext).toBe(true);
+    expect(createVirtualAudioGraph({audioContext}).audioContext).toBe(audioContext);
+    expect(createVirtualAudioGraph().audioContext instanceof AudioContext).toBe(true);
   });
 
   it('optionally takes output parameter', () => {
-    expect(new VirtualAudioGraph({
-      output: audioContext.destination,
-    }).output).toBe(audioContext.destination);
-    expect(new VirtualAudioGraph({audioContext}).output).toBe(audioContext.destination);
+    const gain = audioContext.createGain();
+    createVirtualAudioGraph({
+      audioContext,
+      output: gain,
+    }).update({
+      0: ['gain', 'output', {gain: 0.2}],
+    });
+    expect(gain.toJSON()).toEqual({
+      name: 'GainNode',
+      gain: {value: 1, inputs: []},
+      inputs: [
+        {
+          name: 'GainNode',
+          gain: Object({value: 0.2, inputs: []}),
+          inputs: [],
+        },
+      ],
+    });
+    createVirtualAudioGraph({audioContext}).update({
+      0: ['gain', 'output', {gain: 0.2}],
+    });
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode',
+      inputs: [
+        {
+          name: 'GainNode',
+          gain: {value: 0.2, inputs: []},
+          inputs: [],
+        },
+      ],
+    });
   });
 
   it('has a property called currentTime which returns the audioContext currentTime', () => {
-    expect(new VirtualAudioGraph({audioContext}).currentTime).toBe(audioContext.currentTime);
+    expect(createVirtualAudioGraph({audioContext}).currentTime).toBe(audioContext.currentTime);
   });
 
   it('has a method called getAudioNodeById which returns an AudioNode of with the given id', () => {
-    const virtualAudioGraph = new VirtualAudioGraph({audioContext});
+    const virtualAudioGraph = createVirtualAudioGraph({audioContext});
 
     virtualAudioGraph.update({
       0: ['gain', 'output'],

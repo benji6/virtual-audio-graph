@@ -10,68 +10,63 @@ const stopTimePathParams = params => params[2] && params[2].stopTime;
 const startTimePathStored = virtualNode => virtualNode.params && virtualNode.params.startTime;
 const stopTimePathStored = virtualNode => virtualNode.params && virtualNode.params.stopTime;
 
-export default class VirtualAudioGraph {
-  constructor ({audioContext = new AudioContext(),
-                output = audioContext.destination} = {}) {
-    this.audioContext = audioContext;
-    this.output = output;
-    this.virtualNodes = {};
-    this.customNodes = {};
-  }
-
-  get currentTime () {
-    return this.audioContext.currentTime;
-  }
-
-  defineNode (customNodeParamsFactory, name) {
-    if (this.audioContext[`create${capitalize(name)}`]) {
-      throw new Error(`${name} is a standard audio node name and cannot be overwritten`);
-    }
-
-    this.customNodes[name] = customNodeParamsFactory;
-    return this;
-  }
-
-  getAudioNodeById (id) {
-    return this.virtualNodes[id].audioNode;
-  }
-
-  update (virtualGraphParams) {
-    const virtualGraphParamsKeys = Object.keys(virtualGraphParams);
-
-    Object.keys(this.virtualNodes).forEach(id => {
-      if (virtualGraphParamsKeys.indexOf(id) === -1) {
-        disconnect(this.virtualNodes[id]);
-        delete this.virtualNodes[id];
+export default ({audioContext = new AudioContext(),
+                 output = audioContext.destination} = {}) => {
+  const customNodes = {};
+  return {
+    audioContext,
+    virtualNodes: {},
+    get currentTime () {
+      return audioContext.currentTime;
+    },
+    defineNode (customNodeParamsFactory, name) {
+      if (audioContext[`create${capitalize(name)}`]) {
+        throw new Error(`${name} is a standard audio node name and cannot be overwritten`);
       }
-    });
 
-    virtualGraphParamsKeys
-      .forEach(key => {
-        if (key === 'output') {
-          throw new Error(`'output' is not a valid id`);
+      customNodes[name] = customNodeParamsFactory;
+      return this;
+    },
+    getAudioNodeById (id) {
+      return this.virtualNodes[id].audioNode;
+    },
+    update (virtualGraphParams) {
+      const virtualGraphParamsKeys = Object.keys(virtualGraphParams);
+
+      Object.keys(this.virtualNodes).forEach(id => {
+        if (virtualGraphParamsKeys.indexOf(id) === -1) {
+          disconnect(this.virtualNodes[id]);
+          delete this.virtualNodes[id];
         }
-        const virtualAudioNodeParams = virtualGraphParams[key];
-        const [node, output] = virtualAudioNodeParams;
-        if (output == null && node !== 'mediaStreamDestination') {
-          throw new Error(`output not specified for node key ${key}`);
-        }
-        const virtualAudioNode = this.virtualNodes[key];
-        if (virtualAudioNode == null) {
-          this.virtualNodes[key] = createVirtualAudioNode.call(this, virtualAudioNodeParams);
-          return;
-        }
-        if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) ||
-          stopTimePathParams(virtualAudioNodeParams) !== stopTimePathStored(virtualAudioNode)) {
-          disconnect(virtualAudioNode);
-          delete this.virtualNodes[key];
-        }
-        updateAudioNodeAndVirtualAudioGraph.call(this, virtualAudioNode, virtualAudioNodeParams, key);
       });
 
-    connectAudioNodes(this.virtualNodes,
-                      virtualNode => connect(virtualNode, this.output));
+      virtualGraphParamsKeys
+        .forEach(key => {
+          if (key === 'output') {
+            throw new Error(`'output' is not a valid id`);
+          }
+          const virtualAudioNodeParams = virtualGraphParams[key];
+          const [node, output] = virtualAudioNodeParams;
+          if (output == null && node !== 'mediaStreamDestination') {
+            throw new Error(`output not specified for node key ${key}`);
+          }
+          const virtualAudioNode = this.virtualNodes[key];
+          if (virtualAudioNode == null) {
+            this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
+            return;
+          }
+          if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) ||
+            stopTimePathParams(virtualAudioNodeParams) !== stopTimePathStored(virtualAudioNode)) {
+            disconnect(virtualAudioNode);
+            delete this.virtualNodes[key];
+          }
+          updateAudioNodeAndVirtualAudioGraph(audioContext, this.virtualNodes, customNodes, virtualAudioNode, virtualAudioNodeParams, key);
+        });
 
-    return this;
-  }
-}
+      connectAudioNodes(this.virtualNodes,
+                        virtualNode => connect(virtualNode, output));
+
+      return this;
+    },
+  };
+};

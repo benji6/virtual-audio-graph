@@ -21,11 +21,6 @@ describe('virtualAudioGraph.defineNode - expected behaviour:', () => {
     expect(virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay')).toBe(virtualAudioGraph);
   });
 
-  it('creates a custom node internally', () => {
-    virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
-    expect(typeof virtualAudioGraph.customNodes.pingPongDelay).toBe('function');
-  });
-
   it('creates a custom node which can be reused in virtualAudioGraph.update', () => {
     virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
 

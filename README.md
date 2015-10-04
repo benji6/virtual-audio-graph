@@ -25,22 +25,22 @@ See [changelog](/CHANGELOG.md).
 
 ## API
 
-### Instantiating a new virtual-audio-graph
+### Creating a new virtual-audio-graph
 
 ```javascript
 
-import VirtualAudioGraph from 'virtual-audio-graph';
+import createVirtualAudioGraph from 'virtual-audio-graph';
 
 const audioContext = new AudioContext();
 
-const virtualAudioGraph = new VirtualAudioGraph({
+const virtualAudioGraph = createVirtualAudioGraph({
   audioContext,
   output: audioContext.destination,
 });
 
 ```
 
-The `VirtualAudioGraph` constructor takes an object with two optional properties:
+The `createVirtualAudioGraph` factory takes an object with two optional properties:
 
 - `audioContext` - an instance of AudioContext. If not provided then virtual-audio-graph will create its own instance of AudioContext. Note that the number of instances of AudioContext is limited so if you have one it may be best to provide it here.
 

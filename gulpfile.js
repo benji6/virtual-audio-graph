@@ -26,10 +26,10 @@ gulp.task('spec', () => gulp
   .pipe(jasmine()));
 
 gulp.task('watch', () => {
-  gulp.watch('src/**/*.js', () => runSequence(['js', 'lint'], 'spec'));
-  gulp.watch('spec/**/*.js*', ['lint', 'spec']);
+  gulp.watch('src/**/*.js', () => runSequence(['lint'], 'spec'));
+  gulp.watch('spec/**/*.js*', ['spec']);
 });
 
 gulp.task('build', () => runSequence('clean', ['js', 'lint'], 'spec'));
 
-gulp.task('default', () => runSequence('clean', ['js', 'lint', 'watch'], 'spec'));
+gulp.task('default', () => runSequence('clean', ['lint', 'watch'], 'spec'));
