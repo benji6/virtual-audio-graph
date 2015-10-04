@@ -32,4 +32,4 @@ gulp.task('watch', () => {
 
 gulp.task('build', () => runSequence('clean', ['js', 'lint'], 'spec'));
 
-gulp.task('default', () => runSequence('clean', ['lint', 'watch'], 'spec'));
+gulp.task('default', () => runSequence(['lint', 'watch'], 'spec'));
