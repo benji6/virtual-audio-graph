@@ -9,6 +9,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
+function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
+
 var _capitalize = require('capitalize');
 
 var _capitalize2 = _interopRequireDefault(_capitalize);
@@ -24,6 +26,10 @@ var _dataAudioParamProperties2 = _interopRequireDefault(_dataAudioParamPropertie
 var _dataSetters = require('../data/setters');
 
 var _dataSetters2 = _interopRequireDefault(_dataSetters);
+
+var _deepEqual = require('deep-equal');
+
+var _deepEqual2 = _interopRequireDefault(_deepEqual);
 
 var values = function values(obj) {
   return Object.keys(obj).map(function (key) {
@@ -52,6 +58,24 @@ function update(virtualNode) {
         return;
       }
       if (_dataAudioParamProperties2['default'].indexOf(key) !== -1) {
+        if (Array.isArray(param)) {
+          if (virtualNode.params && !(0, _deepEqual2['default'])(param, virtualNode.params[key], { strict: true })) {
+            virtualNode.audioNode[key].cancelScheduledValues(0);
+          }
+          var callMethod = function callMethod(_ref) {
+            var _virtualNode$audioNode$key;
+
+            var _ref2 = _toArray(_ref);
+
+            var methodName = _ref2[0];
+
+            var args = _ref2.slice(1);
+
+            return (_virtualNode$audioNode$key = virtualNode.audioNode[key])[methodName].apply(_virtualNode$audioNode$key, _toConsumableArray(args));
+          };
+          Array.isArray(param[0]) ? param.forEach(callMethod) : callMethod(param);
+          return;
+        }
         virtualNode.audioNode[key].value = param;
         return;
       }
