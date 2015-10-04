@@ -45,7 +45,41 @@ describe('virtualAudioGraph.update - AudioParam Methods', () => {
     expect(gain.$valueAtTime('23:59.999')).toBe(0.5);
   });
 
+  it('overides setValueAtTime', () => {
+    virtualAudioGraph.update({
+      0: ['gain', 'output', {gain: ['setValueAtTime', 0.5, 1],
+    }]});
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode', inputs: [
+        {name: 'GainNode', gain: {value: 1, inputs: []}, inputs: []},
+      ],
+    });
+    const {gain} = virtualAudioGraph.getAudioNodeById(0);
+    expect(gain.$valueAtTime('00:00.000')).toBe(1);
+    expect(gain.$valueAtTime('00:00.999')).toBe(1);
+    expect(gain.$valueAtTime('00:01.000')).toBe(0.5);
+    expect(gain.$valueAtTime('23:59.999')).toBe(0.5);
+    virtualAudioGraph.update({
+      0: ['gain', 'output', {gain: ['setValueAtTime', 0.75, 0.5],
+    }]});
+    expect(gain.$valueAtTime('00:00.000')).toBe(1);
+    expect(gain.$valueAtTime('00:00.499')).toBe(1);
+    expect(gain.$valueAtTime('00:00.500')).toBe(0.75);
+    expect(gain.$valueAtTime('23:59.999')).toBe(0.75);
+    virtualAudioGraph.update({
+      0: ['gain', 'output', {gain: ['setValueAtTime', 0.75, 1],
+    }]});
+    expect(gain.$valueAtTime('00:00.000')).toBe(1);
+    expect(gain.$valueAtTime('00:00.999')).toBe(1);
+    expect(gain.$valueAtTime('00:01.000')).toBe(0.75);
+    expect(gain.$valueAtTime('23:59.999')).toBe(0.75);
+  });
+
   it('setValueAtTime with linearRampToValueAtTime', () => {
+    virtualAudioGraph.update({
+      0: ['gain', 'output', {gain: [['setValueAtTime', 0.25, 0.25],
+                                    ['linearRampToValueAtTime', 0.5, 0.5]]}],
+    });
     virtualAudioGraph.update({
       0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
                                     ['linearRampToValueAtTime', 1, 1]]}],
@@ -67,6 +101,10 @@ describe('virtualAudioGraph.update - AudioParam Methods', () => {
   });
 
   it('setValueAtTime with exponentialRampToValueAtTime', () => {
+    virtualAudioGraph.update({
+      0: ['oscillator', 'output', {frequency: [['setValueAtTime', 220, 0],
+                                               ['exponentialRampToValueAtTime', 1320, 5]]}],
+    });
     virtualAudioGraph.update({
       0: ['oscillator', 'output', {frequency: [['setValueAtTime', 440, 0],
                                                ['exponentialRampToValueAtTime', 880, 1]]}],
@@ -97,6 +135,10 @@ describe('virtualAudioGraph.update - AudioParam Methods', () => {
   it('setValueAtTime with setTargetAtTime', () => {
     virtualAudioGraph.update({
       0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
+                                    ['setTargetAtTime', 1, 1, 0.75]]}],
+    });
+    virtualAudioGraph.update({
+      0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
                                     ['setTargetAtTime', 1, 1, 0.5]]}],
     });
     expect(audioContext.toJSON()).toEqual({
@@ -118,14 +160,15 @@ describe('virtualAudioGraph.update - AudioParam Methods', () => {
   });
 
   it('setValueAtTime with setValueCurveAtTime', () => {
-    const waveArray = new Float32Array(4);
-    waveArray[0] = 0.5;
-    waveArray[1] = 0.75;
-    waveArray[2] = 0.25;
-    waveArray[3] = 1;
+    const waveArray0 = Float32Array.of(0, 0.2, 0.4, 0.8);
     virtualAudioGraph.update({
       0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
-                                    ['setValueCurveAtTime', waveArray, 1, 1]]}],
+                                    ['setValueCurveAtTime', waveArray0, 1, 1]]}],
+    });
+    const waveArray1 = Float32Array.of(0.5, 0.75, 0.25, 1);
+    virtualAudioGraph.update({
+      0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
+                                    ['setValueCurveAtTime', waveArray1, 1, 1]]}],
     });
     expect(audioContext.toJSON()).toEqual({
       name: 'AudioDestinationNode', inputs: [
@@ -145,5 +188,3 @@ describe('virtualAudioGraph.update - AudioParam Methods', () => {
     expect(gain.$valueAtTime('23:59.999')).toBe(1);
   });
 });
-
-// test for updating
