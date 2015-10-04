@@ -65,6 +65,34 @@ describe('virtualAudioGraph.update - AudioParam Methods', () => {
     expect(gain.$valueAtTime('00:01.000')).toBe(1);
     expect(gain.$valueAtTime('23:59.999')).toBe(1);
   });
+
+  it('setValueAtTime with exponentialRampToValueAtTime', () => {
+    virtualAudioGraph.update({
+      0: ['oscillator', 'output', {frequency: [['setValueAtTime', 440, 0],
+                                               ['exponentialRampToValueAtTime', 880, 1]]}],
+    });
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode',
+      inputs: [
+        {
+          name: 'OscillatorNode',
+          type: 'sine',
+          frequency: {value: 440, inputs: []},
+          detune: {value: 0, inputs: []},
+          inputs: [],
+        },
+      ],
+    });
+    const {frequency} = virtualAudioGraph.getAudioNodeById(0);
+    expect(frequency.$valueAtTime('00:00.000')).toBe(440);
+    expect(frequency.$valueAtTime('00:00.001')).toBe(440.30509048353554);
+    expect(frequency.$valueAtTime('00:00.250')).toBe(523.2511306011972);
+    expect(frequency.$valueAtTime('00:00.500')).toBe(622.2539674441618);
+    expect(frequency.$valueAtTime('00:00.750')).toBe(739.9888454232688);
+    expect(frequency.$valueAtTime('00:00.999')).toBe(879.3902418315982);
+    expect(frequency.$valueAtTime('00:01.000')).toBe(880);
+    expect(frequency.$valueAtTime('23:59.999')).toBe(880);
+  });
 });
 
 // test for updating
