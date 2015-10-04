@@ -1,5 +1,25 @@
 # Release Notes
 
+## 0.13.x
+
+`virtual-audio-graph` now exports a factory instead of a constructor
+
+
+```javascript
+// pre 0.13.x
+import VirtualAudioGraph from 'virtual-audio-graph';
+const virtualAudioGraph = new VirtualAudioGraph();
+```
+
+
+```javascript
+// 0.13.x
+import createVirtualAudioGraph from 'virtual-audio-graph';
+const virtualAudioGraph = createVirtualAudioGraph();
+```
+
+Because of the way the new operator works this is not a breaking change
+
 ## 0.12.x
 
 Breaking API change:
