@@ -2,6 +2,7 @@ import capitalize from 'capitalize';
 import constructorParamsKeys from '../data/constructorParamsKeys';
 import audioParamProperties from '../data/audioParamProperties';
 import setters from '../data/setters';
+import deepEqual from 'deep-equal';
 
 const values = obj => Object.keys(obj).map(key => obj[key]);
 
@@ -25,6 +26,9 @@ export default function update (virtualNode, params = {}) {
         }
         if (audioParamProperties.indexOf(key) !== -1) {
           if (Array.isArray(param)) {
+            if (virtualNode.params && !deepEqual(param, virtualNode.params[key], {strict: true})) {
+              virtualNode.audioNode[key].cancelScheduledValues(0);
+            }
             const callMethod = ([methodName, ...args]) => virtualNode.audioNode[key][methodName](...args);
             Array.isArray(param[0]) ?
               param.forEach(callMethod) :
