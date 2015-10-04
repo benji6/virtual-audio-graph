@@ -116,6 +116,34 @@ describe('virtualAudioGraph.update - AudioParam Methods', () => {
     expect(gain.$valueAtTime('01:00.000')).toBe(1);
     expect(gain.$valueAtTime('23:59.999')).toBe(1);
   });
+
+  it('setValueAtTime with setValueCurveAtTime', () => {
+    const waveArray = new Float32Array(4);
+    waveArray[0] = 0.5;
+    waveArray[1] = 0.75;
+    waveArray[2] = 0.25;
+    waveArray[3] = 1;
+    virtualAudioGraph.update({
+      0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
+                                    ['setValueCurveAtTime', waveArray, 1, 1]]}],
+    });
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode', inputs: [
+        {name: 'GainNode', gain: {value: 0, inputs: []}, inputs: []},
+      ],
+    });
+    const {gain} = virtualAudioGraph.getAudioNodeById(0);
+    expect(gain.$valueAtTime('00:00.000')).toBe(0);
+    expect(gain.$valueAtTime('00:00.999')).toBe(0);
+    expect(gain.$valueAtTime('00:01.000')).toBe(0.5);
+    expect(gain.$valueAtTime('00:01.240')).toBe(0.5);
+    expect(gain.$valueAtTime('00:01.250')).toBe(0.75);
+    expect(gain.$valueAtTime('00:01.490')).toBe(0.75);
+    expect(gain.$valueAtTime('00:01.500')).toBe(0.25);
+    expect(gain.$valueAtTime('00:01.749')).toBe(0.25);
+    expect(gain.$valueAtTime('00:01.750')).toBe(1);
+    expect(gain.$valueAtTime('23:59.999')).toBe(1);
+  });
 });
 
 // test for updating
