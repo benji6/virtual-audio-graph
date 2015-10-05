@@ -51,7 +51,7 @@ The `createVirtualAudioGraph` factory takes an object with two optional properti
 
 - `virtual-audio-graph.update` method described [below](#updating-the-audio-graph).
 
-- `virtual-audio-graph.defineNode` method described [below](#defining-custom-nodes).
+- `virtual-audio-graph.defineNodes` method described [below](#defining-custom-nodes).
 
 - `virtual-audio-graph.getAudioNodeById` takes an id and returns the audioNode relating to that id or undefined if no such audioNode exists. This is useful if the node has methods (e.g. `AnalyserNode.getFloatFrequencyData` & `OscillatorNode.setPeriodicWave`). If you adjust any properties on nodes retrieved using this method virtual-audio-graph will not know so be careful!
 
@@ -161,13 +161,13 @@ Each key in the object passed to `update` is used as a unique reference to the c
 
 The virtual audio graph is composed of standard nodes (see [below](#standard-nodes)) and custom nodes which in their simplest form are built out of standard nodes.
 
-`virtualAudioGraph.defineNode` allows you to define your own custom nodes, it takes two arguments, the first is a function which returns an object of virtual node parameters and the second is the name of the custom node. The function can optionally take an object as an argument with properties corresponding to variable parameters for the node.
+`virtualAudioGraph.defineNodes` allows you to define your own custom nodes. It takes an object where keys represent the name of the node being declared and the values are a function which returns an object of virtual node parameters. The function can optionally take an object as an argument with properties corresponding to variable parameters for the node.
 
 When defining virtual node parameters include a property `input` and value `'input'` which specifies the input points of the custom virtual node:
 
 ```javascript
 
-const pingPongDelayParamsFactory = ({
+const pingPongDelay = ({
   decay = 1 / 3,
   delayTime = 1 / 3,
   maxDelayTime = 1 / 3,
@@ -180,10 +180,10 @@ const pingPongDelayParamsFactory = ({
   five: ['gain', 4, {gain: decay}, 'input']
 });
 
-//define a custom node like this:
-virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
+// define custom nodes like this:
+virtualAudioGraph.defineNodes({pingPongDelay});
 
-//and now this instance of virtual-audio-graph will recognize it as a valid node:
+// and now this instance of virtual-audio-graph will recognize it as a valid node:
 virtualAudioGraph.update({
   0: ['pingPongDelay',
       'output',
