@@ -58,12 +58,14 @@ exports['default'] = function () {
     audioContext: audioContext,
     virtualNodes: {},
 
-    defineNode: function defineNode(customNodeParamsFactory, name) {
-      if (audioContext['create' + (0, _capitalize2['default'])(name)]) {
-        throw new Error(name + ' is a standard audio node name and cannot be overwritten');
-      }
+    defineNodes: function defineNodes(customNodeParams) {
+      Object.keys(customNodeParams).forEach(function (name) {
+        if (audioContext['create' + (0, _capitalize2['default'])(name)]) {
+          throw new Error(name + ' is a standard audio node name and cannot be overwritten');
+        }
+        customNodes[name] = customNodeParams[name];
+      });
 
-      customNodes[name] = customNodeParamsFactory;
       return this;
     },
     getAudioNodeById: function getAudioNodeById(id) {
