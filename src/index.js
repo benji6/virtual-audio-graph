@@ -19,12 +19,14 @@ export default ({audioContext = new AudioContext(),
     get currentTime () {
       return audioContext.currentTime;
     },
-    defineNode (customNodeParamsFactory, name) {
-      if (audioContext[`create${capitalize(name)}`]) {
-        throw new Error(`${name} is a standard audio node name and cannot be overwritten`);
-      }
+    defineNodes (customNodeParams) {
+      Object.keys(customNodeParams).forEach(name => {
+        if (audioContext[`create${capitalize(name)}`]) {
+          throw new Error(`${name} is a standard audio node name and cannot be overwritten`);
+        }
+        customNodes[name] = customNodeParams[name];
+      });
 
-      customNodes[name] = customNodeParamsFactory;
       return this;
     },
     getAudioNodeById (id) {

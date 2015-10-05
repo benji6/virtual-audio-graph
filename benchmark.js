@@ -4,17 +4,16 @@ WebAudioTestAPI.setState('AudioContext#createStereoPanner', 'enabled');
 const Benchmark = require('benchmark');
 const PublishedVirtualAudioGraph = require('virtual-audio-graph');
 const DevelopmentVirtualAudioGraph = require('./dist/index');
-const pingPongDelayParamsFactory = require('./spec/tools/pingPongDelayParamsFactory');
+const pingPongDelay = require('./spec/tools/pingPongDelay');
 
 const runBenchmarkCode = function (virtualAudioGraph) {
-  const quietpingPongDelayParamsFactory = () => ({
+  const quietpingPongDelay = () => ({
     0: ['gain', 'output'],
     1: ['pingPongDelay', 0],
     2: ['oscillator', 1],
   });
 
-  virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
-  virtualAudioGraph.defineNode(quietpingPongDelayParamsFactory, 'quietPingPongDelay');
+  virtualAudioGraph.defineNodes({pingPongDelay, quietpingPongDelay});
 
   virtualAudioGraph.update({
     0: ['gain', 'output'],

@@ -1,9 +1,9 @@
 /* global beforeEach describe expect it */
 import createVirtualAudioGraph from '../../src/index.js';
 import gainWithNoParams from '../tools/gainWithNoParams';
-import pingPongDelayParamsFactory from '../tools/pingPongDelayParamsFactory';
-import sineOscFactory from '../tools/sineOscFactory';
-import squareOscFactory from '../tools/squareOscFactory';
+import pingPongDelay from '../tools/pingPongDelay';
+import sineOsc from '../tools/sineOsc';
+import squareOsc from '../tools/squareOsc';
 
 describe('virtualAudioGraph.defineNode - expected behaviour:', () => {
   let audioContext;
@@ -18,11 +18,11 @@ describe('virtualAudioGraph.defineNode - expected behaviour:', () => {
   });
 
   it('returns itself', () => {
-    expect(virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay')).toBe(virtualAudioGraph);
+    expect(virtualAudioGraph.defineNodes({pingPongDelay})).toBe(virtualAudioGraph);
   });
 
   it('creates a custom node which can be reused in virtualAudioGraph.update', () => {
-    virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
+    virtualAudioGraph.defineNodes({pingPongDelay});
 
     const virtualGraphParams = {
       0: ['gain', 'output', {gain: 0.5}],
@@ -37,15 +37,15 @@ describe('virtualAudioGraph.defineNode - expected behaviour:', () => {
   });
 
   it('can define a custom node built of other custom nodes', () => {
-    virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
+    virtualAudioGraph.defineNodes({pingPongDelay});
 
-    const quietpingPongDelayParamsFactory = () => ({
+    const quietPingPongDelay = () => ({
       0: ['gain', 'output'],
       1: ['pingPongDelay', 0],
       2: ['oscillator', 1],
     });
 
-    virtualAudioGraph.defineNode(quietpingPongDelayParamsFactory, 'quietPingPongDelay');
+    virtualAudioGraph.defineNodes({quietPingPongDelay});
 
     const virtualGraphParams = {
       0: ['gain', 'output', {gain: 0.5}],
@@ -61,7 +61,7 @@ describe('virtualAudioGraph.defineNode - expected behaviour:', () => {
   });
 
   it('can define a custom node which can be updated', () => {
-    virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
+    virtualAudioGraph.defineNodes({pingPongDelay});
 
     const virtualGraphParams = {
       0: ['gain', 'output', {gain: 0.5}],
@@ -83,7 +83,7 @@ describe('virtualAudioGraph.defineNode - expected behaviour:', () => {
   });
 
   it('can define a custom node which can be removed', () => {
-    virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
+    virtualAudioGraph.defineNodes({pingPongDelay});
 
     const virtualGraphParams = {
       0: ['gain', 'output', {gain: 0.5}],
@@ -117,15 +117,14 @@ describe('virtualAudioGraph.defineNode - expected behaviour:', () => {
     });
   });
   it('can define a custom node which can be replaced with another on update', () => {
-    virtualAudioGraph.defineNode(sineOscFactory, 'sineOscFactory');
-    virtualAudioGraph.defineNode(squareOscFactory, 'squareOscFactory');
+    virtualAudioGraph.defineNodes({sineOsc, squareOsc});
 
     virtualAudioGraph.update({
       0: ['gain', 'output', {gain: 0.5}],
-      1: ['squareOscFactory', 0, {gain: 0.5,
-                                  frequency: 220,
-                                  startTime: 1,
-                                  stopTime: 2}],
+      1: ['squareOsc', 0, {gain: 0.5,
+                           frequency: 220,
+                           startTime: 1,
+                           stopTime: 2}],
     });
 
     /* eslint-disable */
@@ -134,24 +133,23 @@ describe('virtualAudioGraph.defineNode - expected behaviour:', () => {
 
     virtualAudioGraph.update({
       0: ['gain', 'output', {gain: 0.5}],
-      1: ['sineOscFactory', 0, {gain: 0.5,
-                                frequency: 220,
-                                startTime: 1,
-                                stopTime: 2}],
+      1: ['sineOsc', 0, {gain: 0.5,
+                         frequency: 220,
+                         startTime: 1,
+                         stopTime: 2}],
     });
     /* eslint-disable */
     expect(audioContext.toJSON()).toEqual({"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"OscillatorNode","type":"sine","frequency":{"value":220,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]});
     /* eslint-enable */
   });
   it('can define a custom node which has an input node with no params', () => {
-    virtualAudioGraph.defineNode(gainWithNoParams, 'gainWithNoParams');
-    virtualAudioGraph.defineNode(sineOscFactory, 'sineOscFactory');
+    virtualAudioGraph.defineNodes({gainWithNoParams, sineOsc});
     virtualAudioGraph.update({
       0: ['gainWithNoParams', 'output'],
-      1: ['sineOscFactory', 0, {gain: 0.5,
-                                frequency: 220,
-                                startTime: 1,
-                                stopTime: 2}],
+      1: ['sineOsc', 0, {gain: 0.5,
+                         frequency: 220,
+                         startTime: 1,
+                         stopTime: 2}],
     });
     /* eslint-disable */
     expect(audioContext.toJSON()).toEqual({"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":1,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"OscillatorNode","type":"sine","frequency":{"value":220,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]});
