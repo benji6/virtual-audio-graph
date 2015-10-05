@@ -1,6 +1,6 @@
 /* global describe expect it */
 import createVirtualAudioGraph from '../../src/index.js';
-import pingPongDelayParamsFactory from '../tools/pingPongDelayParamsFactory';
+import pingPongDelay from '../tools/pingPongDelay';
 
 describe('virtualAudioGraph.defineNode - error throwing:', () => {
   it('throws if name provided is a standard node', () => {
@@ -10,7 +10,7 @@ describe('virtualAudioGraph.defineNode - error throwing:', () => {
       output: audioContext.destination,
     });
 
-    expect(() => virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'gain'))
+    expect(() => virtualAudioGraph.defineNodes({gain: pingPongDelay}))
       .toThrow();
   });
 });

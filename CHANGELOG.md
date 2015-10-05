@@ -1,5 +1,20 @@
 # Release Notes
 
+## 0.15.x
+
+Breaking API change - `defineNode` replaced by `defineNodes`:
+
+```javascript
+// old API
+virtualAudioGraph.defineNode(coolEffect, 'coolEffect');
+virtualAudioGraph.defineNode(someOscillators, 'someOscillators');
+```
+
+```javascript
+// new API
+virtualAudioGraph.defineNodes({coolEffect, someOscillators});
+```
+
 ## 0.14.x
 
 Added support for AudioParam methods

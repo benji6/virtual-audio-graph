@@ -1,7 +1,7 @@
 /* global beforeEach describe expect it */
 import createVirtualAudioGraph from '../../src/index.js';
-import pingPongDelayParamsFactory from '../tools/pingPongDelayParamsFactory';
-import sineOscFactory from '../tools/sineOscFactory';
+import pingPongDelay from '../tools/pingPongDelay';
+import sineOsc from '../tools/sineOsc';
 
 describe('virtualAudioGraph.update - expected behaviour:', () => {
   let audioContext;
@@ -134,7 +134,7 @@ describe('virtualAudioGraph.update - expected behaviour:', () => {
       ],
     });
 
-    virtualAudioGraph.defineNode(pingPongDelayParamsFactory, 'pingPongDelay');
+    virtualAudioGraph.defineNodes({pingPongDelay});
 
     virtualAudioGraph.update({
       0: ['pingPongDelay', 'output'],
@@ -188,10 +188,10 @@ describe('virtualAudioGraph.update - expected behaviour:', () => {
       }],
     });
 
-    virtualAudioGraph.defineNode(sineOscFactory, 'sineOscFactory');
+    virtualAudioGraph.defineNodes({sineOsc});
 
     virtualAudioGraph.update({
-      0: ['sineOscFactory', 'output', {frequency: 110, gain: 0.5}],
+      0: ['sineOsc', 'output', {frequency: 110, gain: 0.5}],
     });
 
     expect(audioContext.toJSON()).toEqual({
@@ -219,7 +219,7 @@ describe('virtualAudioGraph.update - expected behaviour:', () => {
     });
 
     virtualAudioGraph.update({
-      0: ['sineOscFactory', 'output', {frequency: 660, gain: 0.2}],
+      0: ['sineOsc', 'output', {frequency: 660, gain: 0.2}],
     });
 
     expect(audioContext.toJSON()).toEqual({
