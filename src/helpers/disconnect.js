@@ -1,11 +1,6 @@
 export default function disconnect (virtualNode, doNotStop) {
   if (virtualNode.isCustomVirtualNode) {
-    const {virtualNodes} = virtualNode;
-    Object.keys(virtualNodes)
-      .forEach(key => {
-        const childVirtualNode = virtualNodes[key];
-        disconnect(childVirtualNode);
-      });
+    Object.values(virtualNode.virtualNodes).forEach(disconnect);
   } else {
     const {audioNode} = virtualNode;
     if (audioNode.stop && !virtualNode.stopCalled && !doNotStop) {
