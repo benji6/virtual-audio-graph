@@ -33,10 +33,8 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
         const destinationVirtualAudioNode = virtualGraph[output];
 
         if (destinationVirtualAudioNode.isCustomVirtualNode) {
-          const {virtualNodes} = destinationVirtualAudioNode;
-          return Object.keys(destinationVirtualAudioNode.virtualNodes)
-            .forEach(key => {
-              const node = virtualNodes[key];
+          return Object.values(destinationVirtualAudioNode.virtualNodes)
+            .forEach(node => {
               if (node.input !== 'input') {
                 return;
               }

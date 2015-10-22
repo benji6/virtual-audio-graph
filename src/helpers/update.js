@@ -4,16 +4,11 @@ import audioParamProperties from '../data/audioParamProperties';
 import setters from '../data/setters';
 import deepEqual from 'deep-equal';
 
-const values = obj => Object.keys(obj).map(key => obj[key]);
-
 export default function update (virtualNode, params = {}) {
   if (virtualNode.isCustomVirtualNode) {
-    const audioGraphParamsFactoryValues = values(virtualNode.audioGraphParamsFactory(params));
-    Object.keys(virtualNode.virtualNodes)
-      .forEach((key, i) => {
-        const childVirtualNode = virtualNode.virtualNodes[key];
-        update(childVirtualNode, audioGraphParamsFactoryValues[i][2]);
-      });
+    const audioGraphParamsFactoryValues = Object.values(virtualNode.audioGraphParamsFactory(params));
+    Object.values(virtualNode.virtualNodes)
+      .forEach((childVirtualNode, i) => update(childVirtualNode, audioGraphParamsFactoryValues[i][2]));
   } else {
     Object.keys(params)
       .forEach(key => {
