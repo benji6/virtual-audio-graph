@@ -59,21 +59,12 @@ exports['default'] = function (virtualGraph) {
       var destinationVirtualAudioNode = virtualGraph[output];
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
-        var _ret2 = (function () {
-          var virtualNodes = destinationVirtualAudioNode.virtualNodes;
-
-          return {
-            v: Object.keys(destinationVirtualAudioNode.virtualNodes).forEach(function (key) {
-              var node = virtualNodes[key];
-              if (node.input !== 'input') {
-                return;
-              }
-              (0, _connect2['default'])(virtualNode, node.audioNode);
-            })
-          };
-        })();
-
-        if (typeof _ret2 === 'object') return _ret2.v;
+        return Object.values(destinationVirtualAudioNode.virtualNodes).forEach(function (node) {
+          if (node.input !== 'input') {
+            return;
+          }
+          (0, _connect2['default'])(virtualNode, node.audioNode);
+        });
       }
 
       (0, _connect2['default'])(virtualNode, destinationVirtualAudioNode.audioNode);

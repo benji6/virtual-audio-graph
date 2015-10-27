@@ -31,21 +31,14 @@ var _deepEqual = require('deep-equal');
 
 var _deepEqual2 = _interopRequireDefault(_deepEqual);
 
-var values = function values(obj) {
-  return Object.keys(obj).map(function (key) {
-    return obj[key];
-  });
-};
-
 function update(virtualNode) {
   var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
   if (virtualNode.isCustomVirtualNode) {
     (function () {
-      var audioGraphParamsFactoryValues = values(virtualNode.audioGraphParamsFactory(params));
-      Object.keys(virtualNode.virtualNodes).forEach(function (key, i) {
-        var childVirtualNode = virtualNode.virtualNodes[key];
-        update(childVirtualNode, audioGraphParamsFactoryValues[i][2]);
+      var audioGraphParamsFactoryValues = Object.values(virtualNode.audioGraphParamsFactory(params));
+      Object.values(virtualNode.virtualNodes).forEach(function (childVirtualNode, i) {
+        return update(childVirtualNode, audioGraphParamsFactoryValues[i][2]);
       });
     })();
   } else {

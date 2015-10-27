@@ -7,14 +7,7 @@ exports["default"] = disconnect;
 
 function disconnect(virtualNode, doNotStop) {
   if (virtualNode.isCustomVirtualNode) {
-    (function () {
-      var virtualNodes = virtualNode.virtualNodes;
-
-      Object.keys(virtualNodes).forEach(function (key) {
-        var childVirtualNode = virtualNodes[key];
-        disconnect(childVirtualNode);
-      });
-    })();
+    Object.values(virtualNode.virtualNodes).forEach(disconnect);
   } else {
     var audioNode = virtualNode.audioNode;
 

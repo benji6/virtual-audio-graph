@@ -105,6 +105,8 @@ exports['default'] = function () {
         if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) || stopTimePathParams(virtualAudioNodeParams) !== stopTimePathStored(virtualAudioNode)) {
           (0, _helpersDisconnect2['default'])(virtualAudioNode);
           delete _this.virtualNodes[key];
+          _this.virtualNodes[key] = (0, _helpersCreateVirtualAudioNode2['default'])(audioContext, customNodes, virtualAudioNodeParams);
+          return;
         }
         (0, _helpersUpdateAudioNodeAndVirtualAudioGraph2['default'])(audioContext, _this.virtualNodes, customNodes, virtualAudioNode, virtualAudioNodeParams, key);
       });

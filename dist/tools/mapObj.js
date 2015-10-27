@@ -6,8 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 
 exports["default"] = function (fn, obj) {
   return Object.keys(obj).reduce(function (acc, key) {
-    acc[key] = fn(obj[key]);
-    return acc;
+    return (acc[key] = fn(obj[key]), acc);
   }, {});
 };
 
