@@ -14,6 +14,10 @@ var _connect = require('./connect');
 
 var _connect2 = _interopRequireDefault(_connect);
 
+var _toolsValues = require('../tools/values');
+
+var _toolsValues2 = _interopRequireDefault(_toolsValues);
+
 exports['default'] = function (virtualGraph) {
   var handleConnectionToOutput = arguments.length <= 1 || arguments[1] === undefined ? function () {} : arguments[1];
   return Object.keys(virtualGraph).forEach(function (id) {
@@ -59,7 +63,7 @@ exports['default'] = function (virtualGraph) {
       var destinationVirtualAudioNode = virtualGraph[output];
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
-        return Object.values(destinationVirtualAudioNode.virtualNodes).forEach(function (node) {
+        return (0, _toolsValues2['default'])(destinationVirtualAudioNode.virtualNodes).forEach(function (node) {
           if (node.input !== 'input') {
             return;
           }

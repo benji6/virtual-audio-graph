@@ -1,5 +1,6 @@
 import asArray from '../tools/asArray';
 import connect from './connect';
+import values from '../tools/values';
 
 export default (virtualGraph, handleConnectionToOutput = () => {}) =>
   Object.keys(virtualGraph).forEach(id => {
@@ -33,7 +34,7 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
         const destinationVirtualAudioNode = virtualGraph[output];
 
         if (destinationVirtualAudioNode.isCustomVirtualNode) {
-          return Object.values(destinationVirtualAudioNode.virtualNodes)
+          return values(destinationVirtualAudioNode.virtualNodes)
             .forEach(node => {
               if (node.input !== 'input') {
                 return;

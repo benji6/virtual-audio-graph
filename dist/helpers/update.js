@@ -31,13 +31,17 @@ var _deepEqual = require('deep-equal');
 
 var _deepEqual2 = _interopRequireDefault(_deepEqual);
 
+var _toolsValues = require('../tools/values');
+
+var _toolsValues2 = _interopRequireDefault(_toolsValues);
+
 function update(virtualNode) {
   var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
   if (virtualNode.isCustomVirtualNode) {
     (function () {
-      var audioGraphParamsFactoryValues = Object.values(virtualNode.audioGraphParamsFactory(params));
-      Object.values(virtualNode.virtualNodes).forEach(function (childVirtualNode, i) {
+      var audioGraphParamsFactoryValues = (0, _toolsValues2['default'])(virtualNode.audioGraphParamsFactory(params));
+      (0, _toolsValues2['default'])(virtualNode.virtualNodes).forEach(function (childVirtualNode, i) {
         return update(childVirtualNode, audioGraphParamsFactoryValues[i][2]);
       });
     })();

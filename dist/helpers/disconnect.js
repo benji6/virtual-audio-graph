@@ -1,13 +1,19 @@
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
-exports["default"] = disconnect;
+exports['default'] = disconnect;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _toolsValues = require('../tools/values');
+
+var _toolsValues2 = _interopRequireDefault(_toolsValues);
 
 function disconnect(virtualNode, doNotStop) {
   if (virtualNode.isCustomVirtualNode) {
-    Object.values(virtualNode.virtualNodes).forEach(disconnect);
+    (0, _toolsValues2['default'])(virtualNode.virtualNodes).forEach(disconnect);
   } else {
     var audioNode = virtualNode.audioNode;
 
@@ -19,4 +25,4 @@ function disconnect(virtualNode, doNotStop) {
   virtualNode.connected = false;
 }
 
-module.exports = exports["default"];
+module.exports = exports['default'];

@@ -3,11 +3,12 @@ import constructorParamsKeys from '../data/constructorParamsKeys';
 import audioParamProperties from '../data/audioParamProperties';
 import setters from '../data/setters';
 import deepEqual from 'deep-equal';
+import values from '../tools/values';
 
 export default function update (virtualNode, params = {}) {
   if (virtualNode.isCustomVirtualNode) {
-    const audioGraphParamsFactoryValues = Object.values(virtualNode.audioGraphParamsFactory(params));
-    Object.values(virtualNode.virtualNodes)
+    const audioGraphParamsFactoryValues = values(virtualNode.audioGraphParamsFactory(params));
+    values(virtualNode.virtualNodes)
       .forEach((childVirtualNode, i) => update(childVirtualNode, audioGraphParamsFactoryValues[i][2]));
   } else {
     Object.keys(params)

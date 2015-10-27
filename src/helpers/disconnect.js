@@ -1,6 +1,8 @@
+import values from '../tools/values';
+
 export default function disconnect (virtualNode, doNotStop) {
   if (virtualNode.isCustomVirtualNode) {
-    Object.values(virtualNode.virtualNodes).forEach(disconnect);
+    values(virtualNode.virtualNodes).forEach(disconnect);
   } else {
     const {audioNode} = virtualNode;
     if (audioNode.stop && !virtualNode.stopCalled && !doNotStop) {
