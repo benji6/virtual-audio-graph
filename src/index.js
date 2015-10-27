@@ -61,6 +61,8 @@ export default ({audioContext = new AudioContext(),
             stopTimePathParams(virtualAudioNodeParams) !== stopTimePathStored(virtualAudioNode)) {
             disconnect(virtualAudioNode);
             delete this.virtualNodes[key];
+            this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
+            return;
           }
           updateAudioNodeAndVirtualAudioGraph(audioContext, this.virtualNodes, customNodes, virtualAudioNode, virtualAudioNodeParams, key);
         });

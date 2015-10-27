@@ -97,11 +97,55 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
   });
 
   it(`works when rescheduling multiple ${node}' start and stop times`, () => {
+    const nodeJSONFromNodeName = {
+      oscillator: {
+        name: 'OscillatorNode',
+        type: 'sine',
+        frequency: {
+          value: 440,
+          inputs: [],
+        },
+        detune: {
+          value: 0,
+          inputs: [],
+        },
+        inputs: [],
+      },
+      bufferSource: {
+        name: 'AudioBufferSourceNode',
+        buffer: null,
+        playbackRate: {
+          value: 1,
+          inputs: [],
+        },
+        loop: false,
+        loopStart: 0,
+        loopEnd: 0,
+        inputs: [],
+      },
+    };
+
     virtualAudioGraph.update({
-      0: [node, 'output'],
-      1: [node, 'output', {startTime: 1}],
-      2: [node, 'output', {stopTime: 0.1}],
-      3: [node, 'output', {startTime: 1, stopTime: 2}],
+      0: [node, 'output', {startTime: 1.1, stopTime: 1.2}],
+      1: [node, 'output', {startTime: 1.1, stopTime: 1.2}],
+      2: [node, 'output', {startTime: 1.1, stopTime: 1.2}],
+      3: [node, 'output', {startTime: 1.1, stopTime: 1.2}],
+    });
+    [...virtualAudioGraph.virtualNodes].forEach(({audioNode}) => {
+      expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED');
+      expect(audioNode.$stateAtTime('00:01.099')).toBe('SCHEDULED');
+      expect(audioNode.$stateAtTime('00:01.100')).toBe('PLAYING');
+      expect(audioNode.$stateAtTime('00:01.199')).toBe('PLAYING');
+      expect(audioNode.$stateAtTime('00:01.200')).toBe('FINISHED');
+    });
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode',
+      inputs: [
+        nodeJSONFromNodeName[node],
+        nodeJSONFromNodeName[node],
+        nodeJSONFromNodeName[node],
+        nodeJSONFromNodeName[node],
+      ],
     });
 
     virtualAudioGraph.update({
@@ -110,13 +154,22 @@ const testSchedulingForNode = node => describe('virtualAudioGraph.update - sched
       2: [node, 'output', {startTime: 0.1, stopTime: 0.2}],
       3: [node, 'output', {startTime: 0.1, stopTime: 0.2}],
     });
-    [...virtualAudioGraph.virtualNodes].forEach(virtualNode => {
-      const audioNode = virtualNode.audioNode;
+
+    [...virtualAudioGraph.virtualNodes].forEach(({audioNode}) => {
       expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED');
       expect(audioNode.$stateAtTime('00:00.099')).toBe('SCHEDULED');
       expect(audioNode.$stateAtTime('00:00.100')).toBe('PLAYING');
       expect(audioNode.$stateAtTime('00:00.199')).toBe('PLAYING');
       expect(audioNode.$stateAtTime('00:00.200')).toBe('FINISHED');
+    });
+    expect(audioContext.toJSON()).toEqual({
+      name: 'AudioDestinationNode',
+      inputs: [
+        nodeJSONFromNodeName[node],
+        nodeJSONFromNodeName[node],
+        nodeJSONFromNodeName[node],
+        nodeJSONFromNodeName[node],
+      ],
     });
   });
 });
