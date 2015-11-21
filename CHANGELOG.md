@@ -1,5 +1,11 @@
 # Release Notes
 
+## 0.16.x
+
+Using [Rollup](https://github.com/rollup/rollup) for bundling ES5 dist.
+
+Added `jsnext:main` ([more info](https://github.com/rollup/rollup/wiki/jsnext:main)) to package.json
+
 ## 0.15.x
 
 Breaking API change - `defineNode` replaced by `defineNodes`:

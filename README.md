@@ -19,6 +19,8 @@ Inspired by [virtual-dom](https://github.com/Matt-Esch/virtual-dom) and [React](
 npm i -S virtual-audio-graph
 ```
 
+`virtual-audio-graph` is by default distributed as ES5, however, it also has a `jsnext:main` ([more info](https://github.com/rollup/rollup/wiki/jsnext:main)) property in its package.json so it may also be consumed as an ES2015 module by tools like [Rollup](https://github.com/rollup/rollup).
+
 ## Upgrading
 
 See [changelog](/CHANGELOG.md).
