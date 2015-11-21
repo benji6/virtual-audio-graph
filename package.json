@@ -14,6 +14,7 @@
     "web"
   ],
   "main": "dist/index.js",
+  "jsnext:main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/benji6/virtual-audio-graph.git"
