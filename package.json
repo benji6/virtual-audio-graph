@@ -40,6 +40,7 @@
     "eslint": "^1.7.3",
     "gulp": "^3.9.0",
     "gulp-eslint": "^1.0.0",
+    "gulp-istanbul": "^0.10.3",
     "gulp-jasmine": "^2.1.0",
     "rollup": "^0.21.0",
     "run-sequence": "^1.1.4",
