@@ -2,13 +2,22 @@ import capitalize from 'capitalize';
 import connect from './helpers/connect';
 import connectAudioNodes from './helpers/connectAudioNodes';
 import createVirtualAudioNode from './helpers/createVirtualAudioNode';
-import updateAudioNodeAndVirtualAudioGraph from './helpers/updateAudioNodeAndVirtualAudioGraph';
 import disconnect from './helpers/disconnect';
+import update from './helpers/update';
 
 const startTimePathParams = params => params[2] && params[2].startTime;
 const stopTimePathParams = params => params[2] && params[2].stopTime;
 const startTimePathStored = virtualNode => virtualNode.params && virtualNode.params.startTime;
 const stopTimePathStored = virtualNode => virtualNode.params && virtualNode.params.stopTime;
+const checkOutputsEqual = (output0, output1) => {
+  if (Array.isArray(output0)) {
+    if (!Array.isArray(output1)) {
+      return false;
+    }
+    return output0.every(x => output1.indexOf(x) !== -1);
+  }
+  return output0 === output1;
+};
 
 export default ({audioContext = new AudioContext(),
                  output = audioContext.destination} = {}) => {
@@ -64,7 +73,17 @@ export default ({audioContext = new AudioContext(),
             this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
             return;
           }
-          updateAudioNodeAndVirtualAudioGraph(audioContext, this.virtualNodes, customNodes, virtualAudioNode, virtualAudioNodeParams, key);
+          if (virtualAudioNodeParams[0] !== virtualAudioNode.node) {
+            disconnect(virtualAudioNode);
+            this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
+            return;
+          }
+          if (!checkOutputsEqual(virtualAudioNodeParams[1], virtualAudioNode.output)) {
+            disconnect(virtualAudioNode, true);
+            virtualAudioNode.output = virtualAudioNodeParams[1];
+          }
+
+          update(virtualAudioNode, virtualAudioNodeParams[2]);
         });
 
       connectAudioNodes(this.virtualNodes,

@@ -1,6 +1,5 @@
-import asArray from '../tools/asArray';
+import {asArray, values} from '../tools';
 import connect from './connect';
-import values from '../tools/values';
 
 export default (virtualGraph, handleConnectionToOutput = () => {}) =>
   Object.keys(virtualGraph).forEach(id => {

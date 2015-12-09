@@ -1,6 +1,6 @@
 import connectAudioNodes from '../helpers/connectAudioNodes';
 import createStandardVirtualAudioNode from '../virtualNodeFactories/createStandardVirtualAudioNode';
-import mapObj from '../tools/mapObj';
+import {mapObj} from '../tools';
 
 const createCustomVirtualAudioNode = (audioContext, customNodes, [node, output, params]) => {
   params = params || {};

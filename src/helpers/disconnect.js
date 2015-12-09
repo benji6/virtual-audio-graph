@@ -1,4 +1,4 @@
-import values from '../tools/values';
+import {values} from '../tools';
 
 export default function disconnect (virtualNode, doNotStop) {
   if (virtualNode.isCustomVirtualNode) {
