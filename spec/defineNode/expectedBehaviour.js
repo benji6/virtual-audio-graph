@@ -3,6 +3,7 @@ import gainWithNoParams from '../tools/gainWithNoParams';
 import pingPongDelay from '../tools/pingPongDelay';
 import sineOsc from '../tools/sineOsc';
 import squareOsc from '../tools/squareOsc';
+import twoGains from '../tools/twoGains';
 
 export default createVirtualAudioGraph => {
   describe('virtualAudioGraph.defineNode - expected behaviour:', () => {
@@ -154,6 +155,83 @@ export default createVirtualAudioGraph => {
       /* eslint-disable */
       expect(audioContext.toJSON()).toEqual({"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":1,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"OscillatorNode","type":"sine","frequency":{"value":220,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]});
       /* eslint-enable */
+    });
+    it('can define custom nodes which can be reordered', () => {
+      virtualAudioGraph.defineNodes({twoGains, sineOsc});
+      const expectedData = {
+        name:'AudioDestinationNode',
+        inputs:[
+          {
+            name:'GainNode',
+            gain:{value:1, inputs:[]},
+            inputs:[
+              {
+                name:'GainNode',
+                gain:{
+                  value:1,
+                  inputs:[],
+                },
+                inputs:[
+                  {
+                    name:'GainNode',
+                    gain:{value:1, inputs:[]},
+                    inputs:[
+                      {
+                        name:'GainNode', gain:{
+                          value:0.3,
+                          inputs:[],
+                        },
+                        inputs:[
+                          {
+                            name:'OscillatorNode',
+                            type:'sine',
+                            frequency:{value: 500, inputs:[]},
+                            detune:{value:0, inputs:[]},
+                            inputs:[],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      virtualAudioGraph.update({
+        'channel:0-type:effect-id:0':['gain', 'output'],
+        'channel:0-type:effect-id:1':['twoGains', 'channel:0-type:effect-id:0'],
+        'channel:[0]-type:source-id:keyboard: 7':[
+          'sineOsc',
+          ['channel:0-type:effect-id:1'],
+          {gain: 0.3, frequency: 500},
+        ],
+      });
+      expect(audioContext.toJSON()).toEqual(expectedData);
+
+      virtualAudioGraph.update({
+        'channel:0-type:effect-id:0':['gain', 'channel:0-type:effect-id:1'],
+        'channel:0-type:effect-id:1':['twoGains', 'output'],
+        'channel:[0]-type:source-id:keyboard: 5':[
+          'sineOsc',
+          ['channel:0-type:effect-id:0'],
+          {gain: 0.3, frequency: 500},
+        ],
+      });
+      expect(audioContext.toJSON()).toEqual(expectedData);
+
+      virtualAudioGraph.update({
+        'channel:0-type:effect-id:0':['gain', 'output'],
+        'channel:0-type:effect-id:1':['twoGains', 'channel:0-type:effect-id:0'],
+        'channel:[0]-type:source-id:keyboard: 7':[
+          'sineOsc',
+          ['channel:0-type:effect-id:1'],
+          {gain: 0.3, frequency: 500},
+        ],
+      });
+      expect(audioContext.toJSON()).toEqual(expectedData);
     });
   });
 };
