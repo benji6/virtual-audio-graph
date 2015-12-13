@@ -57,7 +57,7 @@ export default ({audioContext = new AudioContext(),
             throw new Error(`'output' is not a valid id`);
           }
           const virtualAudioNodeParams = virtualGraphParams[key];
-          const [node, output] = virtualAudioNodeParams;
+          const [node, output, params] = virtualAudioNodeParams;
           if (output == null && node !== 'mediaStreamDestination') {
             throw new Error(`output not specified for node key ${key}`);
           }
@@ -73,17 +73,17 @@ export default ({audioContext = new AudioContext(),
             this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
             return;
           }
-          if (virtualAudioNodeParams[0] !== virtualAudioNode.node) {
+          if (node !== virtualAudioNode.node) {
             disconnect(virtualAudioNode);
             this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
             return;
           }
-          if (!checkOutputsEqual(virtualAudioNodeParams[1], virtualAudioNode.output)) {
+          if (!checkOutputsEqual(output, virtualAudioNode.output)) {
             disconnect(virtualAudioNode, true);
-            virtualAudioNode.output = virtualAudioNodeParams[1];
+            virtualAudioNode.output = output;
           }
 
-          update(virtualAudioNode, virtualAudioNodeParams[2]);
+          update(virtualAudioNode, params);
         });
 
       connectAudioNodes(this.virtualNodes,
