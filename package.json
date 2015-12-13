@@ -20,10 +20,11 @@
     "url": "https://github.com/benji6/virtual-audio-graph.git"
   },
   "scripts": {
-    "benchmark": "node_modules/.bin/babel-node benchmark",
+    "benchmark": "babel-node benchmark",
     "build": "rm -rf dist && mkdir dist && node_modules/.bin/rollup src/index.js | node_modules/.bin/babel -o dist/index.js",
-    "dev": "node_modules/.bin/babel-node node_modules/.bin/gulp",
-    "test": "node_modules/.bin/babel-node node_modules/.bin/gulp spec"
+    "dev": "babel-node node_modules/.bin/gulp",
+    "prepublish": "npm run build && npm test",
+    "test": "babel-node node_modules/.bin/gulp spec"
   },
   "author": "Ben Hall",
   "license": "MIT",
