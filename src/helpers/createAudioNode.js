@@ -1,4 +1,4 @@
-import capitalize from 'capitalize';
+import {capitalize} from '../tools';
 import startAndStopNodes from '../data/startAndStopNodes';
 
 export default (audioContext, name, constructorParam, {startTime, stopTime}) => {

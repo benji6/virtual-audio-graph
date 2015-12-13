@@ -1,9 +1,8 @@
-import capitalize from 'capitalize';
 import constructorParamsKeys from '../data/constructorParamsKeys';
 import audioParamProperties from '../data/audioParamProperties';
 import setters from '../data/setters';
 import deepEqual from 'deep-equal';
-import {values} from '../tools';
+import {capitalize, values} from '../tools';
 
 export default function update (virtualNode, params = {}) {
   if (virtualNode.isCustomVirtualNode) {

@@ -1,4 +1,4 @@
-import capitalize from 'capitalize';
+import {capitalize} from './tools';
 import connect from './helpers/connect';
 import connectAudioNodes from './helpers/connectAudioNodes';
 import createVirtualAudioNode from './helpers/createVirtualAudioNode';
