@@ -51,8 +51,8 @@ export default ({audioContext = new AudioContext(),
             throw new Error(`'output' is not a valid id`);
           }
           const virtualAudioNodeParams = virtualGraphParams[key];
-          const [node, output, params] = virtualAudioNodeParams;
-          if (output == null && node !== 'mediaStreamDestination') {
+          const [paramsNodeName, paramsOutput, paramsParams] = virtualAudioNodeParams;
+          if (paramsOutput == null && paramsNodeName !== 'mediaStreamDestination') {
             throw new Error(`output not specified for node key ${key}`);
           }
           const virtualAudioNode = this.virtualNodes[key];
@@ -60,24 +60,23 @@ export default ({audioContext = new AudioContext(),
             this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
             return;
           }
-          if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) ||
-            stopTimePathParams(virtualAudioNodeParams) !== stopTimePathStored(virtualAudioNode)) {
+          if (
+            startTimePathParams(virtualAudioNodeParams) !==
+              startTimePathStored(virtualAudioNode) ||
+            stopTimePathParams(virtualAudioNodeParams) !==
+              stopTimePathStored(virtualAudioNode) ||
+            paramsNodeName !== virtualAudioNode.node
+          ) {
             disconnect(virtualAudioNode);
-            delete this.virtualNodes[key];
             this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
             return;
           }
-          if (node !== virtualAudioNode.node) {
-            disconnect(virtualAudioNode);
-            this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
-            return;
-          }
-          if (!checkOutputsEqual(output, virtualAudioNode.output)) {
+          if (!checkOutputsEqual(paramsOutput, virtualAudioNode.output)) {
             disconnect(virtualAudioNode, true);
-            virtualAudioNode.output = output;
+            virtualAudioNode.output = paramsOutput;
           }
 
-          update(virtualAudioNode, params);
+          update(virtualAudioNode, paramsParams);
         });
 
       connectAudioNodes(this.virtualNodes,

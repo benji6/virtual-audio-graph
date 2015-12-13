@@ -252,7 +252,9 @@ var createVirtualAudioNode = function createVirtualAudioNode(audioContext, custo
 
 function disconnect(virtualNode, doNotStop) {
   if (virtualNode.isCustomVirtualNode) {
-    values(virtualNode.virtualNodes).forEach(disconnect);
+    values(virtualNode.virtualNodes).forEach(function (virtualNode) {
+      return disconnect(virtualNode, doNotStop);
+    });
   } else {
     var audioNode = virtualNode.audioNode;
 
@@ -330,11 +332,11 @@ var index = function index() {
 
         var _virtualAudioNodeParams = _slicedToArray(virtualAudioNodeParams, 3);
 
-        var node = _virtualAudioNodeParams[0];
-        var output = _virtualAudioNodeParams[1];
-        var params = _virtualAudioNodeParams[2];
+        var paramsNodeName = _virtualAudioNodeParams[0];
+        var paramsOutput = _virtualAudioNodeParams[1];
+        var paramsParams = _virtualAudioNodeParams[2];
 
-        if (output == null && node !== 'mediaStreamDestination') {
+        if (paramsOutput == null && paramsNodeName !== 'mediaStreamDestination') {
           throw new Error('output not specified for node key ' + key);
         }
         var virtualAudioNode = _this.virtualNodes[key];
@@ -342,23 +344,17 @@ var index = function index() {
           _this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
           return;
         }
-        if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) || stopTimePathParams(virtualAudioNodeParams) !== stopTimePathStored(virtualAudioNode)) {
-          disconnect(virtualAudioNode);
-          delete _this.virtualNodes[key];
-          _this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
-          return;
-        }
-        if (node !== virtualAudioNode.node) {
+        if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) || stopTimePathParams(virtualAudioNodeParams) !== stopTimePathStored(virtualAudioNode) || paramsNodeName !== virtualAudioNode.node) {
           disconnect(virtualAudioNode);
           _this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
           return;
         }
-        if (!checkOutputsEqual(output, virtualAudioNode.output)) {
+        if (!checkOutputsEqual(paramsOutput, virtualAudioNode.output)) {
           disconnect(virtualAudioNode, true);
-          virtualAudioNode.output = output;
+          virtualAudioNode.output = paramsOutput;
         }
 
-        _update(virtualAudioNode, params);
+        _update(virtualAudioNode, paramsParams);
       });
 
       connectAudioNodes(this.virtualNodes, function (virtualNode) {
