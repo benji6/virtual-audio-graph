@@ -1,4 +1,3 @@
-import {capitalize} from './tools';
 import connect from './helpers/connect';
 import connectAudioNodes from './helpers/connectAudioNodes';
 import createVirtualAudioNode from './helpers/createVirtualAudioNode';
@@ -29,13 +28,8 @@ export default ({audioContext = new AudioContext(),
       return audioContext.currentTime;
     },
     defineNodes (customNodeParams) {
-      Object.keys(customNodeParams).forEach(name => {
-        if (audioContext[`create${capitalize(name)}`]) {
-          throw new Error(`${name} is a standard audio node name and cannot be overwritten`);
-        }
-        customNodes[name] = customNodeParams[name];
-      });
-
+      Object.keys(customNodeParams)
+        .forEach(name => customNodes[name] = customNodeParams[name]);
       return this;
     },
     getAudioNodeById (id) {

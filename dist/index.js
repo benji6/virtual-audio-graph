@@ -303,12 +303,8 @@ var index = function index() {
 
     defineNodes: function defineNodes(customNodeParams) {
       Object.keys(customNodeParams).forEach(function (name) {
-        if (audioContext['create' + capitalize(name)]) {
-          throw new Error(name + ' is a standard audio node name and cannot be overwritten');
-        }
-        customNodes[name] = customNodeParams[name];
+        return customNodes[name] = customNodeParams[name];
       });
-
       return this;
     },
     getAudioNodeById: function getAudioNodeById(id) {
@@ -332,10 +328,11 @@ var index = function index() {
         }
         var virtualAudioNodeParams = virtualGraphParams[key];
 
-        var _virtualAudioNodeParams = _slicedToArray(virtualAudioNodeParams, 2);
+        var _virtualAudioNodeParams = _slicedToArray(virtualAudioNodeParams, 3);
 
         var node = _virtualAudioNodeParams[0];
         var output = _virtualAudioNodeParams[1];
+        var params = _virtualAudioNodeParams[2];
 
         if (output == null && node !== 'mediaStreamDestination') {
           throw new Error('output not specified for node key ' + key);
@@ -351,17 +348,17 @@ var index = function index() {
           _this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
           return;
         }
-        if (virtualAudioNodeParams[0] !== virtualAudioNode.node) {
+        if (node !== virtualAudioNode.node) {
           disconnect(virtualAudioNode);
           _this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
           return;
         }
-        if (!checkOutputsEqual(virtualAudioNodeParams[1], virtualAudioNode.output)) {
+        if (!checkOutputsEqual(output, virtualAudioNode.output)) {
           disconnect(virtualAudioNode, true);
-          virtualAudioNode.output = virtualAudioNodeParams[1];
+          virtualAudioNode.output = output;
         }
 
-        _update(virtualAudioNode, virtualAudioNodeParams[2]);
+        _update(virtualAudioNode, params);
       });
 
       connectAudioNodes(this.virtualNodes, function (virtualNode) {

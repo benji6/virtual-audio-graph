@@ -3,6 +3,7 @@ import gainWithNoParams from '../tools/gainWithNoParams';
 import pingPongDelay from '../tools/pingPongDelay';
 import sineOsc from '../tools/sineOsc';
 import squareOsc from '../tools/squareOsc';
+import sineOscNoGain from '../tools/sineOscNoGain';
 import twoGains from '../tools/twoGains';
 
 export default createVirtualAudioGraph => {
@@ -232,6 +233,22 @@ export default createVirtualAudioGraph => {
         ],
       });
       expect(audioContext.toJSON()).toEqual(expectedData);
+    });
+    it('custom nodes can override native nodes', () => {
+      virtualAudioGraph.defineNodes({gain: sineOscNoGain});
+      virtualAudioGraph.update({
+        0: ['gain', 'output'],
+      });
+      expect(audioContext.toJSON()).toEqual({
+        name: 'AudioDestinationNode',
+        inputs: [{
+          name: 'OscillatorNode',
+          type: 'sine',
+          frequency: {value: 440, inputs: []},
+          detune: {value: 0, inputs: []},
+          inputs: [],
+        }],
+      });
     });
   });
 };

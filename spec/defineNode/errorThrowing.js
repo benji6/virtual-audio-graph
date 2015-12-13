@@ -3,7 +3,7 @@ import pingPongDelay from '../tools/pingPongDelay';
 
 export default createVirtualAudioGraph => {
   describe('virtualAudioGraph.defineNode - error throwing:', () => {
-    it('throws if name provided is a standard node', () => {
+    it('does not throw if name provided is a standard node', () => {
       const audioContext = new AudioContext();
       const virtualAudioGraph = createVirtualAudioGraph({
         audioContext,
@@ -11,6 +11,7 @@ export default createVirtualAudioGraph => {
       });
 
       expect(() => virtualAudioGraph.defineNodes({gain: pingPongDelay}))
+        .not
         .toThrow();
     });
   });
