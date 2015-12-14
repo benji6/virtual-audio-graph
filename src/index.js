@@ -1,8 +1,5 @@
-import connect from './helpers/connect';
-import connectAudioNodes from './helpers/connectAudioNodes';
-import createVirtualAudioNode from './helpers/createVirtualAudioNode';
-import disconnect from './helpers/disconnect';
-import update from './helpers/update';
+import connectAudioNodes from './connectAudioNodes';
+import createVirtualAudioNode from './createVirtualAudioNode';
 
 const startTimePathParams = params => params[2] && params[2].startTime;
 const stopTimePathParams = params => params[2] && params[2].stopTime;
@@ -40,7 +37,7 @@ export default ({audioContext = new AudioContext(),
 
       Object.keys(this.virtualNodes).forEach(id => {
         if (virtualGraphParamsKeys.indexOf(id) === -1) {
-          disconnect(this.virtualNodes[id]);
+          this.virtualNodes[id].disconnect();
           delete this.virtualNodes[id];
         }
       });
@@ -67,20 +64,20 @@ export default ({audioContext = new AudioContext(),
               stopTimePathStored(virtualAudioNode) ||
             paramsNodeName !== virtualAudioNode.node
           ) {
-            disconnect(virtualAudioNode);
+            virtualAudioNode.disconnect();
             this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
             return;
           }
           if (!checkOutputsEqual(paramsOutput, virtualAudioNode.output)) {
-            disconnect(virtualAudioNode, true);
+            virtualAudioNode.disconnect(true);
             virtualAudioNode.output = paramsOutput;
           }
 
-          update(virtualAudioNode, paramsParams);
+          virtualAudioNode.update(paramsParams);
         });
 
       connectAudioNodes(this.virtualNodes,
-                        virtualNode => connect(virtualNode, output));
+                        virtualNode => virtualNode.connect(output));
 
       return this;
     },

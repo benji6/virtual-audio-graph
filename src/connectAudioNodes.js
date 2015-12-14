@@ -1,5 +1,4 @@
-import {asArray, values} from '../tools';
-import connect from './connect';
+import {asArray, values} from './tools';
 
 export default (virtualGraph, handleConnectionToOutput = () => {}) =>
   Object.keys(virtualGraph).forEach(id => {
@@ -25,23 +24,19 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
               throw new Error(`id: ${id} - outputs and inputs arrays are not the same length`);
             }
             return inputs.forEach((input, i) =>
-              connect(virtualNode, virtualGraph[key].audioNode, outputs[i], input));
+              virtualNode.connect(virtualGraph[key].audioNode, outputs[i], input));
           }
-          return connect(virtualNode, virtualGraph[key].audioNode[destination]);
+          return virtualNode.connect(virtualGraph[key].audioNode[destination]);
         }
 
         const destinationVirtualAudioNode = virtualGraph[output];
 
         if (destinationVirtualAudioNode.isCustomVirtualNode) {
           return values(destinationVirtualAudioNode.virtualNodes)
-            .forEach(node => {
-              if (node.input !== 'input') {
-                return;
-              }
-              connect(virtualNode, node.audioNode);
-            });
+            .filter(({input}) => input === 'input')
+            .forEach(node => virtualNode.connect(node.audioNode));
         }
 
-        connect(virtualNode, destinationVirtualAudioNode.audioNode);
+        virtualNode.connect(destinationVirtualAudioNode.audioNode);
       });
   });
