@@ -128,11 +128,18 @@ var createAudioNode = function createAudioNode(audioContext, name, constructorPa
   return audioNode;
 };
 
-var disconnect = function disconnect(doNotStop) {
+var disconnect = function disconnect() {
+  var audioNode = this.audioNode;
+
+  audioNode.disconnect && audioNode.disconnect();
+  this.connected = false;
+};
+
+var disconnectAndDestroy = function disconnectAndDestroy() {
   var audioNode = this.audioNode;
   var stopCalled = this.stopCalled;
 
-  if (audioNode.stop && !stopCalled && !doNotStop) {
+  if (audioNode.stop && !stopCalled) {
     audioNode.stop();
   }
   audioNode.disconnect && audioNode.disconnect();
@@ -207,6 +214,7 @@ var createStandardVirtualAudioNode = function createStandardVirtualAudioNode(aud
     connect: connect,
     connected: false,
     disconnect: disconnect,
+    disconnectAndDestroy: disconnectAndDestroy,
     isCustomVirtualNode: false,
     input: input,
     node: node,
@@ -222,17 +230,28 @@ var connect$1 = function connect$1() {
     connectArgs[_key2] = arguments[_key2];
   }
 
-  mapObj(function (childVirtualNode) {
-    if (asArray(childVirtualNode.output).indexOf('output') !== -1) {
-      childVirtualNode.connect.apply(childVirtualNode, _toConsumableArray(connectArgs.filter(Boolean)));
-    }
-  }, this.virtualNodes);
+  values(this.virtualNodes).filter(function (_ref5) {
+    var output = _ref5.output;
+    return asArray(output).indexOf('output') !== -1;
+  }).forEach(function (childVirtualNode) {
+    return childVirtualNode.connect.apply(childVirtualNode, _toConsumableArray(connectArgs.filter(Boolean)));
+  });
   this.connected = true;
 };
 
-var disconnect$1 = function disconnect$1(doNotStop) {
+var disconnect$1 = function disconnect$1() {
+  values(this.virtualNodes).filter(function (_ref6) {
+    var output = _ref6.output;
+    return asArray(output).indexOf('output') !== -1;
+  }).forEach(function (virtualNode) {
+    return virtualNode.disconnect();
+  });
+  this.connected = false;
+};
+
+var disconnectAndDestroy$1 = function disconnectAndDestroy$1() {
   values(this.virtualNodes).forEach(function (virtualNode) {
-    return virtualNode.disconnect(doNotStop);
+    return virtualNode.disconnectAndDestroy();
   });
   this.connected = false;
 };
@@ -248,12 +267,12 @@ var update$1 = function update$1() {
   return this;
 };
 
-var createCustomVirtualAudioNode = function createCustomVirtualAudioNode(audioContext, customNodes, _ref5) {
-  var _ref52 = _slicedToArray(_ref5, 3);
+var createCustomVirtualAudioNode = function createCustomVirtualAudioNode(audioContext, customNodes, _ref7) {
+  var _ref72 = _slicedToArray(_ref7, 3);
 
-  var node = _ref52[0];
-  var output = _ref52[1];
-  var params = _ref52[2];
+  var node = _ref72[0];
+  var output = _ref72[1];
+  var params = _ref72[2];
 
   params = params || {};
   var audioGraphParamsFactory = customNodes[node];
@@ -268,6 +287,7 @@ var createCustomVirtualAudioNode = function createCustomVirtualAudioNode(audioCo
     connect: connect$1,
     connected: false,
     disconnect: disconnect$1,
+    disconnectAndDestroy: disconnectAndDestroy$1,
     isCustomVirtualNode: true,
     node: node,
     output: output,
@@ -306,12 +326,12 @@ var checkOutputsEqual = function checkOutputsEqual(output0, output1) {
 };
 
 var index = function index() {
-  var _ref6 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+  var _ref8 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-  var _ref6$audioContext = _ref6.audioContext;
-  var audioContext = _ref6$audioContext === undefined ? new AudioContext() : _ref6$audioContext;
-  var _ref6$output = _ref6.output;
-  var output = _ref6$output === undefined ? audioContext.destination : _ref6$output;
+  var _ref8$audioContext = _ref8.audioContext;
+  var audioContext = _ref8$audioContext === undefined ? new AudioContext() : _ref8$audioContext;
+  var _ref8$output = _ref8.output;
+  var output = _ref8$output === undefined ? audioContext.destination : _ref8$output;
 
   var customNodes = {};
   return Object.defineProperties({
@@ -334,7 +354,7 @@ var index = function index() {
 
       Object.keys(this.virtualNodes).forEach(function (id) {
         if (virtualGraphParamsKeys.indexOf(id) === -1) {
-          _this2.virtualNodes[id].disconnect();
+          _this2.virtualNodes[id].disconnectAndDestroy();
           delete _this2.virtualNodes[id];
         }
       });
@@ -360,12 +380,12 @@ var index = function index() {
           return;
         }
         if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) || stopTimePathParams(virtualAudioNodeParams) !== stopTimePathStored(virtualAudioNode) || paramsNodeName !== virtualAudioNode.node) {
-          virtualAudioNode.disconnect();
+          virtualAudioNode.disconnectAndDestroy();
           _this2.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
           return;
         }
         if (!checkOutputsEqual(paramsOutput, virtualAudioNode.output)) {
-          virtualAudioNode.disconnect(true);
+          virtualAudioNode.disconnect();
           virtualAudioNode.output = paramsOutput;
         }
 

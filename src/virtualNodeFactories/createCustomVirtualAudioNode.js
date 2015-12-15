@@ -3,24 +3,31 @@ import {asArray, mapObj, values} from '../tools';
 import createVirtualAudioNode from '../createVirtualAudioNode';
 
 const connect = function (...connectArgs) {
-  mapObj(childVirtualNode => {
-    if (asArray(childVirtualNode.output).indexOf('output') !== -1) {
-      childVirtualNode.connect(...connectArgs.filter(Boolean));
-    }
-  }, this.virtualNodes);
+  values(this.virtualNodes)
+    .filter(({output}) => asArray(output).indexOf('output') !== -1)
+    .forEach(childVirtualNode =>
+      childVirtualNode.connect(...connectArgs.filter(Boolean)));
   this.connected = true;
 };
 
-const disconnect = function (doNotStop) {
+const disconnect = function () {
   values(this.virtualNodes)
-    .forEach(virtualNode => virtualNode.disconnect(doNotStop));
+    .filter(({output}) => asArray(output).indexOf('output') !== -1)
+    .forEach(virtualNode => virtualNode.disconnect());
+  this.connected = false;
+};
+
+const disconnectAndDestroy = function () {
+  values(this.virtualNodes)
+    .forEach(virtualNode => virtualNode.disconnectAndDestroy());
   this.connected = false;
 };
 
 const update = function (params = {}) {
   const audioGraphParamsFactoryValues = values(this.audioGraphParamsFactory(params));
   values(this.virtualNodes)
-    .forEach((childVirtualNode, i) => childVirtualNode.update(audioGraphParamsFactoryValues[i][2]));
+    .forEach((childVirtualNode, i) => childVirtualNode
+      .update(audioGraphParamsFactoryValues[i][2]));
   this.params = params;
   return this;
 };
@@ -38,6 +45,7 @@ const createCustomVirtualAudioNode = (audioContext, customNodes, [node, output, 
     connect,
     connected: false,
     disconnect,
+    disconnectAndDestroy,
     isCustomVirtualNode: true,
     node,
     output,

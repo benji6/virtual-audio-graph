@@ -23,8 +23,8 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
             if (inputs.length !== outputs.length) {
               throw new Error(`id: ${id} - outputs and inputs arrays are not the same length`);
             }
-            return inputs.forEach((input, i) =>
-              virtualNode.connect(virtualGraph[key].audioNode, outputs[i], input));
+            return inputs.forEach((input, i) => virtualNode
+              .connect(virtualGraph[key].audioNode, outputs[i], input));
           }
           return virtualNode.connect(virtualGraph[key].audioNode[destination]);
         }

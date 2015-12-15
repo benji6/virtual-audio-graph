@@ -30,9 +30,15 @@ const createAudioNode = (audioContext, name, constructorParam, {startTime, stopT
   return audioNode;
 };
 
-const disconnect = function (doNotStop) {
+const disconnect = function () {
+  const {audioNode} = this;
+  audioNode.disconnect && audioNode.disconnect();
+  this.connected = false;
+};
+
+const disconnectAndDestroy = function () {
   const {audioNode, stopCalled} = this;
-  if (audioNode.stop && !stopCalled && !doNotStop) {
+  if (audioNode.stop && !stopCalled) {
     audioNode.stop();
   }
   audioNode.disconnect && audioNode.disconnect();
@@ -83,6 +89,7 @@ export default (audioContext, [node, output, params, input]) => {
     connect,
     connected: false,
     disconnect,
+    disconnectAndDestroy,
     isCustomVirtualNode: false,
     input,
     node,

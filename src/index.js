@@ -37,7 +37,7 @@ export default ({audioContext = new AudioContext(),
 
       Object.keys(this.virtualNodes).forEach(id => {
         if (virtualGraphParamsKeys.indexOf(id) === -1) {
-          this.virtualNodes[id].disconnect();
+          this.virtualNodes[id].disconnectAndDestroy();
           delete this.virtualNodes[id];
         }
       });
@@ -64,12 +64,12 @@ export default ({audioContext = new AudioContext(),
               stopTimePathStored(virtualAudioNode) ||
             paramsNodeName !== virtualAudioNode.node
           ) {
-            virtualAudioNode.disconnect();
+            virtualAudioNode.disconnectAndDestroy();
             this.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
             return;
           }
           if (!checkOutputsEqual(paramsOutput, virtualAudioNode.output)) {
-            virtualAudioNode.disconnect(true);
+            virtualAudioNode.disconnect();
             virtualAudioNode.output = paramsOutput;
           }
 
