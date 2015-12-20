@@ -24,7 +24,7 @@
     "build": "rm -rf dist && mkdir dist && node_modules/.bin/rollup src/index.js | node_modules/.bin/babel -o dist/index.js",
     "dev": "babel-node node_modules/.bin/gulp",
     "prepublish": "npm run build && npm test",
-    "test": "babel-node node_modules/.bin/gulp spec"
+    "test": "standard && babel-node node_modules/.bin/gulp spec"
   },
   "author": "Ben Hall",
   "license": "MIT",
@@ -38,17 +38,19 @@
     "babel-runtime": "^5.8.29",
     "benchmark": "^1.0.0",
     "del": "^2.0.2",
-    "eslint": "^1.7.3",
     "gulp": "^3.9.0",
-    "gulp-eslint": "^1.0.0",
     "gulp-istanbul": "^0.10.3",
     "gulp-jasmine": "^2.1.0",
     "rollup": "^0.21.0",
-    "run-sequence": "^1.1.4",
+    "standard": "^5.4.1",
     "virtual-audio-graph": "^0.16.0",
     "web-audio-test-api": "^0.3.6"
   },
   "dependencies": {
     "deep-equal": "^1.0.1"
+  },
+  "standard": {
+    "ignore": ["dist"],
+    "parser": "babel-eslint"
   }
 }

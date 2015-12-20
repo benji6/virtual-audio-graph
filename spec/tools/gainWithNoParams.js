@@ -1,3 +1,3 @@
 export default () => ({
-  0: ['gain', 'output', null, 'input'],
-});
+  0: ['gain', 'output', null, 'input']
+})
