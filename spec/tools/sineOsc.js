@@ -3,5 +3,5 @@ export default ({gain, frequency, startTime, stopTime}) => ({
   1: ['oscillator', 0, {frequency,
                         type: 'sine',
                         startTime,
-                        stopTime}],
-});
+                        stopTime}]
+})

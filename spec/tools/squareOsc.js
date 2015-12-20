@@ -8,5 +8,5 @@ export default ({gain, frequency, startTime, stopTime}) => ({
                         detune: 3,
                         type: 'square',
                         startTime,
-                        stopTime}],
-});
+                        stopTime}]
+})

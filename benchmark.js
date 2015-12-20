@@ -1,15 +1,15 @@
-require('web-audio-test-api');
+require('web-audio-test-api')
 /* global WebAudioTestAPI*/
-WebAudioTestAPI.setState('AudioContext#createStereoPanner', 'enabled');
-const Benchmark = require('benchmark');
-const createPublishedVirtualAudioGraph = require('virtual-audio-graph');
-const createDevelopmentVirtualAudioGraph = require('./dist/index');
-const pingPongDelay = require('./spec/tools/pingPongDelay');
+WebAudioTestAPI.setState('AudioContext#createStereoPanner', 'enabled')
+const Benchmark = require('benchmark')
+const createPublishedVirtualAudioGraph = require('virtual-audio-graph')
+const createDevelopmentVirtualAudioGraph = require('./dist/index')
+const pingPongDelay = require('./spec/tools/pingPongDelay')
 
 const runBenchmarkCode = function (virtualAudioGraph) {
-  virtualAudioGraph.defineNodes({pingPongDelay});
+  virtualAudioGraph.defineNodes({pingPongDelay})
 
-  virtualAudioGraph.update({0: ['gain', 'output']});
+  virtualAudioGraph.update({0: ['gain', 'output']})
 
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
@@ -24,10 +24,10 @@ const runBenchmarkCode = function (virtualAudioGraph) {
                           detune: 1}],
     4: ['oscillator', 0, {type: 'sawtooth',
                           frequency: 220,
-                          detune: -20}],
-  });
+                          detune: -20}]
+  })
 
-  virtualAudioGraph.update({0: ['gain', 'output']});
+  virtualAudioGraph.update({0: ['gain', 'output']})
 
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
@@ -43,8 +43,8 @@ const runBenchmarkCode = function (virtualAudioGraph) {
                           detune: 1}],
     5: ['oscillator', 1, {type: 'sawtooth',
                           frequency: 220,
-                          detune: -20}],
-  });
+                          detune: -20}]
+  })
 
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
@@ -60,18 +60,18 @@ const runBenchmarkCode = function (virtualAudioGraph) {
                           detune: 12}],
     5: ['oscillator', 1, {type: 'sawtooth',
                           frequency: 123,
-                          detune: -260}],
-  });
+                          detune: -260}]
+  })
 
-  virtualAudioGraph.update({0: ['gain', 'output']});
-  virtualAudioGraph.update({});
-};
+  virtualAudioGraph.update({0: ['gain', 'output']})
+  virtualAudioGraph.update({})
+}
 
 new Benchmark.Suite()
   .add('PublishedVirtualAudioGraph', () => runBenchmarkCode(createPublishedVirtualAudioGraph()))
   .add('DevelopmentVirtualAudioGraph', () => runBenchmarkCode(createDevelopmentVirtualAudioGraph()))
   .on('cycle', event => process.stdout.write(`${String(event.target)}\n`))
   .on('complete', function () {
-    process.stdout.write(`Fastest is ${this.filter('fastest').pluck('name')}\n`);
+    process.stdout.write(`Fastest is ${this.filter('fastest').pluck('name')}\n`)
   })
-  .run({async: true});
+  .run({async: true})

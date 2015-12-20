@@ -3,6 +3,6 @@ export default ({frequency = 440, startTime, stopTime}) => ({
     frequency,
     type: 'sine',
     startTime,
-    stopTime,
-  }],
-});
+    stopTime
+  }]
+})
