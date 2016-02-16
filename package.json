@@ -44,7 +44,7 @@
     "rollup": "^0.21.0",
     "standard": "^5.4.1",
     "virtual-audio-graph": "^0.16.0",
-    "web-audio-test-api": "^0.3.6"
+    "web-audio-test-api": "^0.5.2"
   },
   "dependencies": {
     "deep-equal": "^1.0.1"
