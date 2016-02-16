@@ -41,7 +41,7 @@
     "gulp": "^3.9.0",
     "gulp-istanbul": "^0.10.3",
     "gulp-jasmine": "^2.1.0",
-    "rollup": "^0.21.0",
+    "rollup": "^0.25.4",
     "standard": "^5.4.1",
     "virtual-audio-graph": "^0.16.0",
     "web-audio-test-api": "^0.5.2"
