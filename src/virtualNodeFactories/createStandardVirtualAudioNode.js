@@ -9,7 +9,9 @@ import deepEqual from 'deep-equal'
 
 const connect = function (...connectArgs) {
   const {audioNode} = this
-  audioNode.connect && audioNode.connect(...connectArgs.filter(Boolean))
+  const filteredConnectArgs = connectArgs.filter(Boolean)
+  audioNode.connect && audioNode.connect(...filteredConnectArgs)
+  this.connections = this.connections.concat(filteredConnectArgs)
   this.connected = true
 }
 
@@ -24,9 +26,13 @@ const createAudioNode = (audioContext, name, constructorParam, {startTime, stopT
   return audioNode
 }
 
-const disconnect = function () {
+const disconnect = function (node) {
   const {audioNode} = this
-  audioNode.disconnect && audioNode.disconnect()
+  if (node) {
+    if (!this.connections.some(x => x === node.audioNode)) return
+    this.connections = this.connections.filter(x => x !== node.audioNode)
+  }
+  if (audioNode.disconnect) audioNode.disconnect()
   this.connected = false
 }
 
@@ -72,6 +78,7 @@ export default (audioContext, [node, output, params, input]) => {
     audioNode: createAudioNode(audioContext, node, constructorParam, {startTime, stopTime}),
     connect,
     connected: false,
+    connections: [],
     disconnect,
     disconnectAndDestroy,
     isCustomVirtualNode: false,

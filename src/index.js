@@ -36,7 +36,10 @@ export default ({
 
       Object.keys(this.virtualNodes).forEach(id => {
         if (virtualGraphParamsKeys.indexOf(id) === -1) {
-          this.virtualNodes[id].disconnectAndDestroy()
+          const virtualAudioNode = this.virtualNodes[id]
+          virtualAudioNode.disconnectAndDestroy()
+          Object.keys(this.virtualNodes)
+            .forEach(key => this.virtualNodes[key].disconnect(virtualAudioNode))
           delete this.virtualNodes[id]
         }
       })
@@ -65,6 +68,8 @@ export default ({
           paramsNodeName !== virtualAudioNode.node
         ) {
           virtualAudioNode.disconnectAndDestroy()
+          Object.keys(this.virtualNodes)
+            .forEach(key => this.virtualNodes[key].disconnect(virtualAudioNode))
           this.virtualNodes[key] = createVirtualAudioNode(
             audioContext,
             customNodes,
@@ -74,6 +79,8 @@ export default ({
         }
         if (!checkOutputsEqual(paramsOutput, virtualAudioNode.output)) {
           virtualAudioNode.disconnect()
+          Object.keys(this.virtualNodes)
+            .forEach(key => this.virtualNodes[key].disconnect(virtualAudioNode))
           virtualAudioNode.output = paramsOutput
         }
 
