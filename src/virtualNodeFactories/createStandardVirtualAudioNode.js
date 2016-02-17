@@ -29,8 +29,16 @@ const createAudioNode = (audioContext, name, constructorParam, {startTime, stopT
 const disconnect = function (node) {
   const {audioNode} = this
   if (node) {
-    if (!this.connections.some(x => x === node.audioNode)) return
-    this.connections = this.connections.filter(x => x !== node.audioNode)
+    if (node.isCustomVirtualNode) {
+      Object.keys(node.virtualNodes).forEach(key => {
+        const childNode = node.virtualNodes[key]
+        if (!this.connections.some(x => x === childNode.audioNode)) return
+        this.connections = this.connections.filter(x => x !== childNode.audioNode)
+      })
+    } else {
+      if (!this.connections.some(x => x === node.audioNode)) return
+      this.connections = this.connections.filter(x => x !== node.audioNode)
+    }
   }
   if (audioNode.disconnect) audioNode.disconnect()
   this.connected = false
