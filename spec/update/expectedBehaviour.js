@@ -489,5 +489,47 @@ export default createVirtualAudioGraph => {
         ]
       })
     })
+    it('disconnects and reconnects child nodes properly', () => {
+      virtualAudioGraph.update({
+        0: ['gain', 'output'],
+        1: ['stereoPanner', 0],
+        2: ['gain', 1]
+      })
+      expect(audioContext.toJSON()).toEqual({
+        name: 'AudioDestinationNode',
+        inputs: [{
+          name: 'GainNode',
+          gain: {value: 1, inputs: []},
+          inputs: [{
+            name: 'StereoPannerNode',
+            pan: {value: 0, inputs: []},
+            inputs: [{
+              name: 'GainNode',
+              gain: {value: 1, inputs: []},
+              inputs: []
+            }]
+          }]
+        }]
+      })
+      virtualAudioGraph.update({
+        0: ['gain', 'output'],
+        1: ['gain', 0],
+        2: ['gain', 1]
+      })
+      expect(audioContext.toJSON()).toEqual({
+        name: 'AudioDestinationNode',
+        inputs: [{
+          name: 'GainNode',
+          gain: {value: 1, inputs: []},
+          inputs: [{
+            name: 'GainNode',
+            gain: {value: 1, inputs: []},
+            inputs: [
+              {name: 'GainNode', gain: {value: 1, inputs: []}, inputs: []}
+            ]
+          }]
+        }]
+      })
+    })
   })
 }
