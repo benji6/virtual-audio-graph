@@ -1,6 +1,6 @@
 {
   "name": "virtual-audio-graph",
-  "version": "0.16.4",
+  "version": "0.16.5",
   "description": "Library for declaratively manipulating the Web Audio API",
   "keywords": [
     "api",
@@ -50,7 +50,9 @@
     "deep-equal": "^1.0.1"
   },
   "standard": {
-    "ignore": ["dist"],
+    "ignore": [
+      "dist"
+    ],
     "parser": "babel-eslint"
   }
 }
