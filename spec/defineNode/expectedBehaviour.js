@@ -143,6 +143,59 @@ export default createVirtualAudioGraph => {
       /* eslint-disable */
       expect(audioContext.toJSON()).toEqual({"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"OscillatorNode","type":"sine","frequency":{"value":220,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]})
       /* eslint-enable */
+
+      const {audioContext: {sampleRate}} = virtualAudioGraph
+      const buffer = audioContext.createBuffer(2, sampleRate * 2, sampleRate)
+      virtualAudioGraph.defineNodes({
+        'reverb1': _ => ({
+          0: ['gain', 'output'],
+          1: ['convolver', 0, {buffer}, 'input']
+        }),
+        'reverb2': _ => ({
+          0: ['gain', 'output', {gain: 0.5}],
+          1: ['convolver', 0, {buffer}, 'input']
+        })
+      })
+
+      virtualAudioGraph.update({
+        0: ['reverb1', 'output'],
+        1: ['gain', 0]
+      })
+
+      expect(audioContext.toJSON()).toEqual({
+        name: 'AudioDestinationNode',
+        inputs: [{
+          name: 'GainNode',
+          gain: {value: 1, inputs: []},
+          inputs: [{
+            name: 'ConvolverNode',
+            normalize: true,
+            inputs: [{
+              name: 'GainNode', gain: {value: 1, inputs: []}, inputs: []
+            }]
+          }]
+        }]
+      })
+
+      virtualAudioGraph.update({
+        0: ['reverb2', 'output'],
+        1: ['gain', 0]
+      })
+
+      expect(audioContext.toJSON()).toEqual({
+        name: 'AudioDestinationNode',
+        inputs: [{
+          name: 'GainNode',
+          gain: {value: 0.5, inputs: []},
+          inputs: [{
+            name: 'ConvolverNode',
+            normalize: true,
+            inputs: [{
+              name: 'GainNode', gain: {value: 1, inputs: []}, inputs: []
+            }]
+          }]
+        }]
+      })
     })
     it('can define a custom node which has an input node with no params', () => {
       virtualAudioGraph.defineNodes({gainWithNoParams, sineOsc})
