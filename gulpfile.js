@@ -1,6 +1,6 @@
-import gulp from 'gulp'
-import istanbul from 'gulp-istanbul'
-import jasmine from 'gulp-jasmine'
+const gulp = require('gulp')
+const istanbul = require('gulp-istanbul')
+const jasmine = require('gulp-jasmine')
 
 gulp.task('pre-test', () => gulp
   .src(['src/**/*.js', 'dist/**/*.js'])
