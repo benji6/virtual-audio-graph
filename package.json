@@ -33,9 +33,10 @@
   },
   "homepage": "https://github.com/benji6/virtual-audio-graph",
   "devDependencies": {
-    "babel": "^5.8.29",
-    "babel-eslint": "^4.1.3",
-    "babel-runtime": "^5.8.29",
+    "babel": "^6.5.2",
+    "babel-cli": "^6.5.1",
+    "babel-eslint": "^5.0.0",
+    "babel-preset-es2015": "^6.5.0",
     "benchmark": "^2.1.0",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
