@@ -21,7 +21,7 @@
   },
   "scripts": {
     "benchmark": "babel-node benchmark",
-    "build": "rm -rf dist && mkdir dist && node_modules/.bin/rollup src/index.js | node_modules/.bin/babel -o dist/index.js",
+    "build": "rm -rf dist && mkdir dist && rollup src/index.js | babel --presets es2015 > dist/index.js",
     "dev": "babel-node node_modules/.bin/gulp",
     "prepublish": "npm run build && npm test",
     "test": "standard && babel-node node_modules/.bin/gulp spec"
@@ -33,9 +33,9 @@
   },
   "homepage": "https://github.com/benji6/virtual-audio-graph",
   "devDependencies": {
-    "babel": "^5.8.29",
-    "babel-eslint": "^4.1.3",
-    "babel-runtime": "^5.8.29",
+    "babel-cli": "^6.5.1",
+    "babel-eslint": "^5.0.0",
+    "babel-preset-es2015": "^6.5.0",
     "benchmark": "^2.1.0",
     "del": "^2.0.2",
     "gulp": "^3.9.0",

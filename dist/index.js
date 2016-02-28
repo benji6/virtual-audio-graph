@@ -1,20 +1,22 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 var _deepEqual = require('deep-equal');
 
 var _deepEqual2 = _interopRequireDefault(_deepEqual);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var asArray = function asArray(x) {
   return Array.isArray(x) ? x : [x];
@@ -44,11 +46,12 @@ var connectAudioNodes = function connectAudioNodes(virtualGraph) {
       if (output === 'output') return handleConnectionToOutput(virtualNode);
 
       if (Object.prototype.toString.call(output) === '[object Object]') {
-        var _ret = (function () {
+        var _ret = function () {
           var key = output.key;
           var destination = output.destination;
           var inputs = output.inputs;
           var outputs = output.outputs;
+
 
           if (key == null) {
             throw new Error('id: ' + id + ' - output object requires a key property');
@@ -66,9 +69,9 @@ var connectAudioNodes = function connectAudioNodes(virtualGraph) {
           return {
             v: virtualNode.connect(virtualGraph[key].audioNode[destination])
           };
-        })();
+        }();
 
-        if (typeof _ret === 'object') return _ret.v;
+        if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
       }
 
       var destinationVirtualAudioNode = virtualGraph[output];
@@ -169,17 +172,17 @@ var update = function update() {
     if (_this2.params && _this2.params[key] === param) return;
     if (audioParamProperties.indexOf(key) !== -1) {
       if (Array.isArray(param)) {
-        if (_this2.params && !(0, _deepEqual2['default'])(param, _this2.params[key], { strict: true })) {
+        if (_this2.params && !(0, _deepEqual2.default)(param, _this2.params[key], { strict: true })) {
           _this2.audioNode[key].cancelScheduledValues(0);
         }
         var callMethod = function callMethod(_ref3) {
           var _audioNode$key;
 
-          var _ref32 = _toArray(_ref3);
+          var _ref4 = _toArray(_ref3);
 
-          var methodName = _ref32[0];
+          var methodName = _ref4[0];
 
-          var args = _ref32.slice(1);
+          var args = _ref4.slice(1);
 
           return (_audioNode$key = _this2.audioNode[key])[methodName].apply(_audioNode$key, _toConsumableArray(args));
         };
@@ -201,13 +204,13 @@ var update = function update() {
   return this;
 };
 
-var createStandardVirtualAudioNode = function createStandardVirtualAudioNode(audioContext, _ref4) {
-  var _ref42 = _slicedToArray(_ref4, 4);
+var createStandardVirtualAudioNode = function createStandardVirtualAudioNode(audioContext, _ref5) {
+  var _ref6 = _slicedToArray(_ref5, 4);
 
-  var node = _ref42[0];
-  var output = _ref42[1];
-  var params = _ref42[2];
-  var input = _ref42[3];
+  var node = _ref6[0];
+  var output = _ref6[1];
+  var params = _ref6[2];
+  var input = _ref6[3];
 
   params = params || {};
   var _params = params;
@@ -239,8 +242,8 @@ var connect$1 = function connect$1() {
     connectArgs[_key2] = arguments[_key2];
   }
 
-  values(this.virtualNodes).filter(function (_ref5) {
-    var output = _ref5.output;
+  values(this.virtualNodes).filter(function (_ref7) {
+    var output = _ref7.output;
     return asArray(output).indexOf('output') !== -1;
   }).forEach(function (childVirtualNode) {
     return childVirtualNode.connect.apply(childVirtualNode, _toConsumableArray(connectArgs.filter(Boolean)));
@@ -249,8 +252,8 @@ var connect$1 = function connect$1() {
 };
 
 var disconnect$1 = function disconnect$1() {
-  values(this.virtualNodes).filter(function (_ref6) {
-    var output = _ref6.output;
+  values(this.virtualNodes).filter(function (_ref8) {
+    var output = _ref8.output;
     return asArray(output).indexOf('output') !== -1;
   }).forEach(function (virtualNode) {
     return virtualNode.disconnect();
@@ -276,12 +279,12 @@ var update$1 = function update$1() {
   return this;
 };
 
-var createCustomVirtualAudioNode = function createCustomVirtualAudioNode(audioContext, customNodes, _ref7) {
-  var _ref72 = _slicedToArray(_ref7, 3);
+var createCustomVirtualAudioNode = function createCustomVirtualAudioNode(audioContext, customNodes, _ref9) {
+  var _ref10 = _slicedToArray(_ref9, 3);
 
-  var node = _ref72[0];
-  var output = _ref72[1];
-  var params = _ref72[2];
+  var node = _ref10[0];
+  var output = _ref10[1];
+  var params = _ref10[2];
 
   params = params || {};
   var audioGraphParamsFactory = customNodes[node];
@@ -329,18 +332,20 @@ var checkOutputsEqual = function checkOutputsEqual(output0, output1) {
 };
 
 var index = function index() {
-  var _ref8 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+  var _ref11 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-  var _ref8$audioContext = _ref8.audioContext;
-  var audioContext = _ref8$audioContext === undefined ? new AudioContext() : _ref8$audioContext;
-  var _ref8$output = _ref8.output;
-  var output = _ref8$output === undefined ? audioContext.destination : _ref8$output;
+  var _ref11$audioContext = _ref11.audioContext;
+  var audioContext = _ref11$audioContext === undefined ? new AudioContext() : _ref11$audioContext;
+  var _ref11$output = _ref11.output;
+  var output = _ref11$output === undefined ? audioContext.destination : _ref11$output;
 
   var customNodes = {};
-  return Object.defineProperties({
+  return {
     audioContext: audioContext,
     virtualNodes: {},
-
+    get currentTime() {
+      return audioContext.currentTime;
+    },
     defineNodes: function defineNodes(customNodeParams) {
       Object.keys(customNodeParams).forEach(function (name) {
         return customNodes[name] = customNodeParams[name];
@@ -372,11 +377,11 @@ var index = function index() {
         if (key === 'output') throw new Error('\'output\' is not a valid id');
         var virtualAudioNodeParams = virtualGraphParams[key];
 
-        var _virtualAudioNodeParams = _slicedToArray(virtualAudioNodeParams, 3);
+        var _virtualAudioNodePara = _slicedToArray(virtualAudioNodeParams, 3);
 
-        var paramsNodeName = _virtualAudioNodeParams[0];
-        var paramsOutput = _virtualAudioNodeParams[1];
-        var paramsParams = _virtualAudioNodeParams[2];
+        var paramsNodeName = _virtualAudioNodePara[0];
+        var paramsOutput = _virtualAudioNodePara[1];
+        var paramsParams = _virtualAudioNodePara[2];
 
         if (paramsOutput == null && paramsNodeName !== 'mediaStreamDestination') {
           throw new Error('output not specified for node key ' + key);
@@ -411,16 +416,8 @@ var index = function index() {
 
       return this;
     }
-  }, {
-    currentTime: {
-      get: function get() {
-        return audioContext.currentTime;
-      },
-      configurable: true,
-      enumerable: true
-    }
-  });
+  };
 };
 
-exports['default'] = index;
-module.exports = exports['default'];
+exports.default = index;
+
