@@ -1,40 +1,44 @@
 import filter from 'ramda/src/filter'
+import forEach from 'ramda/src/forEach'
 import map from 'ramda/src/map'
 import values from 'ramda/src/values'
 import connectAudioNodes from '../connectAudioNodes'
-import {asArray} from '../tools'
+import {asArray, forEachIndexed} from '../tools'
 import createVirtualAudioNode from '../createVirtualAudioNode'
 
 const connect = function (...connectArgs) {
-  filter(
-    ({output}) => asArray(output).indexOf('output') !== -1,
-    values(this.virtualNodes)
+  forEach(
+    childVirtualNode => childVirtualNode.connect(...filter(Boolean, connectArgs)),
+    filter(
+      ({output}) => asArray(output).indexOf('output') !== -1,
+      values(this.virtualNodes)
+    )
   )
-    .forEach(childVirtualNode =>
-      childVirtualNode.connect(...filter(Boolean, connectArgs)))
   this.connected = true
 }
 
 const disconnect = function () {
-  filter(
-    ({output}) => asArray(output).indexOf('output') !== -1,
-    values(this.virtualNodes)
+  forEach(
+    virtualNode => virtualNode.disconnect(),
+    filter(
+      ({output}) => asArray(output).indexOf('output') !== -1,
+      values(this.virtualNodes)
+    )
   )
-    .forEach(virtualNode => virtualNode.disconnect())
   this.connected = false
 }
 
 const disconnectAndDestroy = function () {
-  values(this.virtualNodes)
-    .forEach(virtualNode => virtualNode.disconnectAndDestroy())
+  forEach(virtualNode => virtualNode.disconnectAndDestroy(), values(this.virtualNodes))
   this.connected = false
 }
 
 const update = function (params = {}) {
   const audioGraphParamsFactoryValues = values(this.audioGraphParamsFactory(params))
-  values(this.virtualNodes)
-    .forEach((childVirtualNode, i) => childVirtualNode
-      .update(audioGraphParamsFactoryValues[i][2]))
+  forEachIndexed(
+    (childVirtualNode, i) => childVirtualNode.update(audioGraphParamsFactoryValues[i][2]),
+    values(this.virtualNodes)
+  )
   this.params = params
   return this
 }

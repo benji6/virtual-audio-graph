@@ -1,4 +1,5 @@
 /* global AudioContext */
+import forEach from 'ramda/src/forEach'
 import connectAudioNodes from './connectAudioNodes'
 import createVirtualAudioNode from './createVirtualAudioNode'
 
@@ -24,8 +25,10 @@ export default ({
       return audioContext.currentTime
     },
     defineNodes (customNodeParams) {
-      Object.keys(customNodeParams)
-        .forEach(name => customNodes[name] = customNodeParams[name])
+      forEach(
+        name => customNodes[name] = customNodeParams[name],
+        Object.keys(customNodeParams)
+      )
       return this
     },
     getAudioNodeById (id) {
@@ -34,17 +37,19 @@ export default ({
     update (virtualGraphParams) {
       const virtualGraphParamsKeys = Object.keys(virtualGraphParams)
 
-      Object.keys(this.virtualNodes).forEach(id => {
+      forEach(id => {
         if (virtualGraphParamsKeys.indexOf(id) === -1) {
           const virtualAudioNode = this.virtualNodes[id]
           virtualAudioNode.disconnectAndDestroy()
-          Object.keys(this.virtualNodes)
-            .forEach(key => this.virtualNodes[key].disconnect(virtualAudioNode))
+          forEach(
+            key => this.virtualNodes[key].disconnect(virtualAudioNode),
+            Object.keys(this.virtualNodes)
+          )
           delete this.virtualNodes[id]
         }
-      })
+      }, Object.keys(this.virtualNodes))
 
-      virtualGraphParamsKeys.forEach(key => {
+      forEach(key => {
         if (key === 'output') throw new Error(`'output' is not a valid id`)
         const virtualAudioNodeParams = virtualGraphParams[key]
         const [paramsNodeName, paramsOutput, paramsParams] = virtualAudioNodeParams
@@ -68,8 +73,10 @@ export default ({
           paramsNodeName !== virtualAudioNode.node
         ) {
           virtualAudioNode.disconnectAndDestroy()
-          Object.keys(this.virtualNodes)
-            .forEach(key => this.virtualNodes[key].disconnect(virtualAudioNode))
+          forEach(
+            key => this.virtualNodes[key].disconnect(virtualAudioNode),
+            Object.keys(this.virtualNodes)
+          )
           this.virtualNodes[key] = createVirtualAudioNode(
             audioContext,
             customNodes,
@@ -79,13 +86,15 @@ export default ({
         }
         if (!checkOutputsEqual(paramsOutput, virtualAudioNode.output)) {
           virtualAudioNode.disconnect()
-          Object.keys(this.virtualNodes)
-            .forEach(key => this.virtualNodes[key].disconnect(virtualAudioNode))
+          forEach(
+            key => this.virtualNodes[key].disconnect(virtualAudioNode),
+            Object.keys(this.virtualNodes)
+          )
           virtualAudioNode.output = paramsOutput
         }
 
         virtualAudioNode.update(paramsParams)
-      })
+      }, virtualGraphParamsKeys)
 
       connectAudioNodes(
         this.virtualNodes,

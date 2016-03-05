@@ -1,5 +1,6 @@
 import filter from 'ramda/src/filter'
 import find from 'ramda/src/find'
+import forEach from 'ramda/src/forEach'
 import {capitalize} from '../tools'
 import {
   audioParamProperties,
@@ -32,14 +33,14 @@ const disconnect = function (node) {
   const {audioNode} = this
   if (node) {
     if (node.isCustomVirtualNode) {
-      Object.keys(node.virtualNodes).forEach(key => {
+      forEach(key => {
         const childNode = node.virtualNodes[key]
         if (!this.connections.some(x => x === childNode.audioNode)) return
         this.connections = filter(
           x => x !== childNode.audioNode,
           this.connections
         )
-      })
+      }, Object.keys(node.virtualNodes))
     } else {
       if (!this.connections.some(x => x === node.audioNode)) return
       this.connections = filter(x => x !== node.audioNode, this.connections)
@@ -57,7 +58,7 @@ const disconnectAndDestroy = function () {
 }
 
 const update = function (params = {}) {
-  Object.keys(params).forEach(key => {
+  forEach(key => {
     if (constructorParamsKeys.indexOf(key) !== -1) return
     const param = params[key]
     if (this.params && this.params[key] === param) return
@@ -67,7 +68,7 @@ const update = function (params = {}) {
           this.audioNode[key].cancelScheduledValues(0)
         }
         const callMethod = ([methodName, ...args]) => this.audioNode[key][methodName](...args)
-        Array.isArray(param[0]) ? param.forEach(callMethod) : callMethod(param)
+        Array.isArray(param[0]) ? forEach(callMethod, param) : callMethod(param)
         return
       }
       this.audioNode[key].value = param
@@ -78,7 +79,7 @@ const update = function (params = {}) {
       return
     }
     this.audioNode[key] = param
-  })
+  }, Object.keys(params))
   this.params = params
   return this
 }
