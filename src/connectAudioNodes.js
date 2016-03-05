@@ -1,11 +1,14 @@
-import {asArray, values} from './tools'
+import forEach from 'ramda/src/forEach'
+import filter from 'ramda/src/filter'
+import values from 'ramda/src/values'
+import {asArray} from './tools'
 
 export default (virtualGraph, handleConnectionToOutput = () => {}) =>
-  Object.keys(virtualGraph).forEach(id => {
+  forEach(id => {
     const virtualNode = virtualGraph[id]
     const {output} = virtualNode
     if (virtualNode.connected || output == null) return
-    asArray(output).forEach(output => {
+    forEach(output => {
       if (output === 'output') return handleConnectionToOutput(virtualNode)
 
       if (Object.prototype.toString.call(output) === '[object Object]') {
@@ -18,8 +21,8 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
           if (inputs.length !== outputs.length) {
             throw new Error(`id: ${id} - outputs and inputs arrays are not the same length`)
           }
-          return inputs.forEach((input, i) => virtualNode
-            .connect(virtualGraph[key].audioNode, outputs[i], input))
+          return forEach((input, i) => virtualNode
+            .connect(virtualGraph[key].audioNode, outputs[i], input), inputs)
         }
         return virtualNode.connect(virtualGraph[key].audioNode[destination])
       }
@@ -27,11 +30,15 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
       const destinationVirtualAudioNode = virtualGraph[output]
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
-        return values(destinationVirtualAudioNode.virtualNodes)
-          .filter(({input}) => input === 'input')
-          .forEach(node => virtualNode.connect(node.audioNode))
+        return forEach(
+          node => virtualNode.connect(node.audioNode),
+          filter(
+            ({input}) => input === 'input',
+            values(destinationVirtualAudioNode.virtualNodes)
+          )
+        )
       }
 
       virtualNode.connect(destinationVirtualAudioNode.audioNode)
-    })
-  })
+    }, asArray(output))
+  }, Object.keys(virtualGraph))
