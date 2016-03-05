@@ -1,4 +1,5 @@
-import {asArray, values} from './tools'
+import values from 'ramda/src/values'
+import {asArray} from './tools'
 
 export default (virtualGraph, handleConnectionToOutput = () => {}) =>
   Object.keys(virtualGraph).forEach(id => {

@@ -12,16 +12,12 @@ function _interopDefault(ex) {
   return ex && (typeof ex === 'undefined' ? 'undefined' : _typeof(ex)) === 'object' && 'default' in ex ? ex['default'] : ex;
 }
 
+var values = _interopDefault(require('ramda/src/values'));
 var deepEqual = _interopDefault(require('deep-equal'));
 var map = _interopDefault(require('ramda/src/map'));
 
 var asArray = function asArray(x) {
   return Array.isArray(x) ? x : [x];
-};
-var values = function values(obj) {
-  return Object.keys(obj).map(function (key) {
-    return obj[key];
-  });
 };
 var capitalize = function capitalize(a) {
   return a.charAt(0).toUpperCase() + a.substring(1);
