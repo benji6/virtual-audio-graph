@@ -324,6 +324,12 @@ var checkOutputsEqual = function checkOutputsEqual(output0, output1) {
   }) : false : output0 === output1;
 };
 
+var disconnectParents = function disconnectParents(virtualNode, virtualNodes) {
+  return forEach(function (key) {
+    return virtualNodes[key].disconnect(virtualNode);
+  }, Object.keys(virtualNodes));
+};
+
 var index = function index() {
   var _ref11 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
@@ -355,14 +361,10 @@ var index = function index() {
 
       forEach(function (id) {
         if (virtualGraphParamsKeys.indexOf(id) === -1) {
-          (function () {
-            var virtualAudioNode = _this3.virtualNodes[id];
-            virtualAudioNode.disconnectAndDestroy();
-            forEach(function (key) {
-              return _this3.virtualNodes[key].disconnect(virtualAudioNode);
-            }, Object.keys(_this3.virtualNodes));
-            delete _this3.virtualNodes[id];
-          })();
+          var virtualAudioNode = _this3.virtualNodes[id];
+          virtualAudioNode.disconnectAndDestroy();
+          disconnectParents(virtualAudioNode, _this3.virtualNodes);
+          delete _this3.virtualNodes[id];
         }
       }, Object.keys(this.virtualNodes));
 
@@ -386,17 +388,13 @@ var index = function index() {
         }
         if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) || stopTimePathParams(virtualAudioNodeParams) !== stopTimePathStored(virtualAudioNode) || paramsNodeName !== virtualAudioNode.node) {
           virtualAudioNode.disconnectAndDestroy();
-          forEach(function (key) {
-            return _this3.virtualNodes[key].disconnect(virtualAudioNode);
-          }, Object.keys(_this3.virtualNodes));
+          disconnectParents(virtualAudioNode, _this3.virtualNodes);
           _this3.virtualNodes[key] = createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParams);
           return;
         }
         if (!checkOutputsEqual(paramsOutput, virtualAudioNode.output)) {
           virtualAudioNode.disconnect();
-          forEach(function (key) {
-            return _this3.virtualNodes[key].disconnect(virtualAudioNode);
-          }, Object.keys(_this3.virtualNodes));
+          disconnectParents(virtualAudioNode, _this3.virtualNodes);
           virtualAudioNode.output = paramsOutput;
         }
 

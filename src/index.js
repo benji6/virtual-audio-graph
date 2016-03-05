@@ -13,6 +13,11 @@ const checkOutputsEqual = (output0, output1) => Array.isArray(output0)
       : false
   : output0 === output1
 
+const disconnectParents = (virtualNode, virtualNodes) => forEach(
+  key => virtualNodes[key].disconnect(virtualNode),
+  Object.keys(virtualNodes)
+)
+
 export default ({
   audioContext = new AudioContext(),
   output = audioContext.destination
@@ -41,10 +46,7 @@ export default ({
         if (virtualGraphParamsKeys.indexOf(id) === -1) {
           const virtualAudioNode = this.virtualNodes[id]
           virtualAudioNode.disconnectAndDestroy()
-          forEach(
-            key => this.virtualNodes[key].disconnect(virtualAudioNode),
-            Object.keys(this.virtualNodes)
-          )
+          disconnectParents(virtualAudioNode, this.virtualNodes)
           delete this.virtualNodes[id]
         }
       }, Object.keys(this.virtualNodes))
@@ -73,10 +75,7 @@ export default ({
           paramsNodeName !== virtualAudioNode.node
         ) {
           virtualAudioNode.disconnectAndDestroy()
-          forEach(
-            key => this.virtualNodes[key].disconnect(virtualAudioNode),
-            Object.keys(this.virtualNodes)
-          )
+          disconnectParents(virtualAudioNode, this.virtualNodes)
           this.virtualNodes[key] = createVirtualAudioNode(
             audioContext,
             customNodes,
@@ -86,10 +85,7 @@ export default ({
         }
         if (!checkOutputsEqual(paramsOutput, virtualAudioNode.output)) {
           virtualAudioNode.disconnect()
-          forEach(
-            key => this.virtualNodes[key].disconnect(virtualAudioNode),
-            Object.keys(this.virtualNodes)
-          )
+          disconnectParents(virtualAudioNode, this.virtualNodes)
           virtualAudioNode.output = paramsOutput
         }
 
