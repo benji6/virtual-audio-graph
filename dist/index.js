@@ -13,14 +13,10 @@ function _interopDefault(ex) {
 }
 
 var deepEqual = _interopDefault(require('deep-equal'));
+var map = _interopDefault(require('ramda/src/map'));
 
 var asArray = function asArray(x) {
   return Array.isArray(x) ? x : [x];
-};
-var mapObj = function mapObj(fn, obj) {
-  return Object.keys(obj).reduce(function (acc, key) {
-    return acc[key] = fn(obj[key]), acc;
-  }, {});
 };
 var values = function values(obj) {
   return Object.keys(obj).map(function (key) {
@@ -284,7 +280,7 @@ var createCustomVirtualAudioNode = function createCustomVirtualAudioNode(audioCo
 
   params = params || {};
   var audioGraphParamsFactory = customNodes[node];
-  var virtualNodes = mapObj(function (virtualAudioNodeParam) {
+  var virtualNodes = map(function (virtualAudioNodeParam) {
     return createVirtualAudioNode(audioContext, customNodes, virtualAudioNodeParam);
   }, audioGraphParamsFactory(params));
 
