@@ -1,3 +1,5 @@
+import filter from 'ramda/src/filter'
+import find from 'ramda/src/find'
 import {capitalize} from '../tools'
 import {
   audioParamProperties,
@@ -9,7 +11,7 @@ import deepEqual from 'deep-equal'
 
 const connect = function (...connectArgs) {
   const {audioNode} = this
-  const filteredConnectArgs = connectArgs.filter(Boolean)
+  const filteredConnectArgs = filter(Boolean, connectArgs)
   audioNode.connect && audioNode.connect(...filteredConnectArgs)
   this.connections = this.connections.concat(filteredConnectArgs)
   this.connected = true
@@ -33,11 +35,14 @@ const disconnect = function (node) {
       Object.keys(node.virtualNodes).forEach(key => {
         const childNode = node.virtualNodes[key]
         if (!this.connections.some(x => x === childNode.audioNode)) return
-        this.connections = this.connections.filter(x => x !== childNode.audioNode)
+        this.connections = filter(
+          x => x !== childNode.audioNode,
+          this.connections
+        )
       })
     } else {
       if (!this.connections.some(x => x === node.audioNode)) return
-      this.connections = this.connections.filter(x => x !== node.audioNode)
+      this.connections = filter(x => x !== node.audioNode, this.connections)
     }
   }
   if (audioNode.disconnect) audioNode.disconnect()
@@ -81,7 +86,7 @@ const update = function (params = {}) {
 export default (audioContext, [node, output, params, input]) => {
   params = params || {}
   const {startTime, stopTime} = params
-  const constructorParam = params[Object.keys(params).filter(key => constructorParamsKeys.indexOf(key) !== -1)[0]]
+  const constructorParam = params[find(key => constructorParamsKeys.indexOf(key) !== -1, Object.keys(params))]
   const virtualNode = {
     audioNode: createAudioNode(audioContext, node, constructorParam, {startTime, stopTime}),
     connect,

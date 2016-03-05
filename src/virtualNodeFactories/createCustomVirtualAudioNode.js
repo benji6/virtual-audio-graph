@@ -1,3 +1,4 @@
+import filter from 'ramda/src/filter'
 import map from 'ramda/src/map'
 import values from 'ramda/src/values'
 import connectAudioNodes from '../connectAudioNodes'
@@ -5,16 +6,20 @@ import {asArray} from '../tools'
 import createVirtualAudioNode from '../createVirtualAudioNode'
 
 const connect = function (...connectArgs) {
-  values(this.virtualNodes)
-    .filter(({output}) => asArray(output).indexOf('output') !== -1)
+  filter(
+    ({output}) => asArray(output).indexOf('output') !== -1,
+    values(this.virtualNodes)
+  )
     .forEach(childVirtualNode =>
-      childVirtualNode.connect(...connectArgs.filter(Boolean)))
+      childVirtualNode.connect(...filter(Boolean, connectArgs)))
   this.connected = true
 }
 
 const disconnect = function () {
-  values(this.virtualNodes)
-    .filter(({output}) => asArray(output).indexOf('output') !== -1)
+  filter(
+    ({output}) => asArray(output).indexOf('output') !== -1,
+    values(this.virtualNodes)
+  )
     .forEach(virtualNode => virtualNode.disconnect())
   this.connected = false
 }

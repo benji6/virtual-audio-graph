@@ -12,7 +12,9 @@ function _interopDefault(ex) {
   return ex && (typeof ex === 'undefined' ? 'undefined' : _typeof(ex)) === 'object' && 'default' in ex ? ex['default'] : ex;
 }
 
+var filter = _interopDefault(require('ramda/src/filter'));
 var values = _interopDefault(require('ramda/src/values'));
+var find = _interopDefault(require('ramda/src/find'));
 var deepEqual = _interopDefault(require('deep-equal'));
 var map = _interopDefault(require('ramda/src/map'));
 
@@ -65,10 +67,10 @@ var connectAudioNodes = function connectAudioNodes(virtualGraph) {
       var destinationVirtualAudioNode = virtualGraph[output];
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
-        return values(destinationVirtualAudioNode.virtualNodes).filter(function (_ref) {
+        return filter(function (_ref) {
           var input = _ref.input;
           return input === 'input';
-        }).forEach(function (node) {
+        }, values(destinationVirtualAudioNode.virtualNodes)).forEach(function (node) {
           return virtualNode.connect(node.audioNode);
         });
       }
@@ -93,7 +95,7 @@ var connect = function connect() {
     connectArgs[_key] = arguments[_key];
   }
 
-  var filteredConnectArgs = connectArgs.filter(Boolean);
+  var filteredConnectArgs = filter(Boolean, connectArgs);
   audioNode.connect && audioNode.connect.apply(audioNode, _toConsumableArray(filteredConnectArgs));
   this.connections = this.connections.concat(filteredConnectArgs);
   this.connected = true;
@@ -123,17 +125,17 @@ var disconnect = function disconnect(node) {
         if (!_this.connections.some(function (x) {
           return x === childNode.audioNode;
         })) return;
-        _this.connections = _this.connections.filter(function (x) {
+        _this.connections = filter(function (x) {
           return x !== childNode.audioNode;
-        });
+        }, _this.connections);
       });
     } else {
       if (!this.connections.some(function (x) {
         return x === node.audioNode;
       })) return;
-      this.connections = this.connections.filter(function (x) {
+      this.connections = filter(function (x) {
         return x !== node.audioNode;
-      });
+      }, this.connections);
     }
   }
   if (audioNode.disconnect) audioNode.disconnect();
@@ -205,9 +207,9 @@ var createStandardVirtualAudioNode = function createStandardVirtualAudioNode(aud
   var startTime = _params.startTime;
   var stopTime = _params.stopTime;
 
-  var constructorParam = params[Object.keys(params).filter(function (key) {
+  var constructorParam = params[find(function (key) {
     return constructorParamsKeys.indexOf(key) !== -1;
-  })[0]];
+  }, Object.keys(params))];
   var virtualNode = {
     audioNode: createAudioNode(audioContext, node, constructorParam, { startTime: startTime, stopTime: stopTime }),
     connect: connect,
@@ -230,20 +232,20 @@ var connect$1 = function connect$1() {
     connectArgs[_key2] = arguments[_key2];
   }
 
-  values(this.virtualNodes).filter(function (_ref7) {
+  filter(function (_ref7) {
     var output = _ref7.output;
     return asArray(output).indexOf('output') !== -1;
-  }).forEach(function (childVirtualNode) {
-    return childVirtualNode.connect.apply(childVirtualNode, _toConsumableArray(connectArgs.filter(Boolean)));
+  }, values(this.virtualNodes)).forEach(function (childVirtualNode) {
+    return childVirtualNode.connect.apply(childVirtualNode, _toConsumableArray(filter(Boolean, connectArgs)));
   });
   this.connected = true;
 };
 
 var disconnect$1 = function disconnect$1() {
-  values(this.virtualNodes).filter(function (_ref8) {
+  filter(function (_ref8) {
     var output = _ref8.output;
     return asArray(output).indexOf('output') !== -1;
-  }).forEach(function (virtualNode) {
+  }, values(this.virtualNodes)).forEach(function (virtualNode) {
     return virtualNode.disconnect();
   });
   this.connected = false;
