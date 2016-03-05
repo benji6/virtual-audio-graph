@@ -70,8 +70,8 @@ const runBenchmarkCode = function (virtualAudioGraph) {
 new Benchmark.Suite()
   .add('PublishedVirtualAudioGraph', () => runBenchmarkCode(createPublishedVirtualAudioGraph()))
   .add('DevelopmentVirtualAudioGraph', () => runBenchmarkCode(createDevelopmentVirtualAudioGraph()))
-  .on('cycle', event => process.stdout.write(`${String(event.target)}\n`))
+  .on('cycle', event => console.log(String(event.target)))
   .on('complete', function () {
-    process.stdout.write(`Fastest is ${this.filter('fastest').pluck('name')}\n`)
+    console.log('Fastest is ' + this.filter('fastest').map('name'))
   })
   .run({async: true})
