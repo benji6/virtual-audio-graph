@@ -1,22 +1,18 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-var _deepEqual = require('deep-equal');
-
-var _deepEqual2 = _interopRequireDefault(_deepEqual);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _interopDefault(ex) {
+  return ex && (typeof ex === 'undefined' ? 'undefined' : _typeof(ex)) === 'object' && 'default' in ex ? ex['default'] : ex;
+}
+
+var deepEqual = _interopDefault(require('deep-equal'));
 
 var asArray = function asArray(x) {
   return Array.isArray(x) ? x : [x];
@@ -172,7 +168,7 @@ var update = function update() {
     if (_this2.params && _this2.params[key] === param) return;
     if (audioParamProperties.indexOf(key) !== -1) {
       if (Array.isArray(param)) {
-        if (_this2.params && !(0, _deepEqual2.default)(param, _this2.params[key], { strict: true })) {
+        if (_this2.params && !deepEqual(param, _this2.params[key], { strict: true })) {
           _this2.audioNode[key].cancelScheduledValues(0);
         }
         var callMethod = function callMethod(_ref3) {
@@ -419,5 +415,5 @@ var index = function index() {
   };
 };
 
-exports.default = index;
+module.exports = index;
 
