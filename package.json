@@ -48,7 +48,6 @@
     "web-audio-test-api": "^0.5.2"
   },
   "dependencies": {
-    "deep-equal": "^1.0.1",
     "ramda": "^0.19.1"
   },
   "standard": {

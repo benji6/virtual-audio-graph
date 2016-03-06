@@ -1,3 +1,4 @@
+import equals from 'ramda/src/equals'
 import filter from 'ramda/src/filter'
 import find from 'ramda/src/find'
 import forEach from 'ramda/src/forEach'
@@ -8,7 +9,6 @@ import {
   setters,
   startAndStopNodes
 } from '../data'
-import deepEqual from 'deep-equal'
 
 const connect = function (...connectArgs) {
   const {audioNode} = this
@@ -64,7 +64,7 @@ const update = function (params = {}) {
     if (this.params && this.params[key] === param) return
     if (audioParamProperties.indexOf(key) !== -1) {
       if (Array.isArray(param)) {
-        if (this.params && !deepEqual(param, this.params[key], {strict: true})) {
+        if (this.params && !equals(param, this.params[key], {strict: true})) {
           this.audioNode[key].cancelScheduledValues(0)
         }
         const callMethod = ([methodName, ...args]) => this.audioNode[key][methodName](...args)

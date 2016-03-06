@@ -16,8 +16,8 @@ var forEach = _interopDefault(require('ramda/src/forEach'));
 var filter = _interopDefault(require('ramda/src/filter'));
 var values = _interopDefault(require('ramda/src/values'));
 var addIndex = _interopDefault(require('ramda/src/addIndex'));
+var equals = _interopDefault(require('ramda/src/equals'));
 var find = _interopDefault(require('ramda/src/find'));
-var deepEqual = _interopDefault(require('deep-equal'));
 var map = _interopDefault(require('ramda/src/map'));
 
 var asArray = function asArray(x) {
@@ -165,7 +165,7 @@ var update = function update() {
     if (_this2.params && _this2.params[key] === param) return;
     if (audioParamProperties.indexOf(key) !== -1) {
       if (Array.isArray(param)) {
-        if (_this2.params && !deepEqual(param, _this2.params[key], { strict: true })) {
+        if (_this2.params && !equals(param, _this2.params[key], { strict: true })) {
           _this2.audioNode[key].cancelScheduledValues(0);
         }
         var callMethod = function callMethod(_ref3) {
