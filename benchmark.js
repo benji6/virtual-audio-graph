@@ -7,8 +7,6 @@ const createDevelopmentVirtualAudioGraph = require('./dist/index')
 const pingPongDelay = require('./test/utils/pingPongDelay')
 
 const runBenchmarkCode = function (virtualAudioGraph) {
-  virtualAudioGraph.defineNodes({pingPongDelay})
-
   virtualAudioGraph.update({0: ['gain', 'output']})
 
   virtualAudioGraph.update({
@@ -31,7 +29,7 @@ const runBenchmarkCode = function (virtualAudioGraph) {
 
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
-    1: ['pingPongDelay', 0],
+    1: [pingPongDelay, 0],
     2: ['oscillator', 1, {type: 'triangle',
                           frequency: 1720,
                           detune: 14}],
@@ -48,7 +46,7 @@ const runBenchmarkCode = function (virtualAudioGraph) {
 
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
-    1: ['pingPongDelay', 0],
+    1: [pingPongDelay, 0],
     2: ['oscillator', 1, {type: 'triangle',
                           frequency: 123,
                           detune: 45}],

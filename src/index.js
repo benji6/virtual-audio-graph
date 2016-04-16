@@ -22,19 +22,11 @@ export default ({
   audioContext = new AudioContext(),
   output = audioContext.destination
 } = {}) => {
-  const customNodes = {}
   return {
     audioContext,
     virtualNodes: {},
     get currentTime () {
       return audioContext.currentTime
-    },
-    defineNodes (customNodeParams) {
-      forEach(
-        name => customNodes[name] = customNodeParams[name],
-        Object.keys(customNodeParams)
-      )
-      return this
     },
     getAudioNodeById (id) {
       return this.virtualNodes[id].audioNode
@@ -62,7 +54,6 @@ export default ({
         if (virtualAudioNode == null) {
           this.virtualNodes[key] = createVirtualAudioNode(
             audioContext,
-            customNodes,
             virtualAudioNodeParams
           )
           return
@@ -78,7 +69,6 @@ export default ({
           disconnectParents(virtualAudioNode, this.virtualNodes)
           this.virtualNodes[key] = createVirtualAudioNode(
             audioContext,
-            customNodes,
             virtualAudioNodeParams
           )
           return

@@ -5,7 +5,6 @@ require('../WebAudioTestAPISetup')
 const gainWithNoParams = require('../utils/gainWithNoParams')
 const pingPongDelay = require('../utils/pingPongDelay')
 const sineOsc = require('../utils/sineOsc')
-const sineOscNoGain = require('../utils/sineOscNoGain')
 const squareOsc = require('../utils/squareOsc')
 const twoGains = require('../utils/twoGains')
 const createVirtualAudioGraph = require('../..')
@@ -13,23 +12,10 @@ const createVirtualAudioGraph = require('../..')
 const audioContext = new AudioContext()
 const virtualAudioGraph = createVirtualAudioGraph({audioContext})
 
-virtualAudioGraph.defineNodes({
-  gainWithNoParams,
-  pingPongDelay,
-  sineOsc,
-  squareOsc,
-  twoGains
-})
-
-test('defineNodes - returns itself', t => {
-  t.is(virtualAudioGraph.defineNodes({pingPongDelay}), virtualAudioGraph)
-  t.end()
-})
-
 test('defineNodes - creates a custom node which can be reused in virtualAudioGraph.update', t => {
   const virtualGraphParams = {
     0: ['gain', 'output', {gain: 0.5}],
-    1: ['pingPongDelay', 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
+    1: [pingPongDelay, 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
     2: ['oscillator', 1]
   }
 
@@ -49,16 +35,14 @@ test('defineNodes - creates a custom node which can be reused in virtualAudioGra
 test('defineNodes - can define a custom node built of other custom nodes', t => {
   const quietPingPongDelay = () => ({
     0: ['gain', 'output'],
-    1: ['pingPongDelay', 0],
+    1: [pingPongDelay, 0],
     2: ['oscillator', 1]
   })
 
-  virtualAudioGraph.defineNodes({quietPingPongDelay})
-
   const virtualGraphParams = {
     0: ['gain', 'output', {gain: 0.5}],
-    1: ['quietPingPongDelay', 0],
-    2: ['pingPongDelay', 1],
+    1: [quietPingPongDelay, 0],
+    2: [pingPongDelay, 1],
     3: ['oscillator', 2]
   }
 
@@ -72,7 +56,7 @@ test('defineNodes - can define a custom node built of other custom nodes', t => 
 test('defineNodes - can define a custom node which can be updated', t => {
   const virtualGraphParams = {
     0: ['gain', 'output', {gain: 0.5}],
-    1: ['pingPongDelay', 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
+    1: [pingPongDelay, 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
     2: ['oscillator', 1]
   }
 
@@ -92,7 +76,7 @@ test('defineNodes - can define a custom node which can be updated', t => {
 test('defineNodes - can define a custom node which can be removed', t => {
   const virtualGraphParams = {
     0: ['gain', 'output', {gain: 0.5}],
-    1: ['pingPongDelay', 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
+    1: [pingPongDelay, 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
     2: ['oscillator', 1]
   }
 
@@ -119,7 +103,7 @@ test('defineNodes - can define a custom node which can be removed', t => {
 test('defineNodes - can define a custom node which can be replaced with another on update', t => {
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
-    1: ['squareOsc', 0, {gain: 0.5,
+    1: [squareOsc, 0, {gain: 0.5,
                          frequency: 220,
                          startTime: 1,
                          stopTime: 2}]
@@ -131,7 +115,7 @@ test('defineNodes - can define a custom node which can be replaced with another 
 
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
-    1: ['sineOsc', 0, {gain: 0.5,
+    1: [sineOsc, 0, {gain: 0.5,
                        frequency: 220,
                        startTime: 1,
                        stopTime: 2}]
@@ -142,19 +126,17 @@ test('defineNodes - can define a custom node which can be replaced with another 
 
   const sampleRate = audioContext.sampleRate
   const buffer = audioContext.createBuffer(2, sampleRate * 2, sampleRate)
-  virtualAudioGraph.defineNodes({
-    'reverb1': _ => ({
-      0: ['gain', 'output'],
-      1: ['convolver', 0, {buffer}, 'input']
-    }),
-    'reverb2': _ => ({
-      0: ['gain', 'output', {gain: 0.5}],
-      1: ['convolver', 0, {buffer}, 'input']
-    })
+  const reverb1 = _ => ({
+    0: ['gain', 'output'],
+    1: ['convolver', 0, {buffer}, 'input']
+  })
+  const reverb2 = _ => ({
+    0: ['gain', 'output', {gain: 0.5}],
+    1: ['convolver', 0, {buffer}, 'input']
   })
 
   virtualAudioGraph.update({
-    0: ['reverb1', 'output'],
+    0: [reverb1, 'output'],
     1: ['gain', 0]
   })
 
@@ -175,7 +157,7 @@ test('defineNodes - can define a custom node which can be replaced with another 
   })
 
   virtualAudioGraph.update({
-    0: ['reverb2', 'output'],
+    0: [reverb2, 'output'],
     1: ['gain', 0]
   })
 
@@ -199,8 +181,8 @@ test('defineNodes - can define a custom node which can be replaced with another 
 
 test('defineNodes - can define a custom node which has an input node with no params', t => {
   virtualAudioGraph.update({
-    0: ['gainWithNoParams', 'output'],
-    1: ['sineOsc', 0, {gain: 0.5,
+    0: [gainWithNoParams, 'output'],
+    1: [sineOsc, 0, {gain: 0.5,
                        frequency: 220,
                        startTime: 1,
                        stopTime: 2}]
@@ -244,9 +226,9 @@ test('defineNodes - can define custom nodes which can be reordered', t => {
 
   virtualAudioGraph.update({
     'channel:0-type:effect-id:0': ['gain', 'output'],
-    'channel:0-type:effect-id:1': ['twoGains', 'channel:0-type:effect-id:0'],
+    'channel:0-type:effect-id:1': [twoGains, 'channel:0-type:effect-id:0'],
     'channel:[0]-type:source-id:keyboard: 7': [
-      'sineOsc',
+      sineOsc,
       ['channel:0-type:effect-id:1'],
       {gain: 0.3, frequency: 500}
     ]
@@ -255,9 +237,9 @@ test('defineNodes - can define custom nodes which can be reordered', t => {
 
   virtualAudioGraph.update({
     'channel:0-type:effect-id:0': ['gain', 'channel:0-type:effect-id:1'],
-    'channel:0-type:effect-id:1': ['twoGains', 'output'],
+    'channel:0-type:effect-id:1': [twoGains, 'output'],
     'channel:[0]-type:source-id:keyboard: 5': [
-      'sineOsc',
+      sineOsc,
       ['channel:0-type:effect-id:0'],
       {gain: 0.3, frequency: 500}
     ]
@@ -266,29 +248,13 @@ test('defineNodes - can define custom nodes which can be reordered', t => {
 
   virtualAudioGraph.update({
     'channel:0-type:effect-id:0': ['gain', 'output'],
-    'channel:0-type:effect-id:1': ['twoGains', 'channel:0-type:effect-id:0'],
+    'channel:0-type:effect-id:1': [twoGains, 'channel:0-type:effect-id:0'],
     'channel:[0]-type:source-id:keyboard: 7': [
-      'sineOsc',
+      sineOsc,
       ['channel:0-type:effect-id:1'],
       {gain: 0.3, frequency: 500}
     ]
   })
   t.deepEqual(audioContext.toJSON(), expectedData)
-  t.end()
-})
-
-test('defineNodes - custom nodes can override native nodes', t => {
-  virtualAudioGraph.defineNodes({gain: sineOscNoGain})
-  virtualAudioGraph.update({0: ['gain', 'output']})
-  t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
-    inputs: [{
-      name: 'OscillatorNode',
-      type: 'sine',
-      frequency: {value: 440, inputs: []},
-      detune: {value: 0, inputs: []},
-      inputs: []
-    }]
-  })
   t.end()
 })
