@@ -1,8 +1,4 @@
 /* global AudioContext */
-// import gainWithNoParams from '../tools/gainWithNoParams'
-// import squareOsc from '../tools/squareOsc'
-// import sineOscNoGain from '../tools/sineOscNoGain'
-// import twoGains from '../tools/twoGains'
 
 const test = require('tape')
 require('../WebAudioTestAPISetup')
