@@ -1,5 +1,20 @@
 # Release Notes
 
+## 0.17.x
+
+Breaking API change - `defineNodes` removed. `virtual-audio-graph` no longer internally remembers the custom node creator functions and these must be passed directly. This is more inline with how virtual-dom libraries handle component abstractions and keeps `virtual-audio-graph`'s internal state management to the audio graph alone
+
+```javascript
+// old API
+virtualAudioGraph.defineNodes({coolCustomNode})
+virtualAudioGraph.update({0: ['coolCustomNode', 'output', {someParams}]})
+```
+
+```javascript
+// new API
+virtualAudioGraph.update({0: [coolCustomNode, 'output', {someParams}]})
+```
+
 ## 0.16.x
 
 Using [Rollup](https://github.com/rollup/rollup) for bundling ES5 dist.

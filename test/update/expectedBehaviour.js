@@ -8,8 +8,6 @@ const createVirtualAudioGraph = require('../..')
 const audioContext = new AudioContext()
 const virtualAudioGraph = createVirtualAudioGraph({audioContext})
 
-virtualAudioGraph.defineNodes({pingPongDelay, sineOsc})
-
 test('update - returns itself', t => {
   const virtualNodeParams = {0: ['oscillator', 'output', {type: 'square'}]}
   t.is(virtualAudioGraph.update(virtualNodeParams), virtualAudioGraph)
@@ -117,7 +115,7 @@ test('update - handles random strings for ids', t => {
     ]
   })
 
-  virtualAudioGraph.update({0: ['pingPongDelay', 'output']})
+  virtualAudioGraph.update({0: [pingPongDelay, 'output']})
 
    /* eslint-disable */
   t.deepEqual(audioContext.toJSON(), {
@@ -162,7 +160,7 @@ test('update - updates standard and custom nodes if passed same id but different
   })
 
   virtualAudioGraph.update({
-    0: ['sineOsc', 'output', {frequency: 110, gain: 0.5}]
+    0: [sineOsc, 'output', {frequency: 110, gain: 0.5}]
   })
 
   t.deepEqual(audioContext.toJSON(), {
@@ -181,7 +179,7 @@ test('update - updates standard and custom nodes if passed same id but different
   })
 
   virtualAudioGraph.update({
-    0: ['sineOsc', 'output', {frequency: 660, gain: 0.2}]
+    0: [sineOsc, 'output', {frequency: 660, gain: 0.2}]
   })
 
   t.deepEqual(audioContext.toJSON(), {
