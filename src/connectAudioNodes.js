@@ -2,11 +2,11 @@ import {asArray, filter, forEach} from './utils'
 import values from 'ramda/src/values'
 
 export default (virtualGraph, handleConnectionToOutput = () => {}) =>
-  forEach(Object.keys(virtualGraph), id => {
+  forEach(id => {
     const virtualNode = virtualGraph[id]
     const {output} = virtualNode
     if (virtualNode.connected || output == null) return
-    forEach(asArray(output), output => {
+    forEach(output => {
       if (output === 'output') return handleConnectionToOutput(virtualNode)
 
       if (Object.prototype.toString.call(output) === '[object Object]') {
@@ -20,8 +20,8 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
             throw new Error(`id: ${id} - outputs and inputs arrays are not the same length`)
           }
           return forEach(
-            inputs,
-            (input, i) => virtualNode.connect(virtualGraph[key].audioNode, outputs[i], input)
+            (input, i) => virtualNode.connect(virtualGraph[key].audioNode, outputs[i], input),
+            inputs
           )
         }
         return virtualNode.connect(virtualGraph[key].audioNode[destination])
@@ -31,14 +31,14 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
         return forEach(
+          node => virtualNode.connect(node.audioNode),
           filter(
             ({input}) => input === 'input',
             values(destinationVirtualAudioNode.virtualNodes)
-          ),
-          node => virtualNode.connect(node.audioNode)
+          )
         )
       }
 
       virtualNode.connect(destinationVirtualAudioNode.audioNode)
-    })
-  })
+    }, asArray(output))
+  }, Object.keys(virtualGraph))

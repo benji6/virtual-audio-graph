@@ -14,8 +14,8 @@ const checkOutputsEqual = (output0, output1) => Array.isArray(output0)
   : output0 === output1
 
 const disconnectParents = (virtualNode, virtualNodes) => forEach(
-  Object.keys(virtualNodes),
-  key => virtualNodes[key].disconnect(virtualNode)
+  key => virtualNodes[key].disconnect(virtualNode),
+  Object.keys(virtualNodes)
 )
 
 export default ({
@@ -34,16 +34,16 @@ export default ({
     update (virtualGraphParams) {
       const virtualGraphParamsKeys = Object.keys(virtualGraphParams)
 
-      forEach(Object.keys(this.virtualNodes), id => {
+      forEach(id => {
         if (virtualGraphParamsKeys.indexOf(id) === -1) {
           const virtualAudioNode = this.virtualNodes[id]
           virtualAudioNode.disconnectAndDestroy()
           disconnectParents(virtualAudioNode, this.virtualNodes)
           delete this.virtualNodes[id]
         }
-      })
+      }, Object.keys(this.virtualNodes))
 
-      forEach(virtualGraphParamsKeys, key => {
+      forEach(key => {
         if (key === 'output') throw new Error(`'output' is not a valid id`)
         const virtualAudioNodeParams = virtualGraphParams[key]
         const [paramsNodeName, paramsOutput, paramsParams] = virtualAudioNodeParams
@@ -80,7 +80,7 @@ export default ({
         }
 
         virtualAudioNode.update(paramsParams)
-      })
+      }, virtualGraphParamsKeys)
 
       connectAudioNodes(
         this.virtualNodes,
