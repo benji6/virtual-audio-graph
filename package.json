@@ -47,6 +47,7 @@
     "web-audio-test-api": "^0.5.2"
   },
   "dependencies": {
+    "lodash.foreach": "^4.2.0",
     "ramda": "^0.21.0"
   },
   "standard": {
