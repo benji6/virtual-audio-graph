@@ -1,7 +1,6 @@
 import equals from 'ramda/src/equals'
-import filter from 'ramda/src/filter'
 import find from 'ramda/src/find'
-import {capitalize, forEach} from '../utils'
+import {capitalize, filter, forEach} from '../utils'
 import {
   audioParamProperties,
   constructorParamsKeys,

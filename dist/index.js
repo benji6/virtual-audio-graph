@@ -12,7 +12,6 @@ function _interopDefault(ex) {
   return ex && (typeof ex === 'undefined' ? 'undefined' : _typeof(ex)) === 'object' && 'default' in ex ? ex['default'] : ex;
 }
 
-var filter = _interopDefault(require('ramda/src/filter'));
 var values = _interopDefault(require('ramda/src/values'));
 var equals = _interopDefault(require('ramda/src/equals'));
 var find = _interopDefault(require('ramda/src/find'));
@@ -33,6 +32,12 @@ var forEachIndexed = function forEachIndexed(f, xs) {
   for (var i = 0; i < xs.length; i++) {
     f(xs[i], i);
   }
+};
+var filter = function filter(f, xs) {
+  var ys = [];
+  for (var i = 0; i < xs.length; i++) {
+    f(xs[i]) && ys.push(xs[i]);
+  }return ys;
 };
 
 var connectAudioNodes = function connectAudioNodes(virtualGraph) {

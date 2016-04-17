@@ -1,8 +1,7 @@
-import filter from 'ramda/src/filter'
 import map from 'ramda/src/map'
 import values from 'ramda/src/values'
 import connectAudioNodes from '../connectAudioNodes'
-import {asArray, forEach, forEachIndexed} from '../utils'
+import {asArray, filter, forEach, forEachIndexed} from '../utils'
 import createVirtualAudioNode from '../createVirtualAudioNode'
 
 const connect = function (...connectArgs) {
