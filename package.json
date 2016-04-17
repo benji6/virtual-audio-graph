@@ -22,7 +22,6 @@
   "scripts": {
     "benchmark": "babel-node benchmark",
     "build": "rm -rf dist && mkdir dist && rollup -f cjs src/index.js | babel --presets es2015 > dist/index.js",
-    "dev": "babel-node node_modules/.bin/gulp",
     "prepublish": "npm run build && npm test",
     "spec": "tape 'test/**/*.js'",
     "test": "concurrently 'standard' 'npm run spec'",
