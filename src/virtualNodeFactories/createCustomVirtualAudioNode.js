@@ -1,9 +1,8 @@
 import filter from 'ramda/src/filter'
-import forEach from 'lodash.foreach'
 import map from 'ramda/src/map'
 import values from 'ramda/src/values'
 import connectAudioNodes from '../connectAudioNodes'
-import {asArray} from '../tools'
+import {asArray, forEach, forEachIndexed} from '../utils'
 import createVirtualAudioNode from '../createVirtualAudioNode'
 
 const connect = function (...connectArgs) {
@@ -35,9 +34,9 @@ const disconnectAndDestroy = function () {
 
 const update = function (params = {}) {
   const audioGraphParamsFactoryValues = values(this.audioGraphParamsFactory(params))
-  forEach(
-    values(this.virtualNodes),
-    (childVirtualNode, i) => childVirtualNode.update(audioGraphParamsFactoryValues[i][2])
+  forEachIndexed(
+    (childVirtualNode, i) => childVirtualNode.update(audioGraphParamsFactoryValues[i][2]),
+    values(this.virtualNodes)
   )
   this.params = params
   return this

@@ -12,7 +12,6 @@ function _interopDefault(ex) {
   return ex && (typeof ex === 'undefined' ? 'undefined' : _typeof(ex)) === 'object' && 'default' in ex ? ex['default'] : ex;
 }
 
-var forEach = _interopDefault(require('lodash.foreach'));
 var filter = _interopDefault(require('ramda/src/filter'));
 var values = _interopDefault(require('ramda/src/values'));
 var equals = _interopDefault(require('ramda/src/equals'));
@@ -24,6 +23,16 @@ var asArray = function asArray(x) {
 };
 var capitalize = function capitalize(a) {
   return a.charAt(0).toUpperCase() + a.substring(1);
+};
+var forEach = function forEach(xs, f) {
+  for (var i = 0; i < xs.length; i++) {
+    f(xs[i]);
+  }
+};
+var forEachIndexed = function forEachIndexed(f, xs) {
+  for (var i = 0; i < xs.length; i++) {
+    f(xs[i], i);
+  }
 };
 
 var connectAudioNodes = function connectAudioNodes(virtualGraph) {
@@ -263,9 +272,9 @@ var update$1 = function update$1() {
   var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
   var audioGraphParamsFactoryValues = values(this.audioGraphParamsFactory(params));
-  forEach(values(this.virtualNodes), function (childVirtualNode, i) {
+  forEachIndexed(function (childVirtualNode, i) {
     return childVirtualNode.update(audioGraphParamsFactoryValues[i][2]);
-  });
+  }, values(this.virtualNodes));
   this.params = params;
   return this;
 };

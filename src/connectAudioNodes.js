@@ -1,7 +1,6 @@
-import forEach from 'lodash.foreach'
+import {asArray, forEach} from './utils'
 import filter from 'ramda/src/filter'
 import values from 'ramda/src/values'
-import {asArray} from './tools'
 
 export default (virtualGraph, handleConnectionToOutput = () => {}) =>
   forEach(Object.keys(virtualGraph), id => {

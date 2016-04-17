@@ -1,5 +1,5 @@
 /* global AudioContext */
-import forEach from 'lodash.foreach'
+import {forEach} from './utils'
 import connectAudioNodes from './connectAudioNodes'
 import createVirtualAudioNode from './createVirtualAudioNode'
 
