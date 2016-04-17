@@ -1,5 +1,5 @@
 /* global AudioContext */
-import forEach from 'ramda/src/forEach'
+import forEach from 'lodash.foreach'
 import connectAudioNodes from './connectAudioNodes'
 import createVirtualAudioNode from './createVirtualAudioNode'
 
@@ -14,8 +14,8 @@ const checkOutputsEqual = (output0, output1) => Array.isArray(output0)
   : output0 === output1
 
 const disconnectParents = (virtualNode, virtualNodes) => forEach(
-  key => virtualNodes[key].disconnect(virtualNode),
-  Object.keys(virtualNodes)
+  Object.keys(virtualNodes),
+  key => virtualNodes[key].disconnect(virtualNode)
 )
 
 export default ({
@@ -34,16 +34,16 @@ export default ({
     update (virtualGraphParams) {
       const virtualGraphParamsKeys = Object.keys(virtualGraphParams)
 
-      forEach(id => {
+      forEach(Object.keys(this.virtualNodes), id => {
         if (virtualGraphParamsKeys.indexOf(id) === -1) {
           const virtualAudioNode = this.virtualNodes[id]
           virtualAudioNode.disconnectAndDestroy()
           disconnectParents(virtualAudioNode, this.virtualNodes)
           delete this.virtualNodes[id]
         }
-      }, Object.keys(this.virtualNodes))
+      })
 
-      forEach(key => {
+      forEach(virtualGraphParamsKeys, key => {
         if (key === 'output') throw new Error(`'output' is not a valid id`)
         const virtualAudioNodeParams = virtualGraphParams[key]
         const [paramsNodeName, paramsOutput, paramsParams] = virtualAudioNodeParams
@@ -80,7 +80,7 @@ export default ({
         }
 
         virtualAudioNode.update(paramsParams)
-      }, virtualGraphParamsKeys)
+      })
 
       connectAudioNodes(
         this.virtualNodes,
