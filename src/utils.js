@@ -7,3 +7,4 @@ export const filter = (f, xs) => {
   for (let i = 0; i < xs.length; i++) f(xs[i]) && ys.push(xs[i])
   return ys
 }
+export const find = (f, xs) => { for (let i = 0; i < xs.length; i++) if (f(xs[i])) return xs[i] }

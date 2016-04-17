@@ -14,7 +14,6 @@ function _interopDefault(ex) {
 
 var values = _interopDefault(require('ramda/src/values'));
 var equals = _interopDefault(require('ramda/src/equals'));
-var find = _interopDefault(require('ramda/src/find'));
 var map = _interopDefault(require('ramda/src/map'));
 
 var asArray = function asArray(x) {
@@ -38,6 +37,11 @@ var filter = function filter(f, xs) {
   for (var i = 0; i < xs.length; i++) {
     f(xs[i]) && ys.push(xs[i]);
   }return ys;
+};
+var find = function find(f, xs) {
+  for (var i = 0; i < xs.length; i++) {
+    if (f(xs[i])) return xs[i];
+  }
 };
 
 var connectAudioNodes = function connectAudioNodes(virtualGraph) {
