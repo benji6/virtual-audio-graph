@@ -43,7 +43,7 @@
     "rollup": "^0.25.8",
     "standard": "^5.4.1",
     "tape": "^4.5.1",
-    "virtual-audio-graph": "^0.16.8",
+    "virtual-audio-graph": "^0.17.3",
     "web-audio-test-api": "^0.5.2"
   },
   "dependencies": {
