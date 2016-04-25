@@ -363,13 +363,13 @@ var index = function index() {
     getAudioNodeById: function getAudioNodeById(id) {
       return this.virtualNodes[id].audioNode;
     },
-    update: function update(virtualGraphParams) {
+    update: function update(newGraph) {
       var _this3 = this;
 
-      var virtualGraphParamsKeys = Object.keys(virtualGraphParams);
+      var newGraphKeys = Object.keys(newGraph);
 
       forEach(function (id) {
-        if (virtualGraphParamsKeys.indexOf(id) === -1) {
+        if (newGraphKeys.indexOf(id) === -1) {
           var virtualAudioNode = _this3.virtualNodes[id];
           virtualAudioNode.disconnectAndDestroy();
           disconnectParents(virtualAudioNode, _this3.virtualNodes);
@@ -379,7 +379,7 @@ var index = function index() {
 
       forEach(function (key) {
         if (key === 'output') throw new Error('\'output\' is not a valid id');
-        var virtualAudioNodeParams = virtualGraphParams[key];
+        var virtualAudioNodeParams = newGraph[key];
 
         var _virtualAudioNodePara = _slicedToArray(virtualAudioNodeParams, 3);
 
@@ -408,7 +408,7 @@ var index = function index() {
         }
 
         virtualAudioNode.update(paramsParams);
-      }, virtualGraphParamsKeys);
+      }, newGraphKeys);
 
       connectAudioNodes(this.virtualNodes, function (virtualNode) {
         return virtualNode.connect(output);

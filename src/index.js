@@ -25,17 +25,13 @@ export default ({
   return {
     audioContext,
     virtualNodes: {},
-    get currentTime () {
-      return audioContext.currentTime
-    },
-    getAudioNodeById (id) {
-      return this.virtualNodes[id].audioNode
-    },
-    update (virtualGraphParams) {
-      const virtualGraphParamsKeys = Object.keys(virtualGraphParams)
+    get currentTime () { return audioContext.currentTime },
+    getAudioNodeById (id) { return this.virtualNodes[id].audioNode },
+    update (newGraph) {
+      const newGraphKeys = Object.keys(newGraph)
 
       forEach(id => {
-        if (virtualGraphParamsKeys.indexOf(id) === -1) {
+        if (newGraphKeys.indexOf(id) === -1) {
           const virtualAudioNode = this.virtualNodes[id]
           virtualAudioNode.disconnectAndDestroy()
           disconnectParents(virtualAudioNode, this.virtualNodes)
@@ -45,7 +41,7 @@ export default ({
 
       forEach(key => {
         if (key === 'output') throw new Error(`'output' is not a valid id`)
-        const virtualAudioNodeParams = virtualGraphParams[key]
+        const virtualAudioNodeParams = newGraph[key]
         const [paramsNodeName, paramsOutput, paramsParams] = virtualAudioNodeParams
         if (paramsOutput == null && paramsNodeName !== 'mediaStreamDestination') {
           throw new Error(`output not specified for node key ${key}`)
@@ -80,7 +76,7 @@ export default ({
         }
 
         virtualAudioNode.update(paramsParams)
-      }, virtualGraphParamsKeys)
+      }, newGraphKeys)
 
       connectAudioNodes(
         this.virtualNodes,
