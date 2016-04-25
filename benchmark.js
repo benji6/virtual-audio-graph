@@ -28,6 +28,11 @@ const runBenchmarkCode = function (virtualAudioGraph) {
   virtualAudioGraph.update({0: ['gain', 'output']})
 
   virtualAudioGraph.update({
+    0: ['gain', 'output'],
+    1: ['oscillator', {key: 0, destination: 'gain'}, {frequency: 100}]
+  })
+
+  virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
     1: [pingPongDelay, 0],
     2: ['oscillator', 1, {type: 'triangle',
