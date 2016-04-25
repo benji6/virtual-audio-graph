@@ -23,7 +23,7 @@
     "benchmark": "babel-node benchmark",
     "build": "rm -rf dist && mkdir dist && rollup -f cjs src/index.js | babel --presets es2015 > dist/index.js",
     "prepublish": "npm run build && npm test",
-    "spec": "tape 'test/**/*.js'",
+    "spec": "npm run build && tape 'test/**/*.js'",
     "test": "concurrently 'standard' 'npm run spec'",
     "watch-test": "nodemon --exec npm t"
   },
