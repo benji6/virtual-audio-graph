@@ -12,7 +12,7 @@ const createVirtualAudioGraph = require('../..')
 const audioContext = new AudioContext()
 const virtualAudioGraph = createVirtualAudioGraph({audioContext})
 
-test('defineNodes - creates a custom node which can be reused in virtualAudioGraph.update', t => {
+test('customNodes - creates a custom node which can be reused in virtualAudioGraph.update', t => {
   const virtualGraphParams = {
     0: ['gain', 'output', {gain: 0.5}],
     1: [pingPongDelay, 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
@@ -32,7 +32,7 @@ test('defineNodes - creates a custom node which can be reused in virtualAudioGra
   t.end()
 })
 
-test('defineNodes - can define a custom node built of other custom nodes', t => {
+test('customNodes - can define a custom node built of other custom nodes', t => {
   const quietPingPongDelay = () => ({
     0: ['gain', 'output'],
     1: [pingPongDelay, 0],
@@ -53,7 +53,7 @@ test('defineNodes - can define a custom node built of other custom nodes', t => 
   t.end()
 })
 
-test('defineNodes - can define a custom node which can be updated', t => {
+test('customNodes - can define a custom node which can be updated', t => {
   const virtualGraphParams = {
     0: ['gain', 'output', {gain: 0.5}],
     1: [pingPongDelay, 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
@@ -73,7 +73,7 @@ test('defineNodes - can define a custom node which can be updated', t => {
   t.end()
 })
 
-test('defineNodes - can define a custom node which can be removed', t => {
+test('customNodes - can define a custom node which can be removed', t => {
   const virtualGraphParams = {
     0: ['gain', 'output', {gain: 0.5}],
     1: [pingPongDelay, 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
@@ -100,7 +100,7 @@ test('defineNodes - can define a custom node which can be removed', t => {
   t.end()
 })
 
-test('defineNodes - can define a custom node which can be replaced with another on update', t => {
+test('customNodes - can define a custom node which can be replaced with another on update', t => {
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
     1: [squareOsc, 0, {gain: 0.5,
@@ -179,7 +179,7 @@ test('defineNodes - can define a custom node which can be replaced with another 
   t.end()
 })
 
-test('defineNodes - can define a custom node which has an input node with no params', t => {
+test('customNodes - can define a custom node which has an input node with no params', t => {
   virtualAudioGraph.update({
     0: [gainWithNoParams, 'output'],
     1: [sineOsc, 0, {gain: 0.5,
@@ -196,7 +196,7 @@ test('defineNodes - can define a custom node which has an input node with no par
   t.end()
 })
 
-test('defineNodes - can define custom nodes which can be reordered', t => {
+test('customNodes - can define custom nodes which can be reordered', t => {
   const expectedData = {
     name: 'AudioDestinationNode',
     inputs: [{
