@@ -12,8 +12,9 @@ function _interopDefault(ex) {
   return ex && (typeof ex === 'undefined' ? 'undefined' : _typeof(ex)) === 'object' && 'default' in ex ? ex['default'] : ex;
 }
 
+var ramda = require('ramda');
 var values = _interopDefault(require('ramda/src/values'));
-var equals = _interopDefault(require('ramda/src/equals'));
+var equals$1 = _interopDefault(require('ramda/src/equals'));
 var map = _interopDefault(require('ramda/src/map'));
 
 var asArray = function asArray(x) {
@@ -181,7 +182,7 @@ var update = function update() {
     if (_this2.params && _this2.params[key] === param) return;
     if (audioParamProperties.indexOf(key) !== -1) {
       if (Array.isArray(param)) {
-        if (_this2.params && !equals(param, _this2.params[key], { strict: true })) {
+        if (_this2.params && !equals$1(param, _this2.params[key], { strict: true })) {
           _this2.audioNode[key].cancelScheduledValues(0);
         }
         var callMethod = function callMethod(_ref3) {
@@ -322,12 +323,6 @@ var createVirtualAudioNode = function createVirtualAudioNode(audioContext, virtu
   return typeof virtualAudioNodeParam[0] === 'function' ? createCustomVirtualAudioNode(audioContext, virtualAudioNodeParam) : createStandardVirtualAudioNode(audioContext, virtualAudioNodeParam);
 };
 
-var checkOutputsEqual = function checkOutputsEqual(output0, output1) {
-  return Array.isArray(output0) ? Array.isArray(output1) ? output0.every(function (x) {
-    return output1.indexOf(x) !== -1;
-  }) : false : output0 === output1;
-};
-
 var disconnectParents = function disconnectParents(virtualNode, virtualNodes) {
   return forEach(function (key) {
     return virtualNodes[key].disconnect(virtualNode);
@@ -386,7 +381,7 @@ var index = function index() {
           _this3.virtualNodes[key] = createVirtualAudioNode(audioContext, newNodeParams);
           return;
         }
-        if (!checkOutputsEqual(paramsOutput, virtualAudioNode.output)) {
+        if (!ramda.equals(paramsOutput, virtualAudioNode.output)) {
           virtualAudioNode.disconnect();
           disconnectParents(virtualAudioNode, _this3.virtualNodes);
           virtualAudioNode.output = paramsOutput;

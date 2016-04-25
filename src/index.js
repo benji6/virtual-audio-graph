@@ -1,13 +1,8 @@
 /* global AudioContext */
+import {equals} from 'ramda'
 import {forEach} from './utils'
 import connectAudioNodes from './connectAudioNodes'
 import createVirtualAudioNode from './createVirtualAudioNode'
-
-const checkOutputsEqual = (output0, output1) => Array.isArray(output0)
-  ? Array.isArray(output1)
-      ? output0.every(x => output1.indexOf(x) !== -1)
-      : false
-  : output0 === output1
 
 const disconnectParents = (virtualNode, virtualNodes) => forEach(
   key => virtualNodes[key].disconnect(virtualNode),
@@ -62,7 +57,7 @@ export default ({
           )
           return
         }
-        if (!checkOutputsEqual(paramsOutput, virtualAudioNode.output)) {
+        if (!equals(paramsOutput, virtualAudioNode.output)) {
           virtualAudioNode.disconnect()
           disconnectParents(virtualAudioNode, this.virtualNodes)
           virtualAudioNode.output = paramsOutput
