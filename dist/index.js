@@ -322,18 +322,6 @@ var createVirtualAudioNode = function createVirtualAudioNode(audioContext, virtu
   return typeof virtualAudioNodeParam[0] === 'function' ? createCustomVirtualAudioNode(audioContext, virtualAudioNodeParam) : createStandardVirtualAudioNode(audioContext, virtualAudioNodeParam);
 };
 
-var startTimePathParams = function startTimePathParams(params) {
-  return params[2] && params[2].startTime;
-};
-var stopTimePathParams = function stopTimePathParams(params) {
-  return params[2] && params[2].stopTime;
-};
-var startTimePathStored = function startTimePathStored(virtualNode) {
-  return virtualNode.params && virtualNode.params.startTime;
-};
-var stopTimePathStored = function stopTimePathStored(virtualNode) {
-  return virtualNode.params && virtualNode.params.stopTime;
-};
 var checkOutputsEqual = function checkOutputsEqual(output0, output1) {
   return Array.isArray(output0) ? Array.isArray(output1) ? output0.every(function (x) {
     return output1.indexOf(x) !== -1;
@@ -366,39 +354,36 @@ var index = function index() {
     update: function update(newGraph) {
       var _this3 = this;
 
-      var newGraphKeys = Object.keys(newGraph);
-
       forEach(function (id) {
-        if (newGraphKeys.indexOf(id) === -1) {
-          var virtualAudioNode = _this3.virtualNodes[id];
-          virtualAudioNode.disconnectAndDestroy();
-          disconnectParents(virtualAudioNode, _this3.virtualNodes);
-          delete _this3.virtualNodes[id];
-        }
+        if (newGraph.hasOwnProperty(id)) return;
+        var virtualAudioNode = _this3.virtualNodes[id];
+        virtualAudioNode.disconnectAndDestroy();
+        disconnectParents(virtualAudioNode, _this3.virtualNodes);
+        delete _this3.virtualNodes[id];
       }, Object.keys(this.virtualNodes));
 
       forEach(function (key) {
         if (key === 'output') throw new Error('\'output\' is not a valid id');
-        var virtualAudioNodeParams = newGraph[key];
+        var newNodeParams = newGraph[key];
 
-        var _virtualAudioNodePara = _slicedToArray(virtualAudioNodeParams, 3);
+        var _newNodeParams = _slicedToArray(newNodeParams, 3);
 
-        var paramsNodeName = _virtualAudioNodePara[0];
-        var paramsOutput = _virtualAudioNodePara[1];
-        var paramsParams = _virtualAudioNodePara[2];
+        var paramsNodeName = _newNodeParams[0];
+        var paramsOutput = _newNodeParams[1];
+        var paramsParams = _newNodeParams[2];
 
         if (paramsOutput == null && paramsNodeName !== 'mediaStreamDestination') {
           throw new Error('output not specified for node key ' + key);
         }
         var virtualAudioNode = _this3.virtualNodes[key];
         if (virtualAudioNode == null) {
-          _this3.virtualNodes[key] = createVirtualAudioNode(audioContext, virtualAudioNodeParams);
+          _this3.virtualNodes[key] = createVirtualAudioNode(audioContext, newNodeParams);
           return;
         }
-        if (startTimePathParams(virtualAudioNodeParams) !== startTimePathStored(virtualAudioNode) || stopTimePathParams(virtualAudioNodeParams) !== stopTimePathStored(virtualAudioNode) || paramsNodeName !== virtualAudioNode.node) {
+        if ((paramsParams && paramsParams.startTime) !== (virtualAudioNode.params && virtualAudioNode.params.startTime) || (paramsParams && paramsParams.stopTime) !== (virtualAudioNode.params && virtualAudioNode.params.stopTime) || paramsNodeName !== virtualAudioNode.node) {
           virtualAudioNode.disconnectAndDestroy();
           disconnectParents(virtualAudioNode, _this3.virtualNodes);
-          _this3.virtualNodes[key] = createVirtualAudioNode(audioContext, virtualAudioNodeParams);
+          _this3.virtualNodes[key] = createVirtualAudioNode(audioContext, newNodeParams);
           return;
         }
         if (!checkOutputsEqual(paramsOutput, virtualAudioNode.output)) {
@@ -408,7 +393,7 @@ var index = function index() {
         }
 
         virtualAudioNode.update(paramsParams);
-      }, newGraphKeys);
+      }, Object.keys(newGraph));
 
       connectAudioNodes(this.virtualNodes, function (virtualNode) {
         return virtualNode.connect(output);
