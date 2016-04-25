@@ -6,7 +6,8 @@ const createVirtualAudioGraph = require('..')
 const audioContext = new AudioContext()
 
 test('createVirtualAudioGraph - optionally takes audioContext property', t => {
-  t.is(createVirtualAudioGraph({audioContext}).audioContext, audioContext)
+  t.true(createVirtualAudioGraph({audioContext}).audioContext === audioContext)
+  t.false(createVirtualAudioGraph().audioContext === audioContext)
   t.true(createVirtualAudioGraph().audioContext instanceof AudioContext)
   t.end()
 })
