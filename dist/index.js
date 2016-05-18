@@ -358,7 +358,7 @@ var index = function index() {
       }, Object.keys(this.virtualNodes));
 
       forEach(function (key) {
-        if (key === 'output') throw new Error('\'output\' is not a valid id');
+        if (key === 'output') throw new Error('"output" is not a valid id');
         var newNodeParams = newGraph[key];
 
         var _newNodeParams = _slicedToArray(newNodeParams, 3);

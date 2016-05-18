@@ -28,7 +28,7 @@ export default ({
       }, Object.keys(this.virtualNodes))
 
       forEach(key => {
-        if (key === 'output') throw new Error(`'output' is not a valid id`)
+        if (key === 'output') throw new Error('"output" is not a valid id')
         const newNodeParams = newGraph[key]
         const [paramsNodeName, paramsOutput, paramsParams] = newNodeParams
         if (paramsOutput == null && paramsNodeName !== 'mediaStreamDestination') {
