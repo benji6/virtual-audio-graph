@@ -88,11 +88,8 @@ var connectAudioNodes = function connectAudioNodes(virtualGraph) {
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
         return forEach(function (node) {
-          return virtualNode.connect(node.audioNode);
-        }, filter(function (_ref) {
-          var input = _ref.input;
-          return input === 'input';
-        }, values(destinationVirtualAudioNode.virtualNodes)));
+          return node.input === 'input' && virtualNode.connect(node.audioNode);
+        }, values(destinationVirtualAudioNode.virtualNodes));
       }
 
       virtualNode.connect(destinationVirtualAudioNode.audioNode);
@@ -121,9 +118,9 @@ var connect = function connect() {
   this.connected = true;
 };
 
-var createAudioNode = function createAudioNode(audioContext, name, constructorParam, _ref2) {
-  var startTime = _ref2.startTime;
-  var stopTime = _ref2.stopTime;
+var createAudioNode = function createAudioNode(audioContext, name, constructorParam, _ref) {
+  var startTime = _ref.startTime;
+  var stopTime = _ref.stopTime;
 
   var audioNode = constructorParam ? audioContext['create' + capitalize(name)](constructorParam) : audioContext['create' + capitalize(name)]();
   if (startAndStopNodes.indexOf(name) !== -1) {
@@ -185,14 +182,14 @@ var update = function update() {
         if (_this2.params && !equals$1(param, _this2.params[key], { strict: true })) {
           _this2.audioNode[key].cancelScheduledValues(0);
         }
-        var callMethod = function callMethod(_ref3) {
+        var callMethod = function callMethod(_ref2) {
           var _audioNode$key;
 
-          var _ref4 = _toArray(_ref3);
+          var _ref3 = _toArray(_ref2);
 
-          var methodName = _ref4[0];
+          var methodName = _ref3[0];
 
-          var args = _ref4.slice(1);
+          var args = _ref3.slice(1);
 
           return (_audioNode$key = _this2.audioNode[key])[methodName].apply(_audioNode$key, _toConsumableArray(args));
         };
@@ -214,13 +211,13 @@ var update = function update() {
   return this;
 };
 
-var createStandardVirtualAudioNode = function createStandardVirtualAudioNode(audioContext, _ref5) {
-  var _ref6 = _slicedToArray(_ref5, 4);
+var createStandardVirtualAudioNode = function createStandardVirtualAudioNode(audioContext, _ref4) {
+  var _ref5 = _slicedToArray(_ref4, 4);
 
-  var node = _ref6[0];
-  var output = _ref6[1];
-  var params = _ref6[2];
-  var input = _ref6[3];
+  var node = _ref5[0];
+  var output = _ref5[1];
+  var params = _ref5[2];
+  var input = _ref5[3];
 
   params = params || {};
   var _params = params;
@@ -253,21 +250,15 @@ var connect$1 = function connect$1() {
   }
 
   forEach(function (childVirtualNode) {
-    return childVirtualNode.connect.apply(childVirtualNode, _toConsumableArray(filter(Boolean, connectArgs)));
-  }, filter(function (_ref7) {
-    var output = _ref7.output;
-    return asArray(output).indexOf('output') !== -1;
-  }, values(this.virtualNodes)));
+    return asArray(childVirtualNode.output).indexOf('output') !== -1 && childVirtualNode.connect.apply(childVirtualNode, _toConsumableArray(filter(Boolean, connectArgs)));
+  }, values(this.virtualNodes));
   this.connected = true;
 };
 
 var disconnect$1 = function disconnect$1() {
   forEach(function (virtualNode) {
-    return virtualNode.disconnect();
-  }, filter(function (_ref8) {
-    var output = _ref8.output;
-    return asArray(output).indexOf('output') !== -1;
-  }, values(this.virtualNodes)));
+    return asArray(virtualNode.output).indexOf('output') !== -1 && virtualNode.disconnect();
+  }, values(this.virtualNodes));
   this.connected = false;
 };
 
@@ -289,12 +280,12 @@ var update$1 = function update$1() {
   return this;
 };
 
-var createCustomVirtualAudioNode = function createCustomVirtualAudioNode(audioContext, _ref9) {
-  var _ref10 = _slicedToArray(_ref9, 3);
+var createCustomVirtualAudioNode = function createCustomVirtualAudioNode(audioContext, _ref6) {
+  var _ref7 = _slicedToArray(_ref6, 3);
 
-  var audioGraphParamsFactory = _ref10[0];
-  var output = _ref10[1];
-  var params = _ref10[2];
+  var audioGraphParamsFactory = _ref7[0];
+  var output = _ref7[1];
+  var params = _ref7[2];
 
   params = params || {};
 
@@ -330,12 +321,12 @@ var disconnectParents = function disconnectParents(virtualNode, virtualNodes) {
 };
 
 var index = function index() {
-  var _ref11 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+  var _ref8 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-  var _ref11$audioContext = _ref11.audioContext;
-  var audioContext = _ref11$audioContext === undefined ? new AudioContext() : _ref11$audioContext;
-  var _ref11$output = _ref11.output;
-  var output = _ref11$output === undefined ? audioContext.destination : _ref11$output;
+  var _ref8$audioContext = _ref8.audioContext;
+  var audioContext = _ref8$audioContext === undefined ? new AudioContext() : _ref8$audioContext;
+  var _ref8$output = _ref8.output;
+  var output = _ref8$output === undefined ? audioContext.destination : _ref8$output;
 
   return {
     audioContext: audioContext,

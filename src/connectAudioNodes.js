@@ -1,4 +1,4 @@
-import {asArray, filter, forEach} from './utils'
+import {asArray, forEach} from './utils'
 import values from 'ramda/src/values'
 
 export default (virtualGraph, handleConnectionToOutput = () => {}) =>
@@ -31,11 +31,8 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
         return forEach(
-          node => virtualNode.connect(node.audioNode),
-          filter(
-            ({input}) => input === 'input',
-            values(destinationVirtualAudioNode.virtualNodes)
-          )
+          node => node.input === 'input' && virtualNode.connect(node.audioNode),
+          values(destinationVirtualAudioNode.virtualNodes)
         )
       }
 

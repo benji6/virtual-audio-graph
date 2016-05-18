@@ -6,22 +6,17 @@ import createVirtualAudioNode from '../createVirtualAudioNode'
 
 const connect = function (...connectArgs) {
   forEach(
-    childVirtualNode => childVirtualNode.connect(...filter(Boolean, connectArgs)),
-    filter(
-      ({output}) => asArray(output).indexOf('output') !== -1,
-      values(this.virtualNodes)
-    )
+    childVirtualNode => asArray(childVirtualNode.output).indexOf('output') !== -1 &&
+      childVirtualNode.connect(...filter(Boolean, connectArgs)),
+    values(this.virtualNodes)
   )
   this.connected = true
 }
 
 const disconnect = function () {
   forEach(
-    virtualNode => virtualNode.disconnect(),
-    filter(
-      ({output}) => asArray(output).indexOf('output') !== -1,
-      values(this.virtualNodes)
-    )
+    virtualNode => asArray(virtualNode.output).indexOf('output') !== -1 && virtualNode.disconnect(),
+    values(this.virtualNodes)
   )
   this.connected = false
 }
