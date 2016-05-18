@@ -25,7 +25,8 @@
     "prepublish": "npm run build && npm test",
     "spec": "npm run build && tape 'test/**/*.js'",
     "test": "concurrently 'standard' 'npm run spec'",
-    "watch-test": "nodemon --exec npm t"
+    "watch-spec": "nodemon --watch src --watch test --exec npm run spec",
+    "watch-test": "nodemon --watch src --watch test --exec npm t"
   },
   "author": "Ben Hall",
   "license": "MIT",
