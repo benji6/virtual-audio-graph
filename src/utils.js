@@ -26,3 +26,9 @@ export const filter = (f, xs) => {
   return ys
 }
 export const find = (f, xs) => { for (let i = 0; i < xs.length; i++) if (f(xs[i])) return xs[i] }
+export const values = obj => {
+  const keys = Object.keys(obj)
+  const ret = []
+  for (var i = 0; i < keys.length; i++) ret[i] = obj[keys[i]]
+  return ret
+}
