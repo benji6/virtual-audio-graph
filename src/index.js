@@ -1,6 +1,5 @@
 /* global AudioContext */
-import {equals} from 'ramda'
-import {forEach} from './utils'
+import {equals, forEach} from './utils'
 import connectAudioNodes from './connectAudioNodes'
 import createVirtualAudioNode from './createVirtualAudioNode'
 

@@ -12,9 +12,7 @@ function _interopDefault(ex) {
   return ex && (typeof ex === 'undefined' ? 'undefined' : _typeof(ex)) === 'object' && 'default' in ex ? ex['default'] : ex;
 }
 
-var ramda = require('ramda');
 var values = _interopDefault(require('ramda/src/values'));
-var equals$1 = _interopDefault(require('ramda/src/equals'));
 var map = _interopDefault(require('ramda/src/map'));
 
 var asArray = function asArray(x) {
@@ -22,6 +20,25 @@ var asArray = function asArray(x) {
 };
 var capitalize = function capitalize(a) {
   return a.charAt(0).toUpperCase() + a.substring(1);
+};
+var equals = function equals(a, b) {
+  if (a === b) return true;
+  var typeA = typeof a === 'undefined' ? 'undefined' : _typeof(a);
+  if (typeA !== (typeof b === 'undefined' ? 'undefined' : _typeof(b)) || typeA !== 'object') return false;
+  if (Array.isArray(a)) {
+    if (a.length !== b.length) return false;
+    for (var i = 0; i < a.length; i++) {
+      if (!equals(a[i], b[i])) return false;
+    }return true;
+  }
+  var keysA = Object.keys(a);
+  var keysB = Object.keys(b);
+  if (keysA.length !== keysB.length) return false;
+  for (var _i = 0; _i < keysA.length; _i++) {
+    var key = keysA[_i];
+    if (!equals(a[key], b[key])) return false;
+  }
+  return true;
 };
 var forEach = function forEach(f, xs) {
   for (var i = 0; i < xs.length; i++) {
@@ -179,7 +196,7 @@ var update = function update() {
     if (_this2.params && _this2.params[key] === param) return;
     if (audioParamProperties.indexOf(key) !== -1) {
       if (Array.isArray(param)) {
-        if (_this2.params && !equals$1(param, _this2.params[key], { strict: true })) {
+        if (_this2.params && !equals(param, _this2.params[key], { strict: true })) {
           _this2.audioNode[key].cancelScheduledValues(0);
         }
         var callMethod = function callMethod(_ref2) {
@@ -372,7 +389,7 @@ var index = function index() {
           _this3.virtualNodes[key] = createVirtualAudioNode(audioContext, newNodeParams);
           return;
         }
-        if (!ramda.equals(paramsOutput, virtualAudioNode.output)) {
+        if (!equals(paramsOutput, virtualAudioNode.output)) {
           virtualAudioNode.disconnect();
           disconnectParents(virtualAudioNode, _this3.virtualNodes);
           virtualAudioNode.output = paramsOutput;
