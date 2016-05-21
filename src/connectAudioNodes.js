@@ -1,4 +1,4 @@
-import {asArray, forEach, values} from './utils'
+import {forEach, values} from './utils'
 
 export default (virtualGraph, handleConnectionToOutput = () => {}) =>
   forEach(id => {
@@ -36,5 +36,5 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
       }
 
       virtualNode.connect(destinationVirtualAudioNode.audioNode)
-    }, asArray(output))
+    }, Array.isArray(output) ? output : [output])
   }, Object.keys(virtualGraph))

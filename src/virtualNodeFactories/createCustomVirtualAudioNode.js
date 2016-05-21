@@ -1,27 +1,38 @@
 import map from 'ramda/src/map'
 import connectAudioNodes from '../connectAudioNodes'
-import {asArray, filter, forEach, forEachIndexed, values} from '../utils'
+import {filter, forEach, forEachIndexed, values} from '../utils'
 import createVirtualAudioNode from '../createVirtualAudioNode'
 
 const connect = function (...connectArgs) {
   forEach(
-    childVirtualNode => asArray(childVirtualNode.output).indexOf('output') !== -1 &&
-      childVirtualNode.connect(...filter(Boolean, connectArgs)),
+    childVirtualNode => {
+      const {output} = childVirtualNode
+      if (
+        output === 'output' ||
+        Array.isArray(output) && output.indexOf('output') !== -1
+      ) childVirtualNode.connect(...filter(Boolean, connectArgs))
+    },
     values(this.virtualNodes)
   )
   this.connected = true
 }
 
 const disconnect = function () {
-  forEach(
-    virtualNode => asArray(virtualNode.output).indexOf('output') !== -1 && virtualNode.disconnect(),
-    values(this.virtualNodes)
-  )
+  const keys = Object.keys(this.virtualNodes)
+  for (let i = 0; i < keys.length; i++) {
+    const virtualNode = this.virtualNodes[keys[i]]
+    const {output} = virtualNode
+    if (
+      output === 'output' ||
+      Array.isArray(output) && output.indexOf('output') !== -1
+    ) virtualNode.disconnect()
+  }
   this.connected = false
 }
 
 const disconnectAndDestroy = function () {
-  forEach(virtualNode => virtualNode.disconnectAndDestroy(), values(this.virtualNodes))
+  const keys = Object.keys(this.virtualNodes)
+  for (let i = 0; i < keys.length; i++) this.virtualNodes[keys[i]].disconnectAndDestroy()
   this.connected = false
 }
 

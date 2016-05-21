@@ -14,9 +14,6 @@ function _interopDefault(ex) {
 
 var map = _interopDefault(require('ramda/src/map'));
 
-var asArray = function asArray(x) {
-  return Array.isArray(x) ? x : [x];
-};
 var capitalize = function capitalize(a) {
   return a.charAt(0).toUpperCase() + a.substring(1);
 };
@@ -116,7 +113,7 @@ var connectAudioNodes = function connectAudioNodes(virtualGraph) {
       }
 
       virtualNode.connect(destinationVirtualAudioNode.audioNode);
-    }, asArray(output));
+    }, Array.isArray(output) ? output : [output]);
   }, Object.keys(virtualGraph));
 };
 
@@ -178,7 +175,7 @@ var disconnect = function disconnect(node) {
       }, this.connections);
     }
   }
-  if (audioNode.disconnect) audioNode.disconnect();
+  audioNode.disconnect && audioNode.disconnect();
   this.connected = false;
 };
 
@@ -273,23 +270,29 @@ var connect$1 = function connect$1() {
   }
 
   forEach(function (childVirtualNode) {
-    return asArray(childVirtualNode.output).indexOf('output') !== -1 && childVirtualNode.connect.apply(childVirtualNode, _toConsumableArray(filter(Boolean, connectArgs)));
+    var output = childVirtualNode.output;
+
+    if (output === 'output' || Array.isArray(output) && output.indexOf('output') !== -1) childVirtualNode.connect.apply(childVirtualNode, _toConsumableArray(filter(Boolean, connectArgs)));
   }, values(this.virtualNodes));
   this.connected = true;
 };
 
 var disconnect$1 = function disconnect$1() {
-  forEach(function (virtualNode) {
-    return asArray(virtualNode.output).indexOf('output') !== -1 && virtualNode.disconnect();
-  }, values(this.virtualNodes));
+  var keys = Object.keys(this.virtualNodes);
+  for (var i = 0; i < keys.length; i++) {
+    var virtualNode = this.virtualNodes[keys[i]];
+    var output = virtualNode.output;
+
+    if (output === 'output' || Array.isArray(output) && output.indexOf('output') !== -1) virtualNode.disconnect();
+  }
   this.connected = false;
 };
 
 var disconnectAndDestroy$1 = function disconnectAndDestroy$1() {
-  forEach(function (virtualNode) {
-    return virtualNode.disconnectAndDestroy();
-  }, values(this.virtualNodes));
-  this.connected = false;
+  var keys = Object.keys(this.virtualNodes);
+  for (var i = 0; i < keys.length; i++) {
+    this.virtualNodes[keys[i]].disconnectAndDestroy();
+  }this.connected = false;
 };
 
 var update$1 = function update$1() {

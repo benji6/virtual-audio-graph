@@ -42,7 +42,7 @@ const disconnect = function (node) {
       this.connections = filter(x => x !== node.audioNode, this.connections)
     }
   }
-  if (audioNode.disconnect) audioNode.disconnect()
+  audioNode.disconnect && audioNode.disconnect()
   this.connected = false
 }
 
