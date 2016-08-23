@@ -43,14 +43,14 @@
     "benchmark": "^2.1.0",
     "concurrently": "^2.1.0",
     "nodemon": "^1.9.2",
-    "rollup": "^0.26.3",
+    "rollup": "^0.34.10",
     "standard": "^7.1.0",
     "tape": "^4.5.1",
     "virtual-audio-graph": "^0.17.6",
     "web-audio-test-api": "^0.5.2"
   },
   "dependencies": {
-    "ramda": "^0.21.0"
+    "ramda": "^0.22.1"
   },
   "standard": {
     "ignore": [

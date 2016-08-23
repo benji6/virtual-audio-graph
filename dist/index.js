@@ -340,6 +340,7 @@ var createVirtualAudioNode = function createVirtualAudioNode(audioContext, virtu
   return typeof virtualAudioNodeParam[0] === 'function' ? createCustomVirtualAudioNode(audioContext, virtualAudioNodeParam) : createStandardVirtualAudioNode(audioContext, virtualAudioNodeParam);
 };
 
+/* global AudioContext */
 var disconnectParents = function disconnectParents(virtualNode, virtualNodes) {
   return forEach(function (key) {
     return virtualNodes[key].disconnect(virtualNode);
