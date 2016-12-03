@@ -41,7 +41,7 @@
     "babel-register": "^6.9.0",
     "babel-template": "^6.9.0",
     "benchmark": "^2.1.0",
-    "concurrently": "^2.1.0",
+    "concurrently": "^3.1.0",
     "nodemon": "^1.9.2",
     "rollup": "^0.34.10",
     "standard": "^7.1.0",
