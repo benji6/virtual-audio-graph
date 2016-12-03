@@ -1,5 +1,9 @@
 # Release Notes
 
+## 0.18.x
+
+virtual-audio-graph no longer has any external dependencies
+
 ## 0.17.x
 
 Breaking API change - `defineNodes` removed. `virtual-audio-graph` no longer internally remembers the custom node creator functions and these must be passed directly. This is more inline with how virtual-dom libraries handle component abstractions and keeps `virtual-audio-graph`'s internal state management to the audio graph alone
