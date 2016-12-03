@@ -1,6 +1,11 @@
-import map from 'ramda/src/map'
 import connectAudioNodes from '../connectAudioNodes'
-import {filter, forEach, forEachIndexed, values} from '../utils'
+import {
+  filter,
+  forEach,
+  forEachIndexed,
+  mapObj,
+  values
+} from '../utils'
 import createVirtualAudioNode from '../createVirtualAudioNode'
 
 const connect = function (...connectArgs) {
@@ -49,7 +54,7 @@ const update = function (params = {}) {
 const createCustomVirtualAudioNode = (audioContext, [audioGraphParamsFactory, output, params]) => {
   params = params || {}
 
-  const virtualNodes = map(
+  const virtualNodes = mapObj(
     virtualAudioNodeParam => createVirtualAudioNode(audioContext, virtualAudioNodeParam),
     audioGraphParamsFactory(params)
   )

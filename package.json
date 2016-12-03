@@ -49,9 +49,6 @@
     "virtual-audio-graph": "^0.17.6",
     "web-audio-test-api": "^0.5.2"
   },
-  "dependencies": {
-    "ramda": "^0.22.1"
-  },
   "standard": {
     "ignore": [
       "dist"

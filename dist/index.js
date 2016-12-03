@@ -2,17 +2,11 @@
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _interopDefault(ex) {
-  return ex && (typeof ex === 'undefined' ? 'undefined' : _typeof(ex)) === 'object' && 'default' in ex ? ex['default'] : ex;
-}
-
-var map = _interopDefault(require('ramda/src/map'));
 
 var capitalize = function capitalize(a) {
   return a.charAt(0).toUpperCase() + a.substring(1);
@@ -57,6 +51,12 @@ var find = function find(f, xs) {
     if (f(xs[i])) return xs[i];
   }
 };
+var mapObj = function mapObj(f, o) {
+  var p = {};
+  for (var key in o) {
+    if (Object.prototype.hasOwnProperty.call(o, key)) p[key] = f(o[key]);
+  }return p;
+};
 var values = function values(obj) {
   var keys = Object.keys(obj);
   var ret = [];
@@ -66,7 +66,7 @@ var values = function values(obj) {
 };
 
 var connectAudioNodes = function connectAudioNodes(virtualGraph) {
-  var handleConnectionToOutput = arguments.length <= 1 || arguments[1] === undefined ? function () {} : arguments[1];
+  var handleConnectionToOutput = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
   return forEach(function (id) {
     var virtualNode = virtualGraph[id];
     var output = virtualNode.output;
@@ -77,10 +77,10 @@ var connectAudioNodes = function connectAudioNodes(virtualGraph) {
 
       if (Object.prototype.toString.call(output) === '[object Object]') {
         var _ret = function () {
-          var key = output.key;
-          var destination = output.destination;
-          var inputs = output.inputs;
-          var outputs = output.outputs;
+          var key = output.key,
+              destination = output.destination,
+              inputs = output.inputs,
+              outputs = output.outputs;
 
 
           if (key == null) {
@@ -139,8 +139,8 @@ var connect = function connect() {
 };
 
 var createAudioNode = function createAudioNode(audioContext, name, constructorParam, _ref) {
-  var startTime = _ref.startTime;
-  var stopTime = _ref.stopTime;
+  var startTime = _ref.startTime,
+      stopTime = _ref.stopTime;
 
   var audioNode = constructorParam ? audioContext['create' + capitalize(name)](constructorParam) : audioContext['create' + capitalize(name)]();
   if (startAndStopNodes.indexOf(name) !== -1) {
@@ -180,8 +180,8 @@ var disconnect = function disconnect(node) {
 };
 
 var disconnectAndDestroy = function disconnectAndDestroy() {
-  var audioNode = this.audioNode;
-  var stopCalled = this.stopCalled;
+  var audioNode = this.audioNode,
+      stopCalled = this.stopCalled;
 
   if (audioNode.stop && !stopCalled) audioNode.stop();
   audioNode.disconnect && audioNode.disconnect();
@@ -191,7 +191,7 @@ var disconnectAndDestroy = function disconnectAndDestroy() {
 var update = function update() {
   var _this2 = this;
 
-  var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+  var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   forEach(function (key) {
     if (constructorParamsKeys.indexOf(key) !== -1) return;
@@ -205,11 +205,9 @@ var update = function update() {
         var callMethod = function callMethod(_ref2) {
           var _audioNode$key;
 
-          var _ref3 = _toArray(_ref2);
-
-          var methodName = _ref3[0];
-
-          var args = _ref3.slice(1);
+          var _ref3 = _toArray(_ref2),
+              methodName = _ref3[0],
+              args = _ref3.slice(1);
 
           return (_audioNode$key = _this2.audioNode[key])[methodName].apply(_audioNode$key, _toConsumableArray(args));
         };
@@ -232,17 +230,16 @@ var update = function update() {
 };
 
 var createStandardVirtualAudioNode = function createStandardVirtualAudioNode(audioContext, _ref4) {
-  var _ref5 = _slicedToArray(_ref4, 4);
-
-  var node = _ref5[0];
-  var output = _ref5[1];
-  var params = _ref5[2];
-  var input = _ref5[3];
+  var _ref5 = _slicedToArray(_ref4, 4),
+      node = _ref5[0],
+      output = _ref5[1],
+      params = _ref5[2],
+      input = _ref5[3];
 
   params = params || {};
-  var _params = params;
-  var startTime = _params.startTime;
-  var stopTime = _params.stopTime;
+  var _params = params,
+      startTime = _params.startTime,
+      stopTime = _params.stopTime;
 
   var constructorParam = params[find(function (key) {
     return constructorParamsKeys.indexOf(key) !== -1;
@@ -296,7 +293,7 @@ var disconnectAndDestroy$1 = function disconnectAndDestroy$1() {
 };
 
 var update$1 = function update$1() {
-  var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+  var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   var audioGraphParamsFactoryValues = values(this.audioGraphParamsFactory(params));
   forEachIndexed(function (childVirtualNode, i) {
@@ -307,15 +304,14 @@ var update$1 = function update$1() {
 };
 
 var createCustomVirtualAudioNode = function createCustomVirtualAudioNode(audioContext, _ref6) {
-  var _ref7 = _slicedToArray(_ref6, 3);
-
-  var audioGraphParamsFactory = _ref7[0];
-  var output = _ref7[1];
-  var params = _ref7[2];
+  var _ref7 = _slicedToArray(_ref6, 3),
+      audioGraphParamsFactory = _ref7[0],
+      output = _ref7[1],
+      params = _ref7[2];
 
   params = params || {};
 
-  var virtualNodes = map(function (virtualAudioNodeParam) {
+  var virtualNodes = mapObj(function (virtualAudioNodeParam) {
     return createVirtualAudioNode(audioContext, virtualAudioNodeParam);
   }, audioGraphParamsFactory(params));
 
@@ -348,12 +344,11 @@ var disconnectParents = function disconnectParents(virtualNode, virtualNodes) {
 };
 
 var index = function index() {
-  var _ref8 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-  var _ref8$audioContext = _ref8.audioContext;
-  var audioContext = _ref8$audioContext === undefined ? new AudioContext() : _ref8$audioContext;
-  var _ref8$output = _ref8.output;
-  var output = _ref8$output === undefined ? audioContext.destination : _ref8$output;
+  var _ref8 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref8$audioContext = _ref8.audioContext,
+      audioContext = _ref8$audioContext === undefined ? new AudioContext() : _ref8$audioContext,
+      _ref8$output = _ref8.output,
+      output = _ref8$output === undefined ? audioContext.destination : _ref8$output;
 
   return {
     audioContext: audioContext,
@@ -379,11 +374,10 @@ var index = function index() {
         if (key === 'output') throw new Error('"output" is not a valid id');
         var newNodeParams = newGraph[key];
 
-        var _newNodeParams = _slicedToArray(newNodeParams, 3);
-
-        var paramsNodeName = _newNodeParams[0];
-        var paramsOutput = _newNodeParams[1];
-        var paramsParams = _newNodeParams[2];
+        var _newNodeParams = _slicedToArray(newNodeParams, 3),
+            paramsNodeName = _newNodeParams[0],
+            paramsOutput = _newNodeParams[1],
+            paramsParams = _newNodeParams[2];
 
         if (paramsOutput == null && paramsNodeName !== 'mediaStreamDestination') {
           throw new Error('output not specified for node key ' + key);
