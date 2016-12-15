@@ -4,7 +4,7 @@ import {
   forEach,
   forEachIndexed,
   mapObj,
-  values
+  values,
 } from '../utils'
 import createVirtualAudioNode from '../createVirtualAudioNode'
 
@@ -72,7 +72,7 @@ const createCustomVirtualAudioNode = (audioContext, [audioGraphParamsFactory, ou
     output,
     params,
     update,
-    virtualNodes
+    virtualNodes,
   }
 }
 

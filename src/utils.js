@@ -27,12 +27,12 @@ export const filter = (f, xs) => {
 export const find = (f, xs) => { for (let i = 0; i < xs.length; i++) if (f(xs[i])) return xs[i] }
 export const mapObj = (f, o) => {
   const p = {}
-  for (let key in o) if (Object.prototype.hasOwnProperty.call(o, key)) p[key] = f(o[key])
+  for (const key in o) if (Object.prototype.hasOwnProperty.call(o, key)) p[key] = f(o[key])
   return p
 }
 export const values = obj => {
   const keys = Object.keys(obj)
   const ret = []
-  for (var i = 0; i < keys.length; i++) ret[i] = obj[keys[i]]
+  for (let i = 0; i < keys.length; i++) ret[i] = obj[keys[i]]
   return ret
 }

@@ -10,11 +10,10 @@ const disconnectParents = (virtualNode, virtualNodes) => forEach(
 
 export default ({
   audioContext = new AudioContext(),
-  output = audioContext.destination
+  output = audioContext.destination,
 } = {}) => {
   return {
     audioContext,
-    virtualNodes: {},
     get currentTime () { return audioContext.currentTime },
     getAudioNodeById (id) { return this.virtualNodes[id].audioNode },
     update (newGraph) {
@@ -71,6 +70,7 @@ export default ({
       )
 
       return this
-    }
+    },
+    virtualNodes: {},
   }
 }

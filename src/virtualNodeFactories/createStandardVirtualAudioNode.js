@@ -3,7 +3,7 @@ import {
   audioParamProperties,
   constructorParamsKeys,
   setters,
-  startAndStopNodes
+  startAndStopNodes,
 } from '../data'
 
 const connect = function (...connectArgs) {
@@ -91,12 +91,12 @@ export default (audioContext, [node, output, params, input]) => {
     connections: [],
     disconnect,
     disconnectAndDestroy,
-    isCustomVirtualNode: false,
     input,
+    isCustomVirtualNode: false,
     node,
     output,
     stopCalled: stopTime !== undefined,
-    update
+    update,
   }
   return virtualNode.update(params)
 }

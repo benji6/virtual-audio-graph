@@ -11,22 +11,22 @@ export const audioParamProperties = [
   'reduction',
   'release',
   'threshold',
-  'Q'
+  'Q',
 ]
 
 export const constructorParamsKeys = [
   'maxDelayTime',
   'mediaElement',
   'mediaStream',
-  'numberOfOutputs'
+  'numberOfOutputs',
 ]
 
 export const setters = [
   'position',
-  'orientation'
+  'orientation',
 ]
 
 export const startAndStopNodes = [
   'oscillator',
-  'bufferSource'
+  'bufferSource',
 ]
