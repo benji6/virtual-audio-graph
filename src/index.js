@@ -34,10 +34,7 @@ export default ({
         }
         const virtualAudioNode = this.virtualNodes[key]
         if (virtualAudioNode == null) {
-          this.virtualNodes[key] = createVirtualAudioNode(
-            audioContext,
-            newNodeParams
-          )
+          this.virtualNodes[key] = createVirtualAudioNode(audioContext, newNodeParams)
           return
         }
         if (
@@ -49,10 +46,7 @@ export default ({
         ) {
           virtualAudioNode.disconnectAndDestroy()
           disconnectParents(virtualAudioNode, this.virtualNodes)
-          this.virtualNodes[key] = createVirtualAudioNode(
-            audioContext,
-            newNodeParams
-          )
+          this.virtualNodes[key] = createVirtualAudioNode(audioContext, newNodeParams)
           return
         }
         if (!equals(paramsOutput, virtualAudioNode.output)) {
