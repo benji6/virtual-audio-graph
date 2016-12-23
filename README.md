@@ -6,7 +6,7 @@
 
 ## Overview
 
-Small and dependency free library for declaratively manipulating the Web Audio API.
+Small and dependency-free library for declaratively manipulating the Web Audio API.
 
 virtual-audio-graph manages the state of the audio graph so this does not have to be done manually. Simply declare what you would like the audio graph to look like and virtual-audio-graph takes care of the rest.
 
