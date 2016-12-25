@@ -197,7 +197,7 @@ const pingPongDelay = ({
   five: ['gain', 4, {gain: decay}, 'input'] // note this is the destination for nodes which connect to pingPongDelay
 })
 
-// and now this instance of virtual-audio-graph will recognize it as a valid node:
+// and now virtual-audio-graph will recognize it as a valid node:
 virtualAudioGraph.update({
   0: [pingPongDelay,
       'output',
