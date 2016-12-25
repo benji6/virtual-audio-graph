@@ -1,7 +1,7 @@
 /* global AudioContext */
 const test = require('tape')
 require('./WebAudioTestAPISetup')
-const createVirtualAudioGraph = require('..')
+const createVirtualAudioGraph = require('..').default
 
 const audioContext = new AudioContext()
 test('virtualAudioGraph instance - has currentTime getter property', t => {

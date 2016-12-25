@@ -16,8 +16,8 @@ const connect = function (...connectArgs) {
 
 const createAudioNode = (audioContext, name, constructorParam, {startTime, stopTime}) => {
   const audioNode = constructorParam
-    ? audioContext[`create${capitalize(name)}`](constructorParam)
-    : audioContext[`create${capitalize(name)}`]()
+    ? audioContext[name](constructorParam)
+    : audioContext[name]()
   if (startAndStopNodes.indexOf(name) !== -1) {
     if (startTime == null) audioNode.start(); else audioNode.start(startTime)
     if (stopTime != null) audioNode.stop(stopTime)

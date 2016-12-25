@@ -1,5 +1,69 @@
 # Release Notes
 
+## 0.19.x
+
+Breaking API change - if using commonJS createVirtualAudioGraph must be imported as:
+```js
+const createVirtualAudioGraph = require('virtual-audio-graph').default
+```
+
+Breaking API change - nodes in the audioGraph are now defined using functions instead of arrays
+
+Inspired by https://github.com/ohanhi/hyperscript-helpers
+
+Instead of
+```js
+import createVirtualAudioGraph from 'virtual-audio-graph'
+
+const virtualAudioGraph = createVirtualAudioGraph()
+const {currentTime} = virtualAudioGraph
+
+const graph = {
+  0: ['gain', 'output', {gain: 0.2}],
+  1: ['oscillator', 0, {
+    type: 'square',
+    frequency: 440,
+    startTime: currentTime + 1,
+    stopTime: currentTime + 2
+  }],
+  2: ['oscillator', 0, {
+    type: 'sawtooth',
+    frequency: 660,
+    detune: 4,
+    startTime: currentTime + 1.5,
+    stopTime: currentTime + 2.5
+  }],
+}
+
+virtualAudioGraph.update(graph)
+```
+We now have
+```js
+import createVirtualAudioGraph, {gain, oscillator} from 'virtual-audio-graph'
+
+const virtualAudioGraph = createVirtualAudioGraph()
+const {currentTime} = virtualAudioGraph
+
+const graph = {
+  0: gain('output', {gain: 0.2}),
+  1: oscillator(0, {
+    type: 'square',
+    frequency: 440,
+    startTime: currentTime + 1,
+    stopTime: currentTime + 2
+  }),
+  2: oscillator(0, {
+    type: 'sawtooth',
+    frequency: 660,
+    detune: 4,
+    startTime: currentTime + 1.5,
+    stopTime: currentTime + 2.5
+  }),
+}
+
+virtualAudioGraph.update(graph)
+```
+
 ## 0.18.x
 
 virtual-audio-graph no longer has any external dependencies

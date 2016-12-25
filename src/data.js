@@ -27,6 +27,6 @@ export const setters = [
 ]
 
 export const startAndStopNodes = [
-  'oscillator',
-  'bufferSource',
+  'createOscillator',
+  'createBufferSource',
 ]
