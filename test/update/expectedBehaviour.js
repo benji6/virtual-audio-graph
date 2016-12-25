@@ -17,62 +17,62 @@ test('update - returns itself', t => {
 test('update - adds then removes nodes', t => {
   virtualAudioGraph.update({
     0: ['gain', 'output'],
-    1: ['oscillator', 0]
+    1: ['oscillator', 0],
   })
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
-      name: 'GainNode',
-      gain: {value: 1, inputs: []},
+      gain: {inputs: [], value: 1},
       inputs: [{
+        detune: {inputs: [], value: 0},
+        frequency: {inputs: [], value: 440},
+        inputs: [],
         name: 'OscillatorNode',
         type: 'sine',
-        frequency: {value: 440, inputs: []},
-        detune: {value: 0, inputs: []},
-        inputs: []
-      }]
-    }]
+      }],
+      name: 'GainNode',
+    }],
+    name: 'AudioDestinationNode',
   })
   virtualAudioGraph.update({})
   t.deepEqual(audioContext.toJSON(), {
+    inputs: [],
     name: 'AudioDestinationNode',
-    inputs: []
   })
   t.end()
 })
 
 test('update - handles random strings for ids', t => {
   virtualAudioGraph.update({
+    bar: ['oscillator', 'foo'],
     foo: ['gain', 'output'],
-    bar: ['oscillator', 'foo']
   })
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
-      name: 'GainNode',
       gain: {
+        inputs: [],
         value: 1,
-        inputs: []
       },
       inputs: [{
+        detune: {
+          inputs: [],
+          value: 0,
+        },
+        frequency: {
+          inputs: [],
+          value: 440,
+        },
+        inputs: [],
         name: 'OscillatorNode',
         type: 'sine',
-        frequency: {
-          value: 440,
-          inputs: []
-        },
-        detune: {
-          value: 0,
-          inputs: []
-        },
-        inputs: []
-      }]
-    }]
+      }],
+      name: 'GainNode',
+    }],
+    name: 'AudioDestinationNode',
   })
   virtualAudioGraph.update({})
   t.deepEqual(audioContext.toJSON(), {
+    inputs: [],
     name: 'AudioDestinationNode',
-    inputs: []
   })
   t.end()
 })
@@ -81,38 +81,38 @@ test('update - handles random strings for ids', t => {
   virtualAudioGraph.update({0: ['gain', 'output']})
 
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [
       {
-        name: 'GainNode',
         gain: {
+          inputs: [],
           value: 1,
-          inputs: []
         },
-        inputs: []
-      }
-    ]
+        inputs: [],
+        name: 'GainNode',
+      },
+    ],
+    name: 'AudioDestinationNode',
   })
 
   virtualAudioGraph.update({0: ['oscillator', 'output']})
 
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [
       {
+        detune: {
+          inputs: [],
+          value: 0,
+        },
+        frequency: {
+          inputs: [],
+          value: 440,
+        },
+        inputs: [],
         name: 'OscillatorNode',
         type: 'sine',
-        frequency: {
-          value: 440,
-          inputs: []
-        },
-        detune: {
-          value: 0,
-          inputs: []
-        },
-        inputs: []
-      }
-    ]
+      },
+    ],
+    name: 'AudioDestinationNode',
   })
 
   virtualAudioGraph.update({0: [pingPongDelay, 'output']})
@@ -130,71 +130,71 @@ test('update - handles random strings for ids', t => {
 
 test('update - updates standard and custom nodes if passed same id but different params', t => {
   virtualAudioGraph.update({
-    0: ['oscillator', 'output', {frequency: 220, detune: -9}]
+    0: ['oscillator', 'output', {detune: -9, frequency: 220}],
   })
 
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
+      detune: {inputs: [], value: -9},
+      frequency: {inputs: [], value: 220},
+      inputs: [],
       name: 'OscillatorNode',
       type: 'sine',
-      frequency: {value: 220, inputs: []},
-      detune: {value: -9, inputs: []},
-      inputs: []
-    }]
+    }],
+    name: 'AudioDestinationNode',
   })
 
   virtualAudioGraph.update({
-    0: ['oscillator', 'output', {frequency: 880, detune: 0}]
+    0: ['oscillator', 'output', {detune: 0, frequency: 880}],
   })
 
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
+      detune: {inputs: [], value: 0},
+      frequency: {inputs: [], value: 880},
+      inputs: [],
       name: 'OscillatorNode',
       type: 'sine',
-      frequency: {value: 880, inputs: []},
-      detune: {value: 0, inputs: []},
-      inputs: []
-    }]
+    }],
+    name: 'AudioDestinationNode',
   })
 
   virtualAudioGraph.update({
-    0: [sineOsc, 'output', {frequency: 110, gain: 0.5}]
+    0: [sineOsc, 'output', {frequency: 110, gain: 0.5}],
   })
 
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
-      name: 'GainNode',
-      gain: {value: 0.5, inputs: []},
+      gain: {inputs: [], value: 0.5},
       inputs: [{
+        detune: {inputs: [], value: 0},
+        frequency: {inputs: [], value: 110},
+        inputs: [],
         name: 'OscillatorNode',
         type: 'sine',
-        frequency: {value: 110, inputs: []},
-        detune: {value: 0, inputs: []},
-        inputs: []
-      }]
-    }]
+      }],
+      name: 'GainNode',
+    }],
+    name: 'AudioDestinationNode',
   })
 
   virtualAudioGraph.update({
-    0: [sineOsc, 'output', {frequency: 660, gain: 0.2}]
+    0: [sineOsc, 'output', {frequency: 660, gain: 0.2}],
   })
 
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
-      name: 'GainNode',
-      gain: {value: 0.2, inputs: []},
+      gain: {inputs: [], value: 0.2},
       inputs: [{
+        detune: {inputs: [], value: 0},
+        frequency: {inputs: [], value: 660},
+        inputs: [],
         name: 'OscillatorNode',
         type: 'sine',
-        frequency: {value: 660, inputs: []},
-        detune: {value: 0, inputs: []},
-        inputs: []
-      }]
-    }]
+      }],
+      name: 'GainNode',
+    }],
+    name: 'AudioDestinationNode',
   })
   t.end()
 })
@@ -202,36 +202,36 @@ test('update - updates standard and custom nodes if passed same id but different
 test('update - connects nodes to each other', t => {
   virtualAudioGraph.update({
     0: ['gain', 'output'],
-    1: ['oscillator', 0]
+    1: ['oscillator', 0],
   })
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [
       {
-        name: 'GainNode',
-        gain: {value: 1, inputs: []},
+        gain: {inputs: [], value: 1},
         inputs: [{
+          detune: {inputs: [], value: 0},
+          frequency: {inputs: [], value: 440},
+          inputs: [],
           name: 'OscillatorNode',
           type: 'sine',
-          frequency: {value: 440, inputs: []},
-          detune: {value: 0, inputs: []},
-          inputs: []
-        }]
-      }
-    ]
+        }],
+        name: 'GainNode',
+      },
+    ],
+    name: 'AudioDestinationNode',
   })
   virtualAudioGraph.update({
-    0: ['oscillator', 'output']
+    0: ['oscillator', 'output'],
   })
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
+      detune: {inputs: [], value: 0},
+      frequency: {inputs: [], value: 440},
+      inputs: [],
       name: 'OscillatorNode',
       type: 'sine',
-      frequency: {value: 440, inputs: []},
-      detune: {value: 0, inputs: []},
-      inputs: []
-    }]
+    }],
+    name: 'AudioDestinationNode',
   })
   t.end()
 })
@@ -239,42 +239,42 @@ test('update - connects nodes to each other', t => {
 test('update - reconnects nodes to each other', t => {
   virtualAudioGraph.update({
     0: ['gain', 'output'],
-    1: ['oscillator', 0]
+    1: ['oscillator', 0],
   })
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
-      name: 'GainNode',
-      gain: {value: 1, inputs: []},
+      gain: {inputs: [], value: 1},
       inputs: [{
+        detune: {inputs: [], value: 0},
+        frequency: {inputs: [], value: 440},
+        inputs: [],
         name: 'OscillatorNode',
         type: 'sine',
-        frequency: {value: 440, inputs: []},
-        detune: {value: 0, inputs: []},
-        inputs: []
-      }]
-    }]
+      }],
+      name: 'GainNode',
+    }],
+    name: 'AudioDestinationNode',
   })
   virtualAudioGraph.update({
     0: ['gain', 'output'],
-    1: ['oscillator', 'output']
+    1: ['oscillator', 'output'],
   })
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [
       {
+        gain: {inputs: [], value: 1},
+        inputs: [],
         name: 'GainNode',
-        gain: {value: 1, inputs: []},
-        inputs: []
       },
       {
+        detune: {inputs: [], value: 0},
+        frequency: {inputs: [], value: 440},
+        inputs: [],
         name: 'OscillatorNode',
         type: 'sine',
-        frequency: {value: 440, inputs: []},
-        detune: {value: 0, inputs: []},
-        inputs: []
-      }
-    ]
+      },
+    ],
+    name: 'AudioDestinationNode',
   })
   t.end()
 })
@@ -285,33 +285,33 @@ test('update - connects and reconnects nodes to audioParams', t => {
     1: ['oscillator', 0],
     2: [
       'oscillator',
-      {key: 1, destination: 'frequency'},
-      {frequency: 0.5, type: 'triangle'}
-    ]
+      {destination: 'frequency', key: 1},
+      {frequency: 0.5, type: 'triangle'},
+    ],
   })
 
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
-      name: 'GainNode',
-      gain: {value: 1, inputs: []},
+      gain: {inputs: [], value: 1},
       inputs: [{
-        name: 'OscillatorNode',
-        type: 'sine',
+        detune: {inputs: [], value: 0},
         frequency: {
-          value: 440,
           inputs: [{
+            detune: {inputs: [], value: 0},
+            frequency: {inputs: [], value: 0.5},
+            inputs: [],
             name: 'OscillatorNode',
             type: 'triangle',
-            frequency: {value: 0.5, inputs: []},
-            detune: {value: 0, inputs: []},
-            inputs: []
-          }]
+          }],
+          value: 440,
         },
-        detune: {value: 0, inputs: []},
-        inputs: []
-      }]
-    }]
+        inputs: [],
+        name: 'OscillatorNode',
+        type: 'sine',
+      }],
+      name: 'GainNode',
+    }],
+    name: 'AudioDestinationNode',
   })
 
   virtualAudioGraph.update({
@@ -319,47 +319,47 @@ test('update - connects and reconnects nodes to audioParams', t => {
     1: ['oscillator', 0],
     2: [
       'oscillator',
-      [{key: 1, destination: 'detune'}],
-      {frequency: 0.5, type: 'triangle'}
-    ]
+      [{destination: 'detune', key: 1}],
+      {frequency: 0.5, type: 'triangle'},
+    ],
   })
 
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
-      name: 'GainNode',
-      gain: {value: 1, inputs: []},
+      gain: {inputs: [], value: 1},
       inputs: [{
-        name: 'OscillatorNode',
-        type: 'sine',
-        frequency: {value: 440, inputs: []},
         detune: {
-          value: 0,
           inputs: [{
+            detune: {inputs: [], value: 0},
+            frequency: {inputs: [], value: 0.5},
+            inputs: [],
             name: 'OscillatorNode',
             type: 'triangle',
-            frequency: {value: 0.5, inputs: []},
-            detune: {value: 0, inputs: []},
-            inputs: []
-          }]
+          }],
+          value: 0,
         },
-        inputs: []
-      }]
-    }]
+        frequency: {inputs: [], value: 440},
+        inputs: [],
+        name: 'OscillatorNode',
+        type: 'sine',
+      }],
+      name: 'GainNode',
+    }],
+    name: 'AudioDestinationNode',
   })
 
   virtualAudioGraph.update({
-    0: ['oscillator', 'output']
+    0: ['oscillator', 'output'],
   })
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
+      detune: {inputs: [], value: 0},
+      frequency: {inputs: [], value: 440},
+      inputs: [],
       name: 'OscillatorNode',
       type: 'sine',
-      frequency: {value: 440, inputs: []},
-      detune: {value: 0, inputs: []},
-      inputs: []
-    }]
+    }],
+    name: 'AudioDestinationNode',
   })
   t.end()
 })
@@ -368,40 +368,44 @@ test('update - disconnects and reconnects child nodes properly', t => {
   virtualAudioGraph.update({
     0: ['gain', 'output'],
     1: ['stereoPanner', 0],
-    2: ['gain', 1]
+    2: ['gain', 1],
   })
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
-      name: 'GainNode',
-      gain: {value: 1, inputs: []},
+      gain: {inputs: [], value: 1},
       inputs: [{
-        name: 'StereoPannerNode',
-        pan: {value: 0, inputs: []},
         inputs: [{
+          gain: {inputs: [], value: 1},
+          inputs: [],
           name: 'GainNode',
-          gain: {value: 1, inputs: []},
-          inputs: []
-        }]
-      }]
-    }]
+        }],
+        name: 'StereoPannerNode',
+        pan: {inputs: [], value: 0},
+      }],
+      name: 'GainNode',
+    }],
+    name: 'AudioDestinationNode',
   })
   virtualAudioGraph.update({
     0: ['gain', 'output'],
     1: ['gain', 0],
-    2: ['gain', 1]
+    2: ['gain', 1],
   })
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
-      name: 'GainNode',
-      gain: {value: 1, inputs: []},
+      gain: {inputs: [], value: 1},
       inputs: [{
+        gain: {inputs: [], value: 1},
+        inputs: [{
+          gain: {inputs: [], value: 1},
+          inputs: [],
+          name: 'GainNode',
+        }],
         name: 'GainNode',
-        gain: {value: 1, inputs: []},
-        inputs: [{name: 'GainNode', gain: {value: 1, inputs: []}, inputs: []}]
-      }]
-    }]
+      }],
+      name: 'GainNode',
+    }],
+    name: 'AudioDestinationNode',
   })
   t.end()
 })

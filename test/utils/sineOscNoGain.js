@@ -4,9 +4,11 @@ module.exports = params => {
   const stopTime = params.stopTime
 
   return {
-    0: ['oscillator', 'output', {frequency,
-                          type: 'sine',
-                          startTime,
-                          stopTime}]
+    0: ['oscillator', 'output', {
+      frequency,
+      startTime,
+      stopTime,
+      type: 'sine',
+    }],
   }
 }

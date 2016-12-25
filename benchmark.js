@@ -1,5 +1,6 @@
 require('web-audio-test-api')
-/* global WebAudioTestAPI*/
+/* global WebAudioTestAPI   */
+/* eslint-disable no-console */
 WebAudioTestAPI.setState('AudioContext#createStereoPanner', 'enabled')
 const Benchmark = require('benchmark')
 const createPublishedVirtualAudioGraph = require('virtual-audio-graph')
@@ -11,59 +12,83 @@ const runBenchmarkCode = function (virtualAudioGraph) {
 
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
-    1: ['oscillator', 0, {type: 'triangle',
-                          frequency: 1720,
-                          detune: 14}],
-    2: ['oscillator', 0, {type: 'square',
-                          frequency: 880,
-                          detune: -2}],
-    3: ['oscillator', 0, {type: 'sine',
-                          frequency: 440,
-                          detune: 1}],
-    4: ['oscillator', 0, {type: 'sawtooth',
-                          frequency: 220,
-                          detune: -20}]
+    1: ['oscillator', 0, {
+      detune: 14,
+      frequency: 1720,
+      type: 'triangle',
+    }],
+    2: ['oscillator', 0, {
+      detune: -2,
+      frequency: 880,
+      type: 'square',
+    }],
+    3: ['oscillator', 0, {
+      detune: 1,
+      frequency: 440,
+      type: 'sine',
+    }],
+    4: ['oscillator', 0, {
+      detune: -20,
+      frequency: 220,
+      type: 'sawtooth',
+    }],
   })
 
   virtualAudioGraph.update({0: ['gain', 'output']})
 
   virtualAudioGraph.update({
     0: ['gain', 'output'],
-    1: ['oscillator', {key: 0, destination: 'gain'}, {frequency: 100}]
+    1: ['oscillator', {destination: 'gain', key: 0}, {frequency: 100}],
   })
 
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
     1: [pingPongDelay, 0],
-    2: ['oscillator', 1, {type: 'triangle',
-                          frequency: 1720,
-                          detune: 14}],
-    3: ['oscillator', 1, {type: 'square',
-                          frequency: 880,
-                          detune: -2}],
-    4: ['oscillator', 1, {type: 'sine',
-                          frequency: 440,
-                          detune: 1}],
-    5: ['oscillator', 1, {type: 'sawtooth',
-                          frequency: 220,
-                          detune: -20}]
+    2: ['oscillator', 1, {
+      detune: 14,
+      frequency: 1720,
+      type: 'triangle',
+    }],
+    3: ['oscillator', 1, {
+      detune: -2,
+      frequency: 880,
+      type: 'square',
+    }],
+    4: ['oscillator', 1, {
+      detune: 1,
+      frequency: 440,
+      type: 'sine',
+    }],
+    5: ['oscillator', 1, {
+      detune: -20,
+      frequency: 220,
+      type: 'sawtooth',
+    }],
   })
 
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
     1: [pingPongDelay, 0],
-    2: ['oscillator', 1, {type: 'triangle',
-                          frequency: 123,
-                          detune: 45}],
-    3: ['oscillator', 1, {type: 'square',
-                          frequency: 123,
-                          detune: -23}],
-    4: ['oscillator', 1, {type: 'sine',
-                          frequency: 123,
-                          detune: 12}],
-    5: ['oscillator', 1, {type: 'sawtooth',
-                          frequency: 123,
-                          detune: -260}]
+    2: ['oscillator', 1, {
+      detune: 45,
+      frequency: 123,
+      type: 'triangle',
+    }],
+    3: ['oscillator', 1, {
+      detune: -23,
+      frequency: 123,
+      type: 'square',
+    }],
+    4: ['oscillator', 1, {
+      detune: 12,
+      frequency: 123,
+      type: 'sine',
+    }],
+    5: ['oscillator', 1, {
+      detune: -260,
+      frequency: 123,
+      type: 'sawtooth',
+    }],
   })
 
   virtualAudioGraph.update({0: ['gain', 'output']})

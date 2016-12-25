@@ -16,7 +16,7 @@ test('customNodes - creates a custom node which can be reused in virtualAudioGra
   const virtualGraphParams = {
     0: ['gain', 'output', {gain: 0.5}],
     1: [pingPongDelay, 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
-    2: ['oscillator', 1]
+    2: ['oscillator', 1],
   }
 
   t.deepEqual(virtualAudioGraph.update(virtualGraphParams), virtualAudioGraph)
@@ -36,14 +36,14 @@ test('customNodes - can define a custom node built of other custom nodes', t => 
   const quietPingPongDelay = () => ({
     0: ['gain', 'output'],
     1: [pingPongDelay, 0],
-    2: ['oscillator', 1]
+    2: ['oscillator', 1],
   })
 
   const virtualGraphParams = {
     0: ['gain', 'output', {gain: 0.5}],
     1: [quietPingPongDelay, 0],
     2: [pingPongDelay, 1],
-    3: ['oscillator', 2]
+    3: ['oscillator', 2],
   }
 
   t.deepEqual(virtualAudioGraph.update(virtualGraphParams), virtualAudioGraph)
@@ -57,7 +57,7 @@ test('customNodes - can define a custom node which can be updated', t => {
   const virtualGraphParams = {
     0: ['gain', 'output', {gain: 0.5}],
     1: [pingPongDelay, 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
-    2: ['oscillator', 1]
+    2: ['oscillator', 1],
   }
 
   virtualAudioGraph.update(virtualGraphParams)
@@ -77,7 +77,7 @@ test('customNodes - can define a custom node which can be removed', t => {
   const virtualGraphParams = {
     0: ['gain', 'output', {gain: 0.5}],
     1: [pingPongDelay, 0, {decay: 0.5, delayTime: 0.5, maxDelayTime: 0.5}],
-    2: ['oscillator', 1]
+    2: ['oscillator', 1],
   }
 
   virtualAudioGraph.update(virtualGraphParams)
@@ -90,12 +90,12 @@ test('customNodes - can define a custom node which can be removed', t => {
   virtualAudioGraph.update({0: ['gain', 'output', {gain: 0.5}]})
 
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
+      gain: {inputs: [], value: 0.5},
+      inputs: [],
       name: 'GainNode',
-      gain: {value: 0.5, inputs: []},
-      inputs: []
-    }]
+    }],
+    name: 'AudioDestinationNode',
   })
   t.end()
 })
@@ -103,10 +103,12 @@ test('customNodes - can define a custom node which can be removed', t => {
 test('customNodes - can define a custom node which can be replaced with another on update', t => {
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
-    1: [squareOsc, 0, {gain: 0.5,
-                         frequency: 220,
-                         startTime: 1,
-                         stopTime: 2}]
+    1: [squareOsc, 0, {
+      frequency: 220,
+      gain: 0.5,
+      startTime: 1,
+      stopTime: 2,
+    }],
   })
 
   /* eslint-disable */
@@ -115,10 +117,12 @@ test('customNodes - can define a custom node which can be replaced with another 
 
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
-    1: [sineOsc, 0, {gain: 0.5,
-                       frequency: 220,
-                       startTime: 1,
-                       stopTime: 2}]
+    1: [sineOsc, 0, {
+      frequency: 220,
+      gain: 0.5,
+      startTime: 1,
+      stopTime: 2,
+    }],
   })
   /* eslint-disable */
   t.deepEqual(audioContext.toJSON(), {"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"OscillatorNode","type":"sine","frequency":{"value":220,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]})
@@ -126,55 +130,55 @@ test('customNodes - can define a custom node which can be replaced with another 
 
   const sampleRate = audioContext.sampleRate
   const buffer = audioContext.createBuffer(2, sampleRate * 2, sampleRate)
-  const reverb1 = _ => ({
+  const reverb1 = () => ({
     0: ['gain', 'output'],
-    1: ['convolver', 0, {buffer}, 'input']
+    1: ['convolver', 0, {buffer}, 'input'],
   })
-  const reverb2 = _ => ({
+  const reverb2 = () => ({
     0: ['gain', 'output', {gain: 0.5}],
-    1: ['convolver', 0, {buffer}, 'input']
+    1: ['convolver', 0, {buffer}, 'input'],
   })
 
   virtualAudioGraph.update({
     0: [reverb1, 'output'],
-    1: ['gain', 0]
+    1: ['gain', 0],
   })
 
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
-      name: 'GainNode',
-      gain: {value: 1, inputs: []},
+      gain: {inputs: [], value: 1},
       inputs: [{
+        inputs: [{
+          gain: {inputs: [], value: 1}, inputs: [],
+          name: 'GainNode',
+        }],
         name: 'ConvolverNode',
         normalize: true,
-        inputs: [{
-          name: 'GainNode',
-          gain: {value: 1, inputs: []}, inputs: []
-        }]
-      }]
-    }]
+      }],
+      name: 'GainNode',
+    }],
+    name: 'AudioDestinationNode',
   })
 
   virtualAudioGraph.update({
     0: [reverb2, 'output'],
-    1: ['gain', 0]
+    1: ['gain', 0],
   })
 
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [{
-      name: 'GainNode',
-      gain: {value: 0.5, inputs: []},
+      gain: {inputs: [], value: 0.5},
       inputs: [{
+        inputs: [{
+          gain: {inputs: [], value: 1}, inputs: [],
+          name: 'GainNode',
+        }],
         name: 'ConvolverNode',
         normalize: true,
-        inputs: [{
-          name: 'GainNode',
-          gain: {value: 1, inputs: []}, inputs: []
-        }]
-      }]
-    }]
+      }],
+      name: 'GainNode',
+    }],
+    name: 'AudioDestinationNode',
   })
   t.end()
 })
@@ -182,10 +186,12 @@ test('customNodes - can define a custom node which can be replaced with another 
 test('customNodes - can define a custom node which has an input node with no params', t => {
   virtualAudioGraph.update({
     0: [gainWithNoParams, 'output'],
-    1: [sineOsc, 0, {gain: 0.5,
-                       frequency: 220,
-                       startTime: 1,
-                       stopTime: 2}]
+    1: [sineOsc, 0, {
+      frequency: 220,
+      gain: 0.5,
+      startTime: 1,
+      stopTime: 2,
+    }],
   })
   t.deepEqual(
     audioContext.toJSON(),
@@ -198,30 +204,30 @@ test('customNodes - can define a custom node which has an input node with no par
 
 test('customNodes - can define custom nodes which can be reordered', t => {
   const expectedData = {
-    name: 'AudioDestinationNode',
     inputs: [{
-      name: 'GainNode',
-      gain: {value: 1, inputs: []},
+      gain: {inputs: [], value: 1},
       inputs: [{
-        name: 'GainNode',
-        gain: {value: 1, inputs: []},
+        gain: {inputs: [], value: 1},
         inputs: [{
-          name: 'GainNode',
-          gain: {value: 1, inputs: []},
+          gain: {inputs: [], value: 1},
           inputs: [{
-            name: 'GainNode',
-            gain: {value: 0.3, inputs: []},
+            gain: {inputs: [], value: 0.3},
             inputs: [{
+              detune: {inputs: [], value: 0},
+              frequency: {inputs: [], value: 500},
+              inputs: [],
               name: 'OscillatorNode',
               type: 'sine',
-              frequency: {value: 500, inputs: []},
-              detune: {value: 0, inputs: []},
-              inputs: []
-            }]
-          }]
-        }]
-      }]
-    }]
+            }],
+            name: 'GainNode',
+          }],
+          name: 'GainNode',
+        }],
+        name: 'GainNode',
+      }],
+      name: 'GainNode',
+    }],
+    name: 'AudioDestinationNode',
   }
 
   virtualAudioGraph.update({
@@ -230,8 +236,8 @@ test('customNodes - can define custom nodes which can be reordered', t => {
     'channel:[0]-type:source-id:keyboard: 7': [
       sineOsc,
       ['channel:0-type:effect-id:1'],
-      {gain: 0.3, frequency: 500}
-    ]
+      {frequency: 500, gain: 0.3},
+    ],
   })
   t.deepEqual(audioContext.toJSON(), expectedData)
 
@@ -241,8 +247,8 @@ test('customNodes - can define custom nodes which can be reordered', t => {
     'channel:[0]-type:source-id:keyboard: 5': [
       sineOsc,
       ['channel:0-type:effect-id:0'],
-      {gain: 0.3, frequency: 500}
-    ]
+      {frequency: 500, gain: 0.3},
+    ],
   })
   t.deepEqual(audioContext.toJSON(), expectedData)
 
@@ -252,8 +258,8 @@ test('customNodes - can define custom nodes which can be reordered', t => {
     'channel:[0]-type:source-id:keyboard: 7': [
       sineOsc,
       ['channel:0-type:effect-id:1'],
-      {gain: 0.3, frequency: 500}
-    ]
+      {frequency: 500, gain: 0.3},
+    ],
   })
   t.deepEqual(audioContext.toJSON(), expectedData)
   t.end()

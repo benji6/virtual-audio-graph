@@ -16,32 +16,32 @@ test('createVirtualAudioGraph - optionally takes output parameter', t => {
   const gain = audioContext.createGain()
 
   createVirtualAudioGraph({audioContext, output: gain}).update({
-    0: ['gain', 'output', {gain: 0.2}]
+    0: ['gain', 'output', {gain: 0.2}],
   })
 
   t.deepEqual(gain.toJSON(), {
-    name: 'GainNode',
-    gain: {value: 1, inputs: []},
+    gain: {inputs: [], value: 1},
     inputs: [
       {
+        gain: Object({inputs: [], value: 0.2}),
+        inputs: [],
         name: 'GainNode',
-        gain: Object({value: 0.2, inputs: []}),
-        inputs: []
-      }
-    ]
+      },
+    ],
+    name: 'GainNode',
   })
   createVirtualAudioGraph({audioContext}).update({
-    0: ['gain', 'output', {gain: 0.2}]
+    0: ['gain', 'output', {gain: 0.2}],
   })
   t.deepEqual(audioContext.toJSON(), {
-    name: 'AudioDestinationNode',
     inputs: [
       {
+        gain: {inputs: [], value: 0.2},
+        inputs: [],
         name: 'GainNode',
-        gain: {value: 0.2, inputs: []},
-        inputs: []
-      }
-    ]
+      },
+    ],
+    name: 'AudioDestinationNode',
   })
   t.end()
 })

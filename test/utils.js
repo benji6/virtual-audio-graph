@@ -43,7 +43,7 @@ test('equals - considers equal string primitives equal', t => {
 test('equals - handles objects', t => {
   t.deepEqual(equals({}, {}), true)
   t.deepEqual(equals({a: 1, b: 2}, {a: 1, b: 2}), true)
-  t.deepEqual(equals({a: 2, b: 3}, {b: 3, a: 2}), true)
+  t.deepEqual(equals({a: 2, b: 3}, {a: 2, b: 3}), true)
   t.deepEqual(equals({a: 2, b: 3}, {a: 3, b: 3}), false)
   t.deepEqual(equals({a: 2, b: 3, c: 1}, {a: 2, b: 3}), false)
   t.end()

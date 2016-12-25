@@ -6,9 +6,11 @@ module.exports = params => {
 
   return {
     0: ['gain', ['output'], {gain}],
-    1: ['oscillator', 0, {frequency,
-                          type: 'sine',
-                          startTime,
-                          stopTime}]
+    1: ['oscillator', 0, {
+      frequency,
+      startTime,
+      stopTime,
+      type: 'sine',
+    }],
   }
 }

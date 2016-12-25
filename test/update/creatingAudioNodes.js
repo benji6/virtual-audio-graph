@@ -17,13 +17,13 @@ test('update - creates AnalyserNode with all valid parameters', t => {
 
   const params = {
     fftSize: 2048,
-    minDecibels: -90,
     maxDecibels: -10,
-    smoothingTimeConstant: 1
+    minDecibels: -90,
+    smoothingTimeConstant: 1,
   }
 
   const virtualGraphParams = {
-    0: ['analyser', 'output', params]
+    0: ['analyser', 'output', params],
   }
 
   virtualAudioGraph.update(virtualGraphParams)
@@ -51,7 +51,7 @@ test('update - creates BiquadFilterNode with all valid parameters', t => {
   const Q = 0.5
 
   const virtualGraphParams = {
-    0: ['biquadFilter', 'output', {type, frequency, detune, Q}]
+    0: ['biquadFilter', 'output', {detune, frequency, Q, type}],
   }
 
   virtualAudioGraph.update(virtualGraphParams)
@@ -75,11 +75,11 @@ test('update - creates BufferSourceNode with all valid parameters', t => {
     loopEnd: 2,
     loopStart: 1,
     onended: () => {},
-    playbackRate: 2
+    playbackRate: 2,
   }
 
   const virtualGraphParams = {
-    0: ['bufferSource', 'output', params]
+    0: ['bufferSource', 'output', params],
   }
 
   virtualAudioGraph.update(virtualGraphParams)
@@ -100,19 +100,19 @@ test('update - creates ChannelSplitterNode and ChannelMergerNode and connects th
   const params = {numberOfOutputs: 2}
 
   virtualAudioGraph.update({
-    0: ['channelMerger', 'output', params]
+    0: ['channelMerger', 'output', params],
   })
   t.is(virtualAudioGraph.getAudioNodeById(0).constructor.name, 'ChannelMergerNode')
 
   virtualAudioGraph.update({
-    0: ['channelSplitter', 'output', params]
+    0: ['channelSplitter', 'output', params],
   })
   t.is(virtualAudioGraph.getAudioNodeById(0).constructor.name, 'ChannelSplitterNode')
 
   virtualAudioGraph.update({
     0: ['channelMerger', 'output', params],
     1: ['oscillator', 'output'],
-    2: ['channelSplitter', {key: 0, outputs: [0, 1], inputs: [1, 0]}, params]
+    2: ['channelSplitter', {inputs: [1, 0], key: 0, outputs: [0, 1]}, params],
   })
   t.end()
 })
@@ -123,11 +123,11 @@ test('update - creates ConvolverNode with all valid parameters', t => {
   const sampleRate = audioContext.sampleRate
   const params = {
     buffer: audioContext.createBuffer(2, sampleRate * 2, sampleRate),
-    normalize: false
+    normalize: false,
   }
 
   const virtualGraphParams = {
-    0: ['convolver', 'output', params]
+    0: ['convolver', 'output', params],
   }
 
   virtualAudioGraph.update(virtualGraphParams)
@@ -145,7 +145,7 @@ test('update - creates DelayNode with all valid parameters', t => {
   const maxDelayTime = 5
 
   const virtualGraphParams = {
-    0: ['delay', 'output', {delayTime, maxDelayTime}]
+    0: ['delay', 'output', {delayTime, maxDelayTime}],
   }
 
   virtualAudioGraph.update(virtualGraphParams)
@@ -164,11 +164,11 @@ test('update - creates DynamicsCompressorNode with all valid parameters', t => {
     ratio: 12,
     reduction: -20,
     release: 0.25,
-    threshold: -50
+    threshold: -50,
   }
 
   const virtualGraphParams = {
-    'random string id': ['dynamicsCompressor', 'output', params]
+    'random string id': ['dynamicsCompressor', 'output', params],
   }
 
   virtualAudioGraph.update(virtualGraphParams)
@@ -189,7 +189,7 @@ test('update - creates GainNode with all valid parameters', t => {
   const gain = 0.5
 
   const virtualGraphParams = {
-    0: ['gain', 'output', {gain}]
+    0: ['gain', 'output', {gain}],
   }
 
   virtualAudioGraph.update(virtualGraphParams)
@@ -204,7 +204,7 @@ test('update - creates MediaStreamAudioDestinationNode with all valid parameters
   const virtualAudioGraph = createVirtualAudioGraph({audioContext})
 
   virtualAudioGraph.update({
-    0: ['mediaStreamDestination']
+    0: ['mediaStreamDestination'],
   })
   const audioNode = virtualAudioGraph.getAudioNodeById(0)
   t.is(audioNode.constructor.name, 'MediaStreamAudioDestinationNode')
@@ -218,12 +218,12 @@ test('update - creates MediaStreamAudioDestinationNode with all valid parameters
   const MediaStream = WebAudioTestAPI.MediaStream
 
   virtualAudioGraph.update({
-    0: ['mediaElementSource', 'output', {mediaElement: new HTMLMediaElement()}]
+    0: ['mediaElementSource', 'output', {mediaElement: new HTMLMediaElement()}],
   })
   t.is(virtualAudioGraph.getAudioNodeById(0).constructor.name, 'MediaElementAudioSourceNode')
 
   virtualAudioGraph.update({
-    0: ['mediaStreamSource', 'output', {mediaStream: new MediaStream()}]
+    0: ['mediaStreamSource', 'output', {mediaStream: new MediaStream()}],
   })
   t.is(virtualAudioGraph.getAudioNodeById(0).constructor.name, 'MediaStreamAudioSourceNode')
   t.end()
@@ -233,13 +233,13 @@ test('update - creates OscillatorNode with all valid parameters', t => {
   const audioContext = new AudioContext()
   const virtualAudioGraph = createVirtualAudioGraph({audioContext})
   const params = {
-    type: 'square',
+    detune: 4,
     frequency: 440,
-    detune: 4
+    type: 'square',
   }
 
   const virtualGraphParams = {
-    0: ['oscillator', 'output', params]
+    0: ['oscillator', 'output', params],
   }
 
   virtualAudioGraph.update(virtualGraphParams)
@@ -266,16 +266,18 @@ test('update - creates PannerNode with all valid parameters', t => {
   const orientation = [1, 0, 0]
 
   const virtualGraphParams = {
-    0: ['panner', 'output', {coneInnerAngle,
-                             coneOuterAngle,
-                             coneOuterGain,
-                             distanceModel,
-                             orientation,
-                             panningModel,
-                             position,
-                             maxDistance,
-                             refDistance,
-                             rolloffFactor}]
+    0: ['panner', 'output', {
+      coneInnerAngle,
+      coneOuterAngle,
+      coneOuterGain,
+      distanceModel,
+      maxDistance,
+      orientation,
+      panningModel,
+      position,
+      refDistance,
+      rolloffFactor,
+    }],
   }
 
   virtualAudioGraph.update(virtualGraphParams)
@@ -298,7 +300,7 @@ test('update - creates StereoPannerNode with all valid parameters', t => {
   const pan = 1
 
   const virtualGraphParams = {
-    0: ['stereoPanner', 'output', {pan}]
+    0: ['stereoPanner', 'output', {pan}],
   }
 
   virtualAudioGraph.update(virtualGraphParams)
@@ -313,11 +315,11 @@ test('update - creates WaveShaperNode with all valid parameters', t => {
   const virtualAudioGraph = createVirtualAudioGraph({audioContext})
   const params = {
     curve: new Float32Array(44100),
-    oversample: '4x'
+    oversample: '4x',
   }
 
   const virtualGraphParams = {
-    0: ['waveShaper', 'output', params]
+    0: ['waveShaper', 'output', params],
   }
 
   virtualAudioGraph.update(virtualGraphParams)

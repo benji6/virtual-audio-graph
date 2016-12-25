@@ -24,7 +24,7 @@
     "build": "rollup -c configRollup.js",
     "prepublish": "npm run build && npm test",
     "spec": "npm run build && tape 'test/**/*.js'",
-    "test": "concurrently 'eslint src' 'npm run spec'",
+    "test": "concurrently 'eslint .' 'npm run spec'",
     "watch-spec": "nodemon --watch src --watch test --exec npm run spec",
     "watch-test": "nodemon --watch src --watch test --exec npm t"
   },

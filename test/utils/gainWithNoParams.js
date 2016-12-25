@@ -1,3 +1,3 @@
-module.exports = _ => ({
-  0: ['gain', 'output', null, 'input']
+module.exports = () => ({
+  0: ['gain', 'output', null, 'input'],
 })
