@@ -26,30 +26,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 
 
-var get = function get(object, property, receiver) {
-  if (object === null) object = Function.prototype;
-  var desc = Object.getOwnPropertyDescriptor(object, property);
-
-  if (desc === undefined) {
-    var parent = Object.getPrototypeOf(object);
-
-    if (parent === null) {
-      return undefined;
-    } else {
-      return get(parent, property, receiver);
-    }
-  } else if ("value" in desc) {
-    return desc.value;
-  } else {
-    var getter = desc.get;
-
-    if (getter === undefined) {
-      return undefined;
-    }
-
-    return getter.call(receiver);
-  }
-};
 
 
 
@@ -67,27 +43,8 @@ var get = function get(object, property, receiver) {
 
 
 
-var set = function set(object, property, value, receiver) {
-  var desc = Object.getOwnPropertyDescriptor(object, property);
 
-  if (desc === undefined) {
-    var parent = Object.getPrototypeOf(object);
 
-    if (parent !== null) {
-      set(parent, property, value, receiver);
-    }
-  } else if ("value" in desc && desc.writable) {
-    desc.value = value;
-  } else {
-    var setter = desc.set;
-
-    if (setter !== undefined) {
-      setter.call(receiver, value);
-    }
-  }
-
-  return value;
-};
 
 var slicedToArray = function () {
   function sliceIterator(arr, i) {
@@ -331,7 +288,7 @@ var disconnectAndDestroy = function disconnectAndDestroy() {
   this.connected = false;
 };
 
-var update$1 = function update$1() {
+var update = function update() {
   var _this2 = this;
 
   var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -394,17 +351,17 @@ var createStandardVirtualAudioNode = (function (audioContext, _ref4) {
     connections: [],
     disconnect: disconnect,
     disconnectAndDestroy: disconnectAndDestroy,
-    isCustomVirtualNode: false,
     input: input,
+    isCustomVirtualNode: false,
     node: node,
     output: output,
     stopCalled: stopTime !== undefined,
-    update: update$1
+    update: update
   };
   return virtualNode.update(params);
 });
 
-var connect$1 = function connect$1() {
+var connect$1 = function connect() {
   for (var _len = arguments.length, connectArgs = Array(_len), _key = 0; _key < _len; _key++) {
     connectArgs[_key] = arguments[_key];
   }
@@ -417,7 +374,7 @@ var connect$1 = function connect$1() {
   this.connected = true;
 };
 
-var disconnect$1 = function disconnect$1() {
+var disconnect$1 = function disconnect() {
   var keys = Object.keys(this.virtualNodes);
   for (var i = 0; i < keys.length; i++) {
     var virtualNode = this.virtualNodes[keys[i]];
@@ -428,14 +385,14 @@ var disconnect$1 = function disconnect$1() {
   this.connected = false;
 };
 
-var disconnectAndDestroy$1 = function disconnectAndDestroy$1() {
+var disconnectAndDestroy$1 = function disconnectAndDestroy() {
   var keys = Object.keys(this.virtualNodes);
   for (var i = 0; i < keys.length; i++) {
     this.virtualNodes[keys[i]].disconnectAndDestroy();
   }this.connected = false;
 };
 
-var update$2 = function update$2() {
+var update$1 = function update() {
   var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   var audioGraphParamsFactoryValues = values(this.audioGraphParamsFactory(params));
@@ -470,7 +427,7 @@ var createCustomVirtualAudioNode = function createCustomVirtualAudioNode(audioCo
     node: audioGraphParamsFactory,
     output: output,
     params: params,
-    update: update$2,
+    update: update$1,
     virtualNodes: virtualNodes
   };
 };
@@ -495,7 +452,6 @@ var index = (function () {
 
   return {
     audioContext: audioContext,
-    virtualNodes: {},
     get currentTime() {
       return audioContext.currentTime;
     },
@@ -550,7 +506,9 @@ var index = (function () {
       });
 
       return this;
-    }
+    },
+
+    virtualNodes: {}
   };
 });
 
