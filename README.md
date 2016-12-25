@@ -29,7 +29,6 @@ See [changelog](/CHANGELOG.md).
 ### Creating a new virtual-audio-graph
 
 ```javascript
-
 import createVirtualAudioGraph from 'virtual-audio-graph'
 
 const audioContext = new AudioContext()
@@ -38,7 +37,11 @@ const virtualAudioGraph = createVirtualAudioGraph({
   audioContext,
   output: audioContext.destination,
 })
+```
 
+If using commonJS:
+```javascript
+const createVirtualAudioGraph = require('virtual-audio-graph').default
 ```
 
 The `createVirtualAudioGraph` factory takes an object with two optional properties:
@@ -61,28 +64,37 @@ The `createVirtualAudioGraph` factory takes an object with two optional properti
 Here we create two oscillators, schedule their start and stop times, put them through a gain node and attach the gain node to the destination:
 
 ```javascript
+import createVirtualAudioGraph, {gain, oscillator} from 'virtual-audio-graph'
 
+const virtualAudioGraph = createVirtualAudioGraph()
 const {currentTime} = virtualAudioGraph
 
 const graph = {
-  0: ['gain', 'output', {gain: 0.2}],
-  1: ['oscillator', 0, {
+  0: gain('output', {gain: 0.2}),
+  1: oscillator(0, {
     type: 'square',
     frequency: 440,
     startTime: currentTime + 1,
     stopTime: currentTime + 2
-  }],
-  2: ['oscillator', 0, {
+  }),
+  2: oscillator(0, {
     type: 'sawtooth',
     frequency: 660,
     detune: 4,
     startTime: currentTime + 1.5,
     stopTime: currentTime + 2.5
-  }],
+  }),
 }
 
 virtualAudioGraph.update(graph)
+```
 
+If using commonJS:
+```javascript
+const V = require('virtual-audio-graph')
+const createVirtualAudioGraph = V.default
+const gain = V.gain
+const oscillator = V.oscillator
 ```
 
 OK, so what's going on here?
@@ -106,11 +118,11 @@ The above information should be enough to get started creating very simple audio
   ```javascript
   virtualAudioGraph.update({
     // output is a reserved value for virtual-audio-graph destination
-    0: ['oscillator', 'output'],
+    0: oscillator('output'),
     // connecting to the frequency AudioParam of the oscillator above
-    1: ['gain', {key: 0, destination: 'frequency'}, {gain: 10}],
+    1: gain({key: 0, destination: 'frequency'}, {gain: 10}),
     // connect to node key 1 (gain node above) and output
-    2: ['oscillator', [1, 'output'], {type: 'triangle', frequency: 1}],
+    2: oscillator([1, 'output'], {type: 'triangle', frequency: 1}),
   })
   ```
 
@@ -118,59 +130,59 @@ The above information should be enough to get started creating very simple audio
   - specify an ordinary value
   ```javascript
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: 0.5}],
+    0: gain('output', {gain: 0.5}),
   })
   ```
   - specify setValueAtTime
   ```javascript
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: ['setValueAtTime', 0.5, 1]}],
+    0: gain('output', {gain: ['setValueAtTime', 0.5, 1]}),
   })
   ```
   - specify setValueAtTime multiple times
   ```javascript
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: [
+    0: gain('output', {gain: [
       ['setValueAtTime', 0, 0],
       ['setValueAtTime', 1, 1],
       ['setValueAtTime', 0.5, 2],
-    ]}],
+    ]}),
   })
   ```
   - linearRampToValueAtTime
   ```javascript
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: [
+    0: gain('output', {gain: [
       ['setValueAtTime', 0, 0],
       ['linearRampToValueAtTime', 1, 1],
-    ]}],
+    ]}),
   })
   ```
   - exponentialRampToValueAtTime
   ```javascript
   virtualAudioGraph.update({
-    0: ['oscillator', 'output', {frequency: [
+    0: oscillator('output', {frequency: [
       ['setValueAtTime', 440, 0],
       ['exponentialRampToValueAtTime', 880, 1],
-    ]}],
+    ]}),
   })
   ```
   - setTargetAtTime
   ```javascript
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: [
+    0: gain('output', {gain: [
       ['setValueAtTime', 0, 0],
       ['setTargetAtTime', 1, 1, 0.5],
-    ]}],
+    ]}),
   })
   ```
   - setValueCurveAtTime
   ```javascript
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: [
+    0: gain('output', {gain: [
       ['setValueAtTime', 0, 0],
       ['setValueCurveAtTime', Float32Array.of(0.5, 0.75, 0.25, 1), 1, 1],
-    ]}],
+    ]}),
   })
   ```
 
@@ -183,28 +195,30 @@ The virtual audio graph is composed of standard nodes (see [below](#standard-nod
 Specify the node input destination using the string `'input'` as the 4th element in the node array as below:
 
 ```javascript
+import {createNode, delay, gain, oscillator, stereoPanner} from 'virtual-audio-graph'
 
-const pingPongDelay = ({
+const pingPongDelay = createNode(({
   decay = 1 / 3,
   delayTime = 1 / 3,
   maxDelayTime = 1 / 3,
 } = {}) => ({
-  zero: ['stereoPanner', 'output', {pan: -1}],
-  1: ['stereoPanner', 'output', {pan: 1}],
-  2: ['delay', [1, 'five'], {delayTime, maxDelayTime}],
-  3: ['gain', 2, {gain: decay}],
-  4: ['delay', ['zero', 3], {delayTime, maxDelayTime}],
-  five: ['gain', 4, {gain: decay}, 'input'] // note this is the destination for nodes which connect to pingPongDelay
-})
+  zero: stereoPanner('output', {pan: -1}),
+  1: stereoPanner('output', {pan: 1}),
+  2: delay([1, 'five'], {delayTime, maxDelayTime}),
+  3: gain(2, {gain: decay}),
+  4: delay(['zero', 3], {delayTime, maxDelayTime}),
+  five: gain(4, {gain: decay}, 'input') // note this is the destination for nodes which connect to pingPongDelay
+}))
 
 // and now virtual-audio-graph will recognize it as a valid node:
 virtualAudioGraph.update({
-  0: [pingPongDelay,
-      'output',
-      // the below parameters are passed into the pingPongDelay function declared above
-      {decay: 1 / 4, delayTime: 1 / 3, maxDelayTime: 1}],
-  1: ['gain', [0, 'output'], {gain: 1 / 4}],
-  2: ['oscillator', 1, {frequency: 440, type: 'square'}],
+  0: pingPongDelay(
+    'output',
+    // the below parameters are passed into the pingPongDelay function declared above
+    {decay: 1 / 4, delayTime: 1 / 3, maxDelayTime: 1}
+  ),
+  1: gain([0, 'output'], {gain: 1 / 4}),
+  2: oscillator(1, {frequency: 440, type: 'square'}),
 })
 
 ```
@@ -212,118 +226,127 @@ virtualAudioGraph.update({
 If an `'input'` node has no parameters specify `null` like this:
 
 ```javascript
-  five: ['gain', 4, null, 'input']
+  five: gain(4, null, 'input')
 ```
 
 ### Standard Nodes
 
 Here is a list of standard nodes implemented in virtual-audio-graph and the params you can provide them with. You can build custom nodes out of these as above.
 
-#### [AnalyserNode](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode)
+#### [analyser](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode)
 
 ```javascript
-['analyser', output, {fftSize,
-                      minDecibels,
-                      maxDecibels,
-                      smoothingTimeConstant}]
+analyser(output, {
+  fftSize,
+  minDecibels,
+  maxDecibels,
+  smoothingTimeConstant
+})
 ```
 ___
 
-#### [AudioBufferSourceNode](https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode)
+#### [bufferSource](https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode)
 
 ```javascript
 const {audioContext, audioContext: {sampleRate}} = virtualAudioGraph
 const buffer = audioContext.createBuffer(2, sampleRate * 2, sampleRate)
-['bufferSource', output, {buffer,
-                          loop,
-                          loopEnd,
-                          loopStart,
-                          onended,
-                          playbackRate,
-                          // time in seconds since virtualAudioGraph.currentTime
-                          // was 0, if not provided then node starts immediately
-                          startTime,
-                          // if not provided then stop is not called on node
-                          // until it is disconnected
-                          stopTime}]
+bufferSource(output, {
+  buffer,
+  loop,
+  loopEnd,
+  loopStart,
+  onended,
+  playbackRate,
+  // time in seconds since virtualAudioGraph.currentTime
+  // was 0, if not provided then node starts immediately
+  startTime,
+  // if not provided then stop is not called on node
+  // until it is disconnected
+  stopTime
+})
 ```
 ___
 
-#### [BiquadFilterNode](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode)
-
-```javascript
-['biquadFilter', output, {type, frequency, detune, Q}]
-```
-___
-#### [ChannelMergerNode](https://developer.mozilla.org/en-US/docs/Web/API/ChannelMergerNode)
+#### [biquadFilter](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode)
 
 ```javascript
-['channelMerger', output, {numberOfOutputs}]
+biquadFilter(output, {type, frequency, detune, Q})
 ```
 ___
-#### [ChannelSplitterNode](https://developer.mozilla.org/en-US/docs/Web/API/ChannelSplitterNode)
+#### [channelMerger](https://developer.mozilla.org/en-US/docs/Web/API/ChannelMergerNode)
+
+```javascript
+channelMerger(output, {numberOfOutputs})
+```
+___
+#### [channelSplitter](https://developer.mozilla.org/en-US/docs/Web/API/ChannelSplitterNode)
 
 NB ChannelSplitter has it's own syntax for the output parameter. Because the channel is split it means each node can have multiple outputs. Each output is indexed and the outputs property should be an array of these indices. Then the inputs property should be an array of indices corresponding to the inputs of the destination node. Check out the spec and the link above for more info.
 
 ```javascript
-['channelSplitter', {key, outputs, inputs}, {numberOfOutputs}]
+channelSplitter({key, outputs, inputs}, {numberOfOutputs})
 ```
 ___
-#### [ConvolverNode](https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode)
+#### [convolver](https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode)
 
 ```javascript
-['convolver', output, {buffer, normalize}]
+convolver(output, {buffer, normalize})
 ```
 ___
 
-#### [DelayNode](https://developer.mozilla.org/en-US/docs/Web/API/DelayNode)
+#### [delay](https://developer.mozilla.org/en-US/docs/Web/API/DelayNode)
 NB maxDelayTime must be set when node is first created but cannot be updated. A new node will have to be inserted if a different maxDelayTime is required.
 
 ```javascript
-['delay', output, {delayTime, maxDelayTime}]
+delay(output, {delayTime, maxDelayTime})
 ```
 ___
 
-#### [DynamicsCompressorNode](https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode)
+#### [dynamicsCompressor](https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode)
 
 ```javascript
-['dynamicsCompressor', output, {attack,
-                                knee,
-                                ratio,
-                                reduction,
-                                release,
-                                threshold}]
+dynamicsCompressor(output, {
+  attack,
+  knee,
+  ratio,
+  reduction,
+  release,
+  threshold
+})
 ```
 ___
 
-#### [GainNode](https://developer.mozilla.org/en-US/docs/Web/API/GainNode)
+#### [gain](https://developer.mozilla.org/en-US/docs/Web/API/GainNode)
 
 ```javascript
-['gain', output, {gain}]
+gain(output, {gain})
 ```
 ___
-#### [MediaStreamAudioDestinationNode](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioDestinationNode)
+#### [mediaElementSource](https://developer.mozilla.org/en-US/docs/Web/API/MediaElementAudioSourceNode)
+NB params can only be set once
+```javascript
+mediaElementSource(output, {mediaElement})
+```
+___
+#### [mediaStreamDestination](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioDestinationNode)
 
 This node has no output as it is a destination. It also takes no parameters. Use virtualAudioGraph.getAudioNodeById method to access the node's stream property
 
 ```javascript
-['mediaStreamDestination']
+mediaStreamDestination()
 ```
 ___
-#### [MediaStreamAudioSourceNode](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
-NB Both params can only be set once and only one should be set
+#### [mediaStreamSource](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
+NB params can only be set once
 ```javascript
-['mediaElementSource', output, {
-  mediaElement, // EITHER set this if constructing from an HTMLMediaElement
-  mediaStream, // OR set this if constructing from a MediaStream
-}]
+mediaStreamSource(output, {mediaStream})
 ```
 ___
 
-#### [OscillatorNode](https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode)
+#### [oscillator](https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode)
 
 ```javascript
-['oscillator', output, {
+oscillator(output, {
   type,
   frequency,
   detune,
@@ -332,14 +355,14 @@ ___
   startTime,
   // if not provided then stop is not called on node until it is disconnected
   stopTime,
-}]
+})
 ```
 ___
 
-#### [PannerNode](https://developer.mozilla.org/en-US/docs/Web/API/PannerNode)
+#### [panner](https://developer.mozilla.org/en-US/docs/Web/API/PannerNode)
 
 ```javascript
-['panner', output, {
+panner(output, {
   coneInnerAngle,
   coneOuterAngle,
   coneOuterGain,
@@ -352,19 +375,19 @@ ___
   maxDistance,
   refDistance,
   rolloffFactor,
-}]
+})
 ```
 ___
 
-#### [StereoPannerNode](https://developer.mozilla.org/en-US/docs/Web/API/StereoPannerNode)
+#### [stereoPanner](https://developer.mozilla.org/en-US/docs/Web/API/StereoPannerNode)
 
 ```javascript
-['stereoPanner', output, {pan}]
+stereoPanner(output, {pan})
 ```
 ___
 
-#### [WaveShaperNode](https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode)
+#### [waveShaper](https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode)
 
 ```javascript
-['waveShaper', output, {curve, oversample}]
+waveShaper(output, {curve, oversample})
 ```

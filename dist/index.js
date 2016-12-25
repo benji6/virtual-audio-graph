@@ -1,5 +1,7 @@
 'use strict';
 
+Object.defineProperty(exports, '__esModule', { value: true });
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
@@ -218,7 +220,7 @@ var constructorParamsKeys = ['maxDelayTime', 'mediaElement', 'mediaStream', 'num
 
 var setters = ['position', 'orientation'];
 
-var startAndStopNodes = ['oscillator', 'bufferSource'];
+var startAndStopNodes = ['createOscillator', 'createBufferSource'];
 
 var connect = function connect() {
   var audioNode = this.audioNode;
@@ -237,7 +239,7 @@ var createAudioNode = function createAudioNode(audioContext, name, constructorPa
   var startTime = _ref.startTime,
       stopTime = _ref.stopTime;
 
-  var audioNode = constructorParam ? audioContext['create' + capitalize(name)](constructorParam) : audioContext['create' + capitalize(name)]();
+  var audioNode = constructorParam ? audioContext[name](constructorParam) : audioContext[name]();
   if (startAndStopNodes.indexOf(name) !== -1) {
     if (startTime == null) audioNode.start();else audioNode.start(startTime);
     if (stopTime != null) audioNode.stop(stopTime);
@@ -439,7 +441,7 @@ var disconnectParents = function disconnectParents(virtualNode, virtualNodes) {
   }, Object.keys(virtualNodes));
 };
 
-var index = (function () {
+var createVirtualAudioGraph$1 = (function () {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       _ref$audioContext = _ref.audioContext,
       audioContext = _ref$audioContext === undefined ? new AudioContext() : _ref$audioContext,
@@ -474,9 +476,6 @@ var index = (function () {
             paramsOutput = _newNodeParams[1],
             paramsParams = _newNodeParams[2];
 
-        if (paramsOutput == null && paramsNodeName !== 'mediaStreamDestination') {
-          throw new Error('output not specified for node key ' + key);
-        }
         var virtualAudioNode = _this.virtualNodes[key];
         if (virtualAudioNode == null) {
           _this.virtualNodes[key] = createVirtualAudioNode(audioContext, newNodeParams);
@@ -508,4 +507,61 @@ var index = (function () {
   };
 });
 
-module.exports = index;
+var createStandardNode = function createStandardNode(name) {
+  return function () {
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    if (args.length === 0 && name !== 'createMediaStreamDestination') {
+      throw new Error('output not specified for ' + name + ' node');
+    }
+    return [name].concat(args);
+  };
+};
+
+var analyser = createStandardNode('createAnalyser');
+var biquadFilter = createStandardNode('createBiquadFilter');
+var bufferSource = createStandardNode('createBufferSource');
+var channelMerger = createStandardNode('createChannelMerger');
+var channelSplitter = createStandardNode('createChannelSplitter');
+var convolver = createStandardNode('createConvolver');
+var delay = createStandardNode('createDelay');
+var dynamicsCompressor = createStandardNode('createDynamicsCompressor');
+var gain = createStandardNode('createGain');
+var mediaElementSource = createStandardNode('createMediaElementSource');
+var mediaStreamDestination = createStandardNode('createMediaStreamDestination');
+var mediaStreamSource = createStandardNode('createMediaStreamSource');
+var oscillator = createStandardNode('createOscillator');
+var panner = createStandardNode('createPanner');
+var stereoPanner = createStandardNode('createStereoPanner');
+var waveShaper = createStandardNode('createWaveShaper');
+
+var createNode = function createNode(f) {
+  return function () {
+    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+
+    return [f].concat(args);
+  };
+};
+
+exports.analyser = analyser;
+exports.biquadFilter = biquadFilter;
+exports.bufferSource = bufferSource;
+exports.channelMerger = channelMerger;
+exports.channelSplitter = channelSplitter;
+exports.convolver = convolver;
+exports.delay = delay;
+exports.dynamicsCompressor = dynamicsCompressor;
+exports.gain = gain;
+exports.mediaElementSource = mediaElementSource;
+exports.mediaStreamDestination = mediaStreamDestination;
+exports.mediaStreamSource = mediaStreamSource;
+exports.oscillator = oscillator;
+exports.panner = panner;
+exports.stereoPanner = stereoPanner;
+exports.waveShaper = waveShaper;
+exports.createNode = createNode;
+exports['default'] = createVirtualAudioGraph$1;

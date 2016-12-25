@@ -1,10 +1,10 @@
 /* global AudioContext */
 const test = require('tape')
 require('../WebAudioTestAPISetup')
-const createVirtualAudioGraph = require('../..')
+const V = require('../..')
 
 const audioContext = new AudioContext()
-const virtualAudioGraph = createVirtualAudioGraph({audioContext})
+const virtualAudioGraph = V.default({audioContext})
 
 test('update - throws an error if no output is provided', t => {
   t.throws(() => virtualAudioGraph.update({0: ['gain']}))
