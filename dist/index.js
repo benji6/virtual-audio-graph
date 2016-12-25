@@ -135,11 +135,6 @@ var forEach = function forEach(f, xs) {
     f(xs[i]);
   }
 };
-var forEachIndexed = function forEachIndexed(f, xs) {
-  for (var i = 0; i < xs.length; i++) {
-    f(xs[i], i);
-  }
-};
 var filter = function filter(f, xs) {
   var ys = [];
   for (var i = 0; i < xs.length; i++) {
@@ -396,9 +391,10 @@ var update$1 = function update() {
   var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   var audioGraphParamsFactoryValues = values(this.audioGraphParamsFactory(params));
-  forEachIndexed(function (childVirtualNode, i) {
-    return childVirtualNode.update(audioGraphParamsFactoryValues[i][2]);
-  }, values(this.virtualNodes));
+  var keys = Object.keys(this.virtualNodes);
+  for (var i = 0; i < keys.length; i++) {
+    this.virtualNodes[keys[i]].update(audioGraphParamsFactoryValues[i][2]);
+  }
   this.params = params;
   return this;
 };

@@ -2,7 +2,6 @@ import connectAudioNodes from '../connectAudioNodes'
 import {
   filter,
   forEach,
-  forEachIndexed,
   mapObj,
   values,
 } from '../utils'
@@ -43,10 +42,10 @@ const disconnectAndDestroy = function () {
 
 const update = function (params = {}) {
   const audioGraphParamsFactoryValues = values(this.audioGraphParamsFactory(params))
-  forEachIndexed(
-    (childVirtualNode, i) => childVirtualNode.update(audioGraphParamsFactoryValues[i][2]),
-    values(this.virtualNodes)
-  )
+  const keys = Object.keys(this.virtualNodes)
+  for (let i = 0; i < keys.length; i++) {
+    this.virtualNodes[keys[i]].update(audioGraphParamsFactoryValues[i][2])
+  }
   this.params = params
   return this
 }

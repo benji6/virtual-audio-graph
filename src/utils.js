@@ -18,7 +18,6 @@ export const equals = (a, b) => {
   return true
 }
 export const forEach = (f, xs) => { for (let i = 0; i < xs.length; i++) f(xs[i]) }
-export const forEachIndexed = (f, xs) => { for (let i = 0; i < xs.length; i++) f(xs[i], i) }
 export const filter = (f, xs) => {
   const ys = []
   for (let i = 0; i < xs.length; i++) f(xs[i]) && ys.push(xs[i])
