@@ -1,15 +1,16 @@
 /* global AudioContext */
 const test = require('tape')
 require('../WebAudioTestAPISetup')
-const createVirtualAudioGraph = require('../..')
+const V = require('../..')
+const createVirtualAudioGraph = V.default
 
 test('update - single setValueAtTime', t => {
   const audioContext = new AudioContext()
   const virtualAudioGraph = createVirtualAudioGraph({audioContext})
 
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: ['setValueAtTime', 0.5, 1],
-  }]})
+    0: V.gain('output', {gain: ['setValueAtTime', 0.5, 1]}),
+  })
   t.deepEqual(audioContext.toJSON(), {
     inputs: [
       {gain: {inputs: [], value: 1}, inputs: [], name: 'GainNode'},
@@ -29,9 +30,11 @@ test('update - multiple setValueAtTime', t => {
   const virtualAudioGraph = createVirtualAudioGraph({audioContext})
 
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
-                                  ['setValueAtTime', 1, 1],
-                                  ['setValueAtTime', 0.5, 2]]}],
+    0: V.gain('output', {gain: [
+      ['setValueAtTime', 0, 0],
+      ['setValueAtTime', 1, 1],
+      ['setValueAtTime', 0.5, 2]]}
+    ),
   })
   t.deepEqual(audioContext.toJSON(), {
     inputs: [
@@ -54,8 +57,8 @@ test('update - overides setValueAtTime', t => {
   const virtualAudioGraph = createVirtualAudioGraph({audioContext})
 
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: ['setValueAtTime', 0.5, 1],
-  }]})
+    0: V.gain('output', {gain: ['setValueAtTime', 0.5, 1]}),
+  })
   t.deepEqual(audioContext.toJSON(), {
     inputs: [
       {gain: {inputs: [], value: 1}, inputs: [], name: 'GainNode'},
@@ -68,15 +71,15 @@ test('update - overides setValueAtTime', t => {
   t.is(gain.$valueAtTime('00:01.000'), 0.5)
   t.is(gain.$valueAtTime('23:59.999'), 0.5)
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: ['setValueAtTime', 0.75, 0.5],
-  }]})
+    0: V.gain('output', {gain: ['setValueAtTime', 0.75, 0.5]}),
+  })
   t.is(gain.$valueAtTime('00:00.000'), 1)
   t.is(gain.$valueAtTime('00:00.499'), 1)
   t.is(gain.$valueAtTime('00:00.500'), 0.75)
   t.is(gain.$valueAtTime('23:59.999'), 0.75)
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: ['setValueAtTime', 0.75, 1],
-  }]})
+    0: V.gain('output', {gain: ['setValueAtTime', 0.75, 1]}),
+  })
   t.is(gain.$valueAtTime('00:00.000'), 1)
   t.is(gain.$valueAtTime('00:00.999'), 1)
   t.is(gain.$valueAtTime('00:01.000'), 0.75)
@@ -89,12 +92,12 @@ test('update - setValueAtTime with linearRampToValueAtTime', t => {
   const virtualAudioGraph = createVirtualAudioGraph({audioContext})
 
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: [['setValueAtTime', 0.25, 0.25],
-                                  ['linearRampToValueAtTime', 0.5, 0.5]]}],
+    0: V.gain('output', {gain: [['setValueAtTime', 0.25, 0.25],
+                                  ['linearRampToValueAtTime', 0.5, 0.5]]}),
   })
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
-                                  ['linearRampToValueAtTime', 1, 1]]}],
+    0: V.gain('output', {gain: [['setValueAtTime', 0, 0],
+                                  ['linearRampToValueAtTime', 1, 1]]}),
   })
   t.deepEqual(audioContext.toJSON(), {
     inputs: [
@@ -119,12 +122,12 @@ test('update - setValueAtTime with exponentialRampToValueAtTime', t => {
   const virtualAudioGraph = createVirtualAudioGraph({audioContext})
 
   virtualAudioGraph.update({
-    0: ['oscillator', 'output', {frequency: [['setValueAtTime', 220, 0],
-                                             ['exponentialRampToValueAtTime', 1320, 5]]}],
+    0: V.oscillator('output', {frequency: [['setValueAtTime', 220, 0],
+                                             ['exponentialRampToValueAtTime', 1320, 5]]}),
   })
   virtualAudioGraph.update({
-    0: ['oscillator', 'output', {frequency: [['setValueAtTime', 440, 0],
-                                             ['exponentialRampToValueAtTime', 880, 1]]}],
+    0: V.oscillator('output', {frequency: [['setValueAtTime', 440, 0],
+                                             ['exponentialRampToValueAtTime', 880, 1]]}),
   })
   t.deepEqual(audioContext.toJSON(), {
     inputs: [
@@ -155,12 +158,16 @@ test('update - setValueAtTime with setTargetAtTime', t => {
   const virtualAudioGraph = createVirtualAudioGraph({audioContext})
 
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
-                                  ['setTargetAtTime', 1, 1, 0.75]]}],
+    0: V.gain('output', {gain: [
+      ['setValueAtTime', 0, 0],
+      ['setTargetAtTime', 1, 1, 0.75]]}
+    ),
   })
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
-                                  ['setTargetAtTime', 1, 1, 0.5]]}],
+    0: V.gain('output', {gain: [
+      ['setValueAtTime', 0, 0],
+      ['setTargetAtTime', 1, 1, 0.5]]}
+    ),
   })
   t.deepEqual(audioContext.toJSON(), {
     inputs: [
@@ -188,13 +195,17 @@ test('update - setValueAtTime with setValueCurveAtTime', t => {
 
   const waveArray0 = Float32Array.of(0, 0.2, 0.4, 0.8)
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
-                                  ['setValueCurveAtTime', waveArray0, 1, 1]]}],
+    0: V.gain('output', {gain: [
+      ['setValueAtTime', 0, 0],
+      ['setValueCurveAtTime', waveArray0, 1, 1]],
+    }),
   })
   const waveArray1 = Float32Array.of(0.5, 0.75, 0.25, 1)
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: [['setValueAtTime', 0, 0],
-                                  ['setValueCurveAtTime', waveArray1, 1, 1]]}],
+    0: V.gain('output', {gain: [
+      ['setValueAtTime', 0, 0],
+      ['setValueCurveAtTime', waveArray1, 1, 1],
+    ]}),
   })
   t.deepEqual(audioContext.toJSON(), {
     inputs: [

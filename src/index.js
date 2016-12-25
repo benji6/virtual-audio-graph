@@ -1,70 +1,39 @@
-/* global AudioContext */
-import {equals, forEach} from './utils'
-import connectAudioNodes from './connectAudioNodes'
-import createVirtualAudioNode from './createVirtualAudioNode'
+import createVirtualAudioGraph from './createVirtualAudioGraph'
 
-const disconnectParents = (virtualNode, virtualNodes) => forEach(
-  key => virtualNodes[key].disconnect(virtualNode),
-  Object.keys(virtualNodes)
-)
-
-export default ({
-  audioContext = new AudioContext(),
-  output = audioContext.destination,
-} = {}) => {
+const createStandardNode = node => (output, params, input) => {
+  if (output == null && node !== 'createMediaStreamDestination') {
+    throw new Error(`output not specified for ${node} node`)
+  }
   return {
-    audioContext,
-    get currentTime () { return audioContext.currentTime },
-    getAudioNodeById (id) { return this.virtualNodes[id].audioNode },
-    update (newGraph) {
-      forEach(id => {
-        if (newGraph.hasOwnProperty(id)) return
-        const virtualAudioNode = this.virtualNodes[id]
-        virtualAudioNode.disconnectAndDestroy()
-        disconnectParents(virtualAudioNode, this.virtualNodes)
-        delete this.virtualNodes[id]
-      }, Object.keys(this.virtualNodes))
-
-      forEach(key => {
-        if (key === 'output') throw new Error('"output" is not a valid id')
-        const newNodeParams = newGraph[key]
-        const [paramsNodeName, paramsOutput, paramsParams] = newNodeParams
-        if (paramsOutput == null && paramsNodeName !== 'mediaStreamDestination') {
-          throw new Error(`output not specified for node key ${key}`)
-        }
-        const virtualAudioNode = this.virtualNodes[key]
-        if (virtualAudioNode == null) {
-          this.virtualNodes[key] = createVirtualAudioNode(audioContext, newNodeParams)
-          return
-        }
-        if (
-          (paramsParams && paramsParams.startTime) !==
-            (virtualAudioNode.params && virtualAudioNode.params.startTime) ||
-          (paramsParams && paramsParams.stopTime) !==
-            (virtualAudioNode.params && virtualAudioNode.params.stopTime) ||
-          paramsNodeName !== virtualAudioNode.node
-        ) {
-          virtualAudioNode.disconnectAndDestroy()
-          disconnectParents(virtualAudioNode, this.virtualNodes)
-          this.virtualNodes[key] = createVirtualAudioNode(audioContext, newNodeParams)
-          return
-        }
-        if (!equals(paramsOutput, virtualAudioNode.output)) {
-          virtualAudioNode.disconnect()
-          disconnectParents(virtualAudioNode, this.virtualNodes)
-          virtualAudioNode.output = paramsOutput
-        }
-
-        virtualAudioNode.update(paramsParams)
-      }, Object.keys(newGraph))
-
-      connectAudioNodes(
-        this.virtualNodes,
-        virtualNode => virtualNode.connect(output)
-      )
-
-      return this
-    },
-    virtualNodes: {},
+    input,
+    node,
+    output,
+    params,
   }
 }
+
+export const analyser = createStandardNode('createAnalyser')
+export const biquadFilter = createStandardNode('createBiquadFilter')
+export const bufferSource = createStandardNode('createBufferSource')
+export const channelMerger = createStandardNode('createChannelMerger')
+export const channelSplitter = createStandardNode('createChannelSplitter')
+export const convolver = createStandardNode('createConvolver')
+export const delay = createStandardNode('createDelay')
+export const dynamicsCompressor = createStandardNode('createDynamicsCompressor')
+export const gain = createStandardNode('createGain')
+export const mediaElementSource = createStandardNode('createMediaElementSource')
+export const mediaStreamDestination = createStandardNode('createMediaStreamDestination')
+export const mediaStreamSource = createStandardNode('createMediaStreamSource')
+export const oscillator = createStandardNode('createOscillator')
+export const panner = createStandardNode('createPanner')
+export const stereoPanner = createStandardNode('createStereoPanner')
+export const waveShaper = createStandardNode('createWaveShaper')
+
+export const createNode = audioGraphParamsFactory => (output, params) => ({
+  audioGraphParamsFactory,
+  isCustomVirtualNode: true,
+  output,
+  params,
+})
+
+export default createVirtualAudioGraph

@@ -16,8 +16,8 @@ const connect = function (...connectArgs) {
 
 const createAudioNode = (audioContext, name, constructorParam, {startTime, stopTime}) => {
   const audioNode = constructorParam
-    ? audioContext[`create${capitalize(name)}`](constructorParam)
-    : audioContext[`create${capitalize(name)}`]()
+    ? audioContext[name](constructorParam)
+    : audioContext[name]()
   if (startAndStopNodes.indexOf(name) !== -1) {
     if (startTime == null) audioNode.start(); else audioNode.start(startTime)
     if (stopTime != null) audioNode.stop(stopTime)
@@ -80,7 +80,7 @@ const update = function (params = {}) {
   return this
 }
 
-export default (audioContext, [node, output, params, input]) => {
+export default (audioContext, {node, output, params, input}) => {
   const paramsObj = params || {}
   const {startTime, stopTime} = paramsObj
   const constructorParam = paramsObj[find(key => constructorParamsKeys.indexOf(key) !== -1, Object.keys(paramsObj))]

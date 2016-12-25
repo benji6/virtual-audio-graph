@@ -50,9 +50,7 @@ const update = function (params = {}) {
   return this
 }
 
-const createCustomVirtualAudioNode = (audioContext, [audioGraphParamsFactory, output, params]) => {
-  params = params || {}
-
+const createCustomVirtualAudioNode = (audioContext, {audioGraphParamsFactory, output, params}) => {
   const virtualNodes = mapObj(
     virtualAudioNodeParam => createVirtualAudioNode(audioContext, virtualAudioNodeParam),
     audioGraphParamsFactory(params)
@@ -69,7 +67,7 @@ const createCustomVirtualAudioNode = (audioContext, [audioGraphParamsFactory, ou
     isCustomVirtualNode: true,
     node: audioGraphParamsFactory,
     output,
-    params,
+    params: params || {},
     update,
     virtualNodes,
   }
