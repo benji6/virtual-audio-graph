@@ -81,9 +81,9 @@ const update = function (params = {}) {
 }
 
 export default (audioContext, [node, output, params, input]) => {
-  params = params || {}
-  const {startTime, stopTime} = params
-  const constructorParam = params[find(key => constructorParamsKeys.indexOf(key) !== -1, Object.keys(params))]
+  const paramsObj = params || {}
+  const {startTime, stopTime} = paramsObj
+  const constructorParam = paramsObj[find(key => constructorParamsKeys.indexOf(key) !== -1, Object.keys(paramsObj))]
   const virtualNode = {
     audioNode: createAudioNode(audioContext, node, constructorParam, {startTime, stopTime}),
     connect,
@@ -98,5 +98,5 @@ export default (audioContext, [node, output, params, input]) => {
     stopCalled: stopTime !== undefined,
     update,
   }
-  return virtualNode.update(params)
+  return virtualNode.update(paramsObj)
 }

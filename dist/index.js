@@ -331,14 +331,13 @@ var createStandardVirtualAudioNode = (function (audioContext, _ref4) {
       params = _ref5[2],
       input = _ref5[3];
 
-  params = params || {};
-  var _params = params,
-      startTime = _params.startTime,
-      stopTime = _params.stopTime;
+  var paramsObj = params || {};
+  var startTime = paramsObj.startTime,
+      stopTime = paramsObj.stopTime;
 
-  var constructorParam = params[find(function (key) {
+  var constructorParam = paramsObj[find(function (key) {
     return constructorParamsKeys.indexOf(key) !== -1;
-  }, Object.keys(params))];
+  }, Object.keys(paramsObj))];
   var virtualNode = {
     audioNode: createAudioNode(audioContext, node, constructorParam, { startTime: startTime, stopTime: stopTime }),
     connect: connect,
@@ -353,7 +352,7 @@ var createStandardVirtualAudioNode = (function (audioContext, _ref4) {
     stopCalled: stopTime !== undefined,
     update: update
   };
-  return virtualNode.update(params);
+  return virtualNode.update(paramsObj);
 });
 
 var connect$1 = function connect() {
