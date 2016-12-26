@@ -41,7 +41,7 @@ const disconnectAndDestroy = function () {
 }
 
 const update = function (params = {}) {
-  const audioGraphParamsFactoryValues = values(this.audioGraphParamsFactory(params))
+  const audioGraphParamsFactoryValues = values(this.node(params))
   const keys = Object.keys(this.virtualNodes)
   for (let i = 0; i < keys.length; i++) {
     this.virtualNodes[keys[i]].update(audioGraphParamsFactoryValues[i][2])
@@ -50,26 +50,23 @@ const update = function (params = {}) {
   return this
 }
 
-const createCustomVirtualAudioNode = (audioContext, [audioGraphParamsFactory, output, params]) => {
-  params = params || {}
-
+const createCustomVirtualAudioNode = (audioContext, [node, output, params]) => {
   const virtualNodes = mapObj(
     virtualAudioNodeParam => createVirtualAudioNode(audioContext, virtualAudioNodeParam),
-    audioGraphParamsFactory(params)
+    node(params)
   )
 
   connectAudioNodes(virtualNodes)
 
   return {
-    audioGraphParamsFactory,
     connect,
     connected: false,
     disconnect,
     disconnectAndDestroy,
     isCustomVirtualNode: true,
-    node: audioGraphParamsFactory,
+    node,
     output,
-    params,
+    params: params || {},
     update,
     virtualNodes,
   }

@@ -389,7 +389,7 @@ var disconnectAndDestroy$1 = function disconnectAndDestroy() {
 var update$1 = function update() {
   var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-  var audioGraphParamsFactoryValues = values(this.audioGraphParamsFactory(params));
+  var audioGraphParamsFactoryValues = values(this.node(params));
   var keys = Object.keys(this.virtualNodes);
   for (var i = 0; i < keys.length; i++) {
     this.virtualNodes[keys[i]].update(audioGraphParamsFactoryValues[i][2]);
@@ -400,28 +400,25 @@ var update$1 = function update() {
 
 var createCustomVirtualAudioNode = function createCustomVirtualAudioNode(audioContext, _ref) {
   var _ref2 = slicedToArray(_ref, 3),
-      audioGraphParamsFactory = _ref2[0],
+      node = _ref2[0],
       output = _ref2[1],
       params = _ref2[2];
 
-  params = params || {};
-
   var virtualNodes = mapObj(function (virtualAudioNodeParam) {
     return createVirtualAudioNode(audioContext, virtualAudioNodeParam);
-  }, audioGraphParamsFactory(params));
+  }, node(params));
 
   connectAudioNodes(virtualNodes);
 
   return {
-    audioGraphParamsFactory: audioGraphParamsFactory,
     connect: connect$1,
     connected: false,
     disconnect: disconnect$1,
     disconnectAndDestroy: disconnectAndDestroy$1,
     isCustomVirtualNode: true,
-    node: audioGraphParamsFactory,
+    node: node,
     output: output,
-    params: params,
+    params: params || {},
     update: update$1,
     virtualNodes: virtualNodes
   };
