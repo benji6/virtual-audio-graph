@@ -23,7 +23,7 @@
     "build": "rollup -c configRollup.js",
     "prepublish": "npm run build && npm test",
     "spec": "npm run build && tape 'test/**/*.js'",
-    "test": "concurrently 'eslint .' 'npm run spec'",
+    "test": "eslint . && npm run spec",
     "watch-spec": "nodemon --watch src --watch test --exec npm run spec",
     "watch-test": "nodemon --watch src --watch test --exec npm t"
   },
@@ -35,7 +35,6 @@
   "homepage": "https://github.com/benji6/virtual-audio-graph",
   "devDependencies": {
     "babel-preset-es2015-rollup": "^3.0.0",
-    "concurrently": "^3.1.0",
     "eslint": "^3.0.1",
     "eslint-config-benji6": "benji6/eslint-config-benji6.git#v0.4.0",
     "nodemon": "^1.9.2",
