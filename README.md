@@ -234,18 +234,23 @@ ___
 ```javascript
 const {audioContext, audioContext: {sampleRate}} = virtualAudioGraph
 const buffer = audioContext.createBuffer(2, sampleRate * 2, sampleRate)
-['bufferSource', output, {buffer,
-                          loop,
-                          loopEnd,
-                          loopStart,
-                          onended,
-                          playbackRate,
-                          // time in seconds since virtualAudioGraph.currentTime
-                          // was 0, if not provided then node starts immediately
-                          startTime,
-                          // if not provided then stop is not called on node
-                          // until it is disconnected
-                          stopTime}]
+['bufferSource', output, {
+  buffer,
+  loop,
+  loopEnd,
+  loopStart,
+  // The offset parameter, which defaults to 0
+  // and defines where the playback will start
+  offsetTime,
+  onended,
+  playbackRate,
+  // time in seconds since virtualAudioGraph.currentTime
+  // was 0, if not provided then node starts immediately
+  startTime,
+  // if not provided then stop is not called on node
+  // until it is disconnected
+  stopTime
+}]
 ```
 ___
 

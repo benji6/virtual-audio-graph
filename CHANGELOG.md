@@ -1,5 +1,11 @@
 # Release Notes
 
+## 0.19.x
+
+### Added
+
+`bufferSource` now supports `offsetTime`
+
 ## 0.18.x
 
 virtual-audio-graph no longer has any external dependencies
