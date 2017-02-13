@@ -1,6 +1,6 @@
 {
   "name": "virtual-audio-graph",
-  "version": "0.18.4",
+  "version": "0.19.0",
   "description": "Library for declaratively manipulating the Web Audio API",
   "keywords": [
     "api",
