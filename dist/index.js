@@ -234,12 +234,14 @@ var connect = function connect() {
 };
 
 var createAudioNode = function createAudioNode(audioContext, name, constructorParam, _ref) {
-  var startTime = _ref.startTime,
+  var offsetTime = _ref.offsetTime,
+      startTime = _ref.startTime,
       stopTime = _ref.stopTime;
 
+  offsetTime = offsetTime || 0;
   var audioNode = constructorParam ? audioContext['create' + capitalize(name)](constructorParam) : audioContext['create' + capitalize(name)]();
   if (startAndStopNodes.indexOf(name) !== -1) {
-    if (startTime == null) audioNode.start();else audioNode.start(startTime);
+    if (startTime == null) audioNode.start(audioContext.currentTime, offsetTime);else audioNode.start(startTime, offsetTime);
     if (stopTime != null) audioNode.stop(stopTime);
   }
   return audioNode;
@@ -332,14 +334,15 @@ var createStandardVirtualAudioNode = (function (audioContext, _ref4) {
       input = _ref5[3];
 
   var paramsObj = params || {};
-  var startTime = paramsObj.startTime,
+  var offsetTime = paramsObj.offsetTime,
+      startTime = paramsObj.startTime,
       stopTime = paramsObj.stopTime;
 
   var constructorParam = paramsObj[find(function (key) {
     return constructorParamsKeys.indexOf(key) !== -1;
   }, Object.keys(paramsObj))];
   var virtualNode = {
-    audioNode: createAudioNode(audioContext, node, constructorParam, { startTime: startTime, stopTime: stopTime }),
+    audioNode: createAudioNode(audioContext, node, constructorParam, { offsetTime: offsetTime, startTime: startTime, stopTime: stopTime }),
     connect: connect,
     connected: false,
     connections: [],

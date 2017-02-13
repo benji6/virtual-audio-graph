@@ -14,12 +14,13 @@ const connect = function (...connectArgs) {
   this.connected = true
 }
 
-const createAudioNode = (audioContext, name, constructorParam, {startTime, stopTime}) => {
+const createAudioNode = (audioContext, name, constructorParam, {offsetTime, startTime, stopTime}) => {
+  offsetTime = offsetTime || 0
   const audioNode = constructorParam
     ? audioContext[`create${capitalize(name)}`](constructorParam)
     : audioContext[`create${capitalize(name)}`]()
   if (startAndStopNodes.indexOf(name) !== -1) {
-    if (startTime == null) audioNode.start(); else audioNode.start(startTime)
+    if (startTime == null) audioNode.start(audioContext.currentTime, offsetTime); else audioNode.start(startTime, offsetTime)
     if (stopTime != null) audioNode.stop(stopTime)
   }
   return audioNode
@@ -82,10 +83,10 @@ const update = function (params = {}) {
 
 export default (audioContext, [node, output, params, input]) => {
   const paramsObj = params || {}
-  const {startTime, stopTime} = paramsObj
+  const {offsetTime, startTime, stopTime} = paramsObj
   const constructorParam = paramsObj[find(key => constructorParamsKeys.indexOf(key) !== -1, Object.keys(paramsObj))]
   const virtualNode = {
-    audioNode: createAudioNode(audioContext, node, constructorParam, {startTime, stopTime}),
+    audioNode: createAudioNode(audioContext, node, constructorParam, {offsetTime, startTime, stopTime}),
     connect,
     connected: false,
     connections: [],
