@@ -8,8 +8,8 @@ test('update - single setValueAtTime', t => {
   const virtualAudioGraph = createVirtualAudioGraph({audioContext})
 
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: ['setValueAtTime', 0.5, 1],
-  }]})
+    0: ['gain', 'output', {gain: ['setValueAtTime', 0.5, 1]}],
+  })
   t.deepEqual(audioContext.toJSON(), {
     inputs: [
       {gain: {inputs: [], value: 1}, inputs: [], name: 'GainNode'},
@@ -54,8 +54,8 @@ test('update - overides setValueAtTime', t => {
   const virtualAudioGraph = createVirtualAudioGraph({audioContext})
 
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: ['setValueAtTime', 0.5, 1],
-  }]})
+    0: ['gain', 'output', {gain: ['setValueAtTime', 0.5, 1]}],
+  })
   t.deepEqual(audioContext.toJSON(), {
     inputs: [
       {gain: {inputs: [], value: 1}, inputs: [], name: 'GainNode'},
@@ -68,15 +68,15 @@ test('update - overides setValueAtTime', t => {
   t.is(gain.$valueAtTime('00:01.000'), 0.5)
   t.is(gain.$valueAtTime('23:59.999'), 0.5)
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: ['setValueAtTime', 0.75, 0.5],
-  }]})
+    0: ['gain', 'output', {gain: ['setValueAtTime', 0.75, 0.5]}],
+  })
   t.is(gain.$valueAtTime('00:00.000'), 1)
   t.is(gain.$valueAtTime('00:00.499'), 1)
   t.is(gain.$valueAtTime('00:00.500'), 0.75)
   t.is(gain.$valueAtTime('23:59.999'), 0.75)
   virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: ['setValueAtTime', 0.75, 1],
-  }]})
+    0: ['gain', 'output', {gain: ['setValueAtTime', 0.75, 1]}],
+  })
   t.is(gain.$valueAtTime('00:00.000'), 1)
   t.is(gain.$valueAtTime('00:00.999'), 1)
   t.is(gain.$valueAtTime('00:01.000'), 0.75)
