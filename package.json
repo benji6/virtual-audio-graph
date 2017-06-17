@@ -35,7 +35,7 @@
   "homepage": "https://github.com/benji6/virtual-audio-graph",
   "devDependencies": {
     "babel-preset-es2015-rollup": "^3.0.0",
-    "eslint": "^3.0.1",
+    "eslint": "^4",
     "eslint-config-benji6": "^1.2.0",
     "nodemon": "^1.9.2",
     "rollup": "^0.42.0",

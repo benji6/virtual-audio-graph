@@ -117,7 +117,7 @@ test('update - handles random strings for ids', t => {
 
   virtualAudioGraph.update({0: [pingPongDelay, 'output']})
 
-   /* eslint-disable */
+  /* eslint-disable */
   t.deepEqual(audioContext.toJSON(), {
     name: 'AudioDestinationNode', inputs: [
       { name: 'StereoPannerNode', pan: { value: 1, inputs: [  ] }, inputs: [ { name: 'DelayNode', delayTime: Object({ value: 0.3333333333333333, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.3333333333333333, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.3333333333333333, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.3333333333333333, inputs: [  ] }), inputs: [ '<circular:DelayNode>' ] }) ] }) ] }) ] } ] },
