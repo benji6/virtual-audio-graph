@@ -23,9 +23,9 @@
     "build": "rollup -c configRollup.js",
     "prepublish": "npm run build && npm test",
     "spec": "npm run build && tape 'test/**/*.js'",
+    "spec-watch": "nodemon --watch src --watch test --exec npm run spec",
     "test": "eslint . && npm run spec",
-    "watch-spec": "nodemon --watch src --watch test --exec npm run spec",
-    "watch-test": "nodemon --watch src --watch test --exec npm t"
+    "test-watch": "nodemon --watch src --watch test --exec npm t"
   },
   "author": "Ben Hall",
   "license": "MIT",
