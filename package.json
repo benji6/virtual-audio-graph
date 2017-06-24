@@ -21,6 +21,7 @@
   },
   "scripts": {
     "build": "rollup -c",
+    "docs": "rollup -c rollup.config.docs.js",
     "prepublish": "npm run build && npm test",
     "spec": "npm run build && tape 'test/**/*.js'",
     "spec-watch": "nodemon --watch src --watch test --exec npm run spec",
