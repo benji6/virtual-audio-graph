@@ -171,32 +171,24 @@ var connectAudioNodes = (function (virtualGraph) {
       if (output === 'output') return handleConnectionToOutput(virtualNode);
 
       if (Object.prototype.toString.call(output) === '[object Object]') {
-        var _ret = function () {
-          var key = output.key,
-              destination = output.destination,
-              inputs = output.inputs,
-              outputs = output.outputs;
+        var key = output.key,
+            destination = output.destination,
+            inputs = output.inputs,
+            outputs = output.outputs;
 
 
-          if (key == null) {
-            throw new Error('id: ' + id + ' - output object requires a key property');
+        if (key == null) {
+          throw new Error('id: ' + id + ' - output object requires a key property');
+        }
+        if (inputs) {
+          if (inputs.length !== outputs.length) {
+            throw new Error('id: ' + id + ' - outputs and inputs arrays are not the same length');
           }
-          if (inputs) {
-            if (inputs.length !== outputs.length) {
-              throw new Error('id: ' + id + ' - outputs and inputs arrays are not the same length');
-            }
-            return {
-              v: forEach(function (input, i) {
-                return virtualNode.connect(virtualGraph[key].audioNode, outputs[i], input);
-              }, inputs)
-            };
-          }
-          return {
-            v: virtualNode.connect(virtualGraph[key].audioNode[destination])
-          };
-        }();
-
-        if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+          return forEach(function (input, i) {
+            return virtualNode.connect(virtualGraph[key].audioNode, outputs[i], input);
+          }, inputs);
+        }
+        return virtualNode.connect(virtualGraph[key].audioNode[destination]);
       }
 
       var destinationVirtualAudioNode = virtualGraph[output];
