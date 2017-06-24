@@ -24,6 +24,10 @@ virtual-audio-graph is by default distributed as ES5, however, it also has a `js
 
 See [changelog](/CHANGELOG.md).
 
+## Demos
+
+There are some rudimentary demos [here](http://benji6.github.io/virtual-audio-graph). virtual-audio-graph is the core audio library in [Andromeda](https://github.com/benji6/andromeda).
+
 ## API
 
 ### Creating a new virtual-audio-graph
