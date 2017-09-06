@@ -1,3 +1,4 @@
+.esm-cache
 *.log
 coverage
 node_modules

@@ -1,6 +1,5 @@
 const test = require('tape')
-require('babel-register')
-const equals = require('../src/utils').equals
+const equals = require('@std/esm')(module)('../src/utils').equals
 
 const a = []
 const b = a
