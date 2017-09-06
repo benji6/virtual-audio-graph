@@ -2,9 +2,11 @@ import babel from 'rollup-plugin-babel'
 import babelrc from 'babelrc-rollup'
 
 export default {
-  dest: 'docs/main.js',
-  entry: 'docsSrc/main.js',
-  format: 'cjs',
+  input: 'docsSrc/main.js',
+  output: {
+    file: 'docs/main.js',
+    format: 'cjs',
+  },
   plugins: [
     babel(babelrc()),
   ],
