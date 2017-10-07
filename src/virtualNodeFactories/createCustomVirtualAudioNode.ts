@@ -56,7 +56,7 @@ const createCustomVirtualAudioNode = (audioContext, [node, output, params]) => {
     node(params)
   )
 
-  connectAudioNodes(virtualNodes)
+  connectAudioNodes(virtualNodes, () => {})
 
   return {
     connect,

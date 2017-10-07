@@ -18,7 +18,7 @@ Inspired by [virtual-dom](https://github.com/Matt-Esch/virtual-dom) and [React](
 npm i -S virtual-audio-graph
 ```
 
-virtual-audio-graph is by default distributed as ES5, however, it also has a `jsnext:main` property in its package.json ([more info](https://github.com/rollup/rollup/wiki/jsnext:main)) so it may also be consumed as an ES2015 module by tools like [Rollup](https://github.com/rollup/rollup).
+virtual-audio-graph is distributed as a bundled CJS module by default, however, there is also a `module` property in its package.json so tools like [Rollup](https://github.com/rollup/rollup) and [Webpack](https://github.com/webpack/webpack) will consume an ES modules build.
 
 ## Size
 

@@ -1,6 +1,6 @@
 import {forEach, values} from './utils'
 
-export default (virtualGraph, handleConnectionToOutput = () => {}) =>
+export default (virtualGraph, handleConnectionToOutput) =>
   forEach(id => {
     const virtualNode = virtualGraph[id]
     const {output} = virtualNode
