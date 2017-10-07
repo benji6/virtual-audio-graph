@@ -61,7 +61,7 @@ const update = function (params = {}) {
     if (this.params && this.params[key] === param) return
     if (audioParamProperties.indexOf(key) !== -1) {
       if (Array.isArray(param)) {
-        if (this.params && !equals(param, this.params[key], {strict: true})) {
+        if (this.params && !equals(param, this.params[key])) {
           this.audioNode[key].cancelScheduledValues(0)
         }
         const callMethod = ([methodName, ...args]) => this.audioNode[key][methodName](...args)
