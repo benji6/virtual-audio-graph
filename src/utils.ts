@@ -1,5 +1,10 @@
-export const capitalize = a => a.charAt(0).toUpperCase() + a.substring(1)
-export const equals = (a, b) => {
+interface GenericObject<T> {
+  [index: string]: T
+}
+
+export const capitalize = (a: string): string => a.charAt(0).toUpperCase() + a.substring(1)
+
+export const equals = (a: any, b: any): boolean => {
   if (a === b) return true
   const typeA = typeof a
   if (typeA !== typeof b || typeA !== 'object') return false
@@ -17,19 +22,28 @@ export const equals = (a, b) => {
   }
   return true
 }
-export const forEach = (f, xs) => { for (let i = 0; i < xs.length; i++) f(xs[i]) }
-export const filter = (f, xs) => {
+
+export const forEach = <A>(f: (x: A, i: number) => void, xs: A[]): void => {
+  for (let i = 0; i < xs.length; i++) f(xs[i], i)
+}
+
+export const filter = <X>(f: (x: X) => boolean, xs: X[]): X[] => {
   const ys = []
   for (let i = 0; i < xs.length; i++) f(xs[i]) && ys.push(xs[i])
   return ys
 }
-export const find = (f, xs) => { for (let i = 0; i < xs.length; i++) if (f(xs[i])) return xs[i] }
-export const mapObj = (f, o) => {
+
+export const find = <X>(f: (x: X) => boolean, xs: X[]): X => {
+  for (let i = 0; i < xs.length; i++) if (f(xs[i])) return xs[i]
+}
+
+export const mapObj = <A, B>(f: (a: A) => B, o: GenericObject<A>): GenericObject<B> => {
   const p = {}
   for (const key in o) if (Object.prototype.hasOwnProperty.call(o, key)) p[key] = f(o[key])
   return p
 }
-export const values = obj => {
+
+export const values = <A>(obj: GenericObject<A>): A[] => {
   const keys = Object.keys(obj)
   const ret = []
   for (let i = 0; i < keys.length; i++) ret[i] = obj[keys[i]]

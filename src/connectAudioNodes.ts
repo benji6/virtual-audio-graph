@@ -1,6 +1,6 @@
-import {forEach, values} from './utils'
+import { forEach, values } from './utils'
 
-export default (virtualGraph, handleConnectionToOutput = () => {}) =>
+export default (virtualGraph, handleConnectionToOutput) =>
   forEach(id => {
     const virtualNode = virtualGraph[id]
     const {output} = virtualNode
@@ -20,7 +20,7 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
           }
           return forEach(
             (input, i) => virtualNode.connect(virtualGraph[key].audioNode, outputs[i], input),
-            inputs
+            inputs,
           )
         }
         return virtualNode.connect(virtualGraph[key].audioNode[destination])
@@ -30,8 +30,8 @@ export default (virtualGraph, handleConnectionToOutput = () => {}) =>
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
         return forEach(
-          node => node.input === 'input' && virtualNode.connect(node.audioNode),
-          values(destinationVirtualAudioNode.virtualNodes)
+          (node: any) => node.input === 'input' && virtualNode.connect(node.audioNode),
+          values(destinationVirtualAudioNode.virtualNodes),
         )
       }
 

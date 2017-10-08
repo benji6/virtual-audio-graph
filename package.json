@@ -13,19 +13,19 @@
     "virtual",
     "web"
   ],
-  "main": "dist/index.js",
-  "jsnext:main": "src/index.js",
+  "main": "dist",
+  "module": "esm",
   "repository": {
     "type": "git",
     "url": "https://github.com/benji6/virtual-audio-graph.git"
   },
   "scripts": {
-    "build": "rollup -c | buble > dist/index.js",
-    "docs": "rollup -c rollup.config.docs.js | buble > docs/main.js",
+    "build": "tsc && rollup -c",
+    "docs": "tsc -p docsSrc && rollup -c docsSrc/rollup.config.js && rm -r docsSrc/esm",
     "prepublish": "npm run build && npm test",
     "spec": "npm run build && tape 'test/**/*.js'",
     "spec:watch": "nodemon --watch src --watch test --exec npm run spec",
-    "test": "eslint . && npm run spec",
+    "test": "tslint -c tslint.json 'src/**/*.ts' && tsc && eslint test && npm run spec",
     "test:watch": "nodemon --watch src --watch test --exec npm t"
   },
   "author": "Ben Hall",
@@ -35,13 +35,15 @@
   },
   "homepage": "https://github.com/benji6/virtual-audio-graph",
   "devDependencies": {
-    "@std/esm": "^0.7.1",
-    "buble": "^0.15.2",
+    "@std/esm": "^0.11.2",
     "eslint": "^4",
     "eslint-config-benji6": "^1.2.0",
     "nodemon": "^1.9.2",
     "rollup": "^0.49.0",
     "tape": "^4.5.1",
+    "tslint": "^5.7.0",
+    "tslint-config-standard": "^6.0.1",
+    "typescript": "^2.5.3",
     "web-audio-test-api": "^0.5.2"
   },
   "@std": {

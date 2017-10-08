@@ -1,5 +1,5 @@
 const test = require('tape')
-const equals = require('@std/esm')(module)('../src/utils').equals
+const equals = require('@std/esm')(module)('../esm/utils').equals
 
 const a = []
 const b = a

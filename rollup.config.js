@@ -1,6 +1,7 @@
 export default {
-  input: 'src/index.js',
+  input: 'esm/index.js',
   output: {
+    file: 'dist/index.js',
     format: 'cjs',
   },
 }
