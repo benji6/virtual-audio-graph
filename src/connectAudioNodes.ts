@@ -30,7 +30,7 @@ export default (virtualGraph, handleConnectionToOutput) =>
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
         return forEach(
-          node => node.input === 'input' && virtualNode.connect(node.audioNode),
+          (node: any) => node.input === 'input' && virtualNode.connect(node.audioNode),
           values(destinationVirtualAudioNode.virtualNodes),
         )
       }

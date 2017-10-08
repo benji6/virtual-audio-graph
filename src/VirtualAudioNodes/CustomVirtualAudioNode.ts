@@ -32,7 +32,7 @@ export default class CustomVirtualAudioNode {
 
   connect (...connectArgs) {
     forEach(
-      childVirtualNode => {
+      (childVirtualNode: any) => {
         const {output} = childVirtualNode
         if (
           output === 'output' ||
