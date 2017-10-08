@@ -1,11 +1,10 @@
-/* global AudioContext */
-import {equals, forEach} from './utils'
+import { equals, forEach } from './utils'
 import connectAudioNodes from './connectAudioNodes'
 import createVirtualAudioNode from './createVirtualAudioNode'
 
 const disconnectParents = (virtualNode, virtualNodes) => forEach(
   key => virtualNodes[key].disconnect(virtualNode),
-  Object.keys(virtualNodes)
+  Object.keys(virtualNodes),
 )
 
 export default ({
@@ -60,7 +59,7 @@ export default ({
 
       connectAudioNodes(
         this.virtualNodes,
-        virtualNode => virtualNode.connect(output)
+        virtualNode => virtualNode.connect(output),
       )
 
       return this

@@ -1,4 +1,4 @@
-import {capitalize, equals, filter, find, forEach} from '../utils'
+import { capitalize, equals, filter, find, forEach } from '../utils'
 import {
   audioParamProperties,
   constructorParamsKeys,
@@ -35,7 +35,7 @@ const disconnect = function (node) {
         if (!this.connections.some(x => x === childNode.audioNode)) return
         this.connections = filter(
           x => x !== childNode.audioNode,
-          this.connections
+          this.connections,
         )
       }, Object.keys(node.virtualNodes))
     } else {

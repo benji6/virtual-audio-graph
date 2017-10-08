@@ -16,7 +16,7 @@ const connect = function (...connectArgs) {
         Array.isArray(output) && output.indexOf('output') !== -1
       ) childVirtualNode.connect(...filter(Boolean, connectArgs))
     },
-    values(this.virtualNodes)
+    values(this.virtualNodes),
   )
   this.connected = true
 }
@@ -53,7 +53,7 @@ const update = function (params = {}) {
 const createCustomVirtualAudioNode = (audioContext, [node, output, params]) => {
   const virtualNodes = mapObj(
     virtualAudioNodeParam => createVirtualAudioNode(audioContext, virtualAudioNodeParam),
-    node(params)
+    node(params),
   )
 
   connectAudioNodes(virtualNodes, () => {})
