@@ -101,9 +101,9 @@ In the above example the first element in the array is the name of the AudioNode
 
 The above information should be enough to get started creating very simple audio graphs like the one above, but if you are still with me here is a more detailed overview about how this node array works broken down by element:
 
-- `0` - `String | Function` - required - as a string this is the name of the node we are creating (e.g. `'oscillator'` or `'gain'`). See the section on [Custom Nodes](#custom-nodes) for what happens when a function is provided instead.
+- `0` - `string | Function` - required - as a string this is the name of the node we are creating (e.g. `'oscillator'` or `'gain'`). See the section on [Custom Nodes](#custom-nodes) for what happens when a function is provided instead.
 
-- `1` - `String | Number | Object | [String | Number | Object]` - required - value specifying where this node should be connected. This could be:
+- `1` - `string | number | object | (string | number | object)[]` - required - value specifying where this node should be connected. This could be:
  - the reserved string `'output'` which connects to virtualAudioGraph's destination.
  - a string or number corresponding to a key for another node.
  - an object with a `key` property corresponding to the destination node key and a `destination` property with a string value specifying the AudioParam destination for connecting to a valid AudioParam.
@@ -122,7 +122,7 @@ The above information should be enough to get started creating very simple audio
   })
   ```
 
-- `2` - `Object | null | undefined` - optional object representing any properties to set/alter on the audio node created (details on properties available to audioNodes [here](#standard-nodes)). If the property you are setting is an AudioParam you may either assign it a value, or you can use AudioParam methods to specify behaviour of the parameter over time. To do so specify an array where the first element is the method name and the remaining elements are the arguments for that method. If scheduling multiple values specify an array of these arrays. [See here for more info on AudioParam methods](https://developer.mozilla.org/en-US/docs/Web/API/AudioParam). Here are examples of all supported methods:
+- `2` - `object | null | undefined` - optional object representing any properties to set/alter on the audio node created (details on properties available to audioNodes [here](#standard-nodes)). If the property you are setting is an AudioParam you may either assign it a value, or you can use AudioParam methods to specify behaviour of the parameter over time. To do so specify an array where the first element is the method name and the remaining elements are the arguments for that method. If scheduling multiple values specify an array of these arrays. [See here for more info on AudioParam methods](https://developer.mozilla.org/en-US/docs/Web/API/AudioParam). Here are examples of all supported methods:
   - specify an ordinary value
   ```javascript
   virtualAudioGraph.update({
@@ -182,7 +182,7 @@ The above information should be enough to get started creating very simple audio
   })
   ```
 
-- `3` - `String | undefined` - optionally specify this element as an input of a custom node by assigning `'input'` at this index. Only valid when defining nodes (see [below](#custom-nodes)).
+- `3` - `string | undefined` - optionally specify this element as an input of a custom node by assigning `'input'` at this index. Only valid when defining nodes (see [below](#custom-nodes)).
 
 ### Custom Nodes
 
