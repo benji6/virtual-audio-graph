@@ -1,6 +1,6 @@
-import createStandardVirtualAudioNode from './virtualNodeFactories/createStandardVirtualAudioNode'
-import createCustomVirtualAudioNode from './virtualNodeFactories/createCustomVirtualAudioNode'
+import StandardVirtualAudioNode from './VirtualAudioNodes/StandardVirtualAudioNode'
+import CustomVirtualAudioNode from './VirtualAudioNodes/CustomVirtualAudioNode'
 
 export default (audioContext, virtualAudioNodeParam) => typeof virtualAudioNodeParam[0] === 'function'
-  ? createCustomVirtualAudioNode(audioContext, virtualAudioNodeParam)
-  : createStandardVirtualAudioNode(audioContext, virtualAudioNodeParam)
+  ? new CustomVirtualAudioNode(audioContext, virtualAudioNodeParam)
+  : new StandardVirtualAudioNode(audioContext, virtualAudioNodeParam)
