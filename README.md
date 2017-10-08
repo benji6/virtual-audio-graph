@@ -104,10 +104,10 @@ The above information should be enough to get started creating very simple audio
 - `0` - `string | Function` - required - as a string this is the name of the node we are creating (e.g. `'oscillator'` or `'gain'`). See the section on [Custom Nodes](#custom-nodes) for what happens when a function is provided instead.
 
 - `1` - `string | number | object | (string | number | object)[]` - required - value specifying where this node should be connected. This could be:
- - the reserved string `'output'` which connects to virtualAudioGraph's destination.
- - a string or number corresponding to a key for another node.
- - an object with a `key` property corresponding to the destination node key and a `destination` property with a string value specifying the AudioParam destination for connecting to a valid AudioParam.
- - an array comprised by one or more of the above for specifying multiple outputs
+  - the reserved string `'output'` which connects to virtualAudioGraph's destination.
+  - a string or number corresponding to a key for another node.
+  - an object with a `key` property corresponding to the destination node key and a `destination` property with a string value specifying the AudioParam destination for connecting to a valid AudioParam.
+  - an array comprised by one or more of the above for specifying multiple outputs
 
  Here are some examples:
 
