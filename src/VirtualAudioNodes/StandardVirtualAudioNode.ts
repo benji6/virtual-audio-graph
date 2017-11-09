@@ -8,9 +8,13 @@ import {
 
 const createAudioNode = (audioContext, name, constructorParam, {offsetTime, startTime, stopTime}) => {
   offsetTime = offsetTime || 0
+  const func = `create${capitalize(name)}`
+  if (typeof audioContext[func] !== 'function') { throw new Error(`Unknown node type: ${name}`) }
+
   const audioNode = constructorParam
-    ? audioContext[`create${capitalize(name)}`](constructorParam)
-    : audioContext[`create${capitalize(name)}`]()
+    ? audioContext[func](constructorParam)
+    : audioContext[func]()
+
   if (startAndStopNodes.indexOf(name) !== -1) {
     if (startTime == null) audioNode.start(audioContext.currentTime, offsetTime); else audioNode.start(startTime, offsetTime)
     if (stopTime != null) audioNode.stop(stopTime)
