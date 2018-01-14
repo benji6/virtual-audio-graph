@@ -6,21 +6,19 @@ import CustomVirtualAudioNode from './VirtualAudioNodes/CustomVirtualAudioNode'
 import StandardVirtualAudioNode from './VirtualAudioNodes/StandardVirtualAudioNode'
 
 interface VirtualAudioNodes {
-  [key: string]: VirtualAudioNode | null
+  [key: string]: VirtualAudioNode
 }
 
 const disconnectParents = (vNode: VirtualAudioNode, vNodes: VirtualAudioNodes) => Object.keys(vNodes)
   .forEach(key => (vNodes[key] as StandardVirtualAudioNode).disconnect(vNode))
 
 class VirtualAudioGraph {
-  audioContext: AudioContext
-  output: AudioDestinationNode
   virtualNodes: VirtualAudioNodes = {}
 
-  constructor (audioContext: AudioContext, output: AudioDestinationNode) {
-    this.audioContext = audioContext
-    this.output = output
-  }
+  constructor (
+    public readonly audioContext: AudioContext,
+    public readonly output: AudioDestinationNode,
+  ) {}
 
   get currentTime () {
     return this.audioContext.currentTime
@@ -82,7 +80,8 @@ class VirtualAudioGraph {
   }
 }
 
-export default ({
-  audioContext = new AudioContext(),
-  output = audioContext.destination,
-} = {}) => new VirtualAudioGraph(audioContext, output)
+export default (config?: {audioContext?: AudioContext, output?: AudioDestinationNode}) => {
+  const audioContext = config && config.audioContext || new AudioContext
+  const output = config && config.output || audioContext.destination
+  return new VirtualAudioGraph(audioContext, output)
+}

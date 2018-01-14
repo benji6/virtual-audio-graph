@@ -1,5 +1,5 @@
 interface GenericObject<T> {
-  [index: string]: T
+  [key: string]: T
 }
 
 export const capitalize = (a: string): string => a.charAt(0).toUpperCase() + a.substring(1)
@@ -38,7 +38,7 @@ export const find = <X>(f: (x: X) => boolean, xs: X[]): X => {
 }
 
 export const mapObj = <A, B>(f: (a: A) => B, o: GenericObject<A>): GenericObject<B> => {
-  const p = {}
+  const p = {} as GenericObject<B>
   for (const key in o) if (Object.prototype.hasOwnProperty.call(o, key)) p[key] = f(o[key])
   return p
 }
