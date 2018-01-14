@@ -5,8 +5,15 @@ import {
   setters,
   startAndStopNodes,
 } from '../data'
+import CustomVirtualAudioNode from './CustomVirtualAudioNode'
+import VirtualAudioNode from '../VirtualAudioNode'
 
-const createAudioNode = (audioContext, name, constructorParam, {offsetTime, startTime, stopTime}) => {
+const createAudioNode = (
+  audioContext: AudioContext,
+  name: string,
+  constructorParam,
+  {offsetTime, startTime, stopTime},
+) => {
   offsetTime = offsetTime || 0
   const func = `create${capitalize(name)}`
   if (typeof audioContext[func] !== 'function') { throw new Error(`Unknown node type: ${name}`) }
@@ -58,21 +65,21 @@ export default class StandardVirtualAudioNode {
     this.connected = true
   }
 
-  disconnect (node) {
+  disconnect (node: VirtualAudioNode) {
     const {audioNode} = this
     if (node) {
       if (node.isCustomVirtualNode) {
         forEach(key => {
-          const childNode = node.virtualNodes[key]
+          const childNode = (node as CustomVirtualAudioNode).virtualNodes[key]
           if (!this.connections.some(x => x === childNode.audioNode)) return
           this.connections = filter(
             x => x !== childNode.audioNode,
             this.connections,
           )
-        }, Object.keys(node.virtualNodes))
+        }, Object.keys((node as CustomVirtualAudioNode).virtualNodes))
       } else {
-        if (!this.connections.some(x => x === node.audioNode)) return
-        this.connections = filter(x => x !== node.audioNode, this.connections)
+        if (!this.connections.some(x => x === (node as StandardVirtualAudioNode).audioNode)) return
+        this.connections = filter(x => x !== (node as StandardVirtualAudioNode).audioNode, this.connections)
       }
     }
     audioNode.disconnect && audioNode.disconnect()
