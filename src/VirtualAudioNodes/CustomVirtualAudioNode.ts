@@ -6,6 +6,7 @@ import {
   values,
 } from '../utils'
 import createVirtualAudioNode from '../createVirtualAudioNode'
+import VirtualAudioNode from '../VirtualAudioNode'
 
 export default class CustomVirtualAudioNode {
   connected: boolean
