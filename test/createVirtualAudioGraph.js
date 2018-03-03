@@ -1,8 +1,9 @@
 /* global AudioContext */
 const test = require('tape')
 require('./WebAudioTestAPISetup')
+const V = require('..')
+const createVirtualAudioGraph = V.default
 
-const createVirtualAudioGraph = require('..')
 const audioContext = new AudioContext()
 
 test('createVirtualAudioGraph - optionally takes audioContext property', t => {
@@ -16,7 +17,7 @@ test('createVirtualAudioGraph - optionally takes output parameter', t => {
   const gain = audioContext.createGain()
 
   createVirtualAudioGraph({audioContext, output: gain}).update({
-    0: ['gain', 'output', {gain: 0.2}],
+    0: V.gain('output', {gain: 0.2}),
   })
 
   t.deepEqual(gain.toJSON(), {
@@ -31,7 +32,7 @@ test('createVirtualAudioGraph - optionally takes output parameter', t => {
     name: 'GainNode',
   })
   createVirtualAudioGraph({audioContext}).update({
-    0: ['gain', 'output', {gain: 0.2}],
+    0: V.gain('output', {gain: 0.2}),
   })
   t.deepEqual(audioContext.toJSON(), {
     inputs: [

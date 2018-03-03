@@ -3,6 +3,7 @@
     "tslint-config-airbnb"
   ],
   "rules": {
+    "import-name": false,
     "no-increment-decrement": false,
     "no-this-assignment": false,
     "semicolon": [true, "never"]

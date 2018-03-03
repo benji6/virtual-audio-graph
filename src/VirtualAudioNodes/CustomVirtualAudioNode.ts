@@ -1,36 +1,26 @@
 import connectAudioNodes from '../connectAudioNodes'
+import { mapObj, values } from '../utils'
 import {
-  GenericObject,
-  mapObj,
-  values,
-} from '../utils'
-import createVirtualAudioNode from '../createVirtualAudioNode'
-import { Output, VirtualAudioNode, VirtualAudioNodeGraph } from '../types'
+  CustomVirtualAudioNodeFactory,
+  Output,
+  VirtualAudioNode,
+  VirtualAudioNodeGraph,
+  VirtualAudioNodeParams,
+} from '../types'
 
 export default class CustomVirtualAudioNode {
   public readonly audioNode: undefined = undefined
-  connected: boolean
-  params: object
-  virtualNodes: VirtualAudioNodeGraph
+  public connected: boolean
+  public params: VirtualAudioNodeParams
+  public virtualNodes: VirtualAudioNodeGraph
 
   constructor (
-    audioContext: AudioContext,
-    public readonly node: any,
+    public readonly node: CustomVirtualAudioNodeFactory,
     public output?: Output,
-    params?: any,
+    params?: VirtualAudioNodeParams,
   ) {
     this.connected = false
     this.params = params || {}
-
-    this.virtualNodes = mapObj(
-      (virtualAudioNodeParam: [any, any, any, any]) => createVirtualAudioNode(
-        audioContext,
-        virtualAudioNodeParam,
-      ),
-      node(params),
-    )
-
-    connectAudioNodes(this.virtualNodes, () => {})
   }
 
   connect (...connectArgs: any[]): void {
@@ -61,11 +51,25 @@ export default class CustomVirtualAudioNode {
     this.connected = false
   }
 
-  update (params = {}): this {
+  initialize (audioContext: AudioContext): this {
+    this.virtualNodes = mapObj(
+      (virtualAudioNodeParam: VirtualAudioNode) => virtualAudioNodeParam.initialize(
+        audioContext,
+      ),
+      this.node(this.params),
+    )
+
+    connectAudioNodes(this.virtualNodes, () => {})
+
+    return this
+  }
+
+  update (params: VirtualAudioNodeParams = {}): this {
     const audioGraphParamsFactoryValues = values(this.node(params))
     const keys = Object.keys(this.virtualNodes)
     for (let i = 0; i < keys.length; i++) {
-      this.virtualNodes[keys[i]].update(audioGraphParamsFactoryValues[i][2])
+      const p = audioGraphParamsFactoryValues[i]
+      this.virtualNodes[keys[i]].update(p.params)
     }
     this.params = params
     return this
