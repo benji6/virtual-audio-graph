@@ -20,15 +20,13 @@ test('customNodes - creates a custom node which can be reused in virtualAudioGra
   }
 
   t.deepEqual(virtualAudioGraph.update(virtualGraphParams), virtualAudioGraph)
-  /* eslint-disable */
   t.deepEqual(audioContext.toJSON(), {
     name: 'AudioDestinationNode', inputs: [{
-      name: 'GainNode', gain: { value: 0.5, inputs: [  ] }, inputs: [ Object({ name: 'StereoPannerNode', pan: { value: 1, inputs: [  ] }, inputs: [{ name: 'DelayNode', delayTime: { value: 0.5, inputs: [  ] }, inputs: [{
-        name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: { value: 0.5, inputs: [  ] }, inputs: [ '<circular:DelayNode>', Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] }) ] }) ]
-      }] } ] }), { name: 'StereoPannerNode', pan: { value: -1, inputs: [  ] }, inputs: [ { name: 'DelayNode', delayTime: { value: 0.5, inputs: [  ] }, inputs: [{ name: 'GainNode', gain: { value: 0.5, inputs: [  ] }, inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ '<circular:DelayNode>' ] }) ] }), Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] } ] } ] }]
-    }]
+      name: 'GainNode', gain: {value: 0.5, inputs: []}, inputs: [Object({name: 'StereoPannerNode', pan: {value: 1, inputs: []}, inputs: [{name: 'DelayNode', delayTime: {value: 0.5, inputs: []}, inputs: [{
+        name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: {value: 0.5, inputs: []}, inputs: ['<circular:DelayNode>', Object({name: 'OscillatorNode', type: 'sine', frequency: Object({value: 440, inputs: []}), detune: Object({value: 0, inputs: []}), inputs: []})]})]})],
+      }]}]}), {name: 'StereoPannerNode', pan: {value: -1, inputs: []}, inputs: [{name: 'DelayNode', delayTime: {value: 0.5, inputs: []}, inputs: [{name: 'GainNode', gain: {value: 0.5, inputs: []}, inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: ['<circular:DelayNode>']})]}), Object({name: 'OscillatorNode', type: 'sine', frequency: Object({value: 440, inputs: []}), detune: Object({value: 0, inputs: []}), inputs: []})]}]}]}],
+    }],
   })
-  /* eslint-enable */
   t.end()
 })
 
@@ -47,9 +45,7 @@ test('customNodes - can define a custom node built of other custom nodes', t => 
   }
 
   t.deepEqual(virtualAudioGraph.update(virtualGraphParams), virtualAudioGraph)
-  /* eslint-disable */
-  t.deepEqual(audioContext.toJSON(), { name: 'AudioDestinationNode', inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 1, inputs: [  ] }), inputs: [ Object({ name: 'StereoPannerNode', pan: Object({ value: 1, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.3333333333333333, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.3333333333333333, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.3333333333333333, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.3333333333333333, inputs: [  ] }), inputs: [ '<circular:DelayNode>', Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] }) ] }) ] }) ] }) ] }), Object({ name: 'StereoPannerNode', pan: Object({ value: -1, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.3333333333333333, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.3333333333333333, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.3333333333333333, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.3333333333333333, inputs: [  ] }), inputs: [ '<circular:DelayNode>' ] }) ] }), Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] }) ] }) ] }) ] }) ] }) ] })
-  /* eslint-enable */
+  t.deepEqual(audioContext.toJSON(), {name: 'AudioDestinationNode', inputs: [Object({name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 1, inputs: []}), inputs: [Object({name: 'StereoPannerNode', pan: Object({value: 1, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.3333333333333333, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.3333333333333333, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.3333333333333333, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.3333333333333333, inputs: []}), inputs: ['<circular:DelayNode>', Object({name: 'OscillatorNode', type: 'sine', frequency: Object({value: 440, inputs: []}), detune: Object({value: 0, inputs: []}), inputs: []})]})]})]})]})]}), Object({name: 'StereoPannerNode', pan: Object({value: -1, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.3333333333333333, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.3333333333333333, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.3333333333333333, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.3333333333333333, inputs: []}), inputs: ['<circular:DelayNode>']})]}), Object({name: 'OscillatorNode', type: 'sine', frequency: Object({value: 440, inputs: []}), detune: Object({value: 0, inputs: []}), inputs: []})]})]})]})]})]})]})
   t.end()
 })
 
@@ -62,14 +58,12 @@ test('customNodes - can define a custom node which can be updated', t => {
 
   virtualAudioGraph.update(virtualGraphParams)
 
-  /* eslint-disable */
-  t.deepEqual(audioContext.toJSON(), { name: 'AudioDestinationNode', inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'StereoPannerNode', pan: Object({ value: 1, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ '<circular:DelayNode>', Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] }) ] }) ] }) ] }) ] }), Object({ name: 'StereoPannerNode', pan: Object({ value: -1, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ '<circular:DelayNode>' ] }) ] }), Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] }) ] }) ] }) ] }) ] })
-  /* eslint-enable */
+  t.deepEqual(audioContext.toJSON(), {name: 'AudioDestinationNode', inputs: [Object({name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'StereoPannerNode', pan: Object({value: 1, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: ['<circular:DelayNode>', Object({name: 'OscillatorNode', type: 'sine', frequency: Object({value: 440, inputs: []}), detune: Object({value: 0, inputs: []}), inputs: []})]})]})]})]})]}), Object({name: 'StereoPannerNode', pan: Object({value: -1, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: ['<circular:DelayNode>']})]}), Object({name: 'OscillatorNode', type: 'sine', frequency: Object({value: 440, inputs: []}), detune: Object({value: 0, inputs: []}), inputs: []})]})]})]})]})]})
+
   virtualGraphParams[1][2].decay = 0.6
   virtualAudioGraph.update(virtualGraphParams)
-  /* eslint-disable */
-  t.deepEqual(audioContext.toJSON(), { name: 'AudioDestinationNode', inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'StereoPannerNode', pan: Object({ value: 1, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.6, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.6, inputs: [  ] }), inputs: [ '<circular:DelayNode>', Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] }) ] }) ] }) ] }) ] }), Object({ name: 'StereoPannerNode', pan: Object({ value: -1, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.6, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.6, inputs: [  ] }), inputs: [ '<circular:DelayNode>' ] }) ] }), Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] }) ] }) ] }) ] }) ] })
-  /* eslint-enable */
+
+  t.deepEqual(audioContext.toJSON(), {name: 'AudioDestinationNode', inputs: [Object({name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'StereoPannerNode', pan: Object({value: 1, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.6, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.6, inputs: []}), inputs: ['<circular:DelayNode>', Object({name: 'OscillatorNode', type: 'sine', frequency: Object({value: 440, inputs: []}), detune: Object({value: 0, inputs: []}), inputs: []})]})]})]})]})]}), Object({name: 'StereoPannerNode', pan: Object({value: -1, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.6, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.6, inputs: []}), inputs: ['<circular:DelayNode>']})]}), Object({name: 'OscillatorNode', type: 'sine', frequency: Object({value: 440, inputs: []}), detune: Object({value: 0, inputs: []}), inputs: []})]})]})]})]})]})
   t.end()
 })
 
@@ -82,9 +76,8 @@ test('customNodes - can define a custom node which can be removed', t => {
 
   virtualAudioGraph.update(virtualGraphParams)
 
-  /* eslint-disable */
-  t.deepEqual(audioContext.toJSON(), { name: 'AudioDestinationNode', inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'StereoPannerNode', pan: Object({ value: 1, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ '<circular:DelayNode>', Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] }) ] }) ] }) ] }) ] }), Object({ name: 'StereoPannerNode', pan: Object({ value: -1, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'DelayNode', delayTime: Object({ value: 0.5, inputs: [  ] }), inputs: [ Object({ name: 'GainNode', gain: Object({ value: 0.5, inputs: [  ] }), inputs: [ '<circular:DelayNode>' ] }) ] }), Object({ name: 'OscillatorNode', type: 'sine', frequency: Object({ value: 440, inputs: [  ] }), detune: Object({ value: 0, inputs: [  ] }), inputs: [  ] }) ] }) ] }) ] }) ] }) ] })
-  /* eslint-enable */
+  t.deepEqual(audioContext.toJSON(), {name: 'AudioDestinationNode', inputs: [Object({name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'StereoPannerNode', pan: Object({value: 1, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: ['<circular:DelayNode>', Object({name: 'OscillatorNode', type: 'sine', frequency: Object({value: 440, inputs: []}), detune: Object({value: 0, inputs: []}), inputs: []})]})]})]})]})]}), Object({name: 'StereoPannerNode', pan: Object({value: -1, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'DelayNode', delayTime: Object({value: 0.5, inputs: []}), inputs: [Object({name: 'GainNode', gain: Object({value: 0.5, inputs: []}), inputs: ['<circular:DelayNode>']})]}), Object({name: 'OscillatorNode', type: 'sine', frequency: Object({value: 440, inputs: []}), detune: Object({value: 0, inputs: []}), inputs: []})]})]})]})]})]})
+
   virtualGraphParams[1][2].decay = 0.6
 
   virtualAudioGraph.update({0: ['gain', 'output', {gain: 0.5}]})
@@ -111,9 +104,7 @@ test('customNodes - can define a custom node which can be replaced with another 
     }],
   })
 
-  /* eslint-disable */
-  t.deepEqual(audioContext.toJSON(), {"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"OscillatorNode","type":"square","frequency":{"value":220,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]},{"name":"OscillatorNode","type":"square","frequency":{"value":220,"inputs":[]},"detune":{"value":3,"inputs":[]},"inputs":[]}]}]}]})
-  /* eslint-enable */
+  t.deepEqual(audioContext.toJSON(), {name: 'AudioDestinationNode', inputs: [{name: 'GainNode', gain: {value: 0.5, inputs: []}, inputs: [{name: 'GainNode', gain: {value: 0.5, inputs: []}, inputs: [{name: 'OscillatorNode', type: 'square', frequency: {value: 220, inputs: []}, detune: {value: 0, inputs: []}, inputs: []}, {name: 'OscillatorNode', type: 'square', frequency: {value: 220, inputs: []}, detune: {value: 3, inputs: []}, inputs: []}]}]}]})
 
   virtualAudioGraph.update({
     0: ['gain', 'output', {gain: 0.5}],
@@ -124,9 +115,8 @@ test('customNodes - can define a custom node which can be replaced with another 
       stopTime: 2,
     }],
   })
-  /* eslint-disable */
-  t.deepEqual(audioContext.toJSON(), {"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"OscillatorNode","type":"sine","frequency":{"value":220,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]})
-  /* eslint-enable */
+
+  t.deepEqual(audioContext.toJSON(), {name: 'AudioDestinationNode', inputs: [{name: 'GainNode', gain: {value: 0.5, inputs: []}, inputs: [{name: 'GainNode', gain: {value: 0.5, inputs: []}, inputs: [{name: 'OscillatorNode', type: 'sine', frequency: {value: 220, inputs: []}, detune: {value: 0, inputs: []}, inputs: []}]}]}]})
 
   const sampleRate = audioContext.sampleRate
   const buffer = audioContext.createBuffer(2, sampleRate * 2, sampleRate)
@@ -195,9 +185,7 @@ test('customNodes - can define a custom node which has an input node with no par
   })
   t.deepEqual(
     audioContext.toJSON(),
-    /* eslint-disable */
-    {"name":"AudioDestinationNode","inputs":[{"name":"GainNode","gain":{"value":1,"inputs":[]},"inputs":[{"name":"GainNode","gain":{"value":0.5,"inputs":[]},"inputs":[{"name":"OscillatorNode","type":"sine","frequency":{"value":220,"inputs":[]},"detune":{"value":0,"inputs":[]},"inputs":[]}]}]}]}
-    /* eslint-enable */
+    {name: 'AudioDestinationNode', inputs: [{name: 'GainNode', gain: {value: 1, inputs: []}, inputs: [{name: 'GainNode', gain: {value: 0.5, inputs: []}, inputs: [{name: 'OscillatorNode', type: 'sine', frequency: {value: 220, inputs: []}, detune: {value: 0, inputs: []}, inputs: []}]}]}]}
   )
   t.end()
 })
