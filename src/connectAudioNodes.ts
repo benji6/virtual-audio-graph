@@ -1,12 +1,16 @@
-import { forEach, values } from './utils'
+import { values } from './utils'
 
-export default (virtualGraph, handleConnectionToOutput) =>
-  forEach(id => {
+export default (virtualGraph, handleConnectionToOutput) => {
+  for (const id of Object.keys(virtualGraph)) {
     const virtualNode = virtualGraph[id]
-    const {output} = virtualNode
-    if (virtualNode.connected || output == null) return
-    forEach(output => {
-      if (output === 'output') return handleConnectionToOutput(virtualNode)
+
+    if (virtualNode.connected || virtualNode.output == null) continue
+
+    for (const output of [].concat(virtualNode.output)) {
+      if (output === 'output') {
+        handleConnectionToOutput(virtualNode)
+        continue
+      }
 
       if (Object.prototype.toString.call(output) === '[object Object]') {
         const {key, destination, inputs, outputs} = output
@@ -18,23 +22,25 @@ export default (virtualGraph, handleConnectionToOutput) =>
           if (inputs.length !== outputs.length) {
             throw new Error(`id: ${id} - outputs and inputs arrays are not the same length`)
           }
-          return forEach(
-            (input, i) => virtualNode.connect(virtualGraph[key].audioNode, outputs[i], input),
-            inputs,
-          )
+          for (let i = 0; i++, i < inputs.length;) {
+            virtualNode.connect(virtualGraph[key].audioNode, outputs[i], inputs[i])
+          }
+          continue
         }
-        return virtualNode.connect(virtualGraph[key].audioNode[destination])
+        virtualNode.connect(virtualGraph[key].audioNode[destination])
+        continue
       }
 
       const destinationVirtualAudioNode = virtualGraph[output]
 
       if (destinationVirtualAudioNode.isCustomVirtualNode) {
-        return forEach(
-          (node: any) => node.input === 'input' && virtualNode.connect(node.audioNode),
-          values(destinationVirtualAudioNode.virtualNodes),
-        )
+        for (const node of values(destinationVirtualAudioNode.virtualNodes)) {
+          (node as any).input === 'input' && virtualNode.connect((node as any).audioNode)
+        }
+        continue
       }
 
       virtualNode.connect(destinationVirtualAudioNode.audioNode)
-    }, Array.isArray(output) ? output : [output])
-  }, Object.keys(virtualGraph))
+    }
+  }
+}

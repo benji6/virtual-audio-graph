@@ -1,7 +1,7 @@
 import connectAudioNodes from '../connectAudioNodes'
 import {
   filter,
-  forEach,
+  GenericObject,
   mapObj,
   values,
 } from '../utils'
@@ -32,16 +32,14 @@ export default class CustomVirtualAudioNode {
   }
 
   connect (...connectArgs) {
-    forEach(
-      (childVirtualNode: any) => {
-        const {output} = childVirtualNode
-        if (
-          output === 'output' ||
-          Array.isArray(output) && output.indexOf('output') !== -1
-        ) childVirtualNode.connect(...filter(Boolean, connectArgs))
-      },
-      values(this.virtualNodes),
-    )
+    for (const childVirtualNode of values(this.virtualNodes as GenericObject<any>)) {
+      const {output} = childVirtualNode
+      if (
+        output === 'output' ||
+        Array.isArray(output) && output.indexOf('output') !== -1
+      ) childVirtualNode.connect(...filter(Boolean, connectArgs))
+    }
+
     this.connected = true
   }
 

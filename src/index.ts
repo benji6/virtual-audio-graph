@@ -1,4 +1,4 @@
-import { equals, forEach } from './utils'
+import { equals } from './utils'
 import connectAudioNodes from './connectAudioNodes'
 import createVirtualAudioNode from './createVirtualAudioNode'
 import VirtualAudioNode from './VirtualAudioNode'
@@ -9,8 +9,11 @@ interface VirtualAudioNodes {
   [key: string]: VirtualAudioNode
 }
 
-const disconnectParents = (vNode: VirtualAudioNode, vNodes: VirtualAudioNodes) => Object.keys(vNodes)
-  .forEach(key => (vNodes[key] as StandardVirtualAudioNode).disconnect(vNode))
+const disconnectParents = (vNode: VirtualAudioNode, vNodes: VirtualAudioNodes) => {
+  for (const key of Object.keys(vNodes)) {
+    (vNodes[key] as StandardVirtualAudioNode).disconnect(vNode)
+  }
+}
 
 class VirtualAudioGraph {
   virtualNodes: VirtualAudioNodes = {}
@@ -30,15 +33,15 @@ class VirtualAudioGraph {
   }
 
   update (newGraph) {
-    forEach(id => {
-      if (newGraph.hasOwnProperty(id)) return
+    for (const id of Object.keys(this.virtualNodes)) {
+      if (newGraph.hasOwnProperty(id)) continue
       const virtualAudioNode = this.virtualNodes[id]
       virtualAudioNode.disconnectAndDestroy()
       disconnectParents(virtualAudioNode, this.virtualNodes)
       delete this.virtualNodes[id]
-    }, Object.keys(this.virtualNodes))
+    }
 
-    forEach(key => {
+    for (const key of Object.keys(newGraph)) {
       if (key === 'output') throw new Error('"output" is not a valid id')
       const newNodeParams = newGraph[key]
       const [paramsNodeName, paramsOutput, paramsParams] = newNodeParams
@@ -48,7 +51,7 @@ class VirtualAudioGraph {
       const virtualAudioNode = this.virtualNodes[key]
       if (virtualAudioNode == null) {
         this.virtualNodes[key] = createVirtualAudioNode(this.audioContext, newNodeParams)
-        return
+        continue
       }
       if (
         (paramsParams && paramsParams.startTime) !==
@@ -60,7 +63,7 @@ class VirtualAudioGraph {
         virtualAudioNode.disconnectAndDestroy()
         disconnectParents(virtualAudioNode, this.virtualNodes)
         this.virtualNodes[key] = createVirtualAudioNode(this.audioContext, newNodeParams)
-        return
+        continue
       }
       if (!equals(paramsOutput, virtualAudioNode.output)) {
         (virtualAudioNode as CustomVirtualAudioNode).disconnect()
@@ -69,7 +72,7 @@ class VirtualAudioGraph {
       }
 
       virtualAudioNode.update(paramsParams)
-    }, Object.keys(newGraph))
+    }
 
     connectAudioNodes(
       this.virtualNodes,

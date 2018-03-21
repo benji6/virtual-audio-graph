@@ -1,4 +1,4 @@
-interface GenericObject<T> {
+export interface GenericObject<T> {
   [key: string]: T
 }
 
@@ -21,10 +21,6 @@ export const equals = (a: any, b: any): boolean => {
     if (!equals(a[key], b[key])) return false
   }
   return true
-}
-
-export const forEach = <A>(f: (x: A, i: number) => void, xs: A[]): void => {
-  for (let i = 0; i < xs.length; i++) f(xs[i], i)
 }
 
 export const filter = <X>(f: (x: X) => boolean, xs: X[]): X[] => {

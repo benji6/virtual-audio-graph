@@ -1,4 +1,4 @@
-import { capitalize, equals, filter, find, forEach } from '../utils'
+import { capitalize, equals, filter, find } from '../utils'
 import {
   audioParamProperties,
   constructorParamsKeys,
@@ -69,14 +69,14 @@ export default class StandardVirtualAudioNode {
     const {audioNode} = this
     if (node) {
       if (node.isCustomVirtualNode) {
-        forEach(key => {
+        for (const key of Object.keys((node as CustomVirtualAudioNode).virtualNodes)) {
           const childNode = (node as CustomVirtualAudioNode).virtualNodes[key]
-          if (!this.connections.some(x => x === childNode.audioNode)) return
+          if (!this.connections.some(x => x === childNode.audioNode)) continue
           this.connections = filter(
             x => x !== childNode.audioNode,
             this.connections,
           )
-        }, Object.keys((node as CustomVirtualAudioNode).virtualNodes))
+        }
       } else {
         if (!this.connections.some(x => x === (node as StandardVirtualAudioNode).audioNode)) return
         this.connections = filter(x => x !== (node as StandardVirtualAudioNode).audioNode, this.connections)
@@ -94,28 +94,28 @@ export default class StandardVirtualAudioNode {
   }
 
   update (params = {}) {
-    forEach(key => {
-      if (constructorParamsKeys.indexOf(key) !== -1) return
+    for (const key of Object.keys(params)) {
+      if (constructorParamsKeys.indexOf(key) !== -1) continue
       const param = params[key]
-      if (this.params && this.params[key] === param) return
+      if (this.params && this.params[key] === param) continue
       if (audioParamProperties.indexOf(key) !== -1) {
         if (Array.isArray(param)) {
           if (this.params && !equals(param, this.params[key])) {
             this.audioNode[key].cancelScheduledValues(0)
           }
           const callMethod = ([methodName, ...args]) => this.audioNode[key][methodName](...args)
-          Array.isArray(param[0]) ? forEach(callMethod, param) : callMethod(param)
-          return
+          Array.isArray(param[0]) ? param.forEach(callMethod) : callMethod(param)
+          continue
         }
         this.audioNode[key].value = param
-        return
+        continue
       }
       if (setters.indexOf(key) !== -1) {
         this.audioNode[`set${capitalize(key)}`](...param)
-        return
+        continue
       }
       this.audioNode[key] = param
-    }, Object.keys(params))
+    }
     this.params = params
     return this
   }
