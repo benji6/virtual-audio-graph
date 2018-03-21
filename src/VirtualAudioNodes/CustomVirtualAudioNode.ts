@@ -1,6 +1,5 @@
 import connectAudioNodes from '../connectAudioNodes'
 import {
-  filter,
   GenericObject,
   mapObj,
   values,
@@ -37,7 +36,7 @@ export default class CustomVirtualAudioNode {
       if (
         output === 'output' ||
         Array.isArray(output) && output.indexOf('output') !== -1
-      ) childVirtualNode.connect(...filter(Boolean, connectArgs))
+      ) childVirtualNode.connect(...connectArgs.filter(Boolean))
     }
 
     this.connected = true

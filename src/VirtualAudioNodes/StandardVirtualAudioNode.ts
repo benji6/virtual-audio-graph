@@ -1,4 +1,4 @@
-import { capitalize, equals, filter, find } from '../utils'
+import { capitalize, equals, find } from '../utils'
 import {
   audioParamProperties,
   constructorParamsKeys,
@@ -59,7 +59,7 @@ export default class StandardVirtualAudioNode {
 
   connect (...connectArgs) {
     const {audioNode} = this
-    const filteredConnectArgs = filter(Boolean, connectArgs)
+    const filteredConnectArgs = connectArgs.filter(Boolean)
     audioNode.connect && audioNode.connect(...filteredConnectArgs)
     this.connections = this.connections.concat(filteredConnectArgs)
     this.connected = true
@@ -72,14 +72,11 @@ export default class StandardVirtualAudioNode {
         for (const key of Object.keys((node as CustomVirtualAudioNode).virtualNodes)) {
           const childNode = (node as CustomVirtualAudioNode).virtualNodes[key]
           if (!this.connections.some(x => x === childNode.audioNode)) continue
-          this.connections = filter(
-            x => x !== childNode.audioNode,
-            this.connections,
-          )
+          this.connections = this.connections.filter(x => x !== childNode.audioNode)
         }
       } else {
         if (!this.connections.some(x => x === (node as StandardVirtualAudioNode).audioNode)) return
-        this.connections = filter(x => x !== (node as StandardVirtualAudioNode).audioNode, this.connections)
+        this.connections = this.connections.filter(x => x !== (node as StandardVirtualAudioNode).audioNode)
       }
     }
     audioNode.disconnect && audioNode.disconnect()

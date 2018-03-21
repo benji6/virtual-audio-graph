@@ -23,12 +23,6 @@ export const equals = (a: any, b: any): boolean => {
   return true
 }
 
-export const filter = <X>(f: (x: X) => boolean, xs: X[]): X[] => {
-  const ys = []
-  for (let i = 0; i < xs.length; i++) f(xs[i]) && ys.push(xs[i])
-  return ys
-}
-
 export const find = <X>(f: (x: X) => boolean, xs: X[]): X => {
   for (let i = 0; i < xs.length; i++) if (f(xs[i])) return xs[i]
 }
