@@ -211,7 +211,7 @@ test('update - creates MediaStreamAudioDestinationNode with all valid parameters
   t.end()
 })
 
-test('update - creates MediaStreamAudioDestinationNode with all valid parameters', t => {
+test('update - creates MediaElementAudioSourceNode and MediaStreamAudioSourceNode with all valid parameters', t => {
   const audioContext = new AudioContext()
   const virtualAudioGraph = createVirtualAudioGraph({audioContext})
   const HTMLMediaElement = WebAudioTestAPI.HTMLMediaElement
