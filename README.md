@@ -182,7 +182,7 @@ The above information should be enough to get started creating very simple audio
   })
   ```
 
-- `3` - `string | undefined` - optionally specify this element as an input of a custom node by assigning `'input'` at this index. Only valid when defining nodes (see [below](#custom-nodes)).
+- `3` - `string | undefined` - optionally specify this element as an input of a custom node by assigning `'input'` at this index. Only valid when defining custom nodes (see [below](#custom-nodes)).
 
 ### Custom Nodes
 
