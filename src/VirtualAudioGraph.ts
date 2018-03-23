@@ -9,12 +9,6 @@ interface VirtualAudioNodes {
   [key: string]: VirtualAudioNode
 }
 
-const disconnectParents = (vNode: VirtualAudioNode, vNodes: VirtualAudioNodes) => {
-  for (const key of Object.keys(vNodes)) {
-    (vNodes[key] as StandardVirtualAudioNode).disconnect(vNode)
-  }
-}
-
 export default class VirtualAudioGraph {
   virtualNodes: VirtualAudioNodes = {}
 
@@ -23,21 +17,29 @@ export default class VirtualAudioGraph {
     public readonly output: AudioDestinationNode,
   ) {}
 
-  get currentTime () {
+  get currentTime (): number {
     return this.audioContext.currentTime
   }
 
-  getAudioNodeById (id: string) {
+  disconnectParents (vNode: VirtualAudioNode): void {
+    const {virtualNodes} = this
+
+    for (const key of Object.keys(virtualNodes)) {
+      (virtualNodes[key] as StandardVirtualAudioNode).disconnect(vNode)
+    }
+  }
+
+  getAudioNodeById (id: string): AudioNode | void {
     const vNode = this.virtualNodes[id]
     return vNode && (vNode as StandardVirtualAudioNode).audioNode
   }
 
-  update (newGraph) {
+  update (newGraph): this {
     for (const id of Object.keys(this.virtualNodes)) {
       if (newGraph.hasOwnProperty(id)) continue
       const virtualAudioNode = this.virtualNodes[id]
       virtualAudioNode.disconnectAndDestroy()
-      disconnectParents(virtualAudioNode, this.virtualNodes)
+      this.disconnectParents(virtualAudioNode)
       delete this.virtualNodes[id]
     }
 
@@ -61,13 +63,13 @@ export default class VirtualAudioGraph {
         paramsNodeName !== virtualAudioNode.node
       ) {
         virtualAudioNode.disconnectAndDestroy()
-        disconnectParents(virtualAudioNode, this.virtualNodes)
+        this.disconnectParents(virtualAudioNode)
         this.virtualNodes[key] = createVirtualAudioNode(this.audioContext, newNodeParams)
         continue
       }
       if (!equals(paramsOutput, virtualAudioNode.output)) {
         (virtualAudioNode as CustomVirtualAudioNode).disconnect()
-        disconnectParents(virtualAudioNode, this.virtualNodes)
+        this.disconnectParents(virtualAudioNode)
         virtualAudioNode.output = paramsOutput
       }
 
