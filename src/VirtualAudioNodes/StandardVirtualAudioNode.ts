@@ -33,14 +33,17 @@ export default class StandardVirtualAudioNode {
   audioNode: any
   connected: boolean
   connections: any[]
-  input: any
   isCustomVirtualNode: boolean
-  node: string
-  output: any
   params: any
   stopCalled: boolean
 
-  constructor (audioContext: AudioContext, [node, output, params, input]) {
+  constructor (
+    audioContext: AudioContext,
+    public readonly node: string,
+    public output?: any,
+    params?,
+    public readonly input?: string,
+  ) {
     const paramsObj = params || {}
     const {offsetTime, startTime, stopTime} = paramsObj
     const constructorParam = paramsObj[find(key => constructorParamsKeys.indexOf(key) !== -1, Object.keys(paramsObj))]
@@ -48,16 +51,13 @@ export default class StandardVirtualAudioNode {
     this.audioNode = createAudioNode(audioContext, node, constructorParam, {offsetTime, startTime, stopTime})
     this.connected = false
     this.connections = []
-    this.input = input
     this.isCustomVirtualNode = false
-    this.node = node
-    this.output = output
     this.stopCalled = stopTime !== undefined
 
     this.update(paramsObj)
   }
 
-  connect (...connectArgs) {
+  connect (...connectArgs): void {
     const {audioNode} = this
     const filteredConnectArgs = connectArgs.filter(Boolean)
     audioNode.connect && audioNode.connect(...filteredConnectArgs)
@@ -65,7 +65,7 @@ export default class StandardVirtualAudioNode {
     this.connected = true
   }
 
-  disconnect (node: VirtualAudioNode) {
+  disconnect (node: VirtualAudioNode): void {
     const {audioNode} = this
     if (node) {
       if (node.isCustomVirtualNode) {
@@ -83,14 +83,14 @@ export default class StandardVirtualAudioNode {
     this.connected = false
   }
 
-  disconnectAndDestroy () {
+  disconnectAndDestroy (): void {
     const {audioNode, stopCalled} = this
     if (audioNode.stop && !stopCalled) audioNode.stop()
     audioNode.disconnect && audioNode.disconnect()
     this.connected = false
   }
 
-  update (params = {}) {
+  update (params = {}): this {
     for (const key of Object.keys(params)) {
       if (constructorParamsKeys.indexOf(key) !== -1) continue
       const param = params[key]

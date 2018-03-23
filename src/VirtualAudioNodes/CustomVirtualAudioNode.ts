@@ -10,27 +10,28 @@ import VirtualAudioNode from '../VirtualAudioNode'
 export default class CustomVirtualAudioNode {
   connected: boolean
   isCustomVirtualNode: boolean
-  node: Function
-  output: any
   params: object
   virtualNodes: object
 
-  constructor (audioContext: AudioContext, [node, output, params]) {
+  constructor (
+    audioContext: AudioContext,
+    public readonly node: any,
+    public output?: any,
+    params?: any,
+  ) {
     this.connected = false
     this.isCustomVirtualNode = true
-    this.node = node
-    this.output = output
     this.params = params || {}
 
     this.virtualNodes = mapObj(
-      virtualAudioNodeParam => createVirtualAudioNode(audioContext, virtualAudioNodeParam),
+      (virtualAudioNodeParam: [any, any, any, any]) => createVirtualAudioNode(audioContext, virtualAudioNodeParam),
       node(params),
     )
 
     connectAudioNodes(this.virtualNodes, () => {})
   }
 
-  connect (...connectArgs) {
+  connect (...connectArgs): void {
     for (const childVirtualNode of values(this.virtualNodes as GenericObject<any>)) {
       const {output} = childVirtualNode
       if (
@@ -42,7 +43,7 @@ export default class CustomVirtualAudioNode {
     this.connected = true
   }
 
-  disconnect () {
+  disconnect (): void {
     const keys = Object.keys(this.virtualNodes)
     for (let i = 0; i < keys.length; i++) {
       const virtualNode = this.virtualNodes[keys[i]]
@@ -55,13 +56,13 @@ export default class CustomVirtualAudioNode {
     this.connected = false
   }
 
-  disconnectAndDestroy () {
+  disconnectAndDestroy (): void {
     const keys = Object.keys(this.virtualNodes)
     for (let i = 0; i < keys.length; i++) this.virtualNodes[keys[i]].disconnectAndDestroy()
     this.connected = false
   }
 
-  update (params = {}) {
+  update (params = {}): this {
     const audioGraphParamsFactoryValues = values(this.node(params))
     const keys = Object.keys(this.virtualNodes)
     for (let i = 0; i < keys.length; i++) {
