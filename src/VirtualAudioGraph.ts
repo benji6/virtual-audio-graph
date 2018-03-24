@@ -35,6 +35,8 @@ export default class VirtualAudioGraph {
   }
 
   update (newGraph): this {
+    if (newGraph.hasOwnProperty('output')) throw new Error('"output" is not a valid id')
+
     for (const id of Object.keys(this.virtualNodes)) {
       if (newGraph.hasOwnProperty(id)) continue
       const virtualAudioNode = this.virtualNodes[id]
@@ -44,7 +46,6 @@ export default class VirtualAudioGraph {
     }
 
     for (const key of Object.keys(newGraph)) {
-      if (key === 'output') throw new Error('"output" is not a valid id')
       const newNodeParams = newGraph[key]
       const [paramsNodeName, paramsOutput, paramsParams] = newNodeParams
       if (paramsOutput == null && paramsNodeName !== 'mediaStreamDestination') {
