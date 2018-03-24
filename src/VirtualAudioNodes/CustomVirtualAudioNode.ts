@@ -24,7 +24,10 @@ export default class CustomVirtualAudioNode {
     this.params = params || {}
 
     this.virtualNodes = mapObj(
-      (virtualAudioNodeParam: [any, any, any, any]) => createVirtualAudioNode(audioContext, virtualAudioNodeParam),
+      (virtualAudioNodeParam: [any, any, any, any]) => createVirtualAudioNode(
+        audioContext,
+        virtualAudioNodeParam,
+      ),
       node(params),
     )
 
@@ -33,7 +36,7 @@ export default class CustomVirtualAudioNode {
 
   connect (...connectArgs): void {
     for (const childVirtualNode of values(this.virtualNodes as GenericObject<any>)) {
-      const {output} = childVirtualNode
+      const { output } = childVirtualNode
       if (
         output === 'output' ||
         Array.isArray(output) && output.indexOf('output') !== -1
@@ -47,7 +50,7 @@ export default class CustomVirtualAudioNode {
     const keys = Object.keys(this.virtualNodes)
     for (let i = 0; i < keys.length; i++) {
       const virtualNode = this.virtualNodes[keys[i]]
-      const {output} = virtualNode
+      const { output } = virtualNode
       if (
         output === 'output' ||
         Array.isArray(output) && output.indexOf('output') !== -1

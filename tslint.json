@@ -1,5 +1,10 @@
 {
   "extends": [
-    "tslint-config-benji6"
-  ]
+    "tslint-config-airbnb"
+  ],
+  "rules": {
+    "no-increment-decrement": false,
+    "no-this-assignment": false,
+    "semicolon": [true, "never"]
+  }
 }

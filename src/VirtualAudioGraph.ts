@@ -22,7 +22,7 @@ export default class VirtualAudioGraph {
   }
 
   disconnectParents (vNode: VirtualAudioNode): void {
-    const {virtualNodes} = this
+    const { virtualNodes } = this
 
     for (const key of Object.keys(virtualNodes)) {
       (virtualNodes[key] as StandardVirtualAudioNode).disconnect(vNode)

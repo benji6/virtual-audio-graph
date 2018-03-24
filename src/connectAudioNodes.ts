@@ -13,7 +13,7 @@ export default (virtualGraph, handleConnectionToOutput) => {
       }
 
       if (Object.prototype.toString.call(output) === '[object Object]') {
-        const {key, destination, inputs, outputs} = output
+        const { key, destination, inputs, outputs } = output
 
         if (key == null) {
           throw new Error(`id: ${id} - output object requires a key property`)

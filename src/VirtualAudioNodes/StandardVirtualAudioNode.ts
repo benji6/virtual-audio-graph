@@ -12,9 +12,9 @@ const createAudioNode = (
   audioContext: AudioContext,
   name: string,
   constructorParam,
-  {offsetTime, startTime, stopTime},
+  { offsetTime, startTime, stopTime },
 ) => {
-  offsetTime = offsetTime || 0
+  offsetTime = offsetTime || 0 // tslint:disable-line no-parameter-reassignment
   const func = `create${capitalize(name)}`
   if (typeof audioContext[func] !== 'function') { throw new Error(`Unknown node type: ${name}`) }
 
@@ -23,7 +23,8 @@ const createAudioNode = (
     : audioContext[func]()
 
   if (startAndStopNodes.indexOf(name) !== -1) {
-    if (startTime == null) audioNode.start(audioContext.currentTime, offsetTime); else audioNode.start(startTime, offsetTime)
+    if (startTime == null) audioNode.start(audioContext.currentTime, offsetTime)
+    else audioNode.start(startTime, offsetTime)
     if (stopTime != null) audioNode.stop(stopTime)
   }
   return audioNode
@@ -45,10 +46,17 @@ export default class StandardVirtualAudioNode {
     public readonly input?: string,
   ) {
     const paramsObj = params || {}
-    const {offsetTime, startTime, stopTime} = paramsObj
-    const constructorParam = paramsObj[find(key => constructorParamsKeys.indexOf(key) !== -1, Object.keys(paramsObj))]
+    const { offsetTime, startTime, stopTime } = paramsObj
+    const constructorParam = paramsObj[find(
+      key => constructorParamsKeys.indexOf(key) !== -1,
+      Object.keys(paramsObj))
+    ]
 
-    this.audioNode = createAudioNode(audioContext, node, constructorParam, {offsetTime, startTime, stopTime})
+    this.audioNode = createAudioNode(audioContext, node, constructorParam, {
+      offsetTime,
+      startTime,
+      stopTime,
+    })
     this.connected = false
     this.connections = []
     this.isCustomVirtualNode = false
@@ -58,7 +66,7 @@ export default class StandardVirtualAudioNode {
   }
 
   connect (...connectArgs): void {
-    const {audioNode} = this
+    const { audioNode } = this
     const filteredConnectArgs = connectArgs.filter(Boolean)
     audioNode.connect && audioNode.connect(...filteredConnectArgs)
     this.connections = this.connections.concat(filteredConnectArgs)
@@ -66,7 +74,7 @@ export default class StandardVirtualAudioNode {
   }
 
   disconnect (node: VirtualAudioNode): void {
-    const {audioNode} = this
+    const { audioNode } = this
     if (node) {
       if (node.isCustomVirtualNode) {
         for (const key of Object.keys((node as CustomVirtualAudioNode).virtualNodes)) {
@@ -76,7 +84,8 @@ export default class StandardVirtualAudioNode {
         }
       } else {
         if (!this.connections.some(x => x === (node as StandardVirtualAudioNode).audioNode)) return
-        this.connections = this.connections.filter(x => x !== (node as StandardVirtualAudioNode).audioNode)
+        this.connections = this.connections
+          .filter(x => x !== (node as StandardVirtualAudioNode).audioNode)
       }
     }
     audioNode.disconnect && audioNode.disconnect()
@@ -84,7 +93,7 @@ export default class StandardVirtualAudioNode {
   }
 
   disconnectAndDestroy (): void {
-    const {audioNode, stopCalled} = this
+    const { audioNode, stopCalled } = this
     if (audioNode.stop && !stopCalled) audioNode.stop()
     audioNode.disconnect && audioNode.disconnect()
     this.connected = false

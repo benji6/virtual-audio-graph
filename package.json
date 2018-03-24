@@ -22,10 +22,11 @@
   "scripts": {
     "build": "tsc && rollup -c",
     "docs": "tsc -p docsSrc && rollup -c docsSrc/rollup.config.js && rm -r docsSrc/esm",
-    "prepublish": "npm run build && npm test",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "prepublish": "npm test",
     "spec": "npm run build && tape 'test/**/*.js'",
     "spec:watch": "nodemon --watch src --watch test --exec npm run spec",
-    "test": "tslint -c tslint.json 'src/**/*.ts' && tsc && eslint test && npm run spec",
+    "test": "npm run lint && tsc && eslint test && npm run spec",
     "test:watch": "nodemon --watch src --watch test --exec npm t"
   },
   "author": "Ben Hall",
@@ -42,7 +43,7 @@
     "rollup": "^0.56.5",
     "tape": "^4.9.0",
     "tslint": "^5.9.1",
-    "tslint-config-benji6": "^0.1.3",
+    "tslint-config-airbnb": "^5.8.0",
     "typescript": "^2.7.2",
     "web-audio-test-api": "^0.5.2"
   },
