@@ -73,7 +73,7 @@ export default class StandardVirtualAudioNode {
     this.connected = true
   }
 
-  disconnect (node: VirtualAudioNode): void {
+  disconnect (node?: VirtualAudioNode): void {
     const { audioNode } = this
     if (node) {
       if (node.isCustomVirtualNode) {

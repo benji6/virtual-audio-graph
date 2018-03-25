@@ -46,7 +46,7 @@ export default class CustomVirtualAudioNode {
     this.connected = true
   }
 
-  disconnect (): void {
+  disconnect (node?: VirtualAudioNode): void {
     const keys = Object.keys(this.virtualNodes)
     for (let i = 0; i < keys.length; i++) {
       const virtualNode = this.virtualNodes[keys[i]]

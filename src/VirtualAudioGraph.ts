@@ -1,4 +1,4 @@
-import { equals } from './utils'
+import { equals, values } from './utils'
 import connectAudioNodes from './connectAudioNodes'
 import createVirtualAudioNode from './createVirtualAudioNode'
 import VirtualAudioNode from './VirtualAudioNode'
@@ -22,10 +22,8 @@ export default class VirtualAudioGraph {
   }
 
   disconnectParents (vNode: VirtualAudioNode): void {
-    const { virtualNodes } = this
-
-    for (const key of Object.keys(virtualNodes)) {
-      (virtualNodes[key] as StandardVirtualAudioNode).disconnect(vNode)
+    for (const node of values(this.virtualNodes)) {
+      node.disconnect(vNode)
     }
   }
 
