@@ -46,9 +46,7 @@ export default class CustomVirtualAudioNode {
   }
 
   disconnect (node?: VirtualAudioNode): void {
-    const keys = Object.keys(this.virtualNodes)
-    for (let i = 0; i < keys.length; i++) {
-      const virtualNode = this.virtualNodes[keys[i]]
+    for (const virtualNode of values(this.virtualNodes)) {
       const { output } = virtualNode
       if (
         output === 'output' ||
@@ -59,8 +57,7 @@ export default class CustomVirtualAudioNode {
   }
 
   disconnectAndDestroy (): void {
-    const keys = Object.keys(this.virtualNodes)
-    for (let i = 0; i < keys.length; i++) this.virtualNodes[keys[i]].disconnectAndDestroy()
+    for (const virtualNode of values(this.virtualNodes)) virtualNode.disconnectAndDestroy()
     this.connected = false
   }
 

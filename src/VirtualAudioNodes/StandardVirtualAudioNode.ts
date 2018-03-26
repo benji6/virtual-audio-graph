@@ -1,4 +1,4 @@
-import { capitalize, equals, find } from '../utils'
+import { capitalize, equals, find, values } from '../utils'
 import {
   audioParamProperties,
   constructorParamsKeys,
@@ -76,8 +76,7 @@ export default class StandardVirtualAudioNode {
     const { audioNode } = this
     if (node) {
       if (node instanceof CustomVirtualAudioNode) {
-        for (const key of Object.keys(node.virtualNodes)) {
-          const childNode = node.virtualNodes[key]
+        for (const childNode of values(node.virtualNodes)) {
           if (!this.connections.some(x => x === childNode.audioNode)) continue
           this.connections = this.connections.filter(x => x !== childNode.audioNode)
         }
