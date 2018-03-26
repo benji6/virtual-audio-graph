@@ -4,6 +4,11 @@ export interface GenericObject<T> {
 
 export const capitalize = (a: string): string => a.charAt(0).toUpperCase() + a.substring(1)
 
+export const entries = <A>(o: GenericObject<A>): [string, A][] => {
+  const xs = []
+  for (const key of Object.keys(o)) xs.push([key, o[key]])
+  return xs
+}
 export const equals = (a: any, b: any): boolean => {
   if (a === b) return true
   const typeA = typeof a
@@ -23,7 +28,7 @@ export const equals = (a: any, b: any): boolean => {
   return true
 }
 
-export const find = <X>(f: (x: X) => boolean, xs: X[]): X => {
+export const find = <A>(f: (x: A) => boolean, xs: A[]): A => {
   for (let i = 0; i < xs.length; i++) if (f(xs[i])) return xs[i]
 }
 

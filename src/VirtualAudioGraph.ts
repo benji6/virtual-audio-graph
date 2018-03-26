@@ -1,4 +1,4 @@
-import { equals, values } from './utils'
+import { entries, equals, values } from './utils'
 import connectAudioNodes from './connectAudioNodes'
 import createVirtualAudioNode from './createVirtualAudioNode'
 import { VirtualAudioNode, VirtualAudioNodeGraph } from './types'
@@ -31,9 +31,8 @@ export default class VirtualAudioGraph {
   update (newGraph): this {
     if (newGraph.hasOwnProperty('output')) throw new Error('"output" is not a valid id')
 
-    for (const id of Object.keys(this.virtualNodes)) {
+    for (const [id, virtualAudioNode] of entries(this.virtualNodes)) {
       if (newGraph.hasOwnProperty(id)) continue
-      const virtualAudioNode = this.virtualNodes[id]
       virtualAudioNode.disconnectAndDestroy()
       this.disconnectParents(virtualAudioNode)
       delete this.virtualNodes[id]
