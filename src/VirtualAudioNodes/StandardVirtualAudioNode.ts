@@ -34,7 +34,6 @@ export default class StandardVirtualAudioNode {
   audioNode: AudioNode
   connected: boolean
   connections: any[]
-  isCustomVirtualNode: boolean
   params: any
   stopCalled: boolean
 
@@ -59,7 +58,6 @@ export default class StandardVirtualAudioNode {
     })
     this.connected = false
     this.connections = []
-    this.isCustomVirtualNode = false
     this.stopCalled = stopTime !== undefined
 
     this.update(paramsObj)
@@ -77,16 +75,16 @@ export default class StandardVirtualAudioNode {
   disconnect (node?: VirtualAudioNode): void {
     const { audioNode } = this
     if (node) {
-      if (node.isCustomVirtualNode) {
-        for (const key of Object.keys((node as CustomVirtualAudioNode).virtualNodes)) {
-          const childNode = (node as CustomVirtualAudioNode).virtualNodes[key]
+      if (node instanceof CustomVirtualAudioNode) {
+        for (const key of Object.keys(node.virtualNodes)) {
+          const childNode = node.virtualNodes[key]
           if (!this.connections.some(x => x === childNode.audioNode)) continue
           this.connections = this.connections.filter(x => x !== childNode.audioNode)
         }
       } else {
-        if (!this.connections.some(x => x === (node as StandardVirtualAudioNode).audioNode)) return
+        if (!this.connections.some(x => x === node.audioNode)) return
         this.connections = this.connections
-          .filter(x => x !== (node as StandardVirtualAudioNode).audioNode)
+          .filter(x => x !== node.audioNode)
       }
     }
     audioNode.disconnect && audioNode.disconnect()

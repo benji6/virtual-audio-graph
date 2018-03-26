@@ -10,7 +10,6 @@ import { VirtualAudioNode, VirtualAudioNodeGraph } from '../types'
 export default class CustomVirtualAudioNode {
   public readonly audioNode = undefined
   connected: boolean
-  isCustomVirtualNode: boolean
   params: object
   virtualNodes: VirtualAudioNodeGraph
 
@@ -21,7 +20,6 @@ export default class CustomVirtualAudioNode {
     params?: any,
   ) {
     this.connected = false
-    this.isCustomVirtualNode = true
     this.params = params || {}
 
     this.virtualNodes = mapObj(

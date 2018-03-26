@@ -62,7 +62,7 @@ export default class VirtualAudioGraph {
         continue
       }
       if (!equals(paramsOutput, virtualAudioNode.output)) {
-        (virtualAudioNode as CustomVirtualAudioNode).disconnect()
+        virtualAudioNode.disconnect()
         this.disconnectParents(virtualAudioNode)
         virtualAudioNode.output = paramsOutput
       }
