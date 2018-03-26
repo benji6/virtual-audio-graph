@@ -5,14 +5,14 @@ import {
   values,
 } from '../utils'
 import createVirtualAudioNode from '../createVirtualAudioNode'
-import { VirtualAudioNode } from '../types'
+import { VirtualAudioNode, VirtualAudioNodeGraph } from '../types'
 
 export default class CustomVirtualAudioNode {
   public readonly audioNode = undefined
   connected: boolean
   isCustomVirtualNode: boolean
   params: object
-  virtualNodes: object
+  virtualNodes: VirtualAudioNodeGraph
 
   constructor (
     audioContext: AudioContext,

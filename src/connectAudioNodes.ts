@@ -1,9 +1,12 @@
-import { values } from './utils'
+import { entries, values } from './utils'
+import { VirtualAudioNode, VirtualAudioNodeGraph } from './types'
+import CustomVirtualAudioNode from './VirtualAudioNodes/CustomVirtualAudioNode'
 
-export default (virtualGraph, handleConnectionToOutput) => {
-  for (const id of Object.keys(virtualGraph)) {
-    const virtualNode = virtualGraph[id]
-
+export default (
+  virtualGraph: VirtualAudioNodeGraph,
+  handleConnectionToOutput: (_: VirtualAudioNode) => void,
+) => {
+  for (const [id, virtualNode] of entries(virtualGraph)) {
     if (virtualNode.connected || virtualNode.output == null) continue
 
     for (const output of [].concat(virtualNode.output)) {
@@ -33,7 +36,7 @@ export default (virtualGraph, handleConnectionToOutput) => {
 
       const destinationVirtualAudioNode = virtualGraph[output]
 
-      if (destinationVirtualAudioNode.isCustomVirtualNode) {
+      if (destinationVirtualAudioNode instanceof CustomVirtualAudioNode) {
         for (const node of values(destinationVirtualAudioNode.virtualNodes)) {
           (node as any).input === 'input' && virtualNode.connect((node as any).audioNode)
         }
