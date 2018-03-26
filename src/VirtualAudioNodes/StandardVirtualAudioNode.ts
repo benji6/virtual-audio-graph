@@ -6,7 +6,7 @@ import {
   startAndStopNodes,
 } from '../data'
 import CustomVirtualAudioNode from './CustomVirtualAudioNode'
-import { VirtualAudioNode } from '../types'
+import { Output, VirtualAudioNode } from '../types'
 
 const createAudioNode = (
   audioContext: AudioContext,
@@ -40,7 +40,7 @@ export default class StandardVirtualAudioNode {
   constructor (
     audioContext: AudioContext,
     public readonly node: string,
-    public output?: any,
+    public output?: Output,
     params?,
     public readonly input?: string,
   ) {

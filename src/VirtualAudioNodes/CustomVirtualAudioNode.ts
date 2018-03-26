@@ -5,7 +5,7 @@ import {
   values,
 } from '../utils'
 import createVirtualAudioNode from '../createVirtualAudioNode'
-import { VirtualAudioNode, VirtualAudioNodeGraph } from '../types'
+import { Output, VirtualAudioNode, VirtualAudioNodeGraph } from '../types'
 
 export default class CustomVirtualAudioNode {
   public readonly audioNode = undefined
@@ -16,7 +16,7 @@ export default class CustomVirtualAudioNode {
   constructor (
     audioContext: AudioContext,
     public readonly node: any,
-    public output?: any,
+    public output?: Output,
     params?: any,
   ) {
     this.connected = false
