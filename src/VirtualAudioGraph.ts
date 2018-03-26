@@ -1,16 +1,12 @@
 import { equals, values } from './utils'
 import connectAudioNodes from './connectAudioNodes'
 import createVirtualAudioNode from './createVirtualAudioNode'
-import VirtualAudioNode from './VirtualAudioNode'
+import { VirtualAudioNode, VirtualAudioNodeGraph } from './types'
 import CustomVirtualAudioNode from './VirtualAudioNodes/CustomVirtualAudioNode'
 import StandardVirtualAudioNode from './VirtualAudioNodes/StandardVirtualAudioNode'
 
-interface VirtualAudioNodes {
-  [key: string]: VirtualAudioNode
-}
-
 export default class VirtualAudioGraph {
-  virtualNodes: VirtualAudioNodes = {}
+  virtualNodes: VirtualAudioNodeGraph = {}
 
   constructor (
     public readonly audioContext: AudioContext,

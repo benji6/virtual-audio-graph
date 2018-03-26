@@ -1,6 +1,6 @@
 import StandardVirtualAudioNode from './VirtualAudioNodes/StandardVirtualAudioNode'
 import CustomVirtualAudioNode from './VirtualAudioNodes/CustomVirtualAudioNode'
-import VirtualAudioNode from './VirtualAudioNode'
+import { VirtualAudioNode } from './types'
 
 export default (audioContext: AudioContext, [node, output, params, input]): VirtualAudioNode =>
   typeof node === 'function'

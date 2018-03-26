@@ -5,7 +5,7 @@ import {
   values,
 } from '../utils'
 import createVirtualAudioNode from '../createVirtualAudioNode'
-import VirtualAudioNode from '../VirtualAudioNode'
+import { VirtualAudioNode } from '../types'
 
 export default class CustomVirtualAudioNode {
   public readonly audioNode = undefined
