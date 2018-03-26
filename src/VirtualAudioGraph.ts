@@ -29,7 +29,7 @@ export default class VirtualAudioGraph {
 
   getAudioNodeById (id: string): AudioNode | void {
     const vNode = this.virtualNodes[id]
-    return vNode && (vNode as StandardVirtualAudioNode).audioNode
+    return vNode && vNode.audioNode
   }
 
   update (newGraph): this {

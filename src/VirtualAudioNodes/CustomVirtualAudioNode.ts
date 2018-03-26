@@ -8,6 +8,7 @@ import createVirtualAudioNode from '../createVirtualAudioNode'
 import VirtualAudioNode from '../VirtualAudioNode'
 
 export default class CustomVirtualAudioNode {
+  public readonly audioNode = undefined
   connected: boolean
   isCustomVirtualNode: boolean
   params: object

@@ -31,7 +31,7 @@ const createAudioNode = (
 }
 
 export default class StandardVirtualAudioNode {
-  audioNode: any
+  audioNode: AudioNode
   connected: boolean
   connections: any[]
   isCustomVirtualNode: boolean
@@ -68,7 +68,8 @@ export default class StandardVirtualAudioNode {
   connect (...connectArgs): void {
     const { audioNode } = this
     const filteredConnectArgs = connectArgs.filter(Boolean)
-    audioNode.connect && audioNode.connect(...filteredConnectArgs)
+    const [firstArg, ...rest] = filteredConnectArgs
+    audioNode.connect && audioNode.connect(firstArg, ...rest)
     this.connections = this.connections.concat(filteredConnectArgs)
     this.connected = true
   }
@@ -94,7 +95,7 @@ export default class StandardVirtualAudioNode {
 
   disconnectAndDestroy (): void {
     const { audioNode, stopCalled } = this
-    if (audioNode.stop && !stopCalled) audioNode.stop()
+    if ((audioNode as OscillatorNode).stop && !stopCalled) (audioNode as OscillatorNode).stop()
     audioNode.disconnect && audioNode.disconnect()
     this.connected = false
   }
