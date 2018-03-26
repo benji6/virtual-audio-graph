@@ -33,7 +33,7 @@ export const find = <A>(f: (x: A) => boolean, xs: A[]): A => {
 }
 
 export const mapObj = <A, B>(f: (a: A) => B, o: GenericObject<A>): GenericObject<B> => {
-  const p = {} as GenericObject<B>
+  const p: GenericObject<B> = {}
   for (const key in o) if (Object.prototype.hasOwnProperty.call(o, key)) p[key] = f(o[key])
   return p
 }

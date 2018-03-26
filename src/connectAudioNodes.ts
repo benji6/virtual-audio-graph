@@ -1,6 +1,7 @@
 import { entries, values } from './utils'
 import { VirtualAudioNode, VirtualAudioNodeGraph } from './types'
 import CustomVirtualAudioNode from './VirtualAudioNodes/CustomVirtualAudioNode'
+import StandardVirtualAudioNode from './VirtualAudioNodes/StandardVirtualAudioNode'
 
 export default (
   virtualGraph: VirtualAudioNodeGraph,
@@ -38,7 +39,9 @@ export default (
 
       if (destinationVirtualAudioNode instanceof CustomVirtualAudioNode) {
         for (const node of values(destinationVirtualAudioNode.virtualNodes)) {
-          (node as any).input === 'input' && virtualNode.connect((node as any).audioNode)
+          if (node instanceof StandardVirtualAudioNode && node.input === 'input') {
+            virtualNode.connect(node.audioNode)
+          }
         }
         continue
       }

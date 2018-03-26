@@ -34,7 +34,7 @@ export default class CustomVirtualAudioNode {
   }
 
   connect (...connectArgs): void {
-    for (const childVirtualNode of values(this.virtualNodes as GenericObject<any>)) {
+    for (const childVirtualNode of values(this.virtualNodes)) {
       const { output } = childVirtualNode
       if (
         output === 'output' ||
