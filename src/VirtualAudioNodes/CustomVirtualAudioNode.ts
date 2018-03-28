@@ -8,7 +8,7 @@ import createVirtualAudioNode from '../createVirtualAudioNode'
 import { Output, VirtualAudioNode, VirtualAudioNodeGraph } from '../types'
 
 export default class CustomVirtualAudioNode {
-  public readonly audioNode = undefined
+  public readonly audioNode: undefined = undefined
   connected: boolean
   params: object
   virtualNodes: VirtualAudioNodeGraph
@@ -33,7 +33,7 @@ export default class CustomVirtualAudioNode {
     connectAudioNodes(this.virtualNodes, () => {})
   }
 
-  connect (...connectArgs): void {
+  connect (...connectArgs: any[]): void {
     for (const childVirtualNode of values(this.virtualNodes)) {
       const { output } = childVirtualNode
       if (

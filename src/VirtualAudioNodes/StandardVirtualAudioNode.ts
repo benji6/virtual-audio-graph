@@ -8,11 +8,17 @@ import {
 import CustomVirtualAudioNode from './CustomVirtualAudioNode'
 import { Output, VirtualAudioNode } from '../types'
 
+interface TimeParameters {
+  offsetTime: number
+  startTime: number
+  stopTime: number
+}
+
 const createAudioNode = (
   audioContext: AudioContext,
   name: string,
-  constructorParam,
-  { offsetTime, startTime, stopTime },
+  constructorParam: object,
+  { offsetTime, startTime, stopTime }: TimeParameters,
 ) => {
   offsetTime = offsetTime || 0 // tslint:disable-line no-parameter-reassignment
   const func = `create${capitalize(name)}`
@@ -63,7 +69,7 @@ export default class StandardVirtualAudioNode {
     this.update(paramsObj)
   }
 
-  connect (...connectArgs): void {
+  connect (...connectArgs: any[]): void {
     const { audioNode } = this
     const filteredConnectArgs = connectArgs.filter(Boolean)
     const [firstArg, ...rest] = filteredConnectArgs
