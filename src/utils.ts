@@ -5,7 +5,7 @@ export interface GenericObject<T> {
 export const capitalize = (a: string): string => a.charAt(0).toUpperCase() + a.substring(1)
 
 export const entries = <A>(o: GenericObject<A>): [string, A][] => {
-  const xs = []
+  const xs: [string, A][] = []
   for (const key of Object.keys(o)) xs.push([key, o[key]])
   return xs
 }
