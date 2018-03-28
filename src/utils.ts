@@ -9,6 +9,7 @@ export const entries = <A>(o: GenericObject<A>): [string, A][] => {
   for (const key of Object.keys(o)) xs.push([key, o[key]])
   return xs
 }
+
 export const equals = (a: any, b: any): boolean => {
   if (a === b) return true
   const typeA = typeof a
