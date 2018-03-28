@@ -18,7 +18,7 @@ Inspired by [virtual-dom](https://github.com/Matt-Esch/virtual-dom) and [React](
 npm i -S virtual-audio-graph
 ```
 
-virtual-audio-graph is distributed as a bundled CJS module by default, however, there is also a `module` property in its package.json so tools like [Rollup](https://github.com/rollup/rollup) and [Webpack](https://github.com/webpack/webpack) can consume an ES modules build.
+virtual-audio-graph is distributed as a bundled CJS module by default, however, there is also a `module` property in its `package.json` so tools like [Rollup](https://github.com/rollup/rollup) and [Webpack](https://github.com/webpack/webpack) can consume an ES modules build.
 
 ## Size
 
