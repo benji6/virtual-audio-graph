@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "module": "es2015",
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "outDir": "./esm/",
     "sourceMap": false,
     "target": "es5"

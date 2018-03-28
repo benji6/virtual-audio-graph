@@ -1,13 +1,14 @@
 /* global AudioContext GainNode */
-require('./WebAudioTestAPISetup')
 const test = require('tape')
-const createVirtualAudioGraph = require('..')
+require('./WebAudioTestAPISetup')
+const V = require('..')
+const createVirtualAudioGraph = V.default
 
 test('virtualAudioGraph instance - getAudioNodeById', t => {
   const audioContext = new AudioContext()
   const virtualAudioGraph = createVirtualAudioGraph({audioContext})
 
-  virtualAudioGraph.update({0: ['gain', 'output']})
+  virtualAudioGraph.update({0: V.gain('output')})
 
   t.is(virtualAudioGraph.getAudioNodeById(0).constructor, GainNode)
   t.end()

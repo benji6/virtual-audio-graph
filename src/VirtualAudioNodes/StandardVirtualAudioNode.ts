@@ -6,7 +6,14 @@ import {
   startAndStopNodes,
 } from '../data'
 import CustomVirtualAudioNode from './CustomVirtualAudioNode'
-import { Output, VirtualAudioNode } from '../types'
+import {
+  AudioNodeFactoryParam,
+  AudioNodePropertyLookup,
+  Output,
+  VirtualAudioNode,
+  VirtualAudioNodeGraph,
+  VirtualAudioNodeParams,
+} from '../types'
 
 interface TimeParameters {
   offsetTime: number
@@ -14,19 +21,31 @@ interface TimeParameters {
   stopTime: number
 }
 
+interface TimeParameters {
+  offsetTime: number
+  startTime: number
+  stopTime: number
+}
+
+interface AudioContextFactoryLookup {
+  [_: string]: any
+}
+
 const createAudioNode = (
   audioContext: AudioContext,
   name: string,
-  constructorParam: object,
+  audioNodeFactoryParam: AudioNodeFactoryParam,
   { offsetTime, startTime, stopTime }: TimeParameters,
 ) => {
   offsetTime = offsetTime || 0 // tslint:disable-line no-parameter-reassignment
-  const func = `create${capitalize(name)}`
-  if (typeof audioContext[func] !== 'function') { throw new Error(`Unknown node type: ${name}`) }
+  const audioNodeFactoryName = `create${capitalize(name)}`
+  if (typeof (audioContext as AudioContextFactoryLookup)[audioNodeFactoryName] !== 'function') {
+    throw new Error(`Unknown node type: ${name}`)
+  }
 
-  const audioNode = constructorParam
-    ? audioContext[func](constructorParam)
-    : audioContext[func]()
+  const audioNode = audioNodeFactoryParam
+    ? (audioContext as AudioContextFactoryLookup)[audioNodeFactoryName](audioNodeFactoryParam)
+    : (audioContext as AudioContextFactoryLookup)[audioNodeFactoryName]()
 
   if (startAndStopNodes.indexOf(name) !== -1) {
     if (startTime == null) audioNode.start(audioContext.currentTime, offsetTime)
@@ -37,36 +56,22 @@ const createAudioNode = (
 }
 
 export default class StandardVirtualAudioNode {
-  audioNode: AudioNode
-  connected: boolean
-  connections: any[]
-  params: any
-  stopCalled: boolean
+  public audioNode: AudioNode
+  public connected: boolean
+  private connections: AudioNode[]
+  private stopCalled: boolean
 
   constructor (
-    audioContext: AudioContext,
     public readonly node: string,
     public output?: Output,
-    params?,
+    public params?: VirtualAudioNodeParams,
     public readonly input?: string,
   ) {
-    const paramsObj = params || {}
-    const { offsetTime, startTime, stopTime } = paramsObj
-    const constructorParam = paramsObj[find(
-      key => constructorParamsKeys.indexOf(key) !== -1,
-      Object.keys(paramsObj))
-    ]
+    const stopTime = params && params.stopTime
 
-    this.audioNode = createAudioNode(audioContext, node, constructorParam, {
-      offsetTime,
-      startTime,
-      stopTime,
-    })
     this.connected = false
     this.connections = []
     this.stopCalled = stopTime !== undefined
-
-    this.update(paramsObj)
   }
 
   connect (...connectArgs: any[]): void {
@@ -103,7 +108,28 @@ export default class StandardVirtualAudioNode {
     this.connected = false
   }
 
-  update (params = {}): this {
+  initialize (audioContext: AudioContext): this {
+    const params = this.params || {}
+    const constructorParam = params[find(
+      key => constructorParamsKeys.indexOf(key) !== -1,
+      Object.keys(params),
+    )]
+    const { offsetTime, startTime, stopTime } = params
+
+    this.audioNode = createAudioNode(
+      audioContext,
+      this.node,
+      constructorParam,
+      { offsetTime, startTime, stopTime },
+    )
+
+    this.params = undefined
+
+    return this.update(params)
+  }
+
+  update (params: VirtualAudioNodeParams = {}): this {
+    const audioNode: AudioNodePropertyLookup = this.audioNode
     for (const key of Object.keys(params)) {
       if (constructorParamsKeys.indexOf(key) !== -1) continue
       const param = params[key]
@@ -111,20 +137,20 @@ export default class StandardVirtualAudioNode {
       if (audioParamProperties.indexOf(key) !== -1) {
         if (Array.isArray(param)) {
           if (this.params && !equals(param, this.params[key])) {
-            this.audioNode[key].cancelScheduledValues(0)
+            audioNode[key].cancelScheduledValues(0)
           }
-          const callMethod = ([methodName, ...args]) => this.audioNode[key][methodName](...args)
+          const callMethod = ([methodName, ...args]) => audioNode[key][methodName](...args)
           Array.isArray(param[0]) ? param.forEach(callMethod) : callMethod(param)
           continue
         }
-        this.audioNode[key].value = param
+        audioNode[key].value = param
         continue
       }
       if (setters.indexOf(key) !== -1) {
-        this.audioNode[`set${capitalize(key)}`](...param)
+        audioNode[`set${capitalize(key)}`](...param)
         continue
       }
-      this.audioNode[key] = param
+      audioNode[key] = param
     }
     this.params = params
     return this

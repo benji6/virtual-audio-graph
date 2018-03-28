@@ -1,5 +1,5 @@
 import { entries, values } from './utils'
-import { VirtualAudioNode, VirtualAudioNodeGraph } from './types'
+import { AudioNodePropertyLookup, VirtualAudioNode, VirtualAudioNodeGraph } from './types'
 import CustomVirtualAudioNode from './VirtualAudioNodes/CustomVirtualAudioNode'
 import StandardVirtualAudioNode from './VirtualAudioNodes/StandardVirtualAudioNode'
 
@@ -31,7 +31,7 @@ export default (
           }
           continue
         }
-        virtualNode.connect(virtualGraph[key].audioNode[destination])
+        virtualNode.connect((virtualGraph[key].audioNode as AudioNodePropertyLookup)[destination])
         continue
       }
 
