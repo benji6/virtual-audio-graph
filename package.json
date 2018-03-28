@@ -23,7 +23,6 @@
     "build": "tsc && rollup -c",
     "docs": "tsc -p docsSrc && rollup -c docsSrc/rollup.config.js && rm -r docsSrc/esm",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "prepublish": "npm test",
     "spec": "npm run build && tape 'test/**/*.js'",
     "spec:watch": "nodemon --watch src --watch test --exec npm run spec",
     "test": "npm run lint && tsc && eslint test && npm run spec",
