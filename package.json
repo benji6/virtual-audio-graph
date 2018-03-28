@@ -24,12 +24,10 @@
     "docs": "tsc -p docsSrc && rollup -c docsSrc/rollup.config.js && rm -r docsSrc/esm",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "prepublish": "npm test",
-    "semantic-release": "semantic-release",
     "spec": "npm run build && tape 'test/**/*.js'",
     "spec:watch": "nodemon --watch src --watch test --exec npm run spec",
     "test": "npm run lint && tsc && eslint test && npm run spec",
-    "test:watch": "nodemon --watch src --watch test --exec npm t",
-    "travis-deploy-once": "travis-deploy-once"
+    "test:watch": "nodemon --watch src --watch test --exec npm t"
   },
   "author": "Ben Hall",
   "license": "MIT",
@@ -48,8 +46,7 @@
     "tslint-config-airbnb": "^5.8.0",
     "typescript": "^2.7.2",
     "web-audio-test-api": "^0.5.2",
-    "semantic-release": "^15.1.4",
-    "travis-deploy-once": "^4.4.1"
+    "semantic-release": "^15.1.4"
   },
   "@std": {
     "esm": {
