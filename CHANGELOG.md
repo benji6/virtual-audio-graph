@@ -1,6 +1,6 @@
 # Release Notes
 
-## __This Changelog is no longer in use. Please see GitHub releases for changes made since 0.19.x.__
+## __This Changelog is no longer in use, please see GitHub releases for changes made since 0.19.x.__
 
 ## 0.19.x
 
