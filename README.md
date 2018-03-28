@@ -24,10 +24,6 @@ virtual-audio-graph is distributed as a bundled CJS module by default, however, 
 
 virtual-audio-graph is designed to be small and weighs in at 5.9kB minified (2.1kB minified & gzipped) according to [bundlephobia](https://bundlephobia.com) (https://bundlephobia.com/result?p=virtual-audio-graph@0.19.2)
 
-## Upgrading
-
-See [changelog](/CHANGELOG.md).
-
 ## Demos
 
 There are some rudimentary demos [here](http://benji6.github.io/virtual-audio-graph). virtual-audio-graph is the core audio library in [Andromeda](https://github.com/benji6/andromeda).
