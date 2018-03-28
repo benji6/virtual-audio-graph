@@ -1,6 +1,6 @@
 {
   "name": "virtual-audio-graph",
-  "version": "0.19.8",
+  "version": "0.0.0-development",
   "description": "Library for declaratively manipulating the Web Audio API",
   "keywords": [
     "api",
@@ -24,10 +24,12 @@
     "docs": "tsc -p docsSrc && rollup -c docsSrc/rollup.config.js && rm -r docsSrc/esm",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "prepublish": "npm test",
+    "semantic-release": "semantic-release",
     "spec": "npm run build && tape 'test/**/*.js'",
     "spec:watch": "nodemon --watch src --watch test --exec npm run spec",
     "test": "npm run lint && tsc && eslint test && npm run spec",
-    "test:watch": "nodemon --watch src --watch test --exec npm t"
+    "test:watch": "nodemon --watch src --watch test --exec npm t",
+    "travis-deploy-once": "travis-deploy-once"
   },
   "author": "Ben Hall",
   "license": "MIT",
@@ -45,7 +47,9 @@
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.8.0",
     "typescript": "^2.7.2",
-    "web-audio-test-api": "^0.5.2"
+    "web-audio-test-api": "^0.5.2",
+    "semantic-release": "^15.1.4",
+    "travis-deploy-once": "^4.4.1"
   },
   "@std": {
     "esm": {
