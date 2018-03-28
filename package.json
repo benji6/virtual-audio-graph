@@ -45,8 +45,7 @@
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.8.0",
     "typescript": "^2.7.2",
-    "web-audio-test-api": "^0.5.2",
-    "semantic-release": "^15.1.4"
+    "web-audio-test-api": "^0.5.2"
   },
   "@std": {
     "esm": {
