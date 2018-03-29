@@ -26,7 +26,7 @@ virtual-audio-graph is designed to be small and weighs in at 5.9kB minified (2.1
 
 ## Demos
 
-There are some rudimentary demos [here](http://benji6.github.io/virtual-audio-graph).
+There are some demos [here](https://virtual-audio-graph.netlify.com).
 
 virtual-audio-graph is the core audio library in [Andromeda](https://github.com/benji6/andromeda).
 

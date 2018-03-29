@@ -1,5 +1,6 @@
 *.log
 .esm-cache
 dist
+docs/main.js
 esm
 node_modules
