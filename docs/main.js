@@ -55,12 +55,12 @@ var values = function (obj) {
 };
 
 var CustomVirtualAudioNode = /** @class */ (function () {
-    function CustomVirtualAudioNode(node, output, paramsObj) {
+    function CustomVirtualAudioNode(node, output, params) {
         this.node = node;
         this.output = output;
         this.audioNode = undefined;
         this.connected = false;
-        this.paramsObj = paramsObj || {};
+        this.params = params || {};
     }
     CustomVirtualAudioNode.prototype.connect = function () {
         var connectArgs = [];
@@ -94,7 +94,7 @@ var CustomVirtualAudioNode = /** @class */ (function () {
         this.connected = false;
     };
     CustomVirtualAudioNode.prototype.initialize = function (audioContext) {
-        this.virtualNodes = mapObj(function (virtualAudioNodeParam) { return virtualAudioNodeParam.initialize(audioContext); }, this.node(this.paramsObj));
+        this.virtualNodes = mapObj(function (virtualAudioNodeParam) { return virtualAudioNodeParam.initialize(audioContext); }, this.node(this.params));
         connectAudioNodes(this.virtualNodes, function () { });
         return this;
     };
@@ -104,9 +104,9 @@ var CustomVirtualAudioNode = /** @class */ (function () {
         var keys = Object.keys(this.virtualNodes);
         for (var i = 0; i < keys.length; i++) {
             var p = audioGraphParamsFactoryValues[i];
-            this.virtualNodes[keys[i]].update(p.params ? p.params[2] : p[2]);
+            this.virtualNodes[keys[i]].update(p.params);
         }
-        this.paramsObj = params;
+        this.params = params;
         return this;
     };
     return CustomVirtualAudioNode;
@@ -142,15 +142,15 @@ var startAndStopNodes = [
     'bufferSource',
 ];
 
-var createAudioNode = function (audioContext, name, constructorParam, _a) {
+var createAudioNode = function (audioContext, name, audioNodeFactoryParam, _a) {
     var offsetTime = _a.offsetTime, startTime = _a.startTime, stopTime = _a.stopTime;
     offsetTime = offsetTime || 0; // tslint:disable-line no-parameter-reassignment
     var audioNodeFactoryName = "create" + capitalize(name);
     if (typeof audioContext[audioNodeFactoryName] !== 'function') {
         throw new Error("Unknown node type: " + name);
     }
-    var audioNode = constructorParam
-        ? audioContext[audioNodeFactoryName](constructorParam)
+    var audioNode = audioNodeFactoryParam
+        ? audioContext[audioNodeFactoryName](audioNodeFactoryParam)
         : audioContext[audioNodeFactoryName]();
     if (startAndStopNodes.indexOf(name) !== -1) {
         if (startTime == null)
@@ -166,10 +166,9 @@ var StandardVirtualAudioNode = /** @class */ (function () {
     function StandardVirtualAudioNode(node, output, params, input) {
         this.node = node;
         this.output = output;
+        this.params = params;
         this.input = input;
-        this.paramsObj = params || {};
-        this.params = [node, output, params, input];
-        var stopTime = this.paramsObj.stopTime;
+        var stopTime = params && params.stopTime;
         this.connected = false;
         this.connections = [];
         this.stopCalled = stopTime !== undefined;
@@ -219,11 +218,12 @@ var StandardVirtualAudioNode = /** @class */ (function () {
         this.connected = false;
     };
     StandardVirtualAudioNode.prototype.initialize = function (audioContext) {
-        var paramsObj = this.paramsObj;
-        var constructorParam = paramsObj[find(function (key) { return constructorParamsKeys.indexOf(key) !== -1; }, Object.keys(paramsObj))];
-        var offsetTime = paramsObj.offsetTime, startTime = paramsObj.startTime, stopTime = paramsObj.stopTime;
+        var params = this.params || {};
+        var constructorParam = params[find(function (key) { return constructorParamsKeys.indexOf(key) !== -1; }, Object.keys(params))];
+        var offsetTime = params.offsetTime, startTime = params.startTime, stopTime = params.stopTime;
         this.audioNode = createAudioNode(audioContext, this.node, constructorParam, { offsetTime: offsetTime, startTime: startTime, stopTime: stopTime });
-        return this.update(paramsObj);
+        this.params = undefined;
+        return this.update(params);
     };
     StandardVirtualAudioNode.prototype.update = function (params) {
         if (params === void 0) { params = {}; }
@@ -232,11 +232,11 @@ var StandardVirtualAudioNode = /** @class */ (function () {
             if (constructorParamsKeys.indexOf(key) !== -1)
                 return "continue";
             var param = params[key];
-            if (this_2.setParams && this_2.setParams[key] === param)
+            if (this_2.params && this_2.params[key] === param)
                 return "continue";
             if (audioParamProperties.indexOf(key) !== -1) {
                 if (Array.isArray(param)) {
-                    if (this_2.setParams && !equals(param, this_2.setParams[key])) {
+                    if (this_2.params && !equals(param, this_2.params[key])) {
                         audioNode[key].cancelScheduledValues(0);
                     }
                     var callMethod = function (_a) {
@@ -261,7 +261,7 @@ var StandardVirtualAudioNode = /** @class */ (function () {
             var key = _a[_i];
             _loop_2(key);
         }
-        this.setParams = params;
+        this.params = params;
         return this;
     };
     return StandardVirtualAudioNode;
@@ -353,10 +353,10 @@ var VirtualAudioGraph = /** @class */ (function () {
                 this.virtualNodes[key] = newVirtualAudioNode.initialize(this.audioContext);
                 continue;
             }
-            if ((newVirtualAudioNode.paramsObj && newVirtualAudioNode.paramsObj.startTime) !==
-                (virtualAudioNode.paramsObj && virtualAudioNode.paramsObj.startTime) ||
-                (newVirtualAudioNode.paramsObj && newVirtualAudioNode.paramsObj.stopTime) !==
-                    (virtualAudioNode.paramsObj && virtualAudioNode.paramsObj.stopTime) ||
+            if ((newVirtualAudioNode.params && newVirtualAudioNode.params.startTime) !==
+                (virtualAudioNode.params && virtualAudioNode.params.startTime) ||
+                (newVirtualAudioNode.params && newVirtualAudioNode.params.stopTime) !==
+                    (virtualAudioNode.params && virtualAudioNode.params.stopTime) ||
                 newVirtualAudioNode.node !== virtualAudioNode.node) {
                 virtualAudioNode.disconnectAndDestroy();
                 this.disconnectParents(virtualAudioNode);
@@ -368,7 +368,7 @@ var VirtualAudioGraph = /** @class */ (function () {
                 this.disconnectParents(virtualAudioNode);
                 virtualAudioNode.output = newVirtualAudioNode.output;
             }
-            virtualAudioNode.update(newVirtualAudioNode.paramsObj);
+            virtualAudioNode.update(newVirtualAudioNode.params);
         }
         connectAudioNodes(this.virtualNodes, function (vNode) { return vNode.connect(_this.output); });
         return this;

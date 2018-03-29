@@ -1,7 +1,12 @@
 body {
-  font-family: sans-serif;
+  font-family: system-ui, sans-serif;
 }
 
 h1 {
   text-align: center;
+}
+
+main {
+  max-width: 64rem;
+  margin: 0 auto;
 }

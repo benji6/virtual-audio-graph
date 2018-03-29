@@ -4,14 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>virtual-audio-graph Demos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.13.0/themes/prism.min.css" integrity="sha256-6RI2bGiVbA9GqCSAFm96msi4ap50++uo5NYUQ+o7AXk=" crossorigin="anonymous" />
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.13.0/prism.min.js" integrity="sha256-AqXn2u4UOZ36/xOhOEYrMIqgHrq1p8m88HJO+oPzPiM=" crossorigin="anonymous"></script>
   <script async defer src="main.js"></script>
 </head>
 <body>
   <h1>virtual-audio-graph Demos</h1>
+  <main>
   <section>
     <h2>Example 1</h2>
-    <pre>
+    <pre class="language-js"><code class="language-js">
 import createVirtualAudioGraph, {
   createNode,
   delay,
@@ -44,13 +47,13 @@ virtualAudioGraph.update({
     type: 'sawtooth',
   }),
 })
-    </pre>
+    </code></pre>
     <button id="example1">Play</button>
   </section>
 
   <section>
     <h2>Example 2</h2>
-    <pre>
+    <pre class="language-js"><code class="language-js">
 const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
@@ -59,13 +62,13 @@ virtualAudioGraph.update({
   2: gain({ destination: 'frequency', key: '1' }, { gain: 10 }),
   3: oscillator([2, 'output'], { frequency: 1, type: 'triangle' }),
 })
-    </pre>
+    </code></pre>
     <button id="example2">Play</button>
   </section>
 
   <section>
     <h2>Example 3</h2>
-    <pre>
+    <pre class="language-js"><code class="language-js">
 const chromaticScale = n => 440 * Math.pow(2, n / 12)
 
 const pingPongDelay = createNode(({
@@ -114,8 +117,9 @@ virtualAudioGraph.update({
     notes: [...up, ...down],
   }),
 })
-    </pre>
+    </code></pre>
     <button id="example3">Play</button>
   </section>
+  </main>
 </body>
 </html>
