@@ -1,12 +1,67 @@
+a {
+  color: #0086ef;
+  text-decoration: none;
+  transition: color .15s ease-in-out;
+}
+
+a:hover {
+  color: #005ba2;
+}
+
 body {
   font-family: system-ui, sans-serif;
+  margin: 0;
+}
+
+button {
+  border: 0;
+  border-radius: .333rem;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: .667rem 1rem;
+  transition: background .15s ease-in-out;
 }
 
 h1 {
+  margin: 0;
   text-align: center;
 }
 
+header {
+  box-shadow: 0 0 .5rem dimgray;
+  align-items: center;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  padding: 1rem;
+}
+
 main {
-  max-width: 64rem;
+  max-width: 52rem;
   margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.button-container {
+  text-align: right;
+}
+
+.button-play {
+  background: #0086ef;
+  margin-right: .25rem;
+}
+
+.button-play:hover {
+  background: #005ba2;
+}
+
+.button-stop {
+  background: gray;
+}
+
+.button-stop:hover {
+  background: dimgray;
 }
