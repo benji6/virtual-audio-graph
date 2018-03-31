@@ -98,15 +98,13 @@ virtualAudioGraph.update(graph)
 
 OK, so what's going on here?
 
-`update` takes a graph object. Each key in the graph object represents the id of a node and each node is represented by an array with between 2 to 4 elements in it.
+`update` takes a graph object. Each key in the graph object represents the id of a node and each node is represented by a node factory function call with between 1 to 3 arguments.
 
-In the above example the first element in the array is the name of the AudioNode to be instantiated, the second element is the id of the node that it should connect to (with the special string `'output'` representing the `virtualAudioGraph` output specified at construction) and if you are already familiar with the Web Audio API the third element should be recognizable as an object specifying the node's parameters.
+In the above example the first argument is the id of the node that it should connect to (with the special string `'output'` representing the `virtualAudioGraph` output specified at construction) and if you are already familiar with the Web Audio API the third element should be recognizable as an object specifying the node's parameters.
 
-The above information should be enough to get started creating very simple audio graphs like the one above, but if you are still with me here is a more detailed overview about how this node array works broken down by element:
+The above information should be enough to get started creating very simple audio graphs like the one above, but here is a more detailed overview about how the node factory arguments work:
 
-- `0` - `string | Function` - required - the name of the node we are creating (e.g. `'oscillator'` or `'gain'`). See the section on [Custom Nodes](#custom-nodes) for what happens when a function is provided instead.
-
-- `1` - `string | {key: string, destination: string} | (string | {key: string, destination: string})[]` - required - value specifying where this node should be connected. This could be:
+- First Argument - `string | {key: string, destination: string} | (string | {key: string, destination: string})[]` - required - value specifying where this node should be connected. This could be:
   - The reserved string `'output'` which connects to virtualAudioGraph's destination.
   - A string (or number) corresponding to a key for another node.
   - An object with the following 2 properties:
@@ -127,7 +125,7 @@ The above information should be enough to get started creating very simple audio
   })
   ```
 
-- `2` - `object | null | undefined` - optional object representing any properties to set/alter on the audio node created (details on properties available to audioNodes [here](#standard-nodes)). If the property you are setting is an AudioParam you may either assign it a value, or you can use AudioParam methods to specify behaviour of the parameter over time. To do so specify an array where the first element is the method name and the remaining elements are the arguments for that method. If scheduling multiple values specify an array of these arrays. [See here for more info on AudioParam methods](https://developer.mozilla.org/en-US/docs/Web/API/AudioParam). Here are examples of all supported methods:
+- Second Argument - `object | null | undefined` - optional object representing any properties to set/alter on the audio node created (details on properties available to audioNodes [here](#standard-nodes)). If the property you are setting is an AudioParam you may either assign it a value, or you can use AudioParam methods to specify behaviour of the parameter over time. To do so specify an array where the first element is the method name and the remaining elements are the arguments for that method. If scheduling multiple values specify an array of these arrays. [See here for more info on AudioParam methods](https://developer.mozilla.org/en-US/docs/Web/API/AudioParam). Here are examples of all supported methods:
   - specify an ordinary value
   ```javascript
   virtualAudioGraph.update({
@@ -197,13 +195,13 @@ The above information should be enough to get started creating very simple audio
   })
   ```
 
-- `3` - `string | undefined` - optionally specify this element as an input of a custom node by assigning `'input'` at this index. Only valid when defining custom nodes (see [below](#custom-nodes)).
+- Third Argument - `string | undefined` - optionally specify this element as an input of a custom node by assigning `'input'` at this index. Only valid when defining custom nodes (see [below](#custom-nodes)).
 
 ### Custom Nodes
 
 The virtual audio graph is composed of standard nodes (see [below](#standard-nodes)) and custom nodes which may be built out of standard nodes and other custom nodes.
 
-Specify the node input destination using the string `'input'` as the 4th element in the node array as below:
+Specify the node input destination using the string `'input'` as the 3rd argument in the node constructor as below:
 
 ```javascript
 import {createNode, delay, gain, oscillator, stereoPanner} from 'virtual-audio-graph'
