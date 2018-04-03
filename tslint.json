@@ -6,6 +6,7 @@
     "import-name": false,
     "no-increment-decrement": false,
     "no-this-assignment": false,
+    "object-shorthand-properties-first": false,
     "semicolon": [true, "never"]
   }
 }
