@@ -22,7 +22,7 @@ virtual-audio-graph is distributed as a bundled CJS module by default, however, 
 
 ## Size
 
-virtual-audio-graph is designed to be small and weighs in at 5.9kB minified (2.1kB minified & gzipped) according to [bundlephobia](https://bundlephobia.com) (https://bundlephobia.com/result?p=virtual-audio-graph@0.19.2)
+virtual-audio-graph is designed to be small and weighs in at 7.5kB minified (2.4kB minified & gzipped) according to [bundlephobia](https://bundlephobia.com) (https://bundlephobia.com/result?p=virtual-audio-graph@1.0.2)
 
 ## Demos
 
