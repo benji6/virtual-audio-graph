@@ -27,6 +27,7 @@
 <p>First let's import everything we're going to need for these examples:</p>
 <pre class="language-js"><code class="language-js">import createVirtualAudioGraph, {
   createNode,
+  createWorkletNode,
   delay,
   gain,
   oscillator,
@@ -334,8 +335,111 @@ virtualAudioGraph.update({
 
 <pre class="language-js"><code class="language-js">5: gain(4, null, 'input')</code></pre>
 
+<h2>AudioWorklet Noise Generator</h2>
+<p>AudioWorklets are a fairly new addition to the Web Audio API so these demos won't work in all browsers!</p>
+<p>If we have the following noise generator module at <code language="sh">audioWorklets/noise.js</code>:</p>
+<pre class="language-js"><code class="language-js">class Noise extends AudioWorkletProcessor {
+  static get parameterDescriptors () {
+    return [{name: 'amplitude', defaultValue: 0.25, minValue: 0, maxValue: 1}]
+  }
+
+  process (inputs, [output], {amplitude}) {
+    for (const outputChannel of output) {
+      for (let i = 0; i < outputChannel.length; i++) {
+        outputChannel[i] = 2 * (Math.random() - 0.5) * amplitude[i]
+      }
+    }
+
+    return true
+  }
+}
+
+registerProcessor('noise', Noise)</code></pre>
+
+<p>Then we can use it in virtual-audio-graph like this:</p>
+<pre class="language-js"><code class="language-js">audioContext.audioWorklet.addModule('audioWorklets/noise.js')
+  .then(() => {
+    const noise = createWorkletNode('noise')
+
+    virtualAudioGraph.update({
+      0: noise('output', { amplitude: 0.25 }),
+    })
+  })</code></pre>
+<div class="button-container">
+  <button class="button-play">Play</button>
+  <button class="button-stop">Stop</button>
+</div>
+
+<h2>AudioWorklet Bit Crusher</h2>
+<p>Here is our bit crusher module at <code language="sh">audioWorklets/bitCrusher.js</code>:</p>
+<pre class="language-js"><code class="language-js">class BitCrusher extends AudioWorkletProcessor {
+  static get parameterDescriptors () {
+    return [
+      {name: 'bitDepth', defaultValue: 12, minValue: 1, maxValue: 16},
+      {name: 'frequencyReduction', defaultValue: 0.5, minValue: 0, maxValue: 1},
+    ]
+  }
+
+  constructor (options) {
+    super(options)
+    this.lastSampleValue = 0
+    this.phase = 0
+  }
+
+  process ([input], [output], parameters) {
+    const bitDepth = parameters.bitDepth
+    const frequencyReduction = parameters.frequencyReduction
+    for (let channel = 0; channel < input.length; channel++) {
+      const inputChannel = input[channel]
+      const outputChannel = output[channel]
+      for (let i = 0; i < inputChannel.length; ++i) {
+        const step = Math.pow(0.5, bitDepth[i])
+        this.phase += frequencyReduction[i]
+        if (this.phase >= 1) {
+          this.phase -= 1
+          this.lastSampleValue = step * Math.floor(inputChannel[i] / step + 0.5)
+        }
+        outputChannel[i] = this.lastSampleValue
+      }
+    }
+
+    return true
+  }
+}
+
+registerProcessor('bitCrusher', BitCrusher)</code></pre>
+
+<p>And here is how we can use it with virtual-audio-graph:</p>
+
+<pre class="language-js"><code class="language-js">audioWorklet.addModule('audioWorklets/bitCrusher.js')
+  .then(() => {
+    const bitCrusher = createWorkletNode('bitCrusher')
+
+    const { currentTime } = virtualAudioGraph
+
+    virtualAudioGraph.update({
+      0: bitCrusher('output', {
+        bitDepth: 1,
+        frequencyReduction: [
+          ['setValueAtTime', 0.01, currentTime],
+          ['linearRampToValueAtTime', 0.05, currentTime + 2],
+          ['exponentialRampToValueAtTime', 0.01, currentTime + 4],
+        ],
+      }),
+      1: oscillator(0, {
+        frequency: 5000,
+        stopTime: currentTime + 4,
+        type: 'sawtooth',
+      }),
+    })
+  })</code></pre>
+<div class="button-container">
+  <button class="button-play">Play</button>
+  <button class="button-stop">Stop</button>
+</div>
+
 <h2>Bringing It All Together</h2>
-<p>Here is a full working example that shows off everything in this guide:</p>
+<p>Here is a full working example that shows off a number of virtual-audio-graph's main features:</p>
 <pre class="language-js"><code class="language-js">import createVirtualAudioGraph, {
   createNode,
   delay,

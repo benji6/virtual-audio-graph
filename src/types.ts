@@ -1,3 +1,4 @@
+import AudioWorkletVirtualAudioNode from './VirtualAudioNodes/AudioWorkletVirtualAudioNode'
 import CustomVirtualAudioNode from './VirtualAudioNodes/CustomVirtualAudioNode'
 import StandardVirtualAudioNode from './VirtualAudioNodes/StandardVirtualAudioNode'
 
@@ -16,7 +17,9 @@ export type Output = string
   | { key: string, destination: string }
   | (string | number | { key: string, destination: string })[]
 
-export type VirtualAudioNode = CustomVirtualAudioNode | StandardVirtualAudioNode
+export type VirtualAudioNode = AudioWorkletVirtualAudioNode |
+  CustomVirtualAudioNode |
+  StandardVirtualAudioNode
 
 export interface VirtualAudioNodeGraph {
   [_: string]: VirtualAudioNode
