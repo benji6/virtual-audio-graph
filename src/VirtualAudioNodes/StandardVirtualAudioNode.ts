@@ -21,12 +21,6 @@ interface TimeParameters {
   stopTime: number
 }
 
-interface TimeParameters {
-  offsetTime: number
-  startTime: number
-  stopTime: number
-}
-
 interface AudioContextFactoryLookup {
   [_: string]: any
 }
