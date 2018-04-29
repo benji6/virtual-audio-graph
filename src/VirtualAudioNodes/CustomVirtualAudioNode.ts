@@ -10,7 +10,7 @@ import {
 
 export default class CustomVirtualAudioNode {
   public readonly audioNode: undefined = undefined
-  public connected: boolean
+  public connected: boolean = false
   public params: VirtualAudioNodeParams
   public virtualNodes: VirtualAudioNodeGraph
 
@@ -19,7 +19,6 @@ export default class CustomVirtualAudioNode {
     public output?: Output,
     params?: VirtualAudioNodeParams,
   ) {
-    this.connected = false
     this.params = params || {}
   }
 
