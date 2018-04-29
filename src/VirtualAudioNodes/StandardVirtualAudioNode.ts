@@ -52,7 +52,7 @@ const createAudioNode = (
 export default class StandardVirtualAudioNode {
   public audioNode: AudioNode
   public connected: boolean = false
-  private connections: AudioNode[]
+  private connections: AudioNode[] = []
   private stopCalled: boolean
 
   constructor (
@@ -62,7 +62,6 @@ export default class StandardVirtualAudioNode {
     public readonly input?: string,
   ) {
     const stopTime = params && params.stopTime
-    this.connections = []
     this.stopCalled = stopTime !== undefined
   }
 
