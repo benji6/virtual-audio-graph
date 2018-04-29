@@ -1,4 +1,5 @@
 import createVirtualAudioGraph, {
+  createWorkletNode,
   createNode,
   delay,
   gain,
@@ -6,7 +7,9 @@ import createVirtualAudioGraph, {
   stereoPanner,
 } from '../src/index'
 
-const virtualAudioGraph = createVirtualAudioGraph()
+const audioContext = new AudioContext
+
+const virtualAudioGraph = createVirtualAudioGraph({ audioContext })
 
 const examples = [
   () => {
@@ -232,6 +235,36 @@ const examples = [
       1: oscillator([0, 'output'], { stopTime: currentTime + .2 }),
     })
   },
+  () => (audioContext as any).audioWorklet.addModule('audioWorklets/noise.js')
+    .then(() => {
+      const noise = createWorkletNode('noise')
+
+      virtualAudioGraph.update({
+        0: noise('output', { amplitude: 0.25 }),
+      })
+    }),
+  () => (audioContext as any).audioWorklet.addModule('audioWorklets/bitCrusher.js')
+    .then(() => {
+      const bitCrusher = createWorkletNode('bitCrusher')
+
+      const { currentTime } = virtualAudioGraph
+
+      virtualAudioGraph.update({
+        0: bitCrusher('output', {
+          bitDepth: 1,
+          frequencyReduction: [
+            ['setValueAtTime', 0.01, currentTime],
+            ['linearRampToValueAtTime', 0.05, currentTime + 2],
+            ['exponentialRampToValueAtTime', 0.01, currentTime + 4],
+          ],
+        }),
+        1: oscillator(0, {
+          frequency: 5000,
+          stopTime: currentTime + 4,
+          type: 'sawtooth',
+        }),
+      })
+    }),
   () => {
     const osc = createNode(({
       gain: gainValue,

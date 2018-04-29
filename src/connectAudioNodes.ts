@@ -1,5 +1,6 @@
 import { entries, values } from './utils'
 import { AudioNodePropertyLookup, VirtualAudioNode, VirtualAudioNodeGraph } from './types'
+import AudioWorkletVirtualAudioNode from './VirtualAudioNodes/AudioWorkletVirtualAudioNode'
 import CustomVirtualAudioNode from './VirtualAudioNodes/CustomVirtualAudioNode'
 import StandardVirtualAudioNode from './VirtualAudioNodes/StandardVirtualAudioNode'
 
@@ -39,7 +40,11 @@ export default (
 
       if (destinationVirtualAudioNode instanceof CustomVirtualAudioNode) {
         for (const node of values(destinationVirtualAudioNode.virtualNodes)) {
-          if (node instanceof StandardVirtualAudioNode && node.input === 'input') {
+          if (
+            (node instanceof StandardVirtualAudioNode ||
+            node instanceof AudioWorkletVirtualAudioNode) &&
+            node.input === 'input'
+          ) {
             virtualNode.connect(node.audioNode)
           }
         }
