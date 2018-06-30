@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`audio param methods with update multiple setValueAtTime 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 0,
+      },
+      "inputs": Array [],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`audio param methods with update overides setValueAtTime 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 1,
+      },
+      "inputs": Array [],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`audio param methods with update setValueAtTime with exponentialRampToValueAtTime 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "detune": Object {
+        "inputs": Array [],
+        "value": 0,
+      },
+      "frequency": Object {
+        "inputs": Array [],
+        "value": 440,
+      },
+      "inputs": Array [],
+      "name": "OscillatorNode",
+      "type": "sine",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`audio param methods with update setValueAtTime with linearRampToValueAtTime 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 0,
+      },
+      "inputs": Array [],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`audio param methods with update setValueAtTime with setTargetAtTime 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 0,
+      },
+      "inputs": Array [],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`audio param methods with update setValueAtTime with setValueCurveAtTime 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 0,
+      },
+      "inputs": Array [],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`audio param methods with update single setValueAtTime 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 1,
+      },
+      "inputs": Array [],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;

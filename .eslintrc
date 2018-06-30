@@ -1,6 +1,0 @@
-{
-  "extends": "benji6",
-  "rules": {
-    "sort-keys": 0
-  }
-}

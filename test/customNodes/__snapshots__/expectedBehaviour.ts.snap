@@ -1,0 +1,893 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom nodes can define a custom node built of other custom nodes 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 0.5,
+      },
+      "inputs": Array [
+        Object {
+          "gain": Object {
+            "inputs": Array [],
+            "value": 1,
+          },
+          "inputs": Array [
+            Object {
+              "inputs": Array [
+                Object {
+                  "delayTime": Object {
+                    "inputs": Array [],
+                    "value": 0.3333333333333333,
+                  },
+                  "inputs": Array [
+                    Object {
+                      "gain": Object {
+                        "inputs": Array [],
+                        "value": 0.3333333333333333,
+                      },
+                      "inputs": Array [
+                        Object {
+                          "delayTime": Object {
+                            "inputs": Array [],
+                            "value": 0.3333333333333333,
+                          },
+                          "inputs": Array [
+                            Object {
+                              "gain": Object {
+                                "inputs": Array [],
+                                "value": 0.3333333333333333,
+                              },
+                              "inputs": Array [
+                                "<circular:DelayNode>",
+                                Object {
+                                  "detune": Object {
+                                    "inputs": Array [],
+                                    "value": 0,
+                                  },
+                                  "frequency": Object {
+                                    "inputs": Array [],
+                                    "value": 440,
+                                  },
+                                  "inputs": Array [],
+                                  "name": "OscillatorNode",
+                                  "type": "sine",
+                                },
+                              ],
+                              "name": "GainNode",
+                            },
+                          ],
+                          "name": "DelayNode",
+                        },
+                      ],
+                      "name": "GainNode",
+                    },
+                  ],
+                  "name": "DelayNode",
+                },
+              ],
+              "name": "StereoPannerNode",
+              "pan": Object {
+                "inputs": Array [],
+                "value": 1,
+              },
+            },
+            Object {
+              "inputs": Array [
+                Object {
+                  "delayTime": Object {
+                    "inputs": Array [],
+                    "value": 0.3333333333333333,
+                  },
+                  "inputs": Array [
+                    Object {
+                      "gain": Object {
+                        "inputs": Array [],
+                        "value": 0.3333333333333333,
+                      },
+                      "inputs": Array [
+                        Object {
+                          "delayTime": Object {
+                            "inputs": Array [],
+                            "value": 0.3333333333333333,
+                          },
+                          "inputs": Array [
+                            Object {
+                              "gain": Object {
+                                "inputs": Array [],
+                                "value": 0.3333333333333333,
+                              },
+                              "inputs": Array [
+                                "<circular:DelayNode>",
+                              ],
+                              "name": "GainNode",
+                            },
+                          ],
+                          "name": "DelayNode",
+                        },
+                        Object {
+                          "detune": Object {
+                            "inputs": Array [],
+                            "value": 0,
+                          },
+                          "frequency": Object {
+                            "inputs": Array [],
+                            "value": 440,
+                          },
+                          "inputs": Array [],
+                          "name": "OscillatorNode",
+                          "type": "sine",
+                        },
+                      ],
+                      "name": "GainNode",
+                    },
+                  ],
+                  "name": "DelayNode",
+                },
+              ],
+              "name": "StereoPannerNode",
+              "pan": Object {
+                "inputs": Array [],
+                "value": -1,
+              },
+            },
+          ],
+          "name": "GainNode",
+        },
+      ],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`custom nodes can define a custom node which can be removed 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 0.5,
+      },
+      "inputs": Array [
+        Object {
+          "inputs": Array [
+            Object {
+              "delayTime": Object {
+                "inputs": Array [],
+                "value": 0.5,
+              },
+              "inputs": Array [
+                Object {
+                  "gain": Object {
+                    "inputs": Array [],
+                    "value": 0.5,
+                  },
+                  "inputs": Array [
+                    Object {
+                      "delayTime": Object {
+                        "inputs": Array [],
+                        "value": 0.5,
+                      },
+                      "inputs": Array [
+                        Object {
+                          "gain": Object {
+                            "inputs": Array [],
+                            "value": 0.5,
+                          },
+                          "inputs": Array [
+                            "<circular:DelayNode>",
+                            Object {
+                              "detune": Object {
+                                "inputs": Array [],
+                                "value": 0,
+                              },
+                              "frequency": Object {
+                                "inputs": Array [],
+                                "value": 440,
+                              },
+                              "inputs": Array [],
+                              "name": "OscillatorNode",
+                              "type": "sine",
+                            },
+                          ],
+                          "name": "GainNode",
+                        },
+                      ],
+                      "name": "DelayNode",
+                    },
+                  ],
+                  "name": "GainNode",
+                },
+              ],
+              "name": "DelayNode",
+            },
+          ],
+          "name": "StereoPannerNode",
+          "pan": Object {
+            "inputs": Array [],
+            "value": 1,
+          },
+        },
+        Object {
+          "inputs": Array [
+            Object {
+              "delayTime": Object {
+                "inputs": Array [],
+                "value": 0.5,
+              },
+              "inputs": Array [
+                Object {
+                  "gain": Object {
+                    "inputs": Array [],
+                    "value": 0.5,
+                  },
+                  "inputs": Array [
+                    Object {
+                      "delayTime": Object {
+                        "inputs": Array [],
+                        "value": 0.5,
+                      },
+                      "inputs": Array [
+                        Object {
+                          "gain": Object {
+                            "inputs": Array [],
+                            "value": 0.5,
+                          },
+                          "inputs": Array [
+                            "<circular:DelayNode>",
+                          ],
+                          "name": "GainNode",
+                        },
+                      ],
+                      "name": "DelayNode",
+                    },
+                    Object {
+                      "detune": Object {
+                        "inputs": Array [],
+                        "value": 0,
+                      },
+                      "frequency": Object {
+                        "inputs": Array [],
+                        "value": 440,
+                      },
+                      "inputs": Array [],
+                      "name": "OscillatorNode",
+                      "type": "sine",
+                    },
+                  ],
+                  "name": "GainNode",
+                },
+              ],
+              "name": "DelayNode",
+            },
+          ],
+          "name": "StereoPannerNode",
+          "pan": Object {
+            "inputs": Array [],
+            "value": -1,
+          },
+        },
+      ],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`custom nodes can define a custom node which can be removed 2`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 0.5,
+      },
+      "inputs": Array [],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`custom nodes can define a custom node which can be replaced with another on update 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 0.5,
+      },
+      "inputs": Array [
+        Object {
+          "gain": Object {
+            "inputs": Array [],
+            "value": 0.5,
+          },
+          "inputs": Array [
+            Object {
+              "detune": Object {
+                "inputs": Array [],
+                "value": 0,
+              },
+              "frequency": Object {
+                "inputs": Array [],
+                "value": 220,
+              },
+              "inputs": Array [],
+              "name": "OscillatorNode",
+              "type": "square",
+            },
+            Object {
+              "detune": Object {
+                "inputs": Array [],
+                "value": 3,
+              },
+              "frequency": Object {
+                "inputs": Array [],
+                "value": 220,
+              },
+              "inputs": Array [],
+              "name": "OscillatorNode",
+              "type": "square",
+            },
+          ],
+          "name": "GainNode",
+        },
+      ],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`custom nodes can define a custom node which can be replaced with another on update 2`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 0.5,
+      },
+      "inputs": Array [
+        Object {
+          "gain": Object {
+            "inputs": Array [],
+            "value": 0.5,
+          },
+          "inputs": Array [
+            Object {
+              "detune": Object {
+                "inputs": Array [],
+                "value": 0,
+              },
+              "frequency": Object {
+                "inputs": Array [],
+                "value": 220,
+              },
+              "inputs": Array [],
+              "name": "OscillatorNode",
+              "type": "sine",
+            },
+          ],
+          "name": "GainNode",
+        },
+      ],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`custom nodes can define a custom node which can be replaced with another on update 3`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 1,
+      },
+      "inputs": Array [
+        Object {
+          "inputs": Array [
+            Object {
+              "gain": Object {
+                "inputs": Array [],
+                "value": 1,
+              },
+              "inputs": Array [],
+              "name": "GainNode",
+            },
+          ],
+          "name": "ConvolverNode",
+          "normalize": true,
+        },
+      ],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`custom nodes can define a custom node which can be replaced with another on update 4`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 0.5,
+      },
+      "inputs": Array [
+        Object {
+          "inputs": Array [
+            Object {
+              "gain": Object {
+                "inputs": Array [],
+                "value": 1,
+              },
+              "inputs": Array [],
+              "name": "GainNode",
+            },
+          ],
+          "name": "ConvolverNode",
+          "normalize": true,
+        },
+      ],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`custom nodes can define a custom node which can be updated 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 0.5,
+      },
+      "inputs": Array [
+        Object {
+          "inputs": Array [
+            Object {
+              "delayTime": Object {
+                "inputs": Array [],
+                "value": 0.5,
+              },
+              "inputs": Array [
+                Object {
+                  "gain": Object {
+                    "inputs": Array [],
+                    "value": 0.5,
+                  },
+                  "inputs": Array [
+                    Object {
+                      "delayTime": Object {
+                        "inputs": Array [],
+                        "value": 0.5,
+                      },
+                      "inputs": Array [
+                        Object {
+                          "gain": Object {
+                            "inputs": Array [],
+                            "value": 0.5,
+                          },
+                          "inputs": Array [
+                            "<circular:DelayNode>",
+                            Object {
+                              "detune": Object {
+                                "inputs": Array [],
+                                "value": 0,
+                              },
+                              "frequency": Object {
+                                "inputs": Array [],
+                                "value": 440,
+                              },
+                              "inputs": Array [],
+                              "name": "OscillatorNode",
+                              "type": "sine",
+                            },
+                          ],
+                          "name": "GainNode",
+                        },
+                      ],
+                      "name": "DelayNode",
+                    },
+                  ],
+                  "name": "GainNode",
+                },
+              ],
+              "name": "DelayNode",
+            },
+          ],
+          "name": "StereoPannerNode",
+          "pan": Object {
+            "inputs": Array [],
+            "value": 1,
+          },
+        },
+        Object {
+          "inputs": Array [
+            Object {
+              "delayTime": Object {
+                "inputs": Array [],
+                "value": 0.5,
+              },
+              "inputs": Array [
+                Object {
+                  "gain": Object {
+                    "inputs": Array [],
+                    "value": 0.5,
+                  },
+                  "inputs": Array [
+                    Object {
+                      "delayTime": Object {
+                        "inputs": Array [],
+                        "value": 0.5,
+                      },
+                      "inputs": Array [
+                        Object {
+                          "gain": Object {
+                            "inputs": Array [],
+                            "value": 0.5,
+                          },
+                          "inputs": Array [
+                            "<circular:DelayNode>",
+                          ],
+                          "name": "GainNode",
+                        },
+                      ],
+                      "name": "DelayNode",
+                    },
+                    Object {
+                      "detune": Object {
+                        "inputs": Array [],
+                        "value": 0,
+                      },
+                      "frequency": Object {
+                        "inputs": Array [],
+                        "value": 440,
+                      },
+                      "inputs": Array [],
+                      "name": "OscillatorNode",
+                      "type": "sine",
+                    },
+                  ],
+                  "name": "GainNode",
+                },
+              ],
+              "name": "DelayNode",
+            },
+          ],
+          "name": "StereoPannerNode",
+          "pan": Object {
+            "inputs": Array [],
+            "value": -1,
+          },
+        },
+      ],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`custom nodes can define a custom node which can be updated 2`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 0.5,
+      },
+      "inputs": Array [
+        Object {
+          "inputs": Array [
+            Object {
+              "delayTime": Object {
+                "inputs": Array [],
+                "value": 0.5,
+              },
+              "inputs": Array [
+                Object {
+                  "gain": Object {
+                    "inputs": Array [],
+                    "value": 0.6,
+                  },
+                  "inputs": Array [
+                    Object {
+                      "delayTime": Object {
+                        "inputs": Array [],
+                        "value": 0.5,
+                      },
+                      "inputs": Array [
+                        Object {
+                          "gain": Object {
+                            "inputs": Array [],
+                            "value": 0.6,
+                          },
+                          "inputs": Array [
+                            "<circular:DelayNode>",
+                            Object {
+                              "detune": Object {
+                                "inputs": Array [],
+                                "value": 0,
+                              },
+                              "frequency": Object {
+                                "inputs": Array [],
+                                "value": 440,
+                              },
+                              "inputs": Array [],
+                              "name": "OscillatorNode",
+                              "type": "sine",
+                            },
+                          ],
+                          "name": "GainNode",
+                        },
+                      ],
+                      "name": "DelayNode",
+                    },
+                  ],
+                  "name": "GainNode",
+                },
+              ],
+              "name": "DelayNode",
+            },
+          ],
+          "name": "StereoPannerNode",
+          "pan": Object {
+            "inputs": Array [],
+            "value": 1,
+          },
+        },
+        Object {
+          "inputs": Array [
+            Object {
+              "delayTime": Object {
+                "inputs": Array [],
+                "value": 0.5,
+              },
+              "inputs": Array [
+                Object {
+                  "gain": Object {
+                    "inputs": Array [],
+                    "value": 0.6,
+                  },
+                  "inputs": Array [
+                    Object {
+                      "delayTime": Object {
+                        "inputs": Array [],
+                        "value": 0.5,
+                      },
+                      "inputs": Array [
+                        Object {
+                          "gain": Object {
+                            "inputs": Array [],
+                            "value": 0.6,
+                          },
+                          "inputs": Array [
+                            "<circular:DelayNode>",
+                          ],
+                          "name": "GainNode",
+                        },
+                      ],
+                      "name": "DelayNode",
+                    },
+                    Object {
+                      "detune": Object {
+                        "inputs": Array [],
+                        "value": 0,
+                      },
+                      "frequency": Object {
+                        "inputs": Array [],
+                        "value": 440,
+                      },
+                      "inputs": Array [],
+                      "name": "OscillatorNode",
+                      "type": "sine",
+                    },
+                  ],
+                  "name": "GainNode",
+                },
+              ],
+              "name": "DelayNode",
+            },
+          ],
+          "name": "StereoPannerNode",
+          "pan": Object {
+            "inputs": Array [],
+            "value": -1,
+          },
+        },
+      ],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`custom nodes can define a custom node which has an input node with no params 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 1,
+      },
+      "inputs": Array [
+        Object {
+          "gain": Object {
+            "inputs": Array [],
+            "value": 0.5,
+          },
+          "inputs": Array [
+            Object {
+              "detune": Object {
+                "inputs": Array [],
+                "value": 0,
+              },
+              "frequency": Object {
+                "inputs": Array [],
+                "value": 220,
+              },
+              "inputs": Array [],
+              "name": "OscillatorNode",
+              "type": "sine",
+            },
+          ],
+          "name": "GainNode",
+        },
+      ],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`custom nodes creates a custom node which can be reused in virtualAudioGraph.update 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 0.5,
+      },
+      "inputs": Array [
+        Object {
+          "inputs": Array [
+            Object {
+              "delayTime": Object {
+                "inputs": Array [],
+                "value": 0.5,
+              },
+              "inputs": Array [
+                Object {
+                  "gain": Object {
+                    "inputs": Array [],
+                    "value": 0.5,
+                  },
+                  "inputs": Array [
+                    Object {
+                      "delayTime": Object {
+                        "inputs": Array [],
+                        "value": 0.5,
+                      },
+                      "inputs": Array [
+                        Object {
+                          "gain": Object {
+                            "inputs": Array [],
+                            "value": 0.5,
+                          },
+                          "inputs": Array [
+                            "<circular:DelayNode>",
+                            Object {
+                              "detune": Object {
+                                "inputs": Array [],
+                                "value": 0,
+                              },
+                              "frequency": Object {
+                                "inputs": Array [],
+                                "value": 440,
+                              },
+                              "inputs": Array [],
+                              "name": "OscillatorNode",
+                              "type": "sine",
+                            },
+                          ],
+                          "name": "GainNode",
+                        },
+                      ],
+                      "name": "DelayNode",
+                    },
+                  ],
+                  "name": "GainNode",
+                },
+              ],
+              "name": "DelayNode",
+            },
+          ],
+          "name": "StereoPannerNode",
+          "pan": Object {
+            "inputs": Array [],
+            "value": 1,
+          },
+        },
+        Object {
+          "inputs": Array [
+            Object {
+              "delayTime": Object {
+                "inputs": Array [],
+                "value": 0.5,
+              },
+              "inputs": Array [
+                Object {
+                  "gain": Object {
+                    "inputs": Array [],
+                    "value": 0.5,
+                  },
+                  "inputs": Array [
+                    Object {
+                      "delayTime": Object {
+                        "inputs": Array [],
+                        "value": 0.5,
+                      },
+                      "inputs": Array [
+                        Object {
+                          "gain": Object {
+                            "inputs": Array [],
+                            "value": 0.5,
+                          },
+                          "inputs": Array [
+                            "<circular:DelayNode>",
+                          ],
+                          "name": "GainNode",
+                        },
+                      ],
+                      "name": "DelayNode",
+                    },
+                    Object {
+                      "detune": Object {
+                        "inputs": Array [],
+                        "value": 0,
+                      },
+                      "frequency": Object {
+                        "inputs": Array [],
+                        "value": 440,
+                      },
+                      "inputs": Array [],
+                      "name": "OscillatorNode",
+                      "type": "sine",
+                    },
+                  ],
+                  "name": "GainNode",
+                },
+              ],
+              "name": "DelayNode",
+            },
+          ],
+          "name": "StereoPannerNode",
+          "pan": Object {
+            "inputs": Array [],
+            "value": -1,
+          },
+        },
+      ],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;

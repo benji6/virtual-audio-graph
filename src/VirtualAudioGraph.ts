@@ -5,27 +5,27 @@ import { VirtualAudioNode, VirtualAudioNodeGraph } from './types'
 export default class VirtualAudioGraph {
   private virtualNodes: VirtualAudioNodeGraph = {}
 
-  constructor (
+  constructor(
     private readonly audioContext: AudioContext,
     private readonly output: AudioDestinationNode,
-  ) {}
+  ) { }
 
-  get currentTime (): number {
+  public get currentTime(): number {
     return this.audioContext.currentTime
   }
 
-  disconnectParents (vNode: VirtualAudioNode): void {
+  private disconnectParents(vNode: VirtualAudioNode): void {
     for (const node of values(this.virtualNodes)) {
       node.disconnect(vNode)
     }
   }
 
-  getAudioNodeById (id: string): AudioNode | void {
+  public getAudioNodeById(id: string): AudioNode | void {
     const vNode = this.virtualNodes[id]
     return vNode && vNode.audioNode
   }
 
-  update (newGraph: VirtualAudioNodeGraph): this {
+  public update(newGraph: VirtualAudioNodeGraph): this {
     if (newGraph.hasOwnProperty('output')) throw new Error('"output" is not a valid id')
 
     for (const [id, virtualAudioNode] of entries(this.virtualNodes)) {
@@ -46,10 +46,10 @@ export default class VirtualAudioGraph {
 
       if (
         (newVirtualAudioNode.params && newVirtualAudioNode.params.startTime) !==
-          (virtualAudioNode.params && virtualAudioNode.params.startTime) ||
+        (virtualAudioNode.params && virtualAudioNode.params.startTime) ||
         (newVirtualAudioNode.params && newVirtualAudioNode.params.stopTime) !==
-          (virtualAudioNode.params && virtualAudioNode.params.stopTime) ||
-          newVirtualAudioNode.node !== virtualAudioNode.node
+        (virtualAudioNode.params && virtualAudioNode.params.stopTime) ||
+        newVirtualAudioNode.node !== virtualAudioNode.node
       ) {
         virtualAudioNode.disconnectAndDestroy()
         this.disconnectParents(virtualAudioNode)

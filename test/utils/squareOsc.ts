@@ -1,13 +1,13 @@
-const V = require('../..')
+import * as V from '../..'
 
-module.exports = V.createNode(params => {
+export default V.createNode((params) => {
   const frequency = params.frequency
   const gain = params.gain
   const startTime = params.startTime
   const stopTime = params.stopTime
 
   return {
-    0: V.gain('output', {gain}),
+    0: V.gain('output', { gain }),
     1: V.oscillator(0, {
       frequency,
       startTime,
