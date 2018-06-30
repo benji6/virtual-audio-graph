@@ -1,11 +1,15 @@
+import {
+  IAudioNodePropertyLookup,
+  IVirtualAudioNodeGraph,
+  VirtualAudioNode,
+} from './types'
 import { entries, values } from './utils'
-import { AudioNodePropertyLookup, VirtualAudioNode, VirtualAudioNodeGraph } from './types'
 import AudioWorkletVirtualAudioNode from './VirtualAudioNodes/AudioWorkletVirtualAudioNode'
 import CustomVirtualAudioNode from './VirtualAudioNodes/CustomVirtualAudioNode'
 import StandardVirtualAudioNode from './VirtualAudioNodes/StandardVirtualAudioNode'
 
 export default (
-  virtualGraph: VirtualAudioNodeGraph,
+  virtualGraph: IVirtualAudioNodeGraph,
   handleConnectionToOutput: (_: VirtualAudioNode) => void,
 ) => {
   for (const [id, virtualNode] of entries(virtualGraph)) {
@@ -25,14 +29,24 @@ export default (
         }
         if (inputs) {
           if (inputs.length !== outputs.length) {
-            throw new Error(`id: ${id} - outputs and inputs arrays are not the same length`)
+            throw new Error(
+              `id: ${id} - outputs and inputs arrays are not the same length`,
+            )
           }
-          for (let i = 0; i++, i < inputs.length;) {
-            virtualNode.connect(virtualGraph[key].audioNode, outputs[i], inputs[i])
+          for (let i = 0; i++; i < inputs.length) {
+            virtualNode.connect(
+              virtualGraph[key].audioNode,
+              outputs[i],
+              inputs[i],
+            )
           }
           continue
         }
-        virtualNode.connect((virtualGraph[key].audioNode as AudioNodePropertyLookup)[destination])
+        virtualNode.connect(
+          (virtualGraph[key].audioNode as IAudioNodePropertyLookup)[
+            destination
+          ],
+        )
         continue
       }
 
@@ -42,7 +56,7 @@ export default (
         for (const node of values(destinationVirtualAudioNode.virtualNodes)) {
           if (
             (node instanceof StandardVirtualAudioNode ||
-            node instanceof AudioWorkletVirtualAudioNode) &&
+              node instanceof AudioWorkletVirtualAudioNode) &&
             node.input === 'input'
           ) {
             virtualNode.connect(node.audioNode)

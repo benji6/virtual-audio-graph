@@ -1,6 +1,7 @@
+import { IVirtualAudioNodeParams, Output } from './types'
 import AudioWorkletVirtualAudioNode from './VirtualAudioNodes/AudioWorkletVirtualAudioNode'
-import { Output, VirtualAudioNodeParams } from './types'
 
-export default (nodeName: string) =>
-  (output: Output, params?: VirtualAudioNodeParams) =>
-    new AudioWorkletVirtualAudioNode(nodeName, output, params)
+export default (nodeName: string) => (
+  output: Output,
+  params?: IVirtualAudioNodeParams,
+) => new AudioWorkletVirtualAudioNode(nodeName, output, params)

@@ -1,12 +1,13 @@
 {
   "extends": [
-    "tslint-config-airbnb"
+    "tslint:latest",
+    "tslint-eslint-rules",
+    "tslint-config-prettier"
   ],
   "rules": {
-    "import-name": false,
-    "no-increment-decrement": false,
+    "curly": [true, "ignore-same-line"],
+    "no-empty": false,
     "no-this-assignment": false,
-    "object-shorthand-properties-first": false,
-    "semicolon": [true, "never"]
+    "prefer-for-of": false
   }
 }

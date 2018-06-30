@@ -140,29 +140,39 @@ describe('custom nodes', () => {
 
   test('can define custom nodes which can be reordered', () => {
     const expectedData = {
-      inputs: [{
-        gain: { inputs: [], value: 1 },
-        inputs: [{
+      inputs: [
+        {
           gain: { inputs: [], value: 1 },
-          inputs: [{
-            gain: { inputs: [], value: 1 },
-            inputs: [{
-              gain: { inputs: [], value: 0.3 },
-              inputs: [{
-                detune: { inputs: [], value: 0 },
-                frequency: { inputs: [], value: 500 },
-                inputs: [],
-                name: 'OscillatorNode',
-                type: 'sine',
-              }],
+          inputs: [
+            {
+              gain: { inputs: [], value: 1 },
+              inputs: [
+                {
+                  gain: { inputs: [], value: 1 },
+                  inputs: [
+                    {
+                      gain: { inputs: [], value: 0.3 },
+                      inputs: [
+                        {
+                          detune: { inputs: [], value: 0 },
+                          frequency: { inputs: [], value: 500 },
+                          inputs: [],
+                          name: 'OscillatorNode',
+                          type: 'sine',
+                        },
+                      ],
+                      name: 'GainNode',
+                    },
+                  ],
+                  name: 'GainNode',
+                },
+              ],
               name: 'GainNode',
-            }],
-            name: 'GainNode',
-          }],
+            },
+          ],
           name: 'GainNode',
-        }],
-        name: 'GainNode',
-      }],
+        },
+      ],
       name: 'AudioDestinationNode',
     }
 

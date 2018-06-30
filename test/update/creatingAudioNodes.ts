@@ -27,12 +27,22 @@ describe('creating audio nodes with update', () => {
     expect(audioNode.minDecibels).toBe(params.minDecibels)
     expect(audioNode.maxDecibels).toBe(params.maxDecibels)
     expect(audioNode.smoothingTimeConstant).toBe(params.smoothingTimeConstant)
-    expect(audioNode.getFloatFrequencyData(new Float32Array(audioNode.frequencyBinCount)))
-      .toBe(undefined)
-    expect(audioNode.getByteFrequencyData(new Uint8Array(audioNode.frequencyBinCount)))
-      .toBe(undefined)
-    expect(audioNode.getFloatTimeDomainData(new Float32Array(audioNode.fftSize))).toBe(undefined)
-    expect(audioNode.getByteTimeDomainData(new Uint8Array(audioNode.fftSize))).toBe(undefined)
+    expect(
+      audioNode.getFloatFrequencyData(
+        new Float32Array(audioNode.frequencyBinCount),
+      ),
+    ).toBe(undefined)
+    expect(
+      audioNode.getByteFrequencyData(
+        new Uint8Array(audioNode.frequencyBinCount),
+      ),
+    ).toBe(undefined)
+    expect(
+      audioNode.getFloatTimeDomainData(new Float32Array(audioNode.fftSize)),
+    ).toBe(undefined)
+    expect(
+      audioNode.getByteTimeDomainData(new Uint8Array(audioNode.fftSize)),
+    ).toBe(undefined)
   })
 
   test('creates BiquadFilterNode with all valid parameters', () => {
@@ -69,7 +79,7 @@ describe('creating audio nodes with update', () => {
       loop: true,
       loopEnd: 2,
       loopStart: 1,
-      onended: () => { },
+      onended: () => {},
       playbackRate: 2,
     }
 
@@ -98,13 +108,17 @@ describe('creating audio nodes with update', () => {
       0: V.channelMerger('output', params),
     })
 
-    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name).toBe('ChannelMergerNode')
+    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name).toBe(
+      'ChannelMergerNode',
+    )
 
     virtualAudioGraph.update({
       0: V.channelSplitter('output', params),
     })
 
-    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name).toBe('ChannelSplitterNode')
+    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name).toBe(
+      'ChannelSplitterNode',
+    )
 
     virtualAudioGraph.update({
       0: V.channelMerger('output', params),
@@ -213,18 +227,22 @@ describe('creating audio nodes with update', () => {
     const MediaStream = WebAudioTestAPI.MediaStream
 
     virtualAudioGraph.update({
-      0: V.mediaElementSource('output', { mediaElement: new HTMLMediaElement() }),
+      0: V.mediaElementSource('output', {
+        mediaElement: new HTMLMediaElement(),
+      }),
     })
 
-    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name)
-      .toBe('MediaElementAudioSourceNode')
+    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name).toBe(
+      'MediaElementAudioSourceNode',
+    )
 
     virtualAudioGraph.update({
       0: V.mediaStreamSource('output', { mediaStream: new MediaStream() }),
     })
 
-    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name)
-      .toBe('MediaStreamAudioSourceNode')
+    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name).toBe(
+      'MediaStreamAudioSourceNode',
+    )
   })
 
   test('creates OscillatorNode with all valid parameters', () => {

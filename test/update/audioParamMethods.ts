@@ -5,7 +5,7 @@ describe('audio param methods with update', () => {
   let virtualAudioGraph
 
   beforeEach(() => {
-    audioContext = new AudioContext
+    audioContext = new AudioContext()
     virtualAudioGraph = createVirtualAudioGraph({ audioContext })
   })
 
@@ -78,7 +78,6 @@ describe('audio param methods with update', () => {
     expect(gain.$valueAtTime('00:00.999')).toBe(1)
     expect(gain.$valueAtTime('00:01.000')).toBe(0.75)
     expect(gain.$valueAtTime('23:59.999')).toBe(0.75)
-
   })
 
   test('setValueAtTime with linearRampToValueAtTime', () => {
@@ -93,10 +92,7 @@ describe('audio param methods with update', () => {
 
     virtualAudioGraph.update({
       0: V.gain('output', {
-        gain: [
-          ['setValueAtTime', 0, 0],
-          ['linearRampToValueAtTime', 1, 1],
-        ],
+        gain: [['setValueAtTime', 0, 0], ['linearRampToValueAtTime', 1, 1]],
       }),
     })
 
@@ -112,7 +108,6 @@ describe('audio param methods with update', () => {
     expect(gain.$valueAtTime('00:00.999')).toBe(0.999)
     expect(gain.$valueAtTime('00:01.000')).toBe(1)
     expect(gain.$valueAtTime('23:59.999')).toBe(1)
-
   })
 
   test('setValueAtTime with exponentialRampToValueAtTime', () => {
@@ -151,19 +146,13 @@ describe('audio param methods with update', () => {
   test('setValueAtTime with setTargetAtTime', () => {
     virtualAudioGraph.update({
       0: V.gain('output', {
-        gain: [
-          ['setValueAtTime', 0, 0],
-          ['setTargetAtTime', 1, 1, 0.75],
-        ],
+        gain: [['setValueAtTime', 0, 0], ['setTargetAtTime', 1, 1, 0.75]],
       }),
     })
 
     virtualAudioGraph.update({
       0: V.gain('output', {
-        gain: [
-          ['setValueAtTime', 0, 0],
-          ['setTargetAtTime', 1, 1, 0.5],
-        ],
+        gain: [['setValueAtTime', 0, 0], ['setTargetAtTime', 1, 1, 0.5]],
       }),
     })
 

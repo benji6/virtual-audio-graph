@@ -122,10 +122,10 @@ describe('expected behavior with update', () => {
     virtualAudioGraph.update({
       0: V.gain('output'),
       1: V.oscillator(0),
-      2: V.oscillator(
-        [{ destination: 'detune', key: 1 }],
-        { frequency: 0.5, type: 'triangle' },
-      ),
+      2: V.oscillator([{ destination: 'detune', key: 1 }], {
+        frequency: 0.5,
+        type: 'triangle',
+      }),
     })
 
     expect(audioContext.toJSON()).toMatchSnapshot()

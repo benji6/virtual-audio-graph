@@ -21,12 +21,6 @@ export const constructorParamsKeys = [
   'numberOfOutputs',
 ]
 
-export const setters = [
-  'position',
-  'orientation',
-]
+export const setters = ['position', 'orientation']
 
-export const startAndStopNodes = [
-  'oscillator',
-  'bufferSource',
-]
+export const startAndStopNodes = ['oscillator', 'bufferSource']
