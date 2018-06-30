@@ -8,7 +8,6 @@ export const audioParamProperties = [
   'pan',
   'playbackRate',
   'ratio',
-  'reduction',
   'release',
   'threshold',
   'Q',

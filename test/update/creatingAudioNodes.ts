@@ -1,4 +1,4 @@
-import createVirtualAudioGraph, * as V from '../..'
+import createVirtualAudioGraph, * as V from '../../src'
 
 declare const WebAudioTestAPI: any
 
@@ -21,7 +21,11 @@ describe('creating audio nodes with update', () => {
     virtualAudioGraph.update(virtualGraphParams)
 
     const audioNode = virtualAudioGraph.getAudioNodeById(0)
-    expect(audioNode.constructor).toBe(AnalyserNode)
+
+    if (!(audioNode instanceof AnalyserNode)) {
+      throw Error('audioNode is not an AnalyserNode')
+    }
+
     expect(audioNode.fftSize).toBe(params.fftSize)
     expect(audioNode.frequencyBinCount).toBe(params.fftSize / 2)
     expect(audioNode.minDecibels).toBe(params.minDecibels)
@@ -62,7 +66,10 @@ describe('creating audio nodes with update', () => {
 
     const audioNode = virtualAudioGraph.getAudioNodeById(0)
 
-    expect(audioNode.constructor).toBe(BiquadFilterNode)
+    if (!(audioNode instanceof BiquadFilterNode)) {
+      throw Error('audioNode is not an BiquadFilterNode')
+    }
+
     expect(audioNode.type).toBe(type)
     expect(audioNode.frequency.value).toBe(frequency)
     expect(audioNode.detune.value).toBe(detune)
@@ -90,7 +97,10 @@ describe('creating audio nodes with update', () => {
     virtualAudioGraph.update(virtualGraphParams)
     const audioNode = virtualAudioGraph.getAudioNodeById(0)
 
-    expect(audioNode.constructor.name).toBe('AudioBufferSourceNode')
+    if (!(audioNode instanceof AudioBufferSourceNode)) {
+      throw Error('audioNode is not an AudioBufferSourceNode')
+    }
+
     expect(audioNode.buffer).toBe(params.buffer)
     expect(audioNode.loop).toBe(params.loop)
     expect(audioNode.loopEnd).toBe(params.loopEnd)
@@ -108,15 +118,25 @@ describe('creating audio nodes with update', () => {
       0: V.channelMerger('output', params),
     })
 
-    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name).toBe(
-      'ChannelMergerNode',
-    )
+    const channelMergerAudioNode = virtualAudioGraph.getAudioNodeById(0)
+
+    if (!(channelMergerAudioNode instanceof ChannelMergerNode)) {
+      throw Error('channelMergerAudioNode is not an ChannelMergerNode')
+    }
+
+    expect(channelMergerAudioNode.constructor.name).toBe('ChannelMergerNode')
 
     virtualAudioGraph.update({
       0: V.channelSplitter('output', params),
     })
 
-    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name).toBe(
+    const channelSplitterAudioNode = virtualAudioGraph.getAudioNodeById(0)
+
+    if (!(channelSplitterAudioNode instanceof ChannelSplitterNode)) {
+      throw Error('channelSplitterAudioNode is not an ChannelSplitterNode')
+    }
+
+    expect(channelSplitterAudioNode.constructor.name).toBe(
       'ChannelSplitterNode',
     )
 
@@ -141,8 +161,13 @@ describe('creating audio nodes with update', () => {
     }
 
     virtualAudioGraph.update(virtualGraphParams)
+
     const audioNode = virtualAudioGraph.getAudioNodeById(0)
-    expect(audioNode.constructor.name).toBe('ConvolverNode')
+
+    if (!(audioNode instanceof ConvolverNode)) {
+      throw Error('audioNode is not an ConvolverNode')
+    }
+
     expect(audioNode.buffer).toBe(params.buffer)
     expect(audioNode.normalize).toBe(params.normalize)
   })
@@ -158,9 +183,13 @@ describe('creating audio nodes with update', () => {
     }
 
     virtualAudioGraph.update(virtualGraphParams)
+
     const audioNode = virtualAudioGraph.getAudioNodeById(0)
 
-    expect(audioNode.constructor).toBe(DelayNode)
+    if (!(audioNode instanceof DelayNode)) {
+      throw Error('audioNode is not an DelayNode')
+    }
+
     expect(audioNode.delayTime.value).toBe(delayTime)
   })
 
@@ -171,7 +200,6 @@ describe('creating audio nodes with update', () => {
       attack: 0,
       knee: 40,
       ratio: 12,
-      reduction: -20,
       release: 0.25,
       threshold: -50,
     }
@@ -181,13 +209,16 @@ describe('creating audio nodes with update', () => {
     }
 
     virtualAudioGraph.update(virtualGraphParams)
+
     const audioNode = virtualAudioGraph.getAudioNodeById('random string id')
 
-    expect(audioNode.constructor.name).toBe('DynamicsCompressorNode')
+    if (!(audioNode instanceof DynamicsCompressorNode)) {
+      throw Error('audioNode is not an DynamicsCompressorNode')
+    }
+
     expect(audioNode.attack.value).toBe(params.attack)
     expect(audioNode.knee.value).toBe(params.knee)
     expect(audioNode.ratio.value).toBe(params.ratio)
-    expect(audioNode.reduction.value).toBe(params.reduction)
     expect(audioNode.release.value).toBe(params.release)
     expect(audioNode.threshold.value).toBe(params.threshold)
   })
@@ -202,9 +233,13 @@ describe('creating audio nodes with update', () => {
     }
 
     virtualAudioGraph.update(virtualGraphParams)
+
     const audioNode = virtualAudioGraph.getAudioNodeById(0)
 
-    expect(audioNode.constructor.name).toBe('GainNode')
+    if (!(audioNode instanceof GainNode)) {
+      throw Error('audioNode is not an GainNode')
+    }
+
     expect(audioNode.gain.value).toBe(gain)
   })
 
@@ -215,9 +250,12 @@ describe('creating audio nodes with update', () => {
     virtualAudioGraph.update({
       0: V.mediaStreamDestination(),
     })
+
     const audioNode = virtualAudioGraph.getAudioNodeById(0)
 
-    expect(audioNode.constructor.name).toBe('MediaStreamAudioDestinationNode')
+    if (!(audioNode instanceof MediaStreamAudioDestinationNode)) {
+      throw Error('audioNode is not an MediaStreamDestination')
+    }
   })
 
   test('creates valid MediaElementAudioSourceNode and MediaStreamAudioSourceNode', () => {
@@ -232,17 +270,21 @@ describe('creating audio nodes with update', () => {
       }),
     })
 
-    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name).toBe(
-      'MediaElementAudioSourceNode',
-    )
+    const mediaElementAudioNode = virtualAudioGraph.getAudioNodeById(0)
+
+    if (!(mediaElementAudioNode instanceof MediaElementAudioSourceNode)) {
+      throw Error('audioNode is not an MediaElementAudioSourceNode')
+    }
 
     virtualAudioGraph.update({
       0: V.mediaStreamSource('output', { mediaStream: new MediaStream() }),
     })
 
-    expect(virtualAudioGraph.getAudioNodeById(0).constructor.name).toBe(
-      'MediaStreamAudioSourceNode',
-    )
+    const mediaStreamAudioNode = virtualAudioGraph.getAudioNodeById(0)
+
+    if (!(mediaStreamAudioNode instanceof MediaStreamAudioSourceNode)) {
+      throw Error('audioNode is not an MediaStreamAudioSourceNode')
+    }
   })
 
   test('creates OscillatorNode with all valid parameters', () => {
@@ -259,9 +301,13 @@ describe('creating audio nodes with update', () => {
     }
 
     virtualAudioGraph.update(virtualGraphParams)
+
     const audioNode = virtualAudioGraph.getAudioNodeById(0)
 
-    expect(audioNode.constructor).toBe(OscillatorNode)
+    if (!(audioNode instanceof OscillatorNode)) {
+      throw Error('audioNode is not an OscillatorNode')
+    }
+
     expect(audioNode.type).toBe(params.type)
     expect(audioNode.frequency.value).toBe(params.frequency)
     expect(audioNode.detune.value).toBe(params.detune)
@@ -297,9 +343,13 @@ describe('creating audio nodes with update', () => {
     }
 
     virtualAudioGraph.update(virtualGraphParams)
+
     const audioNode = virtualAudioGraph.getAudioNodeById(0)
 
-    expect(audioNode.constructor.name).toBe('PannerNode')
+    if (!(audioNode instanceof PannerNode)) {
+      throw Error('audioNode is not an PannerNode')
+    }
+
     expect(audioNode.coneInnerAngle).toBe(coneInnerAngle)
     expect(audioNode.coneOuterAngle).toBe(coneOuterAngle)
     expect(audioNode.coneOuterGain).toBe(coneOuterGain)
@@ -320,9 +370,13 @@ describe('creating audio nodes with update', () => {
     }
 
     virtualAudioGraph.update(virtualGraphParams)
+
     const audioNode = virtualAudioGraph.getAudioNodeById(0)
 
-    expect(audioNode.constructor.name).toBe('StereoPannerNode')
+    if (!(audioNode instanceof StereoPannerNode)) {
+      throw Error('audioNode is not an StereoPannerNode')
+    }
+
     expect(audioNode.pan.value).toBe(pan)
   })
 
@@ -339,9 +393,13 @@ describe('creating audio nodes with update', () => {
     }
 
     virtualAudioGraph.update(virtualGraphParams)
+
     const audioNode = virtualAudioGraph.getAudioNodeById(0)
 
-    expect(audioNode.constructor.name).toBe('WaveShaperNode')
+    if (!(audioNode instanceof WaveShaperNode)) {
+      throw Error('audioNode is not an WaveShaperNode')
+    }
+
     expect(audioNode.curve).toBe(params.curve)
     expect(audioNode.oversample).toBe(params.oversample)
   })

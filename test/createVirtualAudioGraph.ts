@@ -1,4 +1,4 @@
-import createVirtualAudioGraph, * as V from '..'
+import createVirtualAudioGraph, * as V from '../src'
 
 const audioContext: any = new AudioContext()
 

@@ -1,4 +1,4 @@
-import createVirtualAudioGraph, * as V from '../..'
+import createVirtualAudioGraph, * as V from '../../src'
 import pingPongDelay from '../utils/pingPongDelay'
 import sineOsc from '../utils/sineOsc'
 

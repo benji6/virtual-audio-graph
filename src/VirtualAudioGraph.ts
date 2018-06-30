@@ -6,11 +6,11 @@ export default class VirtualAudioGraph {
   private virtualNodes: IVirtualAudioNodeGraph = {}
 
   constructor(
-    private readonly audioContext: AudioContext,
+    public readonly audioContext: AudioContext,
     private readonly output: AudioDestinationNode,
   ) {}
 
-  public getAudioNodeById(id: string): AudioNode | void {
+  public getAudioNodeById(id: number | string): AudioNode | void {
     const vNode = this.virtualNodes[id]
     return vNode && vNode.audioNode
   }

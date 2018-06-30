@@ -81,7 +81,6 @@ dynamicsCompressor(output, {
   attack,
   knee,
   ratio,
-  reduction,
   release,
   threshold,
 }]

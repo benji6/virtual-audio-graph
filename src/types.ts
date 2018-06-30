@@ -14,11 +14,16 @@ export type CustomVirtualAudioNodeFactory = (
   _: IVirtualAudioNodeParams,
 ) => IVirtualAudioNodeGraph
 
+interface IOutputObject {
+  destination: string
+  key: number | string
+}
+
 export type Output =
   | string
   | number
-  | { key: string; destination: string }
-  | Array<string | number | { key: string; destination: string }>
+  | IOutputObject
+  | Array<number | string | IOutputObject>
 
 export type VirtualAudioNode =
   | AudioWorkletVirtualAudioNode

@@ -1,4 +1,4 @@
-import * as V from '../..'
+import * as V from '../../src'
 
 export default V.createNode(params => {
   const frequency = params.frequency

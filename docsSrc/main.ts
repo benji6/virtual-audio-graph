@@ -7,7 +7,7 @@ import createVirtualAudioGraph, {
   stereoPanner,
 } from '../src/index'
 
-const audioContext = new AudioContext
+const audioContext = new AudioContext()
 
 const virtualAudioGraph = createVirtualAudioGraph({ audioContext })
 
@@ -52,7 +52,7 @@ const examples = [
     virtualAudioGraph.update({
       0: gain('output', { gain: 0.2 }),
       1: oscillator(0, { stopTime: currentTime + 3 }),
-      2: gain({ destination: 'frequency', key: '1' }, { gain: 350 }),
+      2: gain({ destination: 'frequency', key: 1 }, { gain: 350 }),
       3: oscillator([2, 'output'], { frequency: 1, type: 'triangle' }),
     })
   },
@@ -116,32 +116,38 @@ const examples = [
       0: gain('output', { gain: 0.5 }),
       1: oscillator(0, {
         frequency: [
-          ['setValueCurveAtTime', Float32Array.of(440, 880, 110, 1760), currentTime, 2],
+          [
+            'setValueCurveAtTime',
+            Float32Array.of(440, 880, 110, 1760),
+            currentTime,
+            2,
+          ],
         ],
         stopTime: currentTime + 3,
       }),
     })
   },
   () => {
-    const osc = createNode(({
-      gain: gainValue,
-      startTime,
-      stopTime,
-      ...rest,
-    }) => {
-      const duration = stopTime - startTime
-      return {
-        0: gain('output', {
-          gain: [
-            ['setValueAtTime', 0, startTime],
-            ['linearRampToValueAtTime', gainValue, startTime + duration * 0.15],
-            ['setValueAtTime', gainValue, stopTime - duration * 0.25],
-            ['linearRampToValueAtTime', 0, stopTime],
-          ],
-        }),
-        1: oscillator(0, { startTime, stopTime, ...rest }),
-      }
-    })
+    const osc = createNode(
+      ({ gain: gainValue, startTime, stopTime, ...rest }) => {
+        const duration = stopTime - startTime
+        return {
+          0: gain('output', {
+            gain: [
+              ['setValueAtTime', 0, startTime],
+              [
+                'linearRampToValueAtTime',
+                gainValue,
+                startTime + duration * 0.15,
+              ],
+              ['setValueAtTime', gainValue, stopTime - duration * 0.25],
+              ['linearRampToValueAtTime', 0, stopTime],
+            ],
+          }),
+          1: oscillator(0, { startTime, stopTime, ...rest }),
+        }
+      },
+    )
 
     const { currentTime } = virtualAudioGraph
 
@@ -156,30 +162,28 @@ const examples = [
     })
   },
   () => {
-    const osc = createNode(({
-      gain: gainValue,
-      startTime,
-      stopTime,
-      ...rest,
-    }) => {
-      const duration = stopTime - startTime
-      return {
-        0: gain('output', {
-          gain: [
-            ['setValueAtTime', 0, startTime],
-            ['linearRampToValueAtTime', gainValue, startTime + duration * 0.15],
-            ['setValueAtTime', gainValue, stopTime - duration * 0.25],
-            ['linearRampToValueAtTime', 0, stopTime],
-          ],
-        }),
-        1: oscillator(0, { startTime, stopTime, ...rest }),
-      }
-    })
+    const osc = createNode(
+      ({ gain: gainValue, startTime, stopTime, ...rest }) => {
+        const duration = stopTime - startTime
+        return {
+          0: gain('output', {
+            gain: [
+              ['setValueAtTime', 0, startTime],
+              [
+                'linearRampToValueAtTime',
+                gainValue,
+                startTime + duration * 0.15,
+              ],
+              ['setValueAtTime', gainValue, stopTime - duration * 0.25],
+              ['linearRampToValueAtTime', 0, stopTime],
+            ],
+          }),
+          1: oscillator(0, { startTime, stopTime, ...rest }),
+        }
+      },
+    )
 
-    const oscBank = createNode(({
-      frequency,
-      ...rest,
-    }) => ({
+    const oscBank = createNode(({ frequency, ...rest }) => ({
       0: osc('output', {
         frequency,
         gain: 0.2,
@@ -213,10 +217,7 @@ const examples = [
     })
   },
   () => {
-    const pingPongDelay = createNode(({
-      decay,
-      delayTime,
-    }) => ({
+    const pingPongDelay = createNode(({ decay, delayTime }) => ({
       0: stereoPanner('output', { pan: -1 }),
       1: stereoPanner('output', { pan: 1 }),
       2: delay([1, 5], { delayTime, maxDelayTime: delayTime }),
@@ -232,64 +233,66 @@ const examples = [
         decay: 0.8,
         delayTime: 0.25,
       }),
-      1: oscillator([0, 'output'], { stopTime: currentTime + .2 }),
+      1: oscillator([0, 'output'], { stopTime: currentTime + 0.2 }),
     })
   },
-  () => (audioContext as any).audioWorklet.addModule('audioWorklets/noise.js')
-    .then(() => {
-      const noise = createWorkletNode('noise')
+  () =>
+    (audioContext as any).audioWorklet
+      .addModule('audioWorklets/noise.js')
+      .then(() => {
+        const noise = createWorkletNode('noise')
 
-      virtualAudioGraph.update({
-        0: noise('output', { amplitude: 0.25 }),
-      })
-    }),
-  () => (audioContext as any).audioWorklet.addModule('audioWorklets/bitCrusher.js')
-    .then(() => {
-      const bitCrusher = createWorkletNode('bitCrusher')
+        virtualAudioGraph.update({
+          0: noise('output', { amplitude: 0.25 }),
+        })
+      }),
+  () =>
+    (audioContext as any).audioWorklet
+      .addModule('audioWorklets/bitCrusher.js')
+      .then(() => {
+        const bitCrusher = createWorkletNode('bitCrusher')
 
-      const { currentTime } = virtualAudioGraph
+        const { currentTime } = virtualAudioGraph
 
-      virtualAudioGraph.update({
-        0: bitCrusher('output', {
-          bitDepth: 1,
-          frequencyReduction: [
-            ['setValueAtTime', 0.01, currentTime],
-            ['linearRampToValueAtTime', 0.05, currentTime + 2],
-            ['exponentialRampToValueAtTime', 0.01, currentTime + 4],
-          ],
-        }),
-        1: oscillator(0, {
-          frequency: 5000,
-          stopTime: currentTime + 4,
-          type: 'sawtooth',
-        }),
-      })
-    }),
+        virtualAudioGraph.update({
+          0: bitCrusher('output', {
+            bitDepth: 1,
+            frequencyReduction: [
+              ['setValueAtTime', 0.01, currentTime],
+              ['linearRampToValueAtTime', 0.05, currentTime + 2],
+              ['exponentialRampToValueAtTime', 0.01, currentTime + 4],
+            ],
+          }),
+          1: oscillator(0, {
+            frequency: 5000,
+            stopTime: currentTime + 4,
+            type: 'sawtooth',
+          }),
+        })
+      }),
   () => {
-    const osc = createNode(({
-      gain: gainValue,
-      startTime,
-      stopTime,
-      ...rest,
-    }) => {
-      const duration = stopTime - startTime
-      return {
-        0: gain('output', {
-          gain: [
-            ['setValueAtTime', 0, startTime],
-            ['linearRampToValueAtTime', gainValue, startTime + duration * 0.15],
-            ['setValueAtTime', gainValue, stopTime - duration * 0.25],
-            ['linearRampToValueAtTime', 0, stopTime],
-          ],
-        }),
-        1: oscillator(0, { startTime, stopTime, ...rest }),
-      }
-    })
+    const osc = createNode(
+      ({ gain: gainValue, startTime, stopTime, ...rest }) => {
+        const duration = stopTime - startTime
+        return {
+          0: gain('output', {
+            gain: [
+              ['setValueAtTime', 0, startTime],
+              [
+                'linearRampToValueAtTime',
+                gainValue,
+                startTime + duration * 0.15,
+              ],
+              ['setValueAtTime', gainValue, stopTime - duration * 0.25],
+              ['linearRampToValueAtTime', 0, stopTime],
+            ],
+          }),
+          1: oscillator(0, { startTime, stopTime, ...rest }),
+        }
+      },
+    )
 
-    const oscBank = createNode(({
-      frequency,
-      ...rest,
-    }) => ({
+    const oscBank = createNode(({ frequency, ...rest }) => ({
       0: osc('output', {
         frequency,
         gain: 0.2,
@@ -312,10 +315,7 @@ const examples = [
       }),
     }))
 
-    const pingPongDelay = createNode(({
-      decay,
-      delayTime,
-    }) => ({
+    const pingPongDelay = createNode(({ decay, delayTime }) => ({
       0: stereoPanner('output', { pan: -1 }),
       1: stereoPanner('output', { pan: 1 }),
       2: delay([1, 5], { delayTime, maxDelayTime: delayTime }),
@@ -324,26 +324,24 @@ const examples = [
       5: gain(4, { gain: decay }, 'input'),
     }))
 
-    const oscillators = createNode(({
-      currentTime = virtualAudioGraph.currentTime,
-      notes,
-      noteLength,
-    }) => notes.reduce(
-      (acc, frequency, i) => {
-        const startTime = currentTime + noteLength * 2 * i
-        acc[i] = oscBank('output', {
-          frequency,
-          startTime,
-          stopTime: startTime + noteLength,
-        })
-        return acc
-      },
-      {}),
+    const oscillators = createNode(
+      ({ currentTime = virtualAudioGraph.currentTime, notes, noteLength }) =>
+        notes.reduce((acc, frequency, i) => {
+          const startTime = currentTime + noteLength * 2 * i
+          acc[i] = oscBank('output', {
+            frequency,
+            startTime,
+            stopTime: startTime + noteLength,
+          })
+          return acc
+        }, {}),
     )
 
     const chromaticScale = n => 440 * Math.pow(2, n / 12)
     const noteLength = 0.075
-    const up = Array.apply(null, { length: 16 }).map((_, i) => chromaticScale(i))
+    const up = Array.apply(null, { length: 16 }).map((_, i) =>
+      chromaticScale(i),
+    )
     const down = [...up].reverse()
 
     virtualAudioGraph.update({
@@ -360,8 +358,12 @@ const examples = [
   },
 ]
 
-const playButtons: NodeListOf<HTMLButtonElement> = document.querySelectorAll('.button-play')
-const stopButtons: NodeListOf<HTMLButtonElement> = document.querySelectorAll('.button-stop')
+const playButtons: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
+  '.button-play',
+)
+const stopButtons: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
+  '.button-stop',
+)
 
 for (let i = 0; i < playButtons.length; i++) {
   playButtons[i].onclick = examples[i]

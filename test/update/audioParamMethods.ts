@@ -1,4 +1,4 @@
-import createVirtualAudioGraph, * as V from '../..'
+import createVirtualAudioGraph, * as V from '../../src'
 
 describe('audio param methods with update', () => {
   let audioContext: any

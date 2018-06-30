@@ -1,4 +1,4 @@
-import createVirtualAudioGraph, * as V from '..'
+import createVirtualAudioGraph, * as V from '../src'
 
 describe('virtualAudioGraph instance', () => {
   test('currentTime', () => {
@@ -14,6 +14,10 @@ describe('virtualAudioGraph instance', () => {
 
     virtualAudioGraph.update({ 0: V.gain('output') })
 
-    expect(virtualAudioGraph.getAudioNodeById(0).constructor).toBe(GainNode)
+    const node = virtualAudioGraph.getAudioNodeById(0)
+
+    if (!node) throw Error('node not defined')
+
+    expect(node.constructor).toBe(GainNode)
   })
 })
