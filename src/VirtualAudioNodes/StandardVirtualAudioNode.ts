@@ -137,12 +137,10 @@ export default class StandardVirtualAudioNode {
     for (const key of Object.keys(params)) {
       if (constructorParamsKeys.indexOf(key) !== -1) continue
       const param = params[key]
-      if (this.params && this.params[key] === param) continue
+      if (this.params && equals(this.params[key], param)) continue
       if (audioParamProperties.indexOf(key) !== -1) {
         if (Array.isArray(param)) {
-          if (this.params && !equals(param, this.params[key])) {
-            audioNode[key].cancelScheduledValues(0)
-          }
+          if (this.params) audioNode[key].cancelScheduledValues(0)
           const callMethod = ([methodName, ...args]: [string, ...any[]]) =>
             audioNode[key][methodName](...args)
           Array.isArray(param[0])
