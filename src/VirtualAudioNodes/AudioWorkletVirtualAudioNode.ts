@@ -84,9 +84,11 @@ export default class AudioWorkletVirtualAudioNode {
         if (this.params && !equals(param, this.params[key])) {
           ;(audioNode as any).parameters.get(key).cancelScheduledValues(0)
         }
-        const callMethod = ([methodName, ...args]) =>
+        const callMethod = ([methodName, ...args]: [string, ...any[]]) =>
           paramInstance[methodName](...args)
-        Array.isArray(param[0]) ? param.forEach(callMethod) : callMethod(param)
+        Array.isArray(param[0])
+          ? param.forEach(callMethod)
+          : callMethod(param as [string, ...any[]])
         continue
       }
       paramInstance.value = param

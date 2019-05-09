@@ -144,11 +144,11 @@ export default class StandardVirtualAudioNode {
           if (this.params && !equals(param, this.params[key])) {
             audioNode[key].cancelScheduledValues(0)
           }
-          const callMethod = ([methodName, ...args]) =>
+          const callMethod = ([methodName, ...args]: [string, ...any[]]) =>
             audioNode[key][methodName](...args)
           Array.isArray(param[0])
             ? param.forEach(callMethod)
-            : callMethod(param)
+            : callMethod(param as [string, any[]])
           continue
         }
         audioNode[key].value = param
