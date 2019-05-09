@@ -28,10 +28,7 @@ export default class AudioWorkletVirtualAudioNode {
     const filteredConnectArgs = connectArgs.filter(Boolean)
     const [firstArg, ...rest] = filteredConnectArgs
     if (audioNode.connect) {
-      audioNode.connect(
-        firstArg,
-        ...rest,
-      )
+      audioNode.connect(firstArg, ...rest)
     }
     this.connections = this.connections.concat(filteredConnectArgs)
     this.connected = true
