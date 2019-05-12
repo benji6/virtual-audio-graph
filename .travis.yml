@@ -1,6 +1,10 @@
 language: node_js
-deploy:
-  provider: script
-  skip_cleanup: true
-  script:
-    - npx semantic-release
+jobs:
+  include:
+    - stage: release
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - npm run build
+          - npx semantic-release
