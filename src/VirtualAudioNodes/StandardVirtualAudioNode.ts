@@ -14,12 +14,6 @@ import {
 import { capitalize, equals, find, values } from '../utils'
 import CustomVirtualAudioNode from './CustomVirtualAudioNode'
 
-interface ITimeParameters {
-  offsetTime: number
-  startTime: number
-  stopTime: number
-}
-
 interface IAudioContextFactoryLookup {
   [_: string]: any
 }
@@ -28,9 +22,7 @@ const createAudioNode = (
   audioContext: AudioContext,
   name: string,
   audioNodeFactoryParam: IAudioNodeFactoryParam,
-  { offsetTime, startTime, stopTime }: ITimeParameters,
 ) => {
-  offsetTime = offsetTime || 0 // tslint:disable-line no-parameter-reassignment
   const audioNodeFactoryName = `create${capitalize(name)}`
   if (
     typeof (audioContext as IAudioContextFactoryLookup)[
@@ -46,11 +38,6 @@ const createAudioNode = (
       )
     : (audioContext as IAudioContextFactoryLookup)[audioNodeFactoryName]()
 
-  if (startAndStopNodes.indexOf(name) !== -1) {
-    if (startTime == null) audioNode.start(audioContext.currentTime, offsetTime)
-    else audioNode.start(startTime, offsetTime)
-    if (stopTime != null) audioNode.stop(stopTime)
-  }
   return audioNode
 }
 
@@ -120,16 +107,26 @@ export default class StandardVirtualAudioNode {
       ]
     const { offsetTime, startTime, stopTime } = params
 
-    this.audioNode = createAudioNode(
+    // TODO remove `any` when AudioScheduledSourceNode typings are correct
+    const audioNode: any = createAudioNode(
       audioContext,
       this.node,
       constructorParam,
-      { offsetTime, startTime, stopTime },
     )
 
+    this.audioNode = audioNode
     this.params = undefined
+    this.update(params)
 
-    return this.update(params)
+    if (startAndStopNodes.indexOf(this.node) !== -1) {
+      audioNode.start(
+        startTime == null ? audioContext.currentTime : startTime,
+        offsetTime || 0,
+      )
+      if (stopTime != null) audioNode.stop(stopTime)
+    }
+
+    return this
   }
 
   public update(params: IVirtualAudioNodeParams = {}): this {
