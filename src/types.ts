@@ -15,8 +15,10 @@ export type CustomVirtualAudioNodeFactory = (
 ) => IVirtualAudioNodeGraph
 
 interface IOutputObject {
-  destination: string
+  destination?: string
+  inputs?: Array<number | string>
   key: number | string
+  outputs?: Array<number | string>
 }
 
 export type Output =

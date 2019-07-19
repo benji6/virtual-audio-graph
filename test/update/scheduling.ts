@@ -1,9 +1,10 @@
-import createVirtualAudioGraph, * as V from '../../src'
+import createVirtualAudioGraph, * as _V from '../../src'
 
+const V: any = _V
 const audioContext: any = new AudioContext()
 const virtualAudioGraph = createVirtualAudioGraph({ audioContext })
 
-const testSchedulingForNode = node => {
+const testSchedulingForNode = (node: any) => {
   describe(node, () => {
     test('no start or stop times are played immediately and forever', () => {
       const virtualGraphParams = {
@@ -104,7 +105,7 @@ const testSchedulingForNode = node => {
     })
 
     test('works when rescheduling multiple node start and stop times', () => {
-      const nodeJSONFromNodeName = {
+      const nodeJSONFromNodeName: any = {
         bufferSource: {
           buffer: null,
           inputs: [],

@@ -139,7 +139,7 @@ describe('custom nodes', () => {
   })
 
   test('can define custom nodes which can be reordered', () => {
-    const expectedData = {
+    const expectedData: any = {
       inputs: [
         {
           gain: { inputs: [], value: 1 },

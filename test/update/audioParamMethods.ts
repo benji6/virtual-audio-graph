@@ -2,7 +2,7 @@ import createVirtualAudioGraph, * as V from '../../src'
 
 describe('audio param methods with update', () => {
   let audioContext: any
-  let virtualAudioGraph
+  let virtualAudioGraph: any
 
   beforeEach(() => {
     audioContext = new AudioContext()

@@ -2,7 +2,7 @@ import { Output } from './types'
 import StandardVirtualAudioNode from './VirtualAudioNodes/StandardVirtualAudioNode'
 
 const createNodeConstructor = (nodeName: string) => (
-  output: Output,
+  output?: Output,
   ...rest: any[]
 ): StandardVirtualAudioNode => {
   if (nodeName === 'mediaStreamDestination') {
