@@ -1,11 +1,12 @@
 language: node_js
+node_js:
+  - 10
+  - 8
 jobs:
   include:
-    - stage: release
-      script: skip
-      before_deploy: npm run build
-      deploy:
-        provider: script
-        skip_cleanup: true
-        script:
-          - npx semantic-release
+    - stage: deploy
+      script: yarn build && yarn semantic-release
+stages:
+  - test
+  - name: deploy
+    if: branch = master
