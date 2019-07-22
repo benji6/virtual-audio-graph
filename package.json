@@ -22,9 +22,9 @@
   "scripts": {
     "build": "tsc && rollup -c",
     "docs": "tsc -p docsSrc && rollup -c docsSrc/rollup.config.js && rm -r docsSrc/esm",
-    "format": "prettier --write 'src/**/*.ts' 'test/**/*.ts'",
+    "format": "prettier --write 'docs/**/*.html' 'src/**/*.ts' 'test/**/*.ts'",
     "test": "run-p test:*",
-    "test:format": "prettier --check 'src/**/*.ts' 'test/**/*.ts'",
+    "test:format": "prettier --check 'docs/**/*.html' 'src/**/*.ts' 'test/**/*.ts'",
     "test:lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'",
     "test:types": "tsc --noEmit",
     "test:unit": "jest"

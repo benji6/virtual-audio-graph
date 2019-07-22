@@ -1,31 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>virtual-audio-graph</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.13.0/themes/prism.min.css" integrity="sha256-6RI2bGiVbA9GqCSAFm96msi4ap50++uo5NYUQ+o7AXk=" crossorigin="anonymous" />
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.13.0/prism.min.js" integrity="sha256-AqXn2u4UOZ36/xOhOEYrMIqgHrq1p8m88HJO+oPzPiM=" crossorigin="anonymous"></script>
-  <script async defer src="main.js"></script>
-</head>
-<body>
-<header>
-  <div style="height: 36px; width: 36px"></div>
-  <h1>virtual-audio-graph</h1>
-  <a class="header__gh-logo" href="https://github.com/benji6/virtual-audio-graph">
-    <svg height="36" width="36" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-      <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
-    </svg>
-  </a>
-</header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>virtual-audio-graph</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.13.0/themes/prism.min.css"
+      integrity="sha256-6RI2bGiVbA9GqCSAFm96msi4ap50++uo5NYUQ+o7AXk="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.13.0/prism.min.js"
+      integrity="sha256-AqXn2u4UOZ36/xOhOEYrMIqgHrq1p8m88HJO+oPzPiM="
+      crossorigin="anonymous"
+    ></script>
+    <script async defer src="main.js"></script>
+  </head>
+  <body>
+    <header>
+      <div style="height: 36px; width: 36px"></div>
+      <h1>virtual-audio-graph</h1>
+      <a
+        class="header__gh-logo"
+        href="https://github.com/benji6/virtual-audio-graph"
+      >
+        <svg
+          height="36"
+          width="36"
+          viewBox="0 0 16 16"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+          />
+        </svg>
+      </a>
+    </header>
 
-<main>
-<p>virtual-audio-graph is a library for declaratively manipulating the Web Audio API that is inspired by React and virtual-dom. This guide aims to introduce it step-by-step to help you get up and running as quickly as possible.</p>
+    <main>
+      <p>
+        virtual-audio-graph is a library for declaratively manipulating the Web
+        Audio API that is inspired by React and virtual-dom. This guide aims to
+        introduce it step-by-step to help you get up and running as quickly as
+        possible.
+      </p>
 
-<h2>Importing</h2>
-<p>First let's import everything we're going to need for these examples:</p>
-<pre class="language-js"><code class="language-js">import createVirtualAudioGraph, {
+      <h2>Importing</h2>
+      <p>
+        First let's import everything we're going to need for these examples:
+      </p>
+      <pre
+        class="language-js"
+      ><code class="language-js">import createVirtualAudioGraph, {
   createNode,
   createWorkletNode,
   delay,
@@ -35,54 +66,113 @@
 } from 'virtual-audio-graph'
 </code></pre>
 
-<h2>Creating A virtual-audio-graph Instance</h2>
+      <h2>Creating A virtual-audio-graph Instance</h2>
 
-<h3>With No Configuration</h3>
-<p>Next let's create our virtual-audio-graph instance:</p>
-<pre class="language-js"><code class="language-js">const virtualAudioGraph = createVirtualAudioGraph()</code></pre>
+      <h3>With No Configuration</h3>
+      <p>Next let's create our virtual-audio-graph instance:</p>
+      <pre
+        class="language-js"
+      ><code class="language-js">const virtualAudioGraph = createVirtualAudioGraph()</code></pre>
 
-<h3>With Configuration (Optional)</h3>
-<p>
-  <code class="language-js">createVirtualAudioGraph</code> optionally takes a configuration object that let's you specify the AudioContext instance to use and the output the audioGraph should be connected to (any valid AudioNode destination). If no audioContext is specified then a new one is automatically created and if no output is specified then it defaults to the audioContext destination.
-</p>
-<p>Here's what it looks like to pass your own configuration to virtual-audio-graph:</p>
-<pre class="language-js"><code class="language-js">const audioContext = new AudioContext()
+      <h3>With Configuration (Optional)</h3>
+      <p>
+        <code class="language-js">createVirtualAudioGraph</code> optionally
+        takes a configuration object that let's you specify the AudioContext
+        instance to use and the output the audioGraph should be connected to
+        (any valid AudioNode destination). If no audioContext is specified then
+        a new one is automatically created and if no output is specified then it
+        defaults to the audioContext destination.
+      </p>
+      <p>
+        Here's what it looks like to pass your own configuration to
+        virtual-audio-graph:
+      </p>
+      <pre
+        class="language-js"
+      ><code class="language-js">const audioContext = new AudioContext()
 
 const virtualAudioGraph = createVirtualAudioGraph({
   audioContext,
   output: audioContext.destination,
 })</code></pre>
-Note that the number of instances of AudioContext that can be created is limited so if you already have one it may be best to provide it here.
+      Note that the number of instances of AudioContext that can be created is
+      limited so if you already have one it may be best to provide it here.
 
-<h2>virtual-audio-graph Instance Public Interface</h2>
-Here is everything we can do with our virtual-audio-graph instance:
-<ul>
-  <li><code class="language-js">virtualAudioGraph.currentTime</code>: Getter which gets the currentTime of the audioContext instance.</li>
-  <li><code class="language-js">virtualAudioGraph.update</code>: Method for updating the audio graph (described in detail below).</li>
-  <li><code class="language-js">virtualAudioGraph.getAudioNodeById</code>: Method which takes an id and returns the corresponding audioNode or undefined if no such audioNode exists. This is useful if the node has methods (e.g. AnalyserNode.getFloatFrequencyData &amp; OscillatorNode.setPeriodicWave), but in general virtualAudioGraph.update should be used for manipulating the audio graph.</li>
-</ul>
+      <h2>virtual-audio-graph Instance Public Interface</h2>
+      Here is everything we can do with our virtual-audio-graph instance:
+      <ul>
+        <li>
+          <code class="language-js">virtualAudioGraph.currentTime</code>: Getter
+          which gets the currentTime of the audioContext instance.
+        </li>
+        <li>
+          <code class="language-js">virtualAudioGraph.update</code>: Method for
+          updating the audio graph (described in detail below).
+        </li>
+        <li>
+          <code class="language-js">virtualAudioGraph.getAudioNodeById</code>:
+          Method which takes an id and returns the corresponding audioNode or
+          undefined if no such audioNode exists. This is useful if the node has
+          methods (e.g. AnalyserNode.getFloatFrequencyData &amp;
+          OscillatorNode.setPeriodicWave), but in general
+          virtualAudioGraph.update should be used for manipulating the audio
+          graph.
+        </li>
+      </ul>
 
-<h2>Rendering Our First Graph</h2>
-<p>virtualAudioGraph.update takes an object that represents the underlying audio graph. Each key is used as the id for a particular node and each value specifies all the attributes we need to know about that node.</p>
-<p>In this example we are creating a gain node with id 0 and an oscillator node with id 1.</p>
-<p>For each virtual audio node factory the first argument configures how to connect the node and the second is optional and configures the parameters to pass to the node:</p>
-<pre class="language-js"><code class="language-js">const { currentTime } = virtualAudioGraph
+      <h2>Rendering Our First Graph</h2>
+      <p>
+        virtualAudioGraph.update takes an object that represents the underlying
+        audio graph. Each key is used as the id for a particular node and each
+        value specifies all the attributes we need to know about that node.
+      </p>
+      <p>
+        In this example we are creating a gain node with id 0 and an oscillator
+        node with id 1.
+      </p>
+      <p>
+        For each virtual audio node factory the first argument configures how to
+        connect the node and the second is optional and configures the
+        parameters to pass to the node:
+      </p>
+      <pre
+        class="language-js"
+      ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
   0: gain('output', { gain: 0.5 }),
   1: oscillator(0, { stopTime: currentTime + 1 }),
 })</code></pre>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
-<p>We can see that the gain node is being connected to "output" which is a special string reserved for the virtual-audio-graph instance output (specified when our virtual-audio-graph instance is created) and has its gain value set to 0.5. We can also see that the oscillator node is being connnected to the gain node (id 0) and has its stopTime set to 1 second from the current time.</p>
-<h2>Rendering An Empty Graph</h2>
-<p>All the demos in this guide have a stop button that is implemented like this:</p>
-<pre class="language-js"><code class="language-js">virtualAudioGraph.update({})</code></pre>
-<p>Rendering an empty graph removes all the nodes and brings us back to our initial state. The power of virtual-audio-graph is that all the Web Audio API imperative code is handled for us and we don't have to worry about it.</p>
-<h2>Another Basic Graph</h2>
-<pre class="language-js"><code class="language-js">const { currentTime } = virtualAudioGraph
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
+      <p>
+        We can see that the gain node is being connected to "output" which is a
+        special string reserved for the virtual-audio-graph instance output
+        (specified when our virtual-audio-graph instance is created) and has its
+        gain value set to 0.5. We can also see that the oscillator node is being
+        connnected to the gain node (id 0) and has its stopTime set to 1 second
+        from the current time.
+      </p>
+      <h2>Rendering An Empty Graph</h2>
+      <p>
+        All the demos in this guide have a stop button that is implemented like
+        this:
+      </p>
+      <pre
+        class="language-js"
+      ><code class="language-js">virtualAudioGraph.update({})</code></pre>
+      <p>
+        Rendering an empty graph removes all the nodes and brings us back to our
+        initial state. The power of virtual-audio-graph is that all the Web
+        Audio API imperative code is handled for us and we don't have to worry
+        about it.
+      </p>
+      <h2>Another Basic Graph</h2>
+      <pre
+        class="language-js"
+      ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
   0: gain('output', { gain: 0.2 }),
@@ -106,16 +196,32 @@ virtualAudioGraph.update({
     type: 'triangle',
   }),
 })</code></pre>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
-<p>We've now connected 3 oscillators to our gain node and provided them with a few more parameters and virtual-audio-graph updates all the underlying audio nodes for us.</p>
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
+      <p>
+        We've now connected 3 oscillators to our gain node and provided them
+        with a few more parameters and virtual-audio-graph updates all the
+        underlying audio nodes for us.
+      </p>
 
-<h2>Specifying Multiple Connections &amp; Connecting To AudioParams</h2>
-<p>The output parameter of the node factory functions is a lot more versatile than just specifying a single connection. You can use it to specify connections to multiple nodes and/or multiple connections to AudioParams of those nodes.</p>
-<p>If you wish to make more than 1 connection just use an array with each element as either a node key, the special string "output" or an object with a key property and a destination property that specifies the node and AudioParam to connect to:</p>
-<pre class="language-js"><code class="language-js">const { currentTime } = virtualAudioGraph
+      <h2>Specifying Multiple Connections &amp; Connecting To AudioParams</h2>
+      <p>
+        The output parameter of the node factory functions is a lot more
+        versatile than just specifying a single connection. You can use it to
+        specify connections to multiple nodes and/or multiple connections to
+        AudioParams of those nodes.
+      </p>
+      <p>
+        If you wish to make more than 1 connection just use an array with each
+        element as either a node key, the special string "output" or an object
+        with a key property and a destination property that specifies the node
+        and AudioParam to connect to:
+      </p>
+      <pre
+        class="language-js"
+      ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
   0: gain('output', { gain: 0.2 }),
@@ -123,23 +229,45 @@ virtualAudioGraph.update({
   2: gain({ destination: 'frequency', key: '1' }, { gain: 350 }),
   3: oscillator([2, 'output'], { frequency: 1, type: 'triangle' }),
 })</code></pre>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
-<p>In the above example we have connected:</p>
-<ul>
-  <li>The GainNode with id 0 to the output</li>
-  <li>The OscillatorNode with id 1 to the GainNode with id 0</li>
-  <li>The GainNode with id 2 to the frequency AudioParam of the OscillatorNode with id 1</li>
-  <li>The OscillatorNode with id 3 to GainNode with id 2 and the output</li>
-</ul>
-<p>In this way you can start to specify any sort of graph that the Web Audio API allows</p>
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
+      <p>In the above example we have connected:</p>
+      <ul>
+        <li>The GainNode with id 0 to the output</li>
+        <li>The OscillatorNode with id 1 to the GainNode with id 0</li>
+        <li>
+          The GainNode with id 2 to the frequency AudioParam of the
+          OscillatorNode with id 1
+        </li>
+        <li>
+          The OscillatorNode with id 3 to GainNode with id 2 and the output
+        </li>
+      </ul>
+      <p>
+        In this way you can start to specify any sort of graph that the Web
+        Audio API allows
+      </p>
 
-<h2>AudioParam Methods</h2>
-<p>If you're familiar with the Web Audio API you will know that AudioParams have methods as well as values and virtual-audio-graph allows you to update these too. Just specify an array where the first element is the method name as a string and the remaining elements are the arguments for that method. If scheduling multiple values specify an array of these arrays. (<a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioParam" target="_blank" rel="noreferrer noopener">See here for more info on AudioParam methods</a>).</p>
-<p>Here's how to use setValueAtTime:</p>
-<pre class="language-js"><code class="language-js">const { currentTime } = virtualAudioGraph
+      <h2>AudioParam Methods</h2>
+      <p>
+        If you're familiar with the Web Audio API you will know that AudioParams
+        have methods as well as values and virtual-audio-graph allows you to
+        update these too. Just specify an array where the first element is the
+        method name as a string and the remaining elements are the arguments for
+        that method. If scheduling multiple values specify an array of these
+        arrays. (<a
+          href="https://developer.mozilla.org/en-US/docs/Web/API/AudioParam"
+          target="_blank"
+          rel="noreferrer noopener"
+          >See here for more info on AudioParam methods</a
+        >).
+      </p>
+      <p>Here's how to use setValueAtTime:</p>
+      <pre
+        class="language-js"
+      ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
   0: gain('output', { gain: 0.5 }),
@@ -148,12 +276,14 @@ virtualAudioGraph.update({
     stopTime: currentTime + 2,
   }),
 })</code></pre>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
-<p>And how to use it with linearRampToValueAtTime:</p>
-<pre class="language-js"><code class="language-js">const { currentTime } = virtualAudioGraph
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
+      <p>And how to use it with linearRampToValueAtTime:</p>
+      <pre
+        class="language-js"
+      ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
   0: gain('output', { gain: 0.5 }),
@@ -165,12 +295,14 @@ virtualAudioGraph.update({
     stopTime: currentTime + 2,
   }),
 })</code></pre>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
-<p>exponentialRampToValueAtTime:</p>
-<pre class="language-js"><code class="language-js">const { currentTime } = virtualAudioGraph
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
+      <p>exponentialRampToValueAtTime:</p>
+      <pre
+        class="language-js"
+      ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
   0: gain('output', { gain: 0.5 }),
@@ -182,12 +314,14 @@ virtualAudioGraph.update({
     stopTime: currentTime + 2,
   }),
 })</code></pre>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
-<p>setTargetAtTime:</p>
-<pre class="language-js"><code class="language-js">const { currentTime } = virtualAudioGraph
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
+      <p>setTargetAtTime:</p>
+      <pre
+        class="language-js"
+      ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
   0: gain('output', { gain: 0.5 }),
@@ -199,12 +333,14 @@ virtualAudioGraph.update({
     stopTime: currentTime + 2,
   }),
 })</code></pre>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
-<p>And finally setValueCurveAtTime:</p>
-<pre class="language-js"><code class="language-js">const { currentTime } = virtualAudioGraph
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
+      <p>And finally setValueCurveAtTime:</p>
+      <pre
+        class="language-js"
+      ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
   0: gain('output', { gain: 0.5 }),
@@ -215,14 +351,20 @@ virtualAudioGraph.update({
     stopTime: currentTime + 3,
   }),
 })</code></pre>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
 
-<h2>Creating Custom Nodes</h2>
-The audio graph can end up getting very large, repetitive and complicated so virtual-audio-graph gives a means of abstraction for creating encapsulated components that can be reused. These are called custom virtual audio nodes and are created with the createNode function like this:
-<pre class="language-js"><code class="language-js">const osc = createNode(({
+      <h2>Creating Custom Nodes</h2>
+      The audio graph can end up getting very large, repetitive and complicated
+      so virtual-audio-graph gives a means of abstraction for creating
+      encapsulated components that can be reused. These are called custom
+      virtual audio nodes and are created with the createNode function like
+      this:
+      <pre
+        class="language-js"
+      ><code class="language-js">const osc = createNode(({
   gain: gainValue,
   startTime,
   stopTime,
@@ -253,15 +395,32 @@ virtualAudioGraph.update({
     type: 'square',
   }),
 })</code></pre>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
-<p>createNode takes a function that takes an object and returns a section of audio graph. This section of audio graph works in much the same way as the audio graph that is passed to virtualAudioGraph.update, but the special string "output" now outputs to whatever destinations the custom virtual audio node is connected to.</p>
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
+      <p>
+        createNode takes a function that takes an object and returns a section
+        of audio graph. This section of audio graph works in much the same way
+        as the audio graph that is passed to virtualAudioGraph.update, but the
+        special string "output" now outputs to whatever destinations the custom
+        virtual audio node is connected to.
+      </p>
 
-<p>createNode returns a function that takes 2 arguments, just like the standard virtual audio node factory functions (e.g. oscillator and gain). The first argument represents the node output and the second is an object that is used to configure the section of audio graph as determined in the function passed to createNode.</p>
-<p>Here is another example that builds upon the custom node we just created:</p>
-<pre class="language-js"><code class="language-js">const oscBank = createNode(({
+      <p>
+        createNode returns a function that takes 2 arguments, just like the
+        standard virtual audio node factory functions (e.g. oscillator and
+        gain). The first argument represents the node output and the second is
+        an object that is used to configure the section of audio graph as
+        determined in the function passed to createNode.
+      </p>
+      <p>
+        Here is another example that builds upon the custom node we just
+        created:
+      </p>
+      <pre
+        class="language-js"
+      ><code class="language-js">const oscBank = createNode(({
   frequency,
   ...rest,
 }) => ({
@@ -296,16 +455,26 @@ virtualAudioGraph.update({
     stopTime: currentTime + 1,
   }),
 })</code></pre>
-<p>In this way we can start to build up quite advanced graphs, but keep them organized and easy to understand.</p>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
+      <p>
+        In this way we can start to build up quite advanced graphs, but keep
+        them organized and easy to understand.
+      </p>
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
 
-<h2>Custom Nodes With Inputs</h2>
-<p>Sometimes you will want to connect a node to a custom node and will want to specify which nodes within the custom node that connection is made to. You can do this by passing the string "input" as the 3rd argument in the node constructor as below:</p>
+      <h2>Custom Nodes With Inputs</h2>
+      <p>
+        Sometimes you will want to connect a node to a custom node and will want
+        to specify which nodes within the custom node that connection is made
+        to. You can do this by passing the string "input" as the 3rd argument in
+        the node constructor as below:
+      </p>
 
-<pre class="language-js"><code class="language-js">const pingPongDelay = createNode(({
+      <pre
+        class="language-js"
+      ><code class="language-js">const pingPongDelay = createNode(({
   decay,
   delayTime,
 }) => ({
@@ -326,19 +495,33 @@ virtualAudioGraph.update({
   }),
   1: oscillator([0, 'output'], { stopTime: currentTime + .2 }),
 })</code></pre>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
 
-<p>You can specify as many inputs as you like for custom virtual audio nodes and if an input node has no parameters you can pass null like this:</p>
+      <p>
+        You can specify as many inputs as you like for custom virtual audio
+        nodes and if an input node has no parameters you can pass null like
+        this:
+      </p>
 
-<pre class="language-js"><code class="language-js">5: gain(4, null, 'input')</code></pre>
+      <pre
+        class="language-js"
+      ><code class="language-js">5: gain(4, null, 'input')</code></pre>
 
-<h2>AudioWorklet Noise Generator</h2>
-<p>AudioWorklets are a fairly new addition to the Web Audio API so these demos won't work in all browsers!</p>
-<p>If we have the following noise generator module at <code language="sh">audioWorklets/noise.js</code>:</p>
-<pre class="language-js"><code class="language-js">class Noise extends AudioWorkletProcessor {
+      <h2>AudioWorklet Noise Generator</h2>
+      <p>
+        AudioWorklets are a fairly new addition to the Web Audio API so these
+        demos won't work in all browsers!
+      </p>
+      <p>
+        If we have the following noise generator module at
+        <code language="sh">audioWorklets/noise.js</code>:
+      </p>
+      <pre
+        class="language-js"
+      ><code class="language-js">class Noise extends AudioWorkletProcessor {
   static get parameterDescriptors () {
     return [{name: 'amplitude', defaultValue: 0.25, minValue: 0, maxValue: 1}]
   }
@@ -356,8 +539,10 @@ virtualAudioGraph.update({
 
 registerProcessor('noise', Noise)</code></pre>
 
-<p>Then we can use it in virtual-audio-graph like this:</p>
-<pre class="language-js"><code class="language-js">audioContext.audioWorklet.addModule('audioWorklets/noise.js')
+      <p>Then we can use it in virtual-audio-graph like this:</p>
+      <pre
+        class="language-js"
+      ><code class="language-js">audioContext.audioWorklet.addModule('audioWorklets/noise.js')
   .then(() => {
     const noise = createWorkletNode('noise')
 
@@ -365,14 +550,19 @@ registerProcessor('noise', Noise)</code></pre>
       0: noise('output', { amplitude: 0.25 }),
     })
   })</code></pre>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
 
-<h2>AudioWorklet Bit Crusher</h2>
-<p>Here is our bit crusher module at <code language="sh">audioWorklets/bitCrusher.js</code>:</p>
-<pre class="language-js"><code class="language-js">class BitCrusher extends AudioWorkletProcessor {
+      <h2>AudioWorklet Bit Crusher</h2>
+      <p>
+        Here is our bit crusher module at
+        <code language="sh">audioWorklets/bitCrusher.js</code>:
+      </p>
+      <pre
+        class="language-js"
+      ><code class="language-js">class BitCrusher extends AudioWorkletProcessor {
   static get parameterDescriptors () {
     return [
       {name: 'bitDepth', defaultValue: 12, minValue: 1, maxValue: 16},
@@ -409,9 +599,11 @@ registerProcessor('noise', Noise)</code></pre>
 
 registerProcessor('bitCrusher', BitCrusher)</code></pre>
 
-<p>And here is how we can use it with virtual-audio-graph:</p>
+      <p>And here is how we can use it with virtual-audio-graph:</p>
 
-<pre class="language-js"><code class="language-js">audioWorklet.addModule('audioWorklets/bitCrusher.js')
+      <pre
+        class="language-js"
+      ><code class="language-js">audioWorklet.addModule('audioWorklets/bitCrusher.js')
   .then(() => {
     const bitCrusher = createWorkletNode('bitCrusher')
 
@@ -433,14 +625,19 @@ registerProcessor('bitCrusher', BitCrusher)</code></pre>
       }),
     })
   })</code></pre>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
 
-<h2>Bringing It All Together</h2>
-<p>Here is a full working example that shows off a number of virtual-audio-graph's main features:</p>
-<pre class="language-js"><code class="language-js">import createVirtualAudioGraph, {
+      <h2>Bringing It All Together</h2>
+      <p>
+        Here is a full working example that shows off a number of
+        virtual-audio-graph's main features:
+      </p>
+      <pre
+        class="language-js"
+      ><code class="language-js">import createVirtualAudioGraph, {
   createNode,
   delay,
   gain,
@@ -539,14 +736,27 @@ virtualAudioGraph.update({
     notes: [...up, ...down],
   }),
 })</code></pre>
-<div class="button-container">
-  <button class="button-play">Play</button>
-  <button class="button-stop">Stop</button>
-</div>
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
 
-<p>Thank you for reading and I hope you find this library useful. If you need any further help or have any feedback or suggestions you can <a href="https://github.com/benji6/virtual-audio-graph">get in touch via GitHub</a>.</p>
-<p>For the full documentation on the standard virtual audio node factories exported by virtual-audio-graph <a href="https://github.com/benji6/virtual-audio-graph/blob/master/docs/standard-nodes.md">see here</a>.</p>
-<p>Happy coding!</p>
-</main>
-</body>
+      <p>
+        Thank you for reading and I hope you find this library useful. If you
+        need any further help or have any feedback or suggestions you can
+        <a href="https://github.com/benji6/virtual-audio-graph"
+          >get in touch via GitHub</a
+        >.
+      </p>
+      <p>
+        For the full documentation on the standard virtual audio node factories
+        exported by virtual-audio-graph
+        <a
+          href="https://github.com/benji6/virtual-audio-graph/blob/master/docs/standard-nodes.md"
+          >see here</a
+        >.
+      </p>
+      <p>Happy coding!</p>
+    </main>
+  </body>
 </html>
