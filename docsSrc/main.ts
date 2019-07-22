@@ -1,4 +1,5 @@
 import createVirtualAudioGraph, {
+  bufferSource,
   createNode,
   createWorkletNode,
   delay,
@@ -8,8 +9,13 @@ import createVirtualAudioGraph, {
 } from '../src/index'
 
 const audioContext = new AudioContext()
-
 const virtualAudioGraph = createVirtualAudioGraph({ audioContext })
+
+const getKittenBuffer = async () => {
+  const response = await fetch('kitten.wav')
+  const data = await response.arrayBuffer()
+  return audioContext.decodeAudioData(data)
+}
 
 const examples = [
   () => {
@@ -234,6 +240,36 @@ const examples = [
         delayTime: 0.25,
       }),
       1: oscillator([0, 'output'], { stopTime: currentTime + 0.2 }),
+    })
+  },
+  async () => {
+    // const response = await fetch('kitten.wav')
+    // const data = await response.arrayBuffer()
+    // const buffer = await audioContext.decodeAudioData(data)
+    const buffer = await getKittenBuffer()
+
+    const { currentTime } = virtualAudioGraph
+
+    virtualAudioGraph.update({
+      0: gain('output', { gain: 0.5 }),
+      1: bufferSource(0, {
+        buffer,
+        playbackRate: 1.5,
+        startTime: currentTime,
+        stopTime: currentTime + 1,
+      }),
+      2: bufferSource(0, {
+        buffer,
+        playbackRate: 1,
+        startTime: currentTime + 0.5,
+        stopTime: currentTime + 1.5,
+      }),
+      3: bufferSource(0, {
+        buffer,
+        playbackRate: 0.5,
+        startTime: currentTime + 1,
+        stopTime: currentTime + 2,
+      }),
     })
   },
   () =>

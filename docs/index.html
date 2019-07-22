@@ -57,6 +57,7 @@
       <pre
         class="language-js"
       ><code class="language-js">import createVirtualAudioGraph, {
+  bufferSource,
   createNode,
   createWorkletNode,
   delay,
@@ -509,6 +510,49 @@ virtualAudioGraph.update({
       <pre
         class="language-js"
       ><code class="language-js">5: gain(4, null, 'input')</code></pre>
+
+      <h2>Working with audio files</h2>
+      <p>
+        You can work with audio files using
+        <a
+          href="https://github.com/benji6/virtual-audio-graph/blob/master/docs/standard-nodes.md#buffersource"
+          >bufferSource</a
+        >. This example shows us loading the kitten wav file and manipulating it
+        with virtual-audio-graph:
+      </p>
+      <pre
+        class="language-js"
+      ><code class="language-js">const response = await fetch('kitten.wav')
+const data = await response.arrayBuffer()
+const buffer = await audioContext.decodeAudioData(data)
+
+const { currentTime } = virtualAudioGraph
+
+virtualAudioGraph.update({
+  0: gain('output', { gain: 0.5 }),
+  1: bufferSource(0, {
+    buffer,
+    playbackRate: 1.5,
+    startTime: currentTime,
+    stopTime: currentTime + 1,
+  }),
+  2: bufferSource(0, {
+    buffer,
+    playbackRate: 1,
+    startTime: currentTime + 0.5,
+    stopTime: currentTime + 1.5,
+  }),
+  3: bufferSource(0, {
+    buffer,
+    playbackRate: 0.5,
+    startTime: currentTime + 1,
+    stopTime: currentTime + 2,
+  }),
+})</code></pre>
+      <div class="button-container">
+        <button class="button-play">Play</button>
+        <button class="button-stop">Stop</button>
+      </div>
 
       <h2>AudioWorklet Noise Generator</h2>
       <p>
