@@ -11,11 +11,11 @@ import createVirtualAudioGraph, {
 const audioContext = new AudioContext()
 const virtualAudioGraph = createVirtualAudioGraph({ audioContext })
 
-const getKittenBuffer = async () => {
+const kittenBuffer = (async () => {
   const response = await fetch('kitten.wav')
   const data = await response.arrayBuffer()
   return audioContext.decodeAudioData(data)
-}
+})()
 
 const examples = [
   () => {
@@ -243,15 +243,12 @@ const examples = [
     })
   },
   async () => {
-    // const response = await fetch('kitten.wav')
-    // const data = await response.arrayBuffer()
-    // const buffer = await audioContext.decodeAudioData(data)
-    const buffer = await getKittenBuffer()
+    const buffer = await kittenBuffer
 
     const { currentTime } = virtualAudioGraph
 
     virtualAudioGraph.update({
-      0: gain('output', { gain: 0.5 }),
+      0: gain('output', { gain: 0.75 }),
       1: bufferSource(0, {
         buffer,
         playbackRate: 1.5,
