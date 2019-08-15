@@ -8,6 +8,8 @@ import createVirtualAudioGraph, {
   stereoPanner,
 } from '../src/index'
 
+const AudioContext =
+  (window as any).AudioContext || (window as any).webkitAudioContext
 const audioContext = new AudioContext()
 const virtualAudioGraph = createVirtualAudioGraph({ audioContext })
 
