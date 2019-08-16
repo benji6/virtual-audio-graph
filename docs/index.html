@@ -43,11 +43,22 @@
     </header>
 
     <main>
+      <h2>Introduction</h2>
       <p>
         virtual-audio-graph is a library for declaratively manipulating the Web
         Audio API that is inspired by React and virtual-dom. This guide aims to
         introduce it step-by-step to help you get up and running as quickly as
         possible.
+      </p>
+
+      <h3>Browser support</h3>
+      <p>
+        virtual-audio-graph needs to be run in an environment that supports the
+        web audio API (<a href="https://caniuse.com/#feat=audio-api"
+          >https://caniuse.com/#feat=audio-api</a
+        >). Make sure you check browser support for all the audio nodes you
+        intend on using as newer audio nodes are often not supported in older
+        browsers.
       </p>
 
       <h2>Importing</h2>
@@ -67,7 +78,7 @@
 } from 'virtual-audio-graph'
 </code></pre>
 
-      <h2>Creating A virtual-audio-graph Instance</h2>
+      <h2>Creating a virtual-audio-graph Instance</h2>
 
       <h3>With No Configuration</h3>
       <p>Next let's create our virtual-audio-graph instance:</p>
