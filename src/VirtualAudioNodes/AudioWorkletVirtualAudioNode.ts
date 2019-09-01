@@ -1,5 +1,5 @@
 import { IVirtualAudioNodeParams, Output, VirtualAudioNode } from '../types'
-import { equals, find, values } from '../utils'
+import { equals, values } from '../utils'
 import CustomVirtualAudioNode from './CustomVirtualAudioNode'
 
 interface IWindow {

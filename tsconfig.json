@@ -1,13 +1,13 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "module": "es2015",
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
     "noImplicitAny": true,
-    "outDir": "./esm/",
+    "noUnusedLocals": true,
+    "outDir": "dist",
     "sourceMap": false,
     "target": "es5"
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }
