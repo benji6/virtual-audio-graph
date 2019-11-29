@@ -92,7 +92,10 @@ describe('audio param methods with update', () => {
 
     virtualAudioGraph.update({
       0: V.gain('output', {
-        gain: [['setValueAtTime', 0, 0], ['linearRampToValueAtTime', 1, 1]],
+        gain: [
+          ['setValueAtTime', 0, 0],
+          ['linearRampToValueAtTime', 1, 1],
+        ],
       }),
     })
 
@@ -146,13 +149,19 @@ describe('audio param methods with update', () => {
   test('setValueAtTime with setTargetAtTime', () => {
     virtualAudioGraph.update({
       0: V.gain('output', {
-        gain: [['setValueAtTime', 0, 0], ['setTargetAtTime', 1, 1, 0.75]],
+        gain: [
+          ['setValueAtTime', 0, 0],
+          ['setTargetAtTime', 1, 1, 0.75],
+        ],
       }),
     })
 
     virtualAudioGraph.update({
       0: V.gain('output', {
-        gain: [['setValueAtTime', 0, 0], ['setTargetAtTime', 1, 1, 0.5]],
+        gain: [
+          ['setValueAtTime', 0, 0],
+          ['setTargetAtTime', 1, 1, 0.5],
+        ],
       }),
     })
 
