@@ -5,6 +5,7 @@
     "target": "es5",
     "noImplicitAny": false,
     "outDir": "./esm/",
+    "skipLibCheck": true,
     "sourceMap": false
   }
 }
