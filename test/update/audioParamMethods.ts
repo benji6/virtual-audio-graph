@@ -140,7 +140,7 @@ describe('audio param methods with update', () => {
     expect(frequency.$valueAtTime('00:00.001')).toBe(440.30509048353554)
     expect(frequency.$valueAtTime('00:00.250')).toBe(523.2511306011972)
     expect(frequency.$valueAtTime('00:00.500')).toBe(622.2539674441618)
-    expect(frequency.$valueAtTime('00:00.750')).toBe(739.9888454232688)
+    expect(frequency.$valueAtTime('00:00.750')).toBeCloseTo(739.99)
     expect(frequency.$valueAtTime('00:00.999')).toBe(879.3902418315982)
     expect(frequency.$valueAtTime('00:01.000')).toBe(880)
     expect(frequency.$valueAtTime('23:59.999')).toBe(880)
