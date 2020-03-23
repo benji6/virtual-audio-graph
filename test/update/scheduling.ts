@@ -15,7 +15,7 @@ const testSchedulingForNode = (node: any) => {
       virtualAudioGraph.update(virtualGraphParams)
 
       Array.from((virtualAudioGraph as any).virtualNodes).forEach(
-        virtualNode => {
+        (virtualNode) => {
           const audioNode = (virtualNode as any).audioNode
 
           expect(audioNode.$stateAtTime('00:00.000')).toBe('PLAYING')
@@ -36,7 +36,7 @@ const testSchedulingForNode = (node: any) => {
 
       virtualAudioGraph.update(virtualGraphParams)
       Array.from((virtualAudioGraph as any).virtualNodes).forEach(
-        virtualNode => {
+        (virtualNode) => {
           const audioNode = (virtualNode as any).audioNode
 
           expect(audioNode.$stateAtTime('00:00.000')).toBe('PLAYING')
@@ -57,7 +57,7 @@ const testSchedulingForNode = (node: any) => {
 
       virtualAudioGraph.update(virtualGraphParams)
       Array.from((virtualAudioGraph as any).virtualNodes).forEach(
-        virtualNode => {
+        (virtualNode) => {
           const audioNode = (virtualNode as any).audioNode
           expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED')
           expect(audioNode.$stateAtTime('00:00.099')).toBe('SCHEDULED')
@@ -93,7 +93,7 @@ const testSchedulingForNode = (node: any) => {
 
       virtualAudioGraph.update(virtualGraphParams)
       Array.from((virtualAudioGraph as any).virtualNodes).forEach(
-        virtualNode => {
+        (virtualNode) => {
           const audioNode = (virtualNode as any).audioNode
           expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED')
           expect(audioNode.$stateAtTime('00:00.099')).toBe('SCHEDULED')
@@ -130,7 +130,7 @@ const testSchedulingForNode = (node: any) => {
         2: V[node]('output', { startTime: 1.1, stopTime: 1.2 }),
         3: V[node]('output', { startTime: 1.1, stopTime: 1.2 }),
       })
-      Array.from((virtualAudioGraph as any).virtualNodes).forEach(x => {
+      Array.from((virtualAudioGraph as any).virtualNodes).forEach((x) => {
         const audioNode = (x as any).audioNode
         expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED')
         expect(audioNode.$stateAtTime('00:01.099')).toBe('SCHEDULED')
@@ -156,7 +156,7 @@ const testSchedulingForNode = (node: any) => {
         3: V[node]('output', { startTime: 0.1, stopTime: 0.2 }),
       })
 
-      Array.from((virtualAudioGraph as any).virtualNodes).forEach(x => {
+      Array.from((virtualAudioGraph as any).virtualNodes).forEach((x) => {
         const audioNode = (x as any).audioNode
         expect(audioNode.$stateAtTime('00:00.000')).toBe('SCHEDULED')
         expect(audioNode.$stateAtTime('00:00.099')).toBe('SCHEDULED')

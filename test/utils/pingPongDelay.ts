@@ -1,6 +1,6 @@
 import * as V from '../../src'
 
-export default V.createNode(x => {
+export default V.createNode((x) => {
   const params = x || {}
   const decay = params.decay || 1 / 3
   const delayTime = params.delayTime || 1 / 3

@@ -34,14 +34,14 @@ export default class AudioWorkletVirtualAudioNode {
     if (node) {
       if (node instanceof CustomVirtualAudioNode) {
         for (const childNode of values(node.virtualNodes)) {
-          if (!this.connections.some(x => x === childNode.audioNode)) continue
+          if (!this.connections.some((x) => x === childNode.audioNode)) continue
           this.connections = this.connections.filter(
-            x => x !== childNode.audioNode,
+            (x) => x !== childNode.audioNode,
           )
         }
       } else {
-        if (!this.connections.some(x => x === node.audioNode)) return
-        this.connections = this.connections.filter(x => x !== node.audioNode)
+        if (!this.connections.some((x) => x === node.audioNode)) return
+        this.connections = this.connections.filter((x) => x !== node.audioNode)
       }
     }
     if (audioNode.disconnect) audioNode.disconnect()

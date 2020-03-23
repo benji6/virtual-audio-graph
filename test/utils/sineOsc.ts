@@ -1,6 +1,6 @@
 import * as V from '../../src'
 
-export default V.createNode(params => {
+export default V.createNode((params) => {
   const frequency = params.frequency
   const gain = params.gain
   const startTime = params.startTime
