@@ -1,29 +1,29 @@
-import createVirtualAudioGraph, * as V from '../src'
+import createVirtualAudioGraph, * as V from "../src";
 
-const audioContext: any = new AudioContext()
+const audioContext: any = new AudioContext();
 
-describe('createVirtualAudioGraph', () => {
-  test('optionally takes audioContext property', () => {
+describe("createVirtualAudioGraph", () => {
+  test("optionally takes audioContext property", () => {
     expect(createVirtualAudioGraph({ audioContext }).audioContext).toBe(
-      audioContext,
-    )
-    expect(createVirtualAudioGraph().audioContext).not.toBe(audioContext)
-    expect(createVirtualAudioGraph().audioContext).toBeInstanceOf(AudioContext)
-  })
+      audioContext
+    );
+    expect(createVirtualAudioGraph().audioContext).not.toBe(audioContext);
+    expect(createVirtualAudioGraph().audioContext).toBeInstanceOf(AudioContext);
+  });
 
-  test('optionally takes output parameter', () => {
-    const gain: any = audioContext.createGain()
+  test("optionally takes output parameter", () => {
+    const gain: any = audioContext.createGain();
 
     createVirtualAudioGraph({ audioContext, output: gain }).update({
-      0: V.gain('output', { gain: 0.2 }),
-    })
+      0: V.gain("output", { gain: 0.2 }),
+    });
 
-    expect(gain.toJSON()).toMatchSnapshot()
+    expect(gain.toJSON()).toMatchSnapshot();
 
     createVirtualAudioGraph({ audioContext }).update({
-      0: V.gain('output', { gain: 0.2 }),
-    })
+      0: V.gain("output", { gain: 0.2 }),
+    });
 
-    expect(audioContext.toJSON()).toMatchSnapshot()
-  })
-})
+    expect(audioContext.toJSON()).toMatchSnapshot();
+  });
+});

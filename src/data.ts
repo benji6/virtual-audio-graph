@@ -1,25 +1,25 @@
 export const audioParamProperties = [
-  'attack',
-  'delayTime',
-  'detune',
-  'frequency',
-  'gain',
-  'knee',
-  'pan',
-  'playbackRate',
-  'ratio',
-  'release',
-  'threshold',
-  'Q',
-]
+  "attack",
+  "delayTime",
+  "detune",
+  "frequency",
+  "gain",
+  "knee",
+  "pan",
+  "playbackRate",
+  "ratio",
+  "release",
+  "threshold",
+  "Q",
+];
 
 export const constructorParamsKeys = [
-  'maxDelayTime',
-  'mediaElement',
-  'mediaStream',
-  'numberOfOutputs',
-]
+  "maxDelayTime",
+  "mediaElement",
+  "mediaStream",
+  "numberOfOutputs",
+];
 
-export const setters = ['position', 'orientation']
+export const setters = ["position", "orientation"];
 
-export const startAndStopNodes = ['oscillator', 'bufferSource']
+export const startAndStopNodes = ["oscillator", "bufferSource"];

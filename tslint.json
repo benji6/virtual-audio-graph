@@ -5,7 +5,7 @@
     "tslint-config-prettier"
   ],
   "rules": {
-    "curly": [true, "ignore-same-line"],
+    "curly": false,
     "no-empty": false,
     "no-this-assignment": false,
     "prefer-for-of": false
