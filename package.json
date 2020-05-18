@@ -46,7 +46,7 @@
     "prettier": "^2.0.1",
     "rollup": "^2.0.2",
     "semantic-release": "^17.0.2",
-    "ts-jest": "^25.0.0",
+    "ts-jest": "^26.0.0",
     "tslint": "^5.16.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-eslint-rules": "^5.4.0",
