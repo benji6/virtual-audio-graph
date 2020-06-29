@@ -29,7 +29,6 @@
     "test": "run-p test:*",
     "test:audit": "yarn audit --level high || [ $? -lt 8 ]",
     "test:format": "prettier --check 'docs/**/*.html' 'src/**/*.ts' 'test/**/*.ts'",
-    "test:lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'",
     "test:types": "tsc --noEmit",
     "test:unit": "jest"
   },
@@ -47,9 +46,6 @@
     "rollup": "^2.0.2",
     "semantic-release": "^17.0.2",
     "ts-jest": "^26.0.0",
-    "tslint": "^5.16.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.4.5",
     "web-audio-test-api": "^0.5.2"
   }

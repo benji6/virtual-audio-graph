@@ -1,6 +1,0 @@
-{
-  "globals": {
-    "AudioWorkletProcessor": true,
-    "registerProcessor": true
-  }
-}
