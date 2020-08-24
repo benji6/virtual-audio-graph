@@ -27,7 +27,7 @@
     "docs": "tsc -p docsSrc && rollup -c docsSrc/rollup.config.js && rm -r docsSrc/esm",
     "format": "prettier --write 'docs/**/*.html' 'src/**/*.ts' 'test/**/*.ts'",
     "test": "run-p test:*",
-    "test:audit": "yarn audit --level high || [ $? -lt 8 ]",
+    "test:audit": "yarn audit --level critical || [ $? -lt 16 ]",
     "test:format": "prettier --check 'docs/**/*.html' 'src/**/*.ts' 'test/**/*.ts'",
     "test:types": "tsc --noEmit",
     "test:unit": "jest"
