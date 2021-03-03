@@ -1,7 +1,7 @@
 # virtual-audio-graph
 
 [![npm version](https://badge.fury.io/js/virtual-audio-graph.svg)](http://badge.fury.io/js/virtual-audio-graph)
-[![Build Status](https://api.travis-ci.org/benji6/virtual-audio-graph.svg?branch=master)](https://travis-ci.org/benji6/virtual-audio-graph)
+![CI/CD](https://github.com/benji6/virtual-audio-graph/workflows/CI/CD/badge.svg)
 [![dependencies](https://david-dm.org/benji6/virtual-audio-graph.svg)](https://david-dm.org/benji6/virtual-audio-graph)
 ![NPM](https://img.shields.io/npm/l/virtual-audio-graph)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/f5f3984d-617b-418a-9c5b-8881aceb7adb/deploy-status)](https://app.netlify.com/sites/virtual-audio-graph/deploys)
