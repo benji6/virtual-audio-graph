@@ -1,11 +1,7 @@
 version: 2
 updates:
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: monthly
-  open-pull-requests-limit: 99
-  ignore:
-  - dependency-name: tslint
-    versions:
-    - "> 5.20.1"
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 99
