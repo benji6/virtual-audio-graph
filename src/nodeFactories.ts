@@ -1,18 +1,17 @@
 import { Output } from "./types";
 import StandardVirtualAudioNode from "./VirtualAudioNodes/StandardVirtualAudioNode";
 
-const createNodeConstructor = (nodeName: string) => (
-  output?: Output,
-  ...rest: any[]
-): StandardVirtualAudioNode => {
-  if (nodeName === "mediaStreamDestination") {
-    return new StandardVirtualAudioNode(nodeName);
-  }
-  if (output == null) {
-    throw new Error(`Output not specified for ${nodeName}`);
-  }
-  return new StandardVirtualAudioNode(nodeName, output, ...rest);
-};
+const createNodeConstructor =
+  (nodeName: string) =>
+  (output?: Output, ...rest: any[]): StandardVirtualAudioNode => {
+    if (nodeName === "mediaStreamDestination") {
+      return new StandardVirtualAudioNode(nodeName);
+    }
+    if (output == null) {
+      throw new Error(`Output not specified for ${nodeName}`);
+    }
+    return new StandardVirtualAudioNode(nodeName, output, ...rest);
+  };
 
 export const analyser = createNodeConstructor("analyser");
 export const biquadFilter = createNodeConstructor("biquadFilter");
