@@ -38,13 +38,7 @@ export default class VirtualAudioGraph {
         continue;
       }
 
-      if (
-        (newVirtualAudioNode.params && newVirtualAudioNode.params.startTime) !==
-          (virtualAudioNode.params && virtualAudioNode.params.startTime) ||
-        (newVirtualAudioNode.params && newVirtualAudioNode.params.stopTime) !==
-          (virtualAudioNode.params && virtualAudioNode.params.stopTime) ||
-        newVirtualAudioNode.node !== virtualAudioNode.node
-      ) {
+      if (virtualAudioNode.cannotUpdateInPlace(newVirtualAudioNode)) {
         virtualAudioNode.disconnectAndDestroy();
         this.disconnectParents(virtualAudioNode);
         this.virtualNodes[key] = newVirtualAudioNode.initialize(
@@ -59,7 +53,7 @@ export default class VirtualAudioGraph {
         virtualAudioNode.output = newVirtualAudioNode.output;
       }
 
-      virtualAudioNode.update(newVirtualAudioNode.params);
+      virtualAudioNode.update(newVirtualAudioNode.params, this.audioContext);
     }
 
     connectAudioNodes(this.virtualNodes, (vNode: VirtualAudioNode) =>

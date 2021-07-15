@@ -6,9 +6,10 @@ import {
   Output,
   VirtualAudioNode,
 } from "../types";
-import { mapObj, values } from "../utils";
+import { equals, mapObj, values } from "../utils";
+import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
 
-export default class CustomVirtualAudioNode {
+export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
   public readonly audioNode: undefined = undefined;
   public connected: boolean = false;
   public params: IVirtualAudioNodeParams;
@@ -19,6 +20,7 @@ export default class CustomVirtualAudioNode {
     public output?: Output,
     params?: IVirtualAudioNodeParams
   ) {
+    super();
     this.params = params || {};
   }
 
@@ -68,14 +70,40 @@ export default class CustomVirtualAudioNode {
     return this;
   }
 
-  public update(params: IVirtualAudioNodeParams = {}): this {
+  public update(
+    params: IVirtualAudioNodeParams = {},
+    audioContext: AudioContext
+  ): this {
     const audioGraphParamsFactoryValues = values(this.node(params));
     const keys = Object.keys(this.virtualNodes);
+
     for (let i = 0; i < keys.length; i++) {
-      const p = audioGraphParamsFactoryValues[i];
-      this.virtualNodes[keys[i]].update(p.params);
+      const key = keys[i];
+      const virtualAudioNode = this.virtualNodes[key];
+      const newVirtualAudioNode = audioGraphParamsFactoryValues[i];
+
+      if (virtualAudioNode.cannotUpdateInPlace(newVirtualAudioNode)) {
+        virtualAudioNode.disconnectAndDestroy();
+        this.disconnectParents(virtualAudioNode);
+        this.virtualNodes[key] = newVirtualAudioNode.initialize(audioContext);
+        continue;
+      }
+
+      virtualAudioNode.update(newVirtualAudioNode.params, audioContext);
+
+      if (!equals(newVirtualAudioNode.output, virtualAudioNode.output)) {
+        virtualAudioNode.disconnect();
+        this.disconnectParents(virtualAudioNode);
+        virtualAudioNode.output = newVirtualAudioNode.output;
+      }
     }
+
+    connectAudioNodes(this.virtualNodes, () => {});
     this.params = params;
     return this;
+  }
+
+  private disconnectParents(vNode: VirtualAudioNode): void {
+    for (const node of values(this.virtualNodes)) node.disconnect(vNode);
   }
 }

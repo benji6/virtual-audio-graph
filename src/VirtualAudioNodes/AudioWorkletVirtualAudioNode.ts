@@ -1,12 +1,13 @@
 import { IVirtualAudioNodeParams, Output, VirtualAudioNode } from "../types";
 import { equals, values } from "../utils";
 import CustomVirtualAudioNode from "./CustomVirtualAudioNode";
+import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
 
 interface IWindow {
   AudioWorkletNode?: any;
 }
 
-export default class AudioWorkletVirtualAudioNode {
+export default class AudioWorkletVirtualAudioNode extends VirtualAudioNodeBase {
   public audioNode: AudioNode;
   public connected: boolean = false;
   private connections: AudioNode[] = [];
@@ -16,7 +17,9 @@ export default class AudioWorkletVirtualAudioNode {
     public output?: Output,
     public params?: IVirtualAudioNodeParams,
     public readonly input?: string
-  ) {}
+  ) {
+    super();
+  }
 
   public connect(...connectArgs: any[]): void {
     const { audioNode } = this;

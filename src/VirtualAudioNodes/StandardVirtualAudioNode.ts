@@ -13,6 +13,7 @@ import {
 } from "../types";
 import { capitalize, equals, find, values } from "../utils";
 import CustomVirtualAudioNode from "./CustomVirtualAudioNode";
+import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
 
 interface IAudioContextFactoryLookup {
   [_: string]: any;
@@ -41,7 +42,7 @@ const createAudioNode = (
   return audioNode;
 };
 
-export default class StandardVirtualAudioNode {
+export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
   public audioNode: AudioNode;
   public connected: boolean = false;
   private connections: AudioNode[] = [];
@@ -53,8 +54,19 @@ export default class StandardVirtualAudioNode {
     public params?: IVirtualAudioNodeParams,
     public readonly input?: string
   ) {
+    super();
     const stopTime = params && params.stopTime;
     this.stopCalled = stopTime !== undefined;
+  }
+
+  public cannotUpdateInPlace(newVirtualAudioNode: VirtualAudioNode): boolean {
+    return (
+      super.cannotUpdateInPlace(newVirtualAudioNode) ||
+      (newVirtualAudioNode.params && newVirtualAudioNode.params.startTime) !==
+        (this.params && this.params.startTime) ||
+      (newVirtualAudioNode.params && newVirtualAudioNode.params.stopTime) !==
+        (this.params && this.params.stopTime)
+    );
   }
 
   public connect(...connectArgs: any[]): void {
