@@ -132,7 +132,8 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
     return this;
   }
 
-  public update(params: IVirtualAudioNodeParams = {}): this {
+  public update(_params: IVirtualAudioNodeParams | null | undefined): this {
+    const params = _params ?? {};
     const audioNode: IAudioNodePropertyLookup = this.audioNode;
     for (const key of Object.keys(params)) {
       if (constructorParamsKeys.indexOf(key) !== -1) continue;

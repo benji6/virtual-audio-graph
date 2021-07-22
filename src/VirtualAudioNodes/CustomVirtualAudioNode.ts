@@ -71,9 +71,10 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
   }
 
   public update(
-    params: IVirtualAudioNodeParams = {},
+    _params: IVirtualAudioNodeParams | null | undefined,
     audioContext: AudioContext
   ): this {
+    const params = _params ?? {};
     const audioGraphParamsFactoryValues = values(this.node(params));
     const keys = Object.keys(this.virtualNodes);
 
@@ -84,7 +85,6 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
 
       if (virtualAudioNode.cannotUpdateInPlace(newVirtualAudioNode)) {
         virtualAudioNode.disconnectAndDestroy();
-        this.disconnectParents(virtualAudioNode);
         this.virtualNodes[key] = newVirtualAudioNode.initialize(audioContext);
         continue;
       }
@@ -93,7 +93,6 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
 
       if (!equals(newVirtualAudioNode.output, virtualAudioNode.output)) {
         virtualAudioNode.disconnect();
-        this.disconnectParents(virtualAudioNode);
         virtualAudioNode.output = newVirtualAudioNode.output;
       }
     }
@@ -101,9 +100,5 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
     connectAudioNodes(this.virtualNodes, () => {});
     this.params = params;
     return this;
-  }
-
-  private disconnectParents(vNode: VirtualAudioNode): void {
-    for (const node of values(this.virtualNodes)) node.disconnect(vNode);
   }
 }

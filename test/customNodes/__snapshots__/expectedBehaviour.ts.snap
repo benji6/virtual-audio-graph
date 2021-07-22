@@ -891,3 +891,33 @@ Object {
   "name": "AudioDestinationNode",
 }
 `;
+
+exports[`custom nodes updating startTime of nested custom nodes 1`] = `
+Object {
+  "inputs": Array [
+    Object {
+      "gain": Object {
+        "inputs": Array [],
+        "value": 1,
+      },
+      "inputs": Array [
+        Object {
+          "detune": Object {
+            "inputs": Array [],
+            "value": 0,
+          },
+          "frequency": Object {
+            "inputs": Array [],
+            "value": 440,
+          },
+          "inputs": Array [],
+          "name": "OscillatorNode",
+          "type": "sine",
+        },
+      ],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;

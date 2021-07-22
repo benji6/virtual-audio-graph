@@ -1,4 +1,5 @@
 import createVirtualAudioGraph, * as V from "../../src";
+import { oscillator } from "../../src";
 import gainWithNoParams from "../utils/gainWithNoParams";
 import pingPongDelay from "../utils/pingPongDelay";
 import sineOsc from "../utils/sineOsc";
@@ -209,5 +210,19 @@ describe("custom nodes", () => {
       ),
     });
     expect(audioContext.toJSON()).toEqual(expectedData);
+  });
+
+  test("updating startTime of nested custom nodes", () => {
+    const voice = V.createNode(({ startTime }) => ({
+      0: gainWithNoParams("output"),
+      1: oscillator(0, { startTime, stopTime: startTime + 1 }),
+    }));
+
+    virtualAudioGraph.update({ 0: voice("output", { startTime: 1 }) });
+    const initialSnapshot = audioContext.toJSON();
+    expect(initialSnapshot).toMatchSnapshot();
+
+    virtualAudioGraph.update({ 0: voice("output", { startTime: 2 }) });
+    expect(initialSnapshot).toEqual(audioContext.toJSON());
   });
 });
