@@ -14,7 +14,7 @@ export type CustomVirtualAudioNodeFactory<P = IVirtualAudioNodeParams> = (
   _: P
 ) => IVirtualAudioNodeGraph;
 
-interface IOutputObject {
+export interface IOutputObject {
   destination?: string;
   inputs?: Array<number | string>;
   key: number | string;

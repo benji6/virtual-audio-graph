@@ -13,7 +13,7 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
   public readonly audioNode: undefined = undefined;
   public connected: boolean = false;
   public params: IVirtualAudioNodeParams;
-  public virtualNodes: IVirtualAudioNodeGraph;
+  public virtualNodes!: IVirtualAudioNodeGraph;
 
   constructor(
     public readonly node: CustomVirtualAudioNodeFactory,

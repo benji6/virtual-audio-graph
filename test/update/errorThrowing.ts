@@ -25,14 +25,14 @@ describe("error throwing with update", () => {
       virtualAudioGraph.update({
         0: V.oscillator("output"),
         1: undefined,
-      })
+      } as any)
     ).toThrow();
 
     expect(() =>
       virtualAudioGraph.update({
         0: V.oscillator("output"),
         1: null,
-      })
+      } as any)
     ).toThrow();
   });
 

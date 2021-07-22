@@ -11,7 +11,7 @@ import {
   Output,
   VirtualAudioNode,
 } from "../types";
-import { capitalize, equals, find, values } from "../utils";
+import { capitalize, equals, values } from "../utils";
 import CustomVirtualAudioNode from "./CustomVirtualAudioNode";
 import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
 
@@ -43,7 +43,7 @@ const createAudioNode = (
 };
 
 export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
-  public audioNode: AudioNode;
+  public audioNode!: AudioNode;
   public connected: boolean = false;
   private connections: AudioNode[] = [];
   private stopCalled: boolean;
@@ -113,10 +113,9 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
     const params = this.params || {};
     const constructorParam =
       params[
-        find(
-          (key) => constructorParamsKeys.indexOf(key) !== -1,
-          Object.keys(params)
-        )
+        Object.keys(params).find(
+          (key) => constructorParamsKeys.indexOf(key) !== -1
+        )!
       ];
     const { offsetTime, startTime, stopTime } = params;
 

@@ -30,10 +30,6 @@ export const equals = (a: any, b: any): boolean => {
   return true;
 };
 
-export const find = <A>(f: (x: A) => boolean, xs: A[]): A => {
-  for (let i = 0; i < xs.length; i++) if (f(xs[i])) return xs[i];
-};
-
 export const mapObj = <A, B>(
   f: (a: A) => B,
   o: IGenericObject<A>

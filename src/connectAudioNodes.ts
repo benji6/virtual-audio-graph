@@ -15,20 +15,21 @@ export default (
   for (const [id, virtualNode] of entries(virtualGraph)) {
     if (virtualNode.connected || virtualNode.output == null) continue;
 
-    for (const output of [].concat(virtualNode.output)) {
+    for (const output of Array.isArray(virtualNode.output)
+      ? virtualNode.output
+      : [virtualNode.output]) {
       if (output === "output") {
         handleConnectionToOutput(virtualNode);
         continue;
       }
-
-      if (Object.prototype.toString.call(output) === "[object Object]") {
+      if (typeof output === "object") {
         const { key, destination, inputs, outputs } = output;
 
         if (key == null) {
           throw new Error(`id: ${id} - output object requires a key property`);
         }
         if (inputs) {
-          if (inputs.length !== outputs.length) {
+          if (inputs.length !== outputs?.length) {
             throw new Error(
               `id: ${id} - outputs and inputs arrays are not the same length`
             );
@@ -43,7 +44,9 @@ export default (
           continue;
         }
         virtualNode.connect(
-          (virtualGraph[key].audioNode as IAudioNodePropertyLookup)[destination]
+          (virtualGraph[key].audioNode as IAudioNodePropertyLookup)[
+            destination!
+          ]
         );
         continue;
       }

@@ -8,7 +8,7 @@ interface IWindow {
 }
 
 export default class AudioWorkletVirtualAudioNode extends VirtualAudioNodeBase {
-  public audioNode: AudioNode;
+  public audioNode!: AudioNode;
   public connected: boolean = false;
   private connections: AudioNode[] = [];
 
