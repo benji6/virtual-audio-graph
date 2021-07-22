@@ -11,8 +11,7 @@ export default class VirtualAudioGraph {
   ) {}
 
   public getAudioNodeById(id: number | string): AudioNode | void {
-    const vNode = this.virtualNodes[id];
-    return vNode && vNode.audioNode;
+    return this.virtualNodes[id]?.audioNode;
   }
 
   public update(newGraph: IVirtualAudioNodeGraph): this {

@@ -75,7 +75,7 @@ export default class AudioWorkletVirtualAudioNode extends VirtualAudioNodeBase {
     for (const key of Object.keys(params)) {
       const param = params[key];
 
-      if (this.params && this.params[key] === param) continue;
+      if (this.params?.[key] === param) continue;
 
       const paramInstance = (audioNode as any).parameters.get(key);
 

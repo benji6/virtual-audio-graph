@@ -55,33 +55,26 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
     public readonly input?: string
   ) {
     super();
-    const stopTime = params && params.stopTime;
-    this.stopCalled = stopTime !== undefined;
+    this.stopCalled = params?.stopTime !== undefined;
   }
 
   public cannotUpdateInPlace(newVirtualAudioNode: VirtualAudioNode): boolean {
     return (
       super.cannotUpdateInPlace(newVirtualAudioNode) ||
-      (newVirtualAudioNode.params && newVirtualAudioNode.params.startTime) !==
-        (this.params && this.params.startTime) ||
-      (newVirtualAudioNode.params && newVirtualAudioNode.params.stopTime) !==
-        (this.params && this.params.stopTime)
+      newVirtualAudioNode.params?.startTime !== this.params?.startTime ||
+      newVirtualAudioNode.params?.stopTime !== this.params?.stopTime
     );
   }
 
   public connect(...connectArgs: any[]): void {
-    const { audioNode } = this;
     const filteredConnectArgs = connectArgs.filter(Boolean);
     const [firstArg, ...rest] = filteredConnectArgs;
-    if (audioNode.connect) {
-      audioNode.connect(firstArg, ...rest);
-    }
+    this.audioNode?.connect(firstArg, ...rest);
     this.connections = this.connections.concat(filteredConnectArgs);
     this.connected = true;
   }
 
   public disconnect(node?: VirtualAudioNode): void {
-    const { audioNode } = this;
     if (node) {
       if (node instanceof CustomVirtualAudioNode) {
         for (const childNode of values(node.virtualNodes)) {
@@ -96,16 +89,14 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
         this.connections = this.connections.filter((x) => x !== node.audioNode);
       }
     }
-    if (audioNode.disconnect) audioNode.disconnect();
+    this.audioNode?.disconnect();
     this.connected = false;
   }
 
   public disconnectAndDestroy(): void {
-    const { audioNode, stopCalled } = this;
-    if ((audioNode as OscillatorNode).stop && !stopCalled) {
-      (audioNode as OscillatorNode).stop();
-    }
-    if (audioNode.disconnect) audioNode.disconnect();
+    const { stopCalled } = this;
+    if (!stopCalled) (this.audioNode as OscillatorNode).stop?.();
+    this.audioNode?.disconnect();
     this.connected = false;
   }
 
