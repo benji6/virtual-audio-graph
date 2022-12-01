@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`createVirtualAudioGraph optionally takes output parameter 1`] = `
-Object {
-  "gain": Object {
-    "inputs": Array [],
+{
+  "gain": {
+    "inputs": [],
     "value": 1,
   },
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 0.2,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "GainNode",
     },
   ],
@@ -21,14 +21,14 @@ Object {
 `;
 
 exports[`createVirtualAudioGraph optionally takes output parameter 2`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 0.2,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "GainNode",
     },
   ],

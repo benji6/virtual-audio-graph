@@ -1,24 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`expected behavior with update adds then removes nodes 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 1,
       },
-      "inputs": Array [
-        Object {
-          "detune": Object {
-            "inputs": Array [],
+      "inputs": [
+        {
+          "detune": {
+            "inputs": [],
             "value": 0,
           },
-          "frequency": Object {
-            "inputs": Array [],
+          "frequency": {
+            "inputs": [],
             "value": 440,
           },
-          "inputs": Array [],
+          "inputs": [],
           "name": "OscillatorNode",
           "type": "sine",
         },
@@ -31,45 +31,45 @@ Object {
 `;
 
 exports[`expected behavior with update adds then removes nodes 2`] = `
-Object {
-  "inputs": Array [],
+{
+  "inputs": [],
   "name": "AudioDestinationNode",
 }
 `;
 
 exports[`expected behavior with update connects and reconnects nodes to audioParams 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 1,
       },
-      "inputs": Array [
-        Object {
-          "detune": Object {
-            "inputs": Array [],
+      "inputs": [
+        {
+          "detune": {
+            "inputs": [],
             "value": 0,
           },
-          "frequency": Object {
-            "inputs": Array [
-              Object {
-                "detune": Object {
-                  "inputs": Array [],
+          "frequency": {
+            "inputs": [
+              {
+                "detune": {
+                  "inputs": [],
                   "value": 0,
                 },
-                "frequency": Object {
-                  "inputs": Array [],
+                "frequency": {
+                  "inputs": [],
                   "value": 0.5,
                 },
-                "inputs": Array [],
+                "inputs": [],
                 "name": "OscillatorNode",
                 "type": "triangle",
               },
             ],
             "value": 440,
           },
-          "inputs": Array [],
+          "inputs": [],
           "name": "OscillatorNode",
           "type": "sine",
         },
@@ -82,38 +82,38 @@ Object {
 `;
 
 exports[`expected behavior with update connects and reconnects nodes to audioParams 2`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 1,
       },
-      "inputs": Array [
-        Object {
-          "detune": Object {
-            "inputs": Array [
-              Object {
-                "detune": Object {
-                  "inputs": Array [],
+      "inputs": [
+        {
+          "detune": {
+            "inputs": [
+              {
+                "detune": {
+                  "inputs": [],
                   "value": 0,
                 },
-                "frequency": Object {
-                  "inputs": Array [],
+                "frequency": {
+                  "inputs": [],
                   "value": 0.5,
                 },
-                "inputs": Array [],
+                "inputs": [],
                 "name": "OscillatorNode",
                 "type": "triangle",
               },
             ],
             "value": 0,
           },
-          "frequency": Object {
-            "inputs": Array [],
+          "frequency": {
+            "inputs": [],
             "value": 440,
           },
-          "inputs": Array [],
+          "inputs": [],
           "name": "OscillatorNode",
           "type": "sine",
         },
@@ -126,18 +126,18 @@ Object {
 `;
 
 exports[`expected behavior with update connects and reconnects nodes to audioParams 3`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "detune": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "detune": {
+        "inputs": [],
         "value": 0,
       },
-      "frequency": Object {
-        "inputs": Array [],
+      "frequency": {
+        "inputs": [],
         "value": 440,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "OscillatorNode",
       "type": "sine",
     },
@@ -147,24 +147,24 @@ Object {
 `;
 
 exports[`expected behavior with update connects nodes to each other 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 1,
       },
-      "inputs": Array [
-        Object {
-          "detune": Object {
-            "inputs": Array [],
+      "inputs": [
+        {
+          "detune": {
+            "inputs": [],
             "value": 0,
           },
-          "frequency": Object {
-            "inputs": Array [],
+          "frequency": {
+            "inputs": [],
             "value": 440,
           },
-          "inputs": Array [],
+          "inputs": [],
           "name": "OscillatorNode",
           "type": "sine",
         },
@@ -177,18 +177,18 @@ Object {
 `;
 
 exports[`expected behavior with update connects nodes to each other 2`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "detune": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "detune": {
+        "inputs": [],
         "value": 0,
       },
-      "frequency": Object {
-        "inputs": Array [],
+      "frequency": {
+        "inputs": [],
         "value": 440,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "OscillatorNode",
       "type": "sine",
     },
@@ -198,28 +198,28 @@ Object {
 `;
 
 exports[`expected behavior with update disconnects and reconnects child nodes properly 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 1,
       },
-      "inputs": Array [
-        Object {
-          "inputs": Array [
-            Object {
-              "gain": Object {
-                "inputs": Array [],
+      "inputs": [
+        {
+          "inputs": [
+            {
+              "gain": {
+                "inputs": [],
                 "value": 1,
               },
-              "inputs": Array [],
+              "inputs": [],
               "name": "GainNode",
             },
           ],
           "name": "StereoPannerNode",
-          "pan": Object {
-            "inputs": Array [],
+          "pan": {
+            "inputs": [],
             "value": 0,
           },
         },
@@ -232,26 +232,26 @@ Object {
 `;
 
 exports[`expected behavior with update disconnects and reconnects child nodes properly 2`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 1,
       },
-      "inputs": Array [
-        Object {
-          "gain": Object {
-            "inputs": Array [],
+      "inputs": [
+        {
+          "gain": {
+            "inputs": [],
             "value": 1,
           },
-          "inputs": Array [
-            Object {
-              "gain": Object {
-                "inputs": Array [],
+          "inputs": [
+            {
+              "gain": {
+                "inputs": [],
                 "value": 1,
               },
-              "inputs": Array [],
+              "inputs": [],
               "name": "GainNode",
             },
           ],
@@ -266,24 +266,24 @@ Object {
 `;
 
 exports[`expected behavior with update handles random strings for ids 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 1,
       },
-      "inputs": Array [
-        Object {
-          "detune": Object {
-            "inputs": Array [],
+      "inputs": [
+        {
+          "detune": {
+            "inputs": [],
             "value": 0,
           },
-          "frequency": Object {
-            "inputs": Array [],
+          "frequency": {
+            "inputs": [],
             "value": 440,
           },
-          "inputs": Array [],
+          "inputs": [],
           "name": "OscillatorNode",
           "type": "sine",
         },
@@ -296,21 +296,21 @@ Object {
 `;
 
 exports[`expected behavior with update handles random strings for ids 2`] = `
-Object {
-  "inputs": Array [],
+{
+  "inputs": [],
   "name": "AudioDestinationNode",
 }
 `;
 
 exports[`expected behavior with update handles random strings for ids 3`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 1,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "GainNode",
     },
   ],
@@ -319,18 +319,18 @@ Object {
 `;
 
 exports[`expected behavior with update handles random strings for ids 4`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "detune": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "detune": {
+        "inputs": [],
         "value": 0,
       },
-      "frequency": Object {
-        "inputs": Array [],
+      "frequency": {
+        "inputs": [],
         "value": 440,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "OscillatorNode",
       "type": "sine",
     },
@@ -340,34 +340,34 @@ Object {
 `;
 
 exports[`expected behavior with update handles random strings for ids 5`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "inputs": Array [
-        Object {
-          "delayTime": Object {
-            "inputs": Array [],
+{
+  "inputs": [
+    {
+      "inputs": [
+        {
+          "delayTime": {
+            "inputs": [],
             "value": 0.3333333333333333,
           },
-          "inputs": Array [
-            Object {
-              "gain": Object {
-                "inputs": Array [],
+          "inputs": [
+            {
+              "gain": {
+                "inputs": [],
                 "value": 0.3333333333333333,
               },
-              "inputs": Array [
-                Object {
-                  "delayTime": Object {
-                    "inputs": Array [],
+              "inputs": [
+                {
+                  "delayTime": {
+                    "inputs": [],
                     "value": 0.3333333333333333,
                   },
-                  "inputs": Array [
-                    Object {
-                      "gain": Object {
-                        "inputs": Array [],
+                  "inputs": [
+                    {
+                      "gain": {
+                        "inputs": [],
                         "value": 0.3333333333333333,
                       },
-                      "inputs": Array [
+                      "inputs": [
                         "<circular:DelayNode>",
                       ],
                       "name": "GainNode",
@@ -383,37 +383,37 @@ Object {
         },
       ],
       "name": "StereoPannerNode",
-      "pan": Object {
-        "inputs": Array [],
+      "pan": {
+        "inputs": [],
         "value": 1,
       },
     },
-    Object {
-      "inputs": Array [
-        Object {
-          "delayTime": Object {
-            "inputs": Array [],
+    {
+      "inputs": [
+        {
+          "delayTime": {
+            "inputs": [],
             "value": 0.3333333333333333,
           },
-          "inputs": Array [
-            Object {
-              "gain": Object {
-                "inputs": Array [],
+          "inputs": [
+            {
+              "gain": {
+                "inputs": [],
                 "value": 0.3333333333333333,
               },
-              "inputs": Array [
-                Object {
-                  "delayTime": Object {
-                    "inputs": Array [],
+              "inputs": [
+                {
+                  "delayTime": {
+                    "inputs": [],
                     "value": 0.3333333333333333,
                   },
-                  "inputs": Array [
-                    Object {
-                      "gain": Object {
-                        "inputs": Array [],
+                  "inputs": [
+                    {
+                      "gain": {
+                        "inputs": [],
                         "value": 0.3333333333333333,
                       },
-                      "inputs": Array [
+                      "inputs": [
                         "<circular:DelayNode>",
                       ],
                       "name": "GainNode",
@@ -429,8 +429,8 @@ Object {
         },
       ],
       "name": "StereoPannerNode",
-      "pan": Object {
-        "inputs": Array [],
+      "pan": {
+        "inputs": [],
         "value": -1,
       },
     },
@@ -440,24 +440,24 @@ Object {
 `;
 
 exports[`expected behavior with update reconnects nodes to each other 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 1,
       },
-      "inputs": Array [
-        Object {
-          "detune": Object {
-            "inputs": Array [],
+      "inputs": [
+        {
+          "detune": {
+            "inputs": [],
             "value": 0,
           },
-          "frequency": Object {
-            "inputs": Array [],
+          "frequency": {
+            "inputs": [],
             "value": 440,
           },
-          "inputs": Array [],
+          "inputs": [],
           "name": "OscillatorNode",
           "type": "sine",
         },
@@ -470,26 +470,26 @@ Object {
 `;
 
 exports[`expected behavior with update reconnects nodes to each other 2`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 1,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "GainNode",
     },
-    Object {
-      "detune": Object {
-        "inputs": Array [],
+    {
+      "detune": {
+        "inputs": [],
         "value": 0,
       },
-      "frequency": Object {
-        "inputs": Array [],
+      "frequency": {
+        "inputs": [],
         "value": 440,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "OscillatorNode",
       "type": "sine",
     },
@@ -499,18 +499,18 @@ Object {
 `;
 
 exports[`expected behavior with update updates standard and custom nodes if passed same id but different params 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "detune": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "detune": {
+        "inputs": [],
         "value": -9,
       },
-      "frequency": Object {
-        "inputs": Array [],
+      "frequency": {
+        "inputs": [],
         "value": 220,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "OscillatorNode",
       "type": "sine",
     },
@@ -520,18 +520,18 @@ Object {
 `;
 
 exports[`expected behavior with update updates standard and custom nodes if passed same id but different params 2`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "detune": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "detune": {
+        "inputs": [],
         "value": 0,
       },
-      "frequency": Object {
-        "inputs": Array [],
+      "frequency": {
+        "inputs": [],
         "value": 880,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "OscillatorNode",
       "type": "sine",
     },
@@ -541,24 +541,24 @@ Object {
 `;
 
 exports[`expected behavior with update updates standard and custom nodes if passed same id but different params 3`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 0.5,
       },
-      "inputs": Array [
-        Object {
-          "detune": Object {
-            "inputs": Array [],
+      "inputs": [
+        {
+          "detune": {
+            "inputs": [],
             "value": 0,
           },
-          "frequency": Object {
-            "inputs": Array [],
+          "frequency": {
+            "inputs": [],
             "value": 110,
           },
-          "inputs": Array [],
+          "inputs": [],
           "name": "OscillatorNode",
           "type": "sine",
         },
@@ -571,24 +571,24 @@ Object {
 `;
 
 exports[`expected behavior with update updates standard and custom nodes if passed same id but different params 4`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 0.2,
       },
-      "inputs": Array [
-        Object {
-          "detune": Object {
-            "inputs": Array [],
+      "inputs": [
+        {
+          "detune": {
+            "inputs": [],
             "value": 0,
           },
-          "frequency": Object {
-            "inputs": Array [],
+          "frequency": {
+            "inputs": [],
             "value": 660,
           },
-          "inputs": Array [],
+          "inputs": [],
           "name": "OscillatorNode",
           "type": "sine",
         },

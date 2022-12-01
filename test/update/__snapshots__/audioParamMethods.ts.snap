@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`audio param methods with update multiple setValueAtTime 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 0,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "GainNode",
     },
   ],
@@ -17,14 +17,14 @@ Object {
 `;
 
 exports[`audio param methods with update overides setValueAtTime 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 1,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "GainNode",
     },
   ],
@@ -33,18 +33,18 @@ Object {
 `;
 
 exports[`audio param methods with update setValueAtTime with exponentialRampToValueAtTime 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "detune": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "detune": {
+        "inputs": [],
         "value": 0,
       },
-      "frequency": Object {
-        "inputs": Array [],
+      "frequency": {
+        "inputs": [],
         "value": 440,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "OscillatorNode",
       "type": "sine",
     },
@@ -54,14 +54,14 @@ Object {
 `;
 
 exports[`audio param methods with update setValueAtTime with linearRampToValueAtTime 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 0,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "GainNode",
     },
   ],
@@ -70,14 +70,14 @@ Object {
 `;
 
 exports[`audio param methods with update setValueAtTime with setTargetAtTime 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 0,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "GainNode",
     },
   ],
@@ -86,14 +86,14 @@ Object {
 `;
 
 exports[`audio param methods with update setValueAtTime with setValueCurveAtTime 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 0,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "GainNode",
     },
   ],
@@ -102,14 +102,14 @@ Object {
 `;
 
 exports[`audio param methods with update single setValueAtTime 1`] = `
-Object {
-  "inputs": Array [
-    Object {
-      "gain": Object {
-        "inputs": Array [],
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
         "value": 1,
       },
-      "inputs": Array [],
+      "inputs": [],
       "name": "GainNode",
     },
   ],
