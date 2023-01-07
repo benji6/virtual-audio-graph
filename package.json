@@ -24,7 +24,7 @@
     "build": "run-p build:*",
     "build:cjs": "tsc",
     "build:esm": "tsc -m es6 --outDir esm",
-    "docs": "tsc -p docsSrc && rollup -c docsSrc/rollup.config.js && rm -r docsSrc/esm",
+    "docs": "tsc -p docsSrc && rollup -c docsSrc/rollup.config.mjs && rm -r docsSrc/esm",
     "fmt": "prettier --write 'docs/**/*.html' 'src/**/*.ts' 'test/**/*.ts'",
     "test": "run-p test:*",
     "test:audit": "npm audit --audit-level=low",
