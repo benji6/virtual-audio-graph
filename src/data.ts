@@ -21,5 +21,3 @@ export const constructorParamsKeys = [
 ];
 
 export const setters = ["position", "orientation"];
-
-export const startAndStopNodes = ["oscillator", "bufferSource"];

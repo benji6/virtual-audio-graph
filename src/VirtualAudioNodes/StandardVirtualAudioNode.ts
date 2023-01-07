@@ -1,9 +1,4 @@
-import {
-  audioParamProperties,
-  constructorParamsKeys,
-  setters,
-  startAndStopNodes,
-} from "../data";
+import { audioParamProperties, constructorParamsKeys, setters } from "../data";
 import {
   IAudioNodeFactoryParam,
   IAudioNodePropertyLookup,
@@ -121,11 +116,11 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
     this.params = undefined;
     this.update(params);
 
-    if (startAndStopNodes.indexOf(this.node) !== -1) {
-      audioNode.start(
-        startTime == null ? audioContext.currentTime : startTime,
-        offsetTime || 0
-      );
+    if (this.node === "bufferSource") {
+      audioNode.start(startTime ?? audioContext.currentTime, offsetTime || 0);
+      if (stopTime != null) audioNode.stop(stopTime);
+    } else if (this.node === "oscillator") {
+      audioNode.start(startTime ?? audioContext.currentTime);
       if (stopTime != null) audioNode.stop(stopTime);
     }
 
