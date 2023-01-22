@@ -48,7 +48,7 @@ ___
 ## [channelMerger](https://developer.mozilla.org/en-US/docs/Web/API/ChannelMergerNode)
 
 ```javascript
-channelMerger(output, {numberOfOutputs})
+channelMerger(output, {numberOfInputs})
 ```
 ___
 ## [channelSplitter](https://developer.mozilla.org/en-US/docs/Web/API/ChannelSplitterNode)
