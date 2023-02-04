@@ -25,10 +25,10 @@
     "build:cjs": "tsc",
     "build:esm": "tsc -m es6 --outDir esm",
     "docs": "tsc -p docsSrc && rollup -c docsSrc/rollup.config.mjs && rm -r docsSrc/esm",
-    "fmt": "prettier --write 'docs/**/*.html' 'src/**/*.ts' 'test/**/*.ts'",
+    "fmt": "prettier -u --write '**/*'",
     "test": "run-p test:*",
     "test:audit": "npm audit --audit-level=low",
-    "test:fmt": "prettier --check 'docs/**/*.html' 'src/**/*.ts' 'test/**/*.ts'",
+    "test:fmt": "prettier --check -u '**/*'",
     "test:types": "tsc --noEmit",
     "test:unit": "jest"
   },

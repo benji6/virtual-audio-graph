@@ -1,7 +1,7 @@
 export default {
-  input: 'docsSrc/esm/docsSrc/main.js',
+  input: "docsSrc/esm/docsSrc/main.js",
   output: {
-    file: 'docs/main.js',
-    format: 'cjs',
+    file: "docs/main.js",
+    format: "cjs",
   },
-}
+};

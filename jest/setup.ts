@@ -1,8 +1,8 @@
-import 'web-audio-test-api'
+import "web-audio-test-api";
 
-declare const WebAudioTestAPI: any
+declare const WebAudioTestAPI: any;
 
 WebAudioTestAPI.setState({
-  'AnalyserNode#getFloatTimeDomainData': 'enabled',
-  'AudioContext#createStereoPanner': 'enabled',
-})
+  "AnalyserNode#getFloatTimeDomainData": "enabled",
+  "AudioContext#createStereoPanner": "enabled",
+});

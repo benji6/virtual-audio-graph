@@ -12,13 +12,17 @@ analyser(output, {
   smoothingTimeConstant,
 }]
 ```
-___
+
+---
 
 ## [bufferSource](https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode)
 
 ```javascript
-const {audioContext, audioContext: {sampleRate}} = virtualAudioGraph
-const buffer = audioContext.createBuffer(2, sampleRate * 2, sampleRate)
+const {
+  audioContext,
+  audioContext: { sampleRate },
+} = virtualAudioGraph;
+const buffer = audioContext.createBuffer(2, sampleRate * 2, sampleRate);
 bufferSource(output, {
   buffer,
   loop,
@@ -34,45 +38,55 @@ bufferSource(output, {
   startTime,
   // if not provided then stop is not called on node
   // until it is disconnected
-  stopTime
-})
+  stopTime,
+});
 ```
-___
+
+---
 
 ## [biquadFilter](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode)
 
 ```javascript
-biquadFilter(output, {type, frequency, detune, Q})
+biquadFilter(output, { type, frequency, detune, Q });
 ```
-___
+
+---
+
 ## [channelMerger](https://developer.mozilla.org/en-US/docs/Web/API/ChannelMergerNode)
 
 ```javascript
-channelMerger(output, {numberOfInputs})
+channelMerger(output, { numberOfInputs });
 ```
-___
+
+---
+
 ## [channelSplitter](https://developer.mozilla.org/en-US/docs/Web/API/ChannelSplitterNode)
 
 NB ChannelSplitter has it's own syntax for the output parameter. Because the channel is split it means each node can have multiple outputs. Each output is indexed and the outputs property should be an array of these indices. Then the inputs property should be an array of indices corresponding to the inputs of the destination node. Check out the spec and the link above for more info.
 
 ```javascript
-channelSplitter({key, outputs, inputs}, {numberOfOutputs})
+channelSplitter({ key, outputs, inputs }, { numberOfOutputs });
 ```
-___
+
+---
+
 ## [convolver](https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode)
 
 ```javascript
-convolver(output, {buffer, normalize})
+convolver(output, { buffer, normalize });
 ```
-___
+
+---
 
 ## [delay](https://developer.mozilla.org/en-US/docs/Web/API/DelayNode)
+
 NB maxDelayTime must be set when node is first created but cannot be updated. A new node will have to be inserted if a different maxDelayTime is required.
 
 ```javascript
-delay(output, {delayTime, maxDelayTime})
+delay(output, { delayTime, maxDelayTime });
 ```
-___
+
+---
 
 ## [dynamicsCompressor](https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode)
 
@@ -85,34 +99,46 @@ dynamicsCompressor(output, {
   threshold,
 }]
 ```
-___
+
+---
 
 ## [gain](https://developer.mozilla.org/en-US/docs/Web/API/GainNode)
 
 ```javascript
-gain(output, {gain})
+gain(output, { gain });
 ```
-___
+
+---
+
 ## [mediaElementSource](https://developer.mozilla.org/en-US/docs/Web/API/MediaElementAudioSourceNode)
+
 NB params can only be set once
+
 ```javascript
-mediaElementSource(output, {mediaElement})
+mediaElementSource(output, { mediaElement });
 ```
-___
+
+---
+
 ## [mediaStreamDestination](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioDestinationNode)
 
 This node has no output as it is a destination. It also takes no parameters. Use virtualAudioGraph.getAudioNodeById method to access the node's stream property
 
 ```javascript
-mediaStreamDestination()
+mediaStreamDestination();
 ```
-___
+
+---
+
 ## [mediaStreamSource](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamAudioSourceNode)
+
 NB params can only be set once
+
 ```javascript
-mediaStreamSource(output, {mediaStream})
+mediaStreamSource(output, { mediaStream });
 ```
-___
+
+---
 
 ## [oscillator](https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode)
 
@@ -126,9 +152,10 @@ oscillator(output, {
   startTime,
   // if not provided then stop is not called on node until it is disconnected
   stopTime,
-})
+});
 ```
-___
+
+---
 
 ## [panner](https://developer.mozilla.org/en-US/docs/Web/API/PannerNode)
 
@@ -146,19 +173,21 @@ panner(output, {
   maxDistance,
   refDistance,
   rolloffFactor,
-})
+});
 ```
-___
+
+---
 
 ## [stereoPanner](https://developer.mozilla.org/en-US/docs/Web/API/StereoPannerNode)
 
 ```javascript
-stereoPanner(output, {pan})
+stereoPanner(output, { pan });
 ```
-___
+
+---
 
 ## [waveShaper](https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode)
 
 ```javascript
-waveShaper(output, {curve, oversample})
+waveShaper(output, { curve, oversample });
 ```

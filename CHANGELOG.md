@@ -1,6 +1,6 @@
 # Release Notes
 
-## __This Changelog is no longer in use, please see GitHub releases for changes made since 0.19.x.__
+## **This Changelog is no longer in use, please see GitHub releases for changes made since 0.19.x.**
 
 ## 0.19.x
 
@@ -18,13 +18,13 @@ Breaking API change - `defineNodes` removed. `virtual-audio-graph` no longer int
 
 ```javascript
 // old API
-virtualAudioGraph.defineNodes({coolCustomNode})
-virtualAudioGraph.update({0: ['coolCustomNode', 'output', {someParams}]})
+virtualAudioGraph.defineNodes({ coolCustomNode });
+virtualAudioGraph.update({ 0: ["coolCustomNode", "output", { someParams }] });
 ```
 
 ```javascript
 // new API
-virtualAudioGraph.update({0: [coolCustomNode, 'output', {someParams}]})
+virtualAudioGraph.update({ 0: [coolCustomNode, "output", { someParams }] });
 ```
 
 ## 0.16.x
@@ -39,13 +39,13 @@ Breaking API change - `defineNode` replaced by `defineNodes`:
 
 ```javascript
 // old API
-virtualAudioGraph.defineNode(coolEffect, 'coolEffect');
-virtualAudioGraph.defineNode(someOscillators, 'someOscillators');
+virtualAudioGraph.defineNode(coolEffect, "coolEffect");
+virtualAudioGraph.defineNode(someOscillators, "someOscillators");
 ```
 
 ```javascript
 // new API
-virtualAudioGraph.defineNodes({coolEffect, someOscillators});
+virtualAudioGraph.defineNodes({ coolEffect, someOscillators });
 ```
 
 ## 0.14.x
@@ -56,17 +56,15 @@ Added support for AudioParam methods
 
 `virtual-audio-graph` now exports a factory instead of a constructor
 
-
 ```javascript
 // pre 0.13.x
-import VirtualAudioGraph from 'virtual-audio-graph';
+import VirtualAudioGraph from "virtual-audio-graph";
 const virtualAudioGraph = new VirtualAudioGraph();
 ```
 
-
 ```javascript
 // 0.13.x
-import createVirtualAudioGraph from 'virtual-audio-graph';
+import createVirtualAudioGraph from "virtual-audio-graph";
 const virtualAudioGraph = createVirtualAudioGraph();
 ```
 
@@ -78,37 +76,37 @@ Breaking API change:
 
 ```javascript
 const newAPI = {
-  0: ['oscillator', 'output'],
-  1: ['gain', {key: 0, destination: 'detune'}, {gain: 0.5}, 'input'],
-  2: ['oscillator', 1, {frequency: 110}],
+  0: ["oscillator", "output"],
+  1: ["gain", { key: 0, destination: "detune" }, { gain: 0.5 }, "input"],
+  2: ["oscillator", 1, { frequency: 110 }],
 };
 ```
 
 ```javascript
 const oldAPI = {
   0: {
-    node: 'oscillator',
-    output: 'output',
+    node: "oscillator",
+    output: "output",
   },
   1: {
-    input: 'input',
-    node: 'gain',
-    output: {key: 0, destination: 'detune'},
+    input: "input",
+    node: "gain",
+    output: { key: 0, destination: "detune" },
     params: {
       gain: 0.5,
     },
   },
   2: {
-    node: 'oscillator',
+    node: "oscillator",
     output: 1,
     params: {
       frequency: 110,
     },
   },
-}
+};
 ```
 
-___
+---
 
 ## 0.11.x
 
@@ -116,7 +114,7 @@ ___
   - ChannelMergerNode
   - ChannelSplitterNode
 
-___
+---
 
 ## 0.10.x
 
@@ -124,7 +122,7 @@ ___
   - MediaStreamAudioDestinationNode
   - MediaStreamAudioSourceNode
 
-___
+---
 
 ## 0.9.x
 
@@ -133,7 +131,7 @@ ___
   - DynamicsCompressorNode
   - WaveShaperNode
 
-___
+---
 
 ## 0.8.x
 
@@ -143,7 +141,7 @@ ___
   - AnalyserNode
   - AudioBufferSourceNode
 
-___
+---
 
 ## 0.7.x
 
@@ -153,21 +151,21 @@ Prior to version 0.7.x virtual-audio-graph parameters were an array of objects w
 [
   {
     id: 0,
-    node: 'oscillator',
-    output: 'output',
+    node: "oscillator",
+    output: "output",
     params: {
       frequency: 220,
     },
   },
   {
     id: 1,
-    node: 'oscillator',
-    output: {id: 0, destination: 'detune'},
+    node: "oscillator",
+    output: { id: 0, destination: "detune" },
     params: {
       frequency: 110,
     },
   },
-]
+];
 ```
 
 Now the parameters are a single object with keys which represent the node ids:
