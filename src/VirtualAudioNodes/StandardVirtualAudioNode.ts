@@ -105,8 +105,7 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
       ];
     const { offsetTime, startTime, stopTime } = params;
 
-    // TODO remove `any` when AudioScheduledSourceNode typings are correct
-    const audioNode: any = createAudioNode(
+    const audioNode = createAudioNode(
       audioContext,
       this.node,
       constructorParam
