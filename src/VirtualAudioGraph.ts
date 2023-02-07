@@ -6,7 +6,7 @@ export default class VirtualAudioGraph {
   private virtualNodes: IVirtualAudioNodeGraph = {};
 
   constructor(
-    public readonly audioContext: AudioContext,
+    public readonly audioContext: AudioContext | OfflineAudioContext,
     private readonly output: AudioDestinationNode
   ) {}
 

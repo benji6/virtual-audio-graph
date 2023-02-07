@@ -6,7 +6,7 @@ export { default as createNode } from "./createNode";
 export { default as createWorkletNode } from "./createWorkletNode";
 
 export default (config?: {
-  audioContext?: AudioContext;
+  audioContext?: AudioContext | OfflineAudioContext;
   output?: AudioDestinationNode;
 }): VirtualAudioGraph => {
   const audioContext = config?.audioContext || new AudioContext();

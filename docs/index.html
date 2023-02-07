@@ -796,6 +796,45 @@ virtualAudioGraph.update({
         <button class="button-stop">Stop</button>
       </div>
 
+      <h2>Working with OfflineAudioContext</h2>
+      <p>
+        All the previous examples use
+        <a
+          href="https://developer.mozilla.org/en-US/docs/Web/API/AudioContext"
+          target="_blank"
+          rel="noopener"
+          >AudioContext</a
+        >, but virtual-audio-graph can work with
+        <a
+          href="https://developer.mozilla.org/en-US/docs/Web/API/OfflineAudioContext"
+          target="_blank"
+          rel="noopener"
+          >OfflineAudioContext</a
+        >
+        too. Here is an example of how to render a buffer with
+        OfflineAudioContext and then to play it using AudioContext:
+      </p>
+      <pre
+        class="language-js"
+      ><code class="language-js">import createVirtualAudioGraph, {gain, oscillator} from 'virtual-audio-graph'
+
+const offlineAudioContext = new OfflineAudioContext(1, 44100, 44100);
+const offlineVirtualAudioGraph = createVirtualAudioGraph({
+  audioContext: offlineAudioContext,
+});
+offlineVirtualAudioGraph.update({
+  0: gain("output", { gain: 0.5 }),
+  1: oscillator(0),
+});
+const buffer = await offlineAudioContext.startRendering();
+const bufferSourceNode = audioContext.createBufferSource();
+bufferSourceNode.buffer = buffer;
+bufferSourceNode.connect(audioContext.destination);
+bufferSourceNode.start();</code></pre>
+      <div class="button-container">
+        <button class="button-play">Play</button>
+      </div>
+
       <p>
         Thank you for reading and I hope you find this library useful. If you
         need any further help or have any feedback or suggestions you can

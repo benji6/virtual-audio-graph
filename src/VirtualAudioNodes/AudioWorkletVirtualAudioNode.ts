@@ -58,7 +58,7 @@ export default class AudioWorkletVirtualAudioNode extends VirtualAudioNodeBase {
     this.connected = false;
   }
 
-  public initialize(audioContext: AudioContext): this {
+  public initialize(audioContext: AudioContext | OfflineAudioContext): this {
     const params = this.params || {};
     this.audioNode = new (window as IWindow).AudioWorkletNode(
       audioContext,

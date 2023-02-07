@@ -15,7 +15,7 @@ interface IAudioContextFactoryLookup {
 }
 
 const createAudioNode = (
-  audioContext: AudioContext,
+  audioContext: AudioContext | OfflineAudioContext,
   name: string,
   audioNodeFactoryParam: IAudioNodeFactoryParam
 ) => {
@@ -95,7 +95,7 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
     this.connected = false;
   }
 
-  public initialize(audioContext: AudioContext): this {
+  public initialize(audioContext: AudioContext | OfflineAudioContext): this {
     const params = this.params || {};
     const constructorParam =
       params[

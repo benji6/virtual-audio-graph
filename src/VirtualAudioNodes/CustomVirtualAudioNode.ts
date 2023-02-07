@@ -58,7 +58,7 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
     this.connected = false;
   }
 
-  public initialize(audioContext: AudioContext): this {
+  public initialize(audioContext: AudioContext | OfflineAudioContext): this {
     this.virtualNodes = mapObj(
       (virtualAudioNodeParam: VirtualAudioNode) =>
         virtualAudioNodeParam.initialize(audioContext),
@@ -72,7 +72,7 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
 
   public update(
     _params: IVirtualAudioNodeParams | null | undefined,
-    audioContext: AudioContext
+    audioContext: AudioContext | OfflineAudioContext
   ): this {
     const params = _params ?? {};
     const audioGraphParamsFactoryValues = values(this.node(params));

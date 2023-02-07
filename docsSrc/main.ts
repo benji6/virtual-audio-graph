@@ -389,6 +389,21 @@ const examples = [
       }),
     });
   },
+  async () => {
+    const offlineAudioContext = new OfflineAudioContext(1, 44100, 44100);
+    const offlineVirtualAudioGraph = createVirtualAudioGraph({
+      audioContext: offlineAudioContext,
+    });
+    offlineVirtualAudioGraph.update({
+      0: gain("output", { gain: 0.5 }),
+      1: oscillator(0),
+    });
+    const buffer = await offlineAudioContext.startRendering();
+    const bufferSourceNode = audioContext.createBufferSource();
+    bufferSourceNode.buffer = buffer;
+    bufferSourceNode.connect(audioContext.destination);
+    bufferSourceNode.start();
+  },
 ];
 
 const playButtons: NodeListOf<HTMLButtonElement> =
