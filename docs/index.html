@@ -78,7 +78,7 @@
 } from 'virtual-audio-graph'
 </code></pre>
 
-      <h2>Creating a virtual-audio-graph Instance</h2>
+      <h2>Creating a virtual-audio-graph instance</h2>
 
       <h3>With No Configuration</h3>
       <p>Next let's create our virtual-audio-graph instance:</p>
@@ -110,7 +110,7 @@ const virtualAudioGraph = createVirtualAudioGraph({
       Note that the number of instances of AudioContext that can be created is
       limited so if you already have one it may be best to provide it here.
 
-      <h2>virtual-audio-graph Instance Public Interface</h2>
+      <h2>virtual-audio-graph instance public interface</h2>
       Here is everything we can do with our virtual-audio-graph instance:
       <ul>
         <li>
@@ -132,7 +132,7 @@ const virtualAudioGraph = createVirtualAudioGraph({
         </li>
       </ul>
 
-      <h2>Rendering Our First Graph</h2>
+      <h2>Rendering our first graph</h2>
       <p>
         virtualAudioGraph.update takes an object that represents the underlying
         audio graph. Each key is used as the id for a particular node and each
@@ -167,7 +167,7 @@ virtualAudioGraph.update({
         connnected to the gain node (id 0) and has its stopTime set to 1 second
         from the current time.
       </p>
-      <h2>Rendering An Empty Graph</h2>
+      <h2>Rendering an empty graph</h2>
       <p>
         All the demos in this guide have a stop button that is implemented like
         this:
@@ -181,7 +181,7 @@ virtualAudioGraph.update({
         Audio API imperative code is handled for us and we don't have to worry
         about it.
       </p>
-      <h2>Another Basic Graph</h2>
+      <h2>Another basic graph</h2>
       <pre
         class="language-js"
       ><code class="language-js">const { currentTime } = virtualAudioGraph
@@ -218,7 +218,7 @@ virtualAudioGraph.update({
         underlying audio nodes for us.
       </p>
 
-      <h2>Specifying Multiple Connections &amp; Connecting To AudioParams</h2>
+      <h2>Specifying multiple connections &amp; connecting to AudioParams</h2>
       <p>
         The output parameter of the node factory functions is a lot more
         versatile than just specifying a single connection. You can use it to
@@ -262,7 +262,7 @@ virtualAudioGraph.update({
         Audio API allows
       </p>
 
-      <h2>AudioParam Methods</h2>
+      <h2>AudioParam methods</h2>
       <p>
         If you're familiar with the Web Audio API you will know that AudioParams
         have methods as well as values and virtual-audio-graph allows you to
@@ -272,7 +272,7 @@ virtualAudioGraph.update({
         arrays. (<a
           href="https://developer.mozilla.org/en-US/docs/Web/API/AudioParam"
           target="_blank"
-          rel="noreferrer noopener"
+          rel="noopener"
           >See here for more info on AudioParam methods</a
         >).
       </p>
@@ -368,7 +368,7 @@ virtualAudioGraph.update({
         <button class="button-stop">Stop</button>
       </div>
 
-      <h2>Creating Custom Nodes</h2>
+      <h2>Creating custom nodes</h2>
       The audio graph can end up getting very large, repetitive and complicated
       so virtual-audio-graph gives a means of abstraction for creating
       encapsulated components that can be reused. These are called custom
@@ -476,7 +476,7 @@ virtualAudioGraph.update({
         <button class="button-stop">Stop</button>
       </div>
 
-      <h2>Custom Nodes With Inputs</h2>
+      <h2>Custom nodes with inputs</h2>
       <p>
         Sometimes you will want to connect a node to a custom node and will want
         to specify which nodes within the custom node that connection is made
@@ -565,7 +565,7 @@ virtualAudioGraph.update({
         <button class="button-stop">Stop</button>
       </div>
 
-      <h2>AudioWorklet Noise Generator</h2>
+      <h2>AudioWorklet noise generator</h2>
       <p>
         AudioWorklets are a fairly new addition to the Web Audio API so these
         demos won't work in all browsers!
@@ -610,7 +610,7 @@ registerProcessor('noise', Noise)</code></pre>
         <button class="button-stop">Stop</button>
       </div>
 
-      <h2>AudioWorklet Bit Crusher</h2>
+      <h2>AudioWorklet bit crusher</h2>
       <p>
         Here is our bit crusher module at
         <code language="sh">audioWorklets/bitCrusher.js</code>:
@@ -685,7 +685,7 @@ registerProcessor('bitCrusher', BitCrusher)</code></pre>
         <button class="button-stop">Stop</button>
       </div>
 
-      <h2>Bringing It All Together</h2>
+      <h2>Bringing it all together</h2>
       <p>
         Here is a full working example that shows off a number of
         virtual-audio-graph's main features:
