@@ -3,10 +3,6 @@ import { equals, values } from "../utils";
 import CustomVirtualAudioNode from "./CustomVirtualAudioNode";
 import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
 
-interface IWindow {
-  AudioWorkletNode?: any;
-}
-
 export default class AudioWorkletVirtualAudioNode extends VirtualAudioNodeBase {
   public audioNode!: AudioNode;
   public connected: boolean = false;
@@ -60,10 +56,7 @@ export default class AudioWorkletVirtualAudioNode extends VirtualAudioNodeBase {
 
   public initialize(audioContext: AudioContext | OfflineAudioContext): this {
     const params = this.params || {};
-    this.audioNode = new (window as IWindow).AudioWorkletNode(
-      audioContext,
-      this.node
-    );
+    this.audioNode = new window.AudioWorkletNode(audioContext, this.node);
 
     this.params = undefined;
 
