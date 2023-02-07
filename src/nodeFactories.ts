@@ -1,20 +1,16 @@
-import { IVirtualAudioNodeParams, Output } from "./types";
+import { Output } from "./types";
 import StandardVirtualAudioNode from "./VirtualAudioNodes/StandardVirtualAudioNode";
 
 const createNodeConstructor =
   (nodeName: string) =>
-  (
-    output?: Output,
-    params?: IVirtualAudioNodeParams,
-    input?: string
-  ): StandardVirtualAudioNode => {
+  (output?: Output, ...rest: any[]): StandardVirtualAudioNode => {
     if (nodeName === "mediaStreamDestination") {
       return new StandardVirtualAudioNode(nodeName);
     }
     if (output == null) {
       throw new Error(`Output not specified for ${nodeName}`);
     }
-    return new StandardVirtualAudioNode(nodeName, output, params, input);
+    return new StandardVirtualAudioNode(nodeName, output, ...rest);
   };
 
 export const analyser = createNodeConstructor("analyser");
