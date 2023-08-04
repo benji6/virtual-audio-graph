@@ -152,7 +152,7 @@ const examples = [
           }),
           1: oscillator(0, { startTime, stopTime, ...rest }),
         };
-      }
+      },
     );
 
     const { currentTime } = virtualAudioGraph;
@@ -186,7 +186,7 @@ const examples = [
           }),
           1: oscillator(0, { startTime, stopTime, ...rest }),
         };
-      }
+      },
     );
 
     const oscBank = createNode(({ frequency, ...rest }) => ({
@@ -322,7 +322,7 @@ const examples = [
           }),
           1: oscillator(0, { startTime, stopTime, ...rest }),
         };
-      }
+      },
     );
 
     const oscBank = createNode(({ frequency, ...rest }) => ({
@@ -367,13 +367,13 @@ const examples = [
             stopTime: startTime + noteLength,
           });
           return acc;
-        }, {})
+        }, {}),
     );
 
     const chromaticScale = (n) => 440 * Math.pow(2, n / 12);
     const noteLength = 0.075;
     const up = Array.apply(null, { length: 16 }).map((_, i) =>
-      chromaticScale(i)
+      chromaticScale(i),
     );
     const down = [...up].reverse();
 

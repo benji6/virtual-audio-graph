@@ -11,7 +11,7 @@ export interface IAudioNodeFactoryParam {
 }
 
 export type CustomVirtualAudioNodeFactory<P = IVirtualAudioNodeParams> = (
-  _: P
+  _: P,
 ) => IVirtualAudioNodeGraph;
 
 export interface IOutputObject {

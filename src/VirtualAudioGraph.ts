@@ -7,7 +7,7 @@ export default class VirtualAudioGraph {
 
   constructor(
     public readonly audioContext: AudioContext | OfflineAudioContext,
-    private readonly output: AudioDestinationNode
+    private readonly output: AudioDestinationNode,
   ) {}
 
   public getAudioNodeById(id: number | string): AudioNode | void {
@@ -32,7 +32,7 @@ export default class VirtualAudioGraph {
 
       if (virtualAudioNode == null) {
         this.virtualNodes[key] = newVirtualAudioNode.initialize(
-          this.audioContext
+          this.audioContext,
         );
         continue;
       }
@@ -41,7 +41,7 @@ export default class VirtualAudioGraph {
         virtualAudioNode.disconnectAndDestroy();
         this.disconnectParents(virtualAudioNode);
         this.virtualNodes[key] = newVirtualAudioNode.initialize(
-          this.audioContext
+          this.audioContext,
         );
         continue;
       }
@@ -56,7 +56,7 @@ export default class VirtualAudioGraph {
     }
 
     connectAudioNodes(this.virtualNodes, (vNode: VirtualAudioNode) =>
-      vNode.connect(this.output)
+      vNode.connect(this.output),
     );
 
     return this;

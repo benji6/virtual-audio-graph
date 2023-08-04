@@ -32,7 +32,7 @@ export const equals = (a: any, b: any): boolean => {
 
 export const mapObj = <A, B>(
   f: (a: A) => B,
-  o: IGenericObject<A>
+  o: IGenericObject<A>,
 ): IGenericObject<B> => {
   const p: IGenericObject<B> = {};
   for (const key in o) {

@@ -5,7 +5,7 @@ const audioContext: any = new AudioContext();
 describe("createVirtualAudioGraph", () => {
   test("optionally takes audioContext property", () => {
     expect(createVirtualAudioGraph({ audioContext }).audioContext).toBe(
-      audioContext
+      audioContext,
     );
     expect(createVirtualAudioGraph().audioContext).not.toBe(audioContext);
     expect(createVirtualAudioGraph().audioContext).toBeInstanceOf(AudioContext);

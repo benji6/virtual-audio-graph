@@ -10,13 +10,13 @@ describe("error throwing with update", () => {
 
   test("throws an error when virtual node name property is not recognised", () => {
     expect(() =>
-      virtualAudioGraph.update({ 0: (V as any).foobar("output") })
+      virtualAudioGraph.update({ 0: (V as any).foobar("output") }),
     ).toThrow();
   });
 
   test('throws an error when id is "output"', () => {
     expect(() =>
-      virtualAudioGraph.update({ output: V.gain("output") })
+      virtualAudioGraph.update({ output: V.gain("output") }),
     ).toThrow();
   });
 
@@ -25,14 +25,14 @@ describe("error throwing with update", () => {
       virtualAudioGraph.update({
         0: V.oscillator("output"),
         1: undefined,
-      } as any)
+      } as any),
     ).toThrow();
 
     expect(() =>
       virtualAudioGraph.update({
         0: V.oscillator("output"),
         1: null,
-      } as any)
+      } as any),
     ).toThrow();
   });
 
@@ -43,7 +43,7 @@ describe("error throwing with update", () => {
         1: V.oscillator(0, { frequency: 120 }),
         2: (V.gain as any)({ destination: "frequency", id: 1 }, { gain: 1024 }),
         3: V.oscillator(2, { frequency: 100 }),
-      })
+      }),
     ).toThrow();
   });
 
@@ -56,9 +56,9 @@ describe("error throwing with update", () => {
         1: V.oscillator("output"),
         2: (V.channelSplitter as any)(
           { inputs: [1, 0], key: 0, outputs: [0, 1, 2] },
-          params
+          params,
         ),
-      })
+      }),
     ).toThrow();
   });
 });

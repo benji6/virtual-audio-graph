@@ -12,7 +12,7 @@ export default class AudioWorkletVirtualAudioNode extends VirtualAudioNodeBase {
     public readonly node: string,
     public output?: Output,
     public params?: IVirtualAudioNodeParams,
-    public readonly input?: string
+    public readonly input?: string,
   ) {
     super();
   }
@@ -36,7 +36,7 @@ export default class AudioWorkletVirtualAudioNode extends VirtualAudioNodeBase {
           if (!this.connections.some((x) => x === childNode.audioNode))
             continue;
           this.connections = this.connections.filter(
-            (x) => x !== childNode.audioNode
+            (x) => x !== childNode.audioNode,
           );
         }
       } else {

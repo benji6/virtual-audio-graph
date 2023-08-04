@@ -10,7 +10,7 @@ import StandardVirtualAudioNode from "./VirtualAudioNodes/StandardVirtualAudioNo
 
 export default (
   virtualGraph: IVirtualAudioNodeGraph,
-  handleConnectionToOutput: (_: VirtualAudioNode) => void
+  handleConnectionToOutput: (_: VirtualAudioNode) => void,
 ) => {
   for (const [id, virtualNode] of entries(virtualGraph)) {
     if (virtualNode.connected || virtualNode.output == null) continue;
@@ -31,14 +31,14 @@ export default (
         if (inputs) {
           if (inputs.length !== outputs?.length) {
             throw new Error(
-              `id: ${id} - outputs and inputs arrays are not the same length`
+              `id: ${id} - outputs and inputs arrays are not the same length`,
             );
           }
           for (let i = 0; i++; i < inputs.length) {
             virtualNode.connect(
               virtualGraph[key].audioNode,
               outputs[i],
-              inputs[i]
+              inputs[i],
             );
           }
           continue;
@@ -46,7 +46,7 @@ export default (
         virtualNode.connect(
           (virtualGraph[key].audioNode as IAudioNodePropertyLookup)[
             destination!
-          ]
+          ],
         );
         continue;
       }

@@ -24,7 +24,7 @@ const testSchedulingForNode = (node: any) => {
           expect(audioNode.$stateAtTime("00:00.199")).toBe("PLAYING");
           expect(audioNode.$stateAtTime("00:00.200")).toBe("PLAYING");
           expect(audioNode.$stateAtTime("23:59.999")).toBe("PLAYING");
-        }
+        },
       );
     });
 
@@ -45,7 +45,7 @@ const testSchedulingForNode = (node: any) => {
           expect(audioNode.$stateAtTime("00:00.199")).toBe("PLAYING");
           expect(audioNode.$stateAtTime("00:00.200")).toBe("FINISHED");
           expect(audioNode.$stateAtTime("23:59.999")).toBe("FINISHED");
-        }
+        },
       );
     });
 
@@ -66,7 +66,7 @@ const testSchedulingForNode = (node: any) => {
           expect(audioNode.$stateAtTime("00:00.200")).toBe("PLAYING");
           expect(audioNode.$stateAtTime("23:59.999")).toBe("PLAYING");
         },
-        (virtualAudioGraph as any).virtualNodes
+        (virtualAudioGraph as any).virtualNodes,
       );
     });
 
@@ -100,7 +100,7 @@ const testSchedulingForNode = (node: any) => {
           expect(audioNode.$stateAtTime("00:00.100")).toBe("PLAYING");
           expect(audioNode.$stateAtTime("00:00.199")).toBe("PLAYING");
           expect(audioNode.$stateAtTime("00:00.200")).toBe("FINISHED");
-        }
+        },
       );
     });
 

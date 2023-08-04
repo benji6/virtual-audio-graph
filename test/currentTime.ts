@@ -4,7 +4,7 @@ describe("virtualAudioGraph instance", () => {
   test("currentTime", () => {
     const audioContext = new AudioContext();
     expect(createVirtualAudioGraph({ audioContext }).currentTime).toBe(
-      audioContext.currentTime
+      audioContext.currentTime,
     );
   });
 

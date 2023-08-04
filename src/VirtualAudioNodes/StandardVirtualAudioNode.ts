@@ -17,7 +17,7 @@ interface IAudioContextFactoryLookup {
 const createAudioNode = (
   audioContext: AudioContext | OfflineAudioContext,
   name: string,
-  audioNodeFactoryParam: IAudioNodeFactoryParam
+  audioNodeFactoryParam: IAudioNodeFactoryParam,
 ) => {
   const audioNodeFactoryName = `create${capitalize(name)}`;
   if (
@@ -30,7 +30,7 @@ const createAudioNode = (
 
   const audioNode = audioNodeFactoryParam
     ? (audioContext as IAudioContextFactoryLookup)[audioNodeFactoryName](
-        audioNodeFactoryParam
+        audioNodeFactoryParam,
       )
     : (audioContext as IAudioContextFactoryLookup)[audioNodeFactoryName]();
 
@@ -47,7 +47,7 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
     public readonly node: string,
     public output?: Output,
     public params?: IVirtualAudioNodeParams,
-    public readonly input?: string
+    public readonly input?: string,
   ) {
     super();
     this.stopCalled = params?.stopTime !== undefined;
@@ -76,7 +76,7 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
           if (!this.connections.some((x) => x === childNode.audioNode))
             continue;
           this.connections = this.connections.filter(
-            (x) => x !== childNode.audioNode
+            (x) => x !== childNode.audioNode,
           );
         }
       } else {
@@ -100,7 +100,7 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
     const constructorParam =
       params[
         Object.keys(params).find(
-          (key) => constructorParamsKeys.indexOf(key) !== -1
+          (key) => constructorParamsKeys.indexOf(key) !== -1,
         )!
       ];
     const { offsetTime, startTime, stopTime } = params;
@@ -108,7 +108,7 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
     const audioNode = createAudioNode(
       audioContext,
       this.node,
-      constructorParam
+      constructorParam,
     );
 
     this.audioNode = audioNode;

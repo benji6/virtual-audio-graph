@@ -18,7 +18,7 @@ describe("custom nodes", () => {
     };
 
     expect(virtualAudioGraph.update(virtualGraphParams)).toBe(
-      virtualAudioGraph
+      virtualAudioGraph,
     );
     expect(audioContext.toJSON()).toMatchSnapshot();
   });
@@ -38,7 +38,7 @@ describe("custom nodes", () => {
     };
 
     expect(virtualAudioGraph.update(virtualGraphParams)).toBe(
-      virtualAudioGraph
+      virtualAudioGraph,
     );
     expect(audioContext.toJSON()).toMatchSnapshot();
   });
@@ -186,7 +186,7 @@ describe("custom nodes", () => {
       "channel:0-type:effect-id:1": twoGains("channel:0-type:effect-id:0"),
       "channel:[0]-type:source-id:keyboard: 7": sineOsc(
         ["channel:0-type:effect-id:1"],
-        { frequency: 500, gain: 0.3 }
+        { frequency: 500, gain: 0.3 },
       ),
     });
     expect(audioContext.toJSON()).toEqual(expectedData);
@@ -196,7 +196,7 @@ describe("custom nodes", () => {
       "channel:0-type:effect-id:1": twoGains("output"),
       "channel:[0]-type:source-id:keyboard: 5": sineOsc(
         ["channel:0-type:effect-id:0"],
-        { frequency: 500, gain: 0.3 }
+        { frequency: 500, gain: 0.3 },
       ),
     });
     expect(audioContext.toJSON()).toEqual(expectedData);
@@ -206,7 +206,7 @@ describe("custom nodes", () => {
       "channel:0-type:effect-id:1": twoGains("channel:0-type:effect-id:0"),
       "channel:[0]-type:source-id:keyboard: 7": sineOsc(
         ["channel:0-type:effect-id:1"],
-        { frequency: 500, gain: 0.3 }
+        { frequency: 500, gain: 0.3 },
       ),
     });
     expect(audioContext.toJSON()).toEqual(expectedData);

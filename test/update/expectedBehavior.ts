@@ -113,7 +113,7 @@ describe("expected behavior with update", () => {
       1: V.oscillator(0),
       2: V.oscillator(
         { destination: "frequency", key: 1 },
-        { frequency: 0.5, type: "triangle" }
+        { frequency: 0.5, type: "triangle" },
       ),
     });
 

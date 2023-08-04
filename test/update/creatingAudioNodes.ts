@@ -33,19 +33,19 @@ describe("creating audio nodes with update", () => {
     expect(audioNode.smoothingTimeConstant).toBe(params.smoothingTimeConstant);
     expect(
       audioNode.getFloatFrequencyData(
-        new Float32Array(audioNode.frequencyBinCount)
-      )
+        new Float32Array(audioNode.frequencyBinCount),
+      ),
     ).toBe(undefined);
     expect(
       audioNode.getByteFrequencyData(
-        new Uint8Array(audioNode.frequencyBinCount)
-      )
+        new Uint8Array(audioNode.frequencyBinCount),
+      ),
     ).toBe(undefined);
     expect(
-      audioNode.getFloatTimeDomainData(new Float32Array(audioNode.fftSize))
+      audioNode.getFloatTimeDomainData(new Float32Array(audioNode.fftSize)),
     ).toBe(undefined);
     expect(
-      audioNode.getByteTimeDomainData(new Uint8Array(audioNode.fftSize))
+      audioNode.getByteTimeDomainData(new Uint8Array(audioNode.fftSize)),
     ).toBe(undefined);
   });
 
@@ -137,7 +137,7 @@ describe("creating audio nodes with update", () => {
     }
 
     expect(channelSplitterAudioNode.constructor.name).toBe(
-      "ChannelSplitterNode"
+      "ChannelSplitterNode",
     );
 
     virtualAudioGraph.update({

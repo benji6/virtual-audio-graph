@@ -24,7 +24,7 @@ export const dynamicsCompressor = createNodeConstructor("dynamicsCompressor");
 export const gain = createNodeConstructor("gain");
 export const mediaElementSource = createNodeConstructor("mediaElementSource");
 export const mediaStreamDestination = createNodeConstructor(
-  "mediaStreamDestination"
+  "mediaStreamDestination",
 );
 export const mediaStreamSource = createNodeConstructor("mediaStreamSource");
 export const oscillator = createNodeConstructor("oscillator");

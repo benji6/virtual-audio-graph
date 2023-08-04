@@ -18,7 +18,7 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
   constructor(
     public readonly node: CustomVirtualAudioNodeFactory,
     public output?: Output,
-    params?: IVirtualAudioNodeParams
+    params?: IVirtualAudioNodeParams,
   ) {
     super();
     this.params = params || {};
@@ -62,7 +62,7 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
     this.virtualNodes = mapObj(
       (virtualAudioNodeParam: VirtualAudioNode) =>
         virtualAudioNodeParam.initialize(audioContext),
-      this.node(this.params)
+      this.node(this.params),
     );
 
     connectAudioNodes(this.virtualNodes, () => {});
@@ -72,7 +72,7 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
 
   public update(
     _params: IVirtualAudioNodeParams | null | undefined,
-    audioContext: AudioContext | OfflineAudioContext
+    audioContext: AudioContext | OfflineAudioContext,
   ): this {
     const params = _params ?? {};
     const audioGraphParamsFactoryValues = values(this.node(params));
