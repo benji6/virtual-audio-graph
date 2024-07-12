@@ -27,7 +27,7 @@ virtual-audio-graph is designed to be small and weighs in at 11.9kB minified (3.
 
 ## Docs
 
-**[First check out the virtual-audio-graph guide](https://virtual-audio-graph.netlify.com)** for working examples and to understand how the library works.
+**[First check out the virtual-audio-graph guide](https://virtual-audio-graph.netlify.app)** for working examples and to understand how the library works.
 
 Then see the [API docs for all supported virtual audio node factory functions](docs/standard-nodes.md).
 

@@ -1,6 +1,6 @@
 # Standard Virtual Audio Node Factories
 
-Here is a list of the standard virtual audio node factories exported by virtual-audio-graph and the params you can provide them with ([the virtual-audio-graph guide is here](https://virtual-audio-graph.netlify.com/)).
+Here is a list of the standard virtual audio node factories exported by virtual-audio-graph and the params you can provide them with ([the virtual-audio-graph guide is here](https://virtual-audio-graph.netlify.app)).
 
 ## [analyser](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode)
 
