@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowUnreachableCode": false,
     "declaration": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
