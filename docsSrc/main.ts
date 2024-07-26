@@ -270,17 +270,15 @@ const examples = [
     });
   },
   () =>
-    (audioContext as any).audioWorklet
-      .addModule("audioWorklets/noise.js")
-      .then(() => {
-        const noise = createWorkletNode("noise");
+    audioContext.audioWorklet.addModule("audioWorklets/noise.js").then(() => {
+      const noise = createWorkletNode("noise");
 
-        virtualAudioGraph.update({
-          0: noise("output", { amplitude: 0.25 }),
-        });
-      }),
+      virtualAudioGraph.update({
+        0: noise("output", { amplitude: 0.25 }),
+      });
+    }),
   () =>
-    (audioContext as any).audioWorklet
+    audioContext.audioWorklet
       .addModule("audioWorklets/bitCrusher.js")
       .then(() => {
         const bitCrusher = createWorkletNode("bitCrusher");

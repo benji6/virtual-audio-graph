@@ -20,97 +20,97 @@ import {
 describe("nodeFactories", () => {
   describe("analyser", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (analyser as any)()).toThrow();
+      expect(() => analyser()).toThrow();
     });
   });
 
   describe("biquadFilter", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (biquadFilter as any)()).toThrow();
+      expect(() => biquadFilter()).toThrow();
     });
   });
 
   describe("bufferSource", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (bufferSource as any)()).toThrow();
+      expect(() => bufferSource()).toThrow();
     });
   });
 
   describe("channelMerger", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (channelMerger as any)()).toThrow();
+      expect(() => channelMerger()).toThrow();
     });
   });
 
   describe("channelSplitter", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (channelSplitter as any)()).toThrow();
+      expect(() => channelSplitter()).toThrow();
     });
   });
 
   describe("convolver", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (convolver as any)()).toThrow();
+      expect(() => convolver()).toThrow();
     });
   });
 
   describe("delay", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (delay as any)()).toThrow();
+      expect(() => delay()).toThrow();
     });
   });
 
   describe("dynamicsCompressor", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (dynamicsCompressor as any)()).toThrow();
+      expect(() => dynamicsCompressor()).toThrow();
     });
   });
 
   describe("gain", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (gain as any)()).toThrow();
+      expect(() => gain()).toThrow();
     });
   });
 
   describe("mediaElementSource", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (mediaElementSource as any)()).toThrow();
+      expect(() => mediaElementSource()).toThrow();
     });
   });
 
   describe("mediaStreamDestination", () => {
     test("does not throw an error when no output is provided", () => {
-      expect(() => (mediaStreamDestination as any)()).not.toThrow();
+      expect(() => mediaStreamDestination()).not.toThrow();
     });
   });
 
   describe("mediaStreamSource", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (mediaStreamSource as any)()).toThrow();
+      expect(() => mediaStreamSource()).toThrow();
     });
   });
 
   describe("oscillator", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (oscillator as any)()).toThrow();
+      expect(() => oscillator()).toThrow();
     });
   });
 
   describe("panner", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (panner as any)()).toThrow();
+      expect(() => panner()).toThrow();
     });
   });
 
   describe("stereoPanner", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (stereoPanner as any)()).toThrow();
+      expect(() => stereoPanner()).toThrow();
     });
   });
 
   describe("waveShaper", () => {
     test("throws an error when no output is provided", () => {
-      expect(() => (waveShaper as any)()).toThrow();
+      expect(() => waveShaper()).toThrow();
     });
   });
 });
