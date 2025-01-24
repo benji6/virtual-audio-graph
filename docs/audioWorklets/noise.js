@@ -5,10 +5,10 @@ class Noise extends AudioWorkletProcessor {
     ];
   }
 
-  process(inputs, [output], { amplitude }) {
+  process(inputs, [output], { amplitude: [amplitude] }) {
     for (const outputChannel of output) {
       for (let i = 0; i < outputChannel.length; i++) {
-        outputChannel[i] = 2 * (Math.random() - 0.5) * amplitude[i];
+        outputChannel[i] = 2 * (Math.random() - 0.5) * amplitude;
       }
     }
 
