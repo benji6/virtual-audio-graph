@@ -24,14 +24,13 @@ export default (
       }
       if (typeof output === "object") {
         const { key, destination, inputs, outputs } = output;
-
         if (key == null) {
-          throw new Error(`id: ${id} - output object requires a key property`);
+          throw new Error(`node with ID "${id}" does not specify an output`);
         }
         if (inputs) {
           if (inputs.length !== outputs?.length) {
             throw new Error(
-              `id: ${id} - outputs and inputs arrays are not the same length`,
+              `node with ID "${id}" must specify outputs and inputs arrays of the same length`,
             );
           }
           for (let i = 0; i++; i < inputs.length) {
@@ -43,6 +42,10 @@ export default (
           }
           continue;
         }
+        if (!(key in virtualGraph))
+          throw Error(
+            `node with ID "${id}" specifies an output ID "${key}", but no such node exists`,
+          );
         virtualNode.connect(
           (virtualGraph[key].audioNode as IAudioNodePropertyLookup)[
             destination!
@@ -51,6 +54,10 @@ export default (
         continue;
       }
 
+      if (!(output in virtualGraph))
+        throw Error(
+          `'node with ID "${id}" specifies an output ID "${output}", but no such node exists'`,
+        );
       const destinationVirtualAudioNode = virtualGraph[output];
 
       if (destinationVirtualAudioNode instanceof CustomVirtualAudioNode) {

@@ -295,14 +295,14 @@ exports[`expected behavior with update handles random strings for ids 1`] = `
 }
 `;
 
-exports[`expected behavior with update handles random strings for ids 2`] = `
+exports[`expected behavior with update handles simple updates 1`] = `
 {
   "inputs": [],
   "name": "AudioDestinationNode",
 }
 `;
 
-exports[`expected behavior with update handles random strings for ids 3`] = `
+exports[`expected behavior with update handles simple updates 2`] = `
 {
   "inputs": [
     {
@@ -318,7 +318,7 @@ exports[`expected behavior with update handles random strings for ids 3`] = `
 }
 `;
 
-exports[`expected behavior with update handles random strings for ids 4`] = `
+exports[`expected behavior with update handles simple updates 3`] = `
 {
   "inputs": [
     {
@@ -339,7 +339,7 @@ exports[`expected behavior with update handles random strings for ids 4`] = `
 }
 `;
 
-exports[`expected behavior with update handles random strings for ids 5`] = `
+exports[`expected behavior with update handles simple updates 4`] = `
 {
   "inputs": [
     {

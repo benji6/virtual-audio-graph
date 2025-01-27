@@ -15,9 +15,10 @@ export default class VirtualAudioGraph {
   }
 
   public update(newGraph: IVirtualAudioNodeGraph): this {
-    if (newGraph.hasOwnProperty("output")) {
-      throw new Error('"output" is not a valid id');
-    }
+    if ("output" in newGraph)
+      throw new Error(
+        '"output" is a virtual-audio-graph reserved string and therefore not a valid node ID',
+      );
 
     for (const [id, virtualAudioNode] of entries(this.virtualNodes)) {
       if (newGraph.hasOwnProperty(id)) continue;

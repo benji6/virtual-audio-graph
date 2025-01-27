@@ -22,6 +22,7 @@ export interface IOutputObject {
 }
 
 export type Output =
+  | "output"
   | string
   | number
   | IOutputObject
