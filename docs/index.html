@@ -73,6 +73,7 @@
   createWorkletNode,
   delay,
   gain,
+  OUTPUT,
   oscillator,
   stereoPanner,
 } from 'virtual-audio-graph'
@@ -152,7 +153,7 @@ const virtualAudioGraph = createVirtualAudioGraph({
       ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
-  0: gain('output', { gain: 0.5 }),
+  0: gain(OUTPUT, { gain: 0.5 }),
   1: oscillator(0, { stopTime: currentTime + 1 }),
 })</code></pre>
       <div class="button-container">
@@ -160,12 +161,16 @@ virtualAudioGraph.update({
         <button class="button-stop">Stop</button>
       </div>
       <p>
-        We can see that the gain node is being connected to "output" which is a
-        special string reserved for the virtual-audio-graph instance output
-        (specified when our virtual-audio-graph instance is created) and has its
-        gain value set to 0.5. We can also see that the oscillator node is being
-        connnected to the gain node (id 0) and has its stopTime set to 1 second
-        from the current time.
+        The gain node is being connected to
+        <code class="language-js">OUTPUT</code> which is a special identifier
+        reserved by virtual-audio-graph (currently it is set to the string
+        <code class="language-js">"output"</code> for backwards compatibility
+        and the string <code class="language-js">"output"</code> can still be
+        used instead). This signifies that the gain node should be connected to
+        the virtual-audio-graph instance output (specified when the
+        virtual-audio-graph instance is created). The gain value is set to 0.5.
+        The oscillator node is connnected to the gain node (id 0) and has its
+        stopTime set to 1 second from the current time.
       </p>
       <h2>Rendering an empty graph</h2>
       <p>
@@ -187,7 +192,7 @@ virtualAudioGraph.update({
       ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
-  0: gain('output', { gain: 0.2 }),
+  0: gain(OUTPUT, { gain: 0.2 }),
   1: oscillator(0, {
     frequency: 440,
     stopTime: currentTime + 2.5,
@@ -226,20 +231,21 @@ virtualAudioGraph.update({
         AudioParams of those nodes.
       </p>
       <p>
-        If you wish to make more than 1 connection just use an array with each
-        element as either a node key, the special string "output" or an object
-        with a key property and a destination property that specifies the node
-        and AudioParam to connect to:
+        If you wish to make more than 1 connection use an array with each
+        element as either a node key, the special identifier
+        <code class="language-js">OUTPUT</code> or an object with a key property
+        and a destination property that specifies the node and AudioParam to
+        connect to:
       </p>
       <pre
         class="language-js"
       ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
-  0: gain('output', { gain: 0.2 }),
+  0: gain(OUTPUT, { gain: 0.2 }),
   1: oscillator(0, { stopTime: currentTime + 3 }),
   2: gain({ destination: 'frequency', key: '1' }, { gain: 350 }),
-  3: oscillator([2, 'output'], { frequency: 1, type: 'triangle' }),
+  3: oscillator([2, OUTPUT], { frequency: 1, type: 'triangle' }),
 })</code></pre>
       <div class="button-container">
         <button class="button-play">Play</button>
@@ -282,7 +288,7 @@ virtualAudioGraph.update({
       ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
-  0: gain('output', { gain: 0.5 }),
+  0: gain(OUTPUT, { gain: 0.5 }),
   1: oscillator(0, {
     frequency: ['setValueAtTime', 660, currentTime + 1],
     stopTime: currentTime + 2,
@@ -298,7 +304,7 @@ virtualAudioGraph.update({
       ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
-  0: gain('output', { gain: 0.5 }),
+  0: gain(OUTPUT, { gain: 0.5 }),
   1: oscillator(0, {
     frequency: [
       ['setValueAtTime', 110, currentTime],
@@ -317,7 +323,7 @@ virtualAudioGraph.update({
       ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
-  0: gain('output', { gain: 0.5 }),
+  0: gain(OUTPUT, { gain: 0.5 }),
   1: oscillator(0, {
     frequency: [
       ['setValueAtTime', 110, currentTime],
@@ -336,7 +342,7 @@ virtualAudioGraph.update({
       ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
-  0: gain('output', { gain: 0.5 }),
+  0: gain(OUTPUT, { gain: 0.5 }),
   1: oscillator(0, {
     frequency: [
       ['setValueAtTime', 110, currentTime],
@@ -355,7 +361,7 @@ virtualAudioGraph.update({
       ><code class="language-js">const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
-  0: gain('output', { gain: 0.5 }),
+  0: gain(OUTPUT, { gain: 0.5 }),
   1: oscillator(0, {
     frequency: [
       ['setValueCurveAtTime', Float32Array.of(440, 880, 110, 1760), currentTime, 2],
@@ -384,7 +390,7 @@ virtualAudioGraph.update({
 }) => {
   const duration = stopTime - startTime
   return {
-    0: gain('output', {
+    0: gain(OUTPUT, {
       gain: [
         ['setValueAtTime', 0, startTime],
         ['linearRampToValueAtTime', gainValue, startTime + duration * 0.15],
@@ -399,7 +405,7 @@ virtualAudioGraph.update({
 const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
-  0: osc('output', {
+  0: osc(OUTPUT, {
     frequency: 110,
     gain: 0.2,
     startTime: currentTime,
@@ -415,8 +421,8 @@ virtualAudioGraph.update({
         createNode takes a function that takes an object and returns a section
         of audio graph. This section of audio graph works in much the same way
         as the audio graph that is passed to virtualAudioGraph.update, but the
-        special string "output" now outputs to whatever destinations the custom
-        virtual audio node is connected to.
+        <code class="language-js">OUTPUT</code> constant now connects to
+        whatever destinations the custom virtual audio node is connected to.
       </p>
 
       <p>
@@ -436,20 +442,20 @@ virtualAudioGraph.update({
   frequency,
   ...rest,
 }) => ({
-  0: osc('output', {
+  0: osc(OUTPUT, {
     frequency,
     gain: 0.2,
     type: 'square',
     ...rest,
   }),
-  1: osc('output', {
+  1: osc(OUTPUT, {
     detune: 7,
     frequency: frequency / 4,
     gain: 0.4,
     type: 'sawtooth',
     ...rest,
   }),
-  2: osc('output', {
+  2: osc(OUTPUT, {
     gain: 0.1,
     detune: -4,
     frequency: frequency * 1.5,
@@ -461,7 +467,7 @@ virtualAudioGraph.update({
 const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
-  0: oscBank('output', {
+  0: oscBank(OUTPUT, {
     frequency: 440,
     startTime: currentTime,
     stopTime: currentTime + 1,
@@ -490,8 +496,8 @@ virtualAudioGraph.update({
   decay,
   delayTime,
 }) => ({
-  0: stereoPanner('output', { pan: -1 }),
-  1: stereoPanner('output', { pan: 1 }),
+  0: stereoPanner(OUTPUT, { pan: -1 }),
+  1: stereoPanner(OUTPUT, { pan: 1 }),
   2: delay([1, 5], { delayTime, maxDelayTime: delayTime }),
   3: gain(2, { gain: decay }),
   4: delay([0, 3], { delayTime, maxDelayTime: delayTime }),
@@ -501,11 +507,11 @@ virtualAudioGraph.update({
 const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
-  0: pingPongDelay('output', {
+  0: pingPongDelay(OUTPUT, {
     decay: 0.8,
     delayTime: 0.25,
   }),
-  1: oscillator([0, 'output'], { stopTime: currentTime + .2 }),
+  1: oscillator([0, OUTPUT], { stopTime: currentTime + .2 }),
 })</code></pre>
       <div class="button-container">
         <button class="button-play">Play</button>
@@ -540,7 +546,7 @@ const buffer = await audioContext.decodeAudioData(data)
 const { currentTime } = virtualAudioGraph
 
 virtualAudioGraph.update({
-  0: gain('output', { gain: 0.75 }),
+  0: gain(OUTPUT, { gain: 0.75 }),
   1: bufferSource(0, {
     buffer,
     playbackRate: 1.5,
@@ -602,7 +608,7 @@ registerProcessor('noise', Noise)</code></pre>
     const noise = createWorkletNode('noise')
 
     virtualAudioGraph.update({
-      0: noise('output', { amplitude: 0.25 }),
+      0: noise(OUTPUT, { amplitude: 0.25 }),
     })
   })</code></pre>
       <div class="button-container">
@@ -666,7 +672,7 @@ registerProcessor('bitCrusher', BitCrusher)</code></pre>
     const { currentTime } = virtualAudioGraph
 
     virtualAudioGraph.update({
-      0: bitCrusher('output', {
+      0: bitCrusher(OUTPUT, {
         bitDepth: 1,
         frequencyReduction: [
           ['setValueAtTime', 0.01, currentTime],
@@ -709,7 +715,7 @@ const osc = createNode(({
 }) => {
   const duration = stopTime - startTime
   return {
-    0: gain('output', {
+    0: gain(OUTPUT, {
       gain: [
         ['setValueAtTime', 0, startTime],
         ['linearRampToValueAtTime', gainValue, startTime + duration * 0.15],
@@ -725,20 +731,20 @@ const oscBank = createNode(({
   frequency,
   ...rest,
 }) => ({
-  0: osc('output', {
+  0: osc(OUTPUT, {
     frequency,
     gain: 0.2,
     type: 'square',
     ...rest,
   }),
-  1: osc('output', {
+  1: osc(OUTPUT, {
     detune: 7,
     frequency: frequency / 4,
     gain: 0.4,
     type: 'sawtooth',
     ...rest,
   }),
-  2: osc('output', {
+  2: osc(OUTPUT, {
     gain: 0.1,
     detune: -4,
     frequency: frequency * 1.5,
@@ -751,8 +757,8 @@ const pingPongDelay = createNode(({
   decay,
   delayTime,
 }) => ({
-  0: stereoPanner('output', { pan: -1 }),
-  1: stereoPanner('output', { pan: 1 }),
+  0: stereoPanner(OUTPUT, { pan: -1 }),
+  1: stereoPanner(OUTPUT, { pan: 1 }),
   2: delay([1, 5], { delayTime, maxDelayTime: delayTime }),
   3: gain(2, { gain: decay }),
   4: delay([0, 3], { delayTime, maxDelayTime: delayTime }),
@@ -766,7 +772,7 @@ const oscillators = createNode(({
 }) => notes.reduce(
   (acc, frequency, i) => {
     const startTime = currentTime + noteLength * 2 * i
-    acc[i] = oscBank('output', {
+    acc[i] = oscBank(OUTPUT, {
       frequency,
       startTime,
       stopTime: startTime + noteLength,
@@ -782,12 +788,12 @@ const up = Array.apply(null, { length: 16 }).map((_, i) => chromaticScale(i))
 const down = [...up].reverse()
 
 virtualAudioGraph.update({
-  1: pingPongDelay('output', {
+  1: pingPongDelay(OUTPUT, {
     decay: 0.8,
     delayTime: noteLength * 1.55,
   }),
-  2: gain(['output', 1], { gain: 0.25 }),
-  3: oscillators(['output', 1], {
+  2: gain([OUTPUT, 1], { gain: 0.25 }),
+  3: oscillators([OUTPUT, 1], {
     noteLength,
     notes: [...up, ...down],
   }),
@@ -824,7 +830,7 @@ const offlineVirtualAudioGraph = createVirtualAudioGraph({
   audioContext: offlineAudioContext,
 });
 offlineVirtualAudioGraph.update({
-  0: gain("output", { gain: 0.5 }),
+  0: gain(OUTPUT, { gain: 0.5 }),
   1: oscillator(0),
 });
 const buffer = await offlineAudioContext.startRendering();

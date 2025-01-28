@@ -11,7 +11,7 @@ describe("audio param methods with update", () => {
 
   test("single setValueAtTime", () => {
     virtualAudioGraph.update({
-      0: V.gain("output", { gain: ["setValueAtTime", 0.5, 1] }),
+      0: V.gain(V.OUTPUT, { gain: ["setValueAtTime", 0.5, 1] }),
     });
 
     expect(audioContext.toJSON()).toMatchSnapshot();
@@ -26,7 +26,7 @@ describe("audio param methods with update", () => {
 
   test("multiple setValueAtTime", () => {
     virtualAudioGraph.update({
-      0: V.gain("output", {
+      0: V.gain(V.OUTPUT, {
         gain: [
           ["setValueAtTime", 0, 0],
           ["setValueAtTime", 1, 1],
@@ -49,7 +49,7 @@ describe("audio param methods with update", () => {
 
   test("overides setValueAtTime", () => {
     virtualAudioGraph.update({
-      0: V.gain("output", { gain: ["setValueAtTime", 0.5, 1] }),
+      0: V.gain(V.OUTPUT, { gain: ["setValueAtTime", 0.5, 1] }),
     });
 
     expect(audioContext.toJSON()).toMatchSnapshot();
@@ -62,7 +62,7 @@ describe("audio param methods with update", () => {
     expect(gain.$valueAtTime("23:59.999")).toBe(0.5);
 
     virtualAudioGraph.update({
-      0: V.gain("output", { gain: ["setValueAtTime", 0.75, 0.5] }),
+      0: V.gain(V.OUTPUT, { gain: ["setValueAtTime", 0.75, 0.5] }),
     });
 
     expect(gain.$valueAtTime("00:00.000")).toBe(1);
@@ -71,7 +71,7 @@ describe("audio param methods with update", () => {
     expect(gain.$valueAtTime("23:59.999")).toBe(0.75);
 
     virtualAudioGraph.update({
-      0: V.gain("output", { gain: ["setValueAtTime", 0.75, 1] }),
+      0: V.gain(V.OUTPUT, { gain: ["setValueAtTime", 0.75, 1] }),
     });
 
     expect(gain.$valueAtTime("00:00.000")).toBe(1);
@@ -82,7 +82,7 @@ describe("audio param methods with update", () => {
 
   test("setValueAtTime with linearRampToValueAtTime", () => {
     virtualAudioGraph.update({
-      0: V.gain("output", {
+      0: V.gain(V.OUTPUT, {
         gain: [
           ["setValueAtTime", 0.25, 0.25],
           ["linearRampToValueAtTime", 0.5, 0.5],
@@ -91,7 +91,7 @@ describe("audio param methods with update", () => {
     });
 
     virtualAudioGraph.update({
-      0: V.gain("output", {
+      0: V.gain(V.OUTPUT, {
         gain: [
           ["setValueAtTime", 0, 0],
           ["linearRampToValueAtTime", 1, 1],
@@ -115,7 +115,7 @@ describe("audio param methods with update", () => {
 
   test("setValueAtTime with exponentialRampToValueAtTime", () => {
     virtualAudioGraph.update({
-      0: V.oscillator("output", {
+      0: V.oscillator(V.OUTPUT, {
         frequency: [
           ["setValueAtTime", 220, 0],
           ["exponentialRampToValueAtTime", 1320, 5],
@@ -124,7 +124,7 @@ describe("audio param methods with update", () => {
     });
 
     virtualAudioGraph.update({
-      0: V.oscillator("output", {
+      0: V.oscillator(V.OUTPUT, {
         frequency: [
           ["setValueAtTime", 440, 0],
           ["exponentialRampToValueAtTime", 880, 1],
@@ -148,7 +148,7 @@ describe("audio param methods with update", () => {
 
   test("setValueAtTime with setTargetAtTime", () => {
     virtualAudioGraph.update({
-      0: V.gain("output", {
+      0: V.gain(V.OUTPUT, {
         gain: [
           ["setValueAtTime", 0, 0],
           ["setTargetAtTime", 1, 1, 0.75],
@@ -157,7 +157,7 @@ describe("audio param methods with update", () => {
     });
 
     virtualAudioGraph.update({
-      0: V.gain("output", {
+      0: V.gain(V.OUTPUT, {
         gain: [
           ["setValueAtTime", 0, 0],
           ["setTargetAtTime", 1, 1, 0.5],
@@ -185,7 +185,7 @@ describe("audio param methods with update", () => {
     const waveArray0 = Float32Array.of(0, 0.2, 0.4, 0.8);
 
     virtualAudioGraph.update({
-      0: V.gain("output", {
+      0: V.gain(V.OUTPUT, {
         gain: [
           ["setValueAtTime", 0, 0],
           ["setValueCurveAtTime", waveArray0, 1, 1],
@@ -196,7 +196,7 @@ describe("audio param methods with update", () => {
     const waveArray1 = Float32Array.of(0.5, 0.75, 0.25, 1);
 
     virtualAudioGraph.update({
-      0: V.gain("output", {
+      0: V.gain(V.OUTPUT, {
         gain: [
           ["setValueAtTime", 0, 0],
           ["setValueCurveAtTime", waveArray1, 1, 1],

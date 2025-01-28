@@ -15,7 +15,7 @@ describe("creating audio nodes with update", () => {
     };
 
     const virtualGraphParams = {
-      0: V.analyser("output", params),
+      0: V.analyser(V.OUTPUT, params),
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -59,7 +59,7 @@ describe("creating audio nodes with update", () => {
     const Q = 0.5;
 
     const virtualGraphParams = {
-      0: V.biquadFilter("output", { detune, frequency, Q, type }),
+      0: V.biquadFilter(V.OUTPUT, { detune, frequency, Q, type }),
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -91,7 +91,7 @@ describe("creating audio nodes with update", () => {
     };
 
     const virtualGraphParams = {
-      0: V.bufferSource("output", params),
+      0: V.bufferSource(V.OUTPUT, params),
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -115,7 +115,7 @@ describe("creating audio nodes with update", () => {
     const params = { numberOfOutputs: 2 };
 
     virtualAudioGraph.update({
-      0: V.channelMerger("output", params),
+      0: V.channelMerger(V.OUTPUT, params),
     });
 
     const channelMergerAudioNode = virtualAudioGraph.getAudioNodeById(0);
@@ -127,7 +127,7 @@ describe("creating audio nodes with update", () => {
     expect(channelMergerAudioNode.constructor.name).toBe("ChannelMergerNode");
 
     virtualAudioGraph.update({
-      0: V.channelSplitter("output", params),
+      0: V.channelSplitter(V.OUTPUT, params),
     });
 
     const channelSplitterAudioNode = virtualAudioGraph.getAudioNodeById(0);
@@ -141,8 +141,8 @@ describe("creating audio nodes with update", () => {
     );
 
     virtualAudioGraph.update({
-      0: V.channelMerger("output", params),
-      1: V.oscillator("output"),
+      0: V.channelMerger(V.OUTPUT, params),
+      1: V.oscillator(V.OUTPUT),
       2: V.channelSplitter({ inputs: [1, 0], key: 0, outputs: [0, 1] }, params),
     });
   });
@@ -157,7 +157,7 @@ describe("creating audio nodes with update", () => {
     };
 
     const virtualGraphParams = {
-      0: V.convolver("output", params),
+      0: V.convolver(V.OUTPUT, params),
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -179,7 +179,7 @@ describe("creating audio nodes with update", () => {
     const maxDelayTime = 5;
 
     const virtualGraphParams = {
-      0: V.delay("output", { delayTime, maxDelayTime }),
+      0: V.delay(V.OUTPUT, { delayTime, maxDelayTime }),
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -205,7 +205,7 @@ describe("creating audio nodes with update", () => {
     };
 
     const virtualGraphParams = {
-      "random string id": V.dynamicsCompressor("output", params),
+      "random string id": V.dynamicsCompressor(V.OUTPUT, params),
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -229,7 +229,7 @@ describe("creating audio nodes with update", () => {
     const gain = 0.5;
 
     const virtualGraphParams = {
-      0: V.gain("output", { gain }),
+      0: V.gain(V.OUTPUT, { gain }),
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -265,7 +265,7 @@ describe("creating audio nodes with update", () => {
     const MediaStream = WebAudioTestAPI.MediaStream;
 
     virtualAudioGraph.update({
-      0: V.mediaElementSource("output", {
+      0: V.mediaElementSource(V.OUTPUT, {
         mediaElement: new HTMLMediaElement(),
       }),
     });
@@ -277,7 +277,7 @@ describe("creating audio nodes with update", () => {
     }
 
     virtualAudioGraph.update({
-      0: V.mediaStreamSource("output", { mediaStream: new MediaStream() }),
+      0: V.mediaStreamSource(V.OUTPUT, { mediaStream: new MediaStream() }),
     });
 
     const mediaStreamAudioNode = virtualAudioGraph.getAudioNodeById(0);
@@ -297,7 +297,7 @@ describe("creating audio nodes with update", () => {
     };
 
     const virtualGraphParams = {
-      0: V.oscillator("output", params),
+      0: V.oscillator(V.OUTPUT, params),
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -328,7 +328,7 @@ describe("creating audio nodes with update", () => {
     const orientation = [1, 0, 0];
 
     const virtualGraphParams = {
-      0: V.panner("output", {
+      0: V.panner(V.OUTPUT, {
         coneInnerAngle,
         coneOuterAngle,
         coneOuterGain,
@@ -366,7 +366,7 @@ describe("creating audio nodes with update", () => {
     const pan = 1;
 
     const virtualGraphParams = {
-      0: V.stereoPanner("output", { pan }),
+      0: V.stereoPanner(V.OUTPUT, { pan }),
     };
 
     virtualAudioGraph.update(virtualGraphParams);
@@ -389,7 +389,7 @@ describe("creating audio nodes with update", () => {
     };
 
     const virtualGraphParams = {
-      0: V.waveShaper("output", params),
+      0: V.waveShaper(V.OUTPUT, params),
     };
 
     virtualAudioGraph.update(virtualGraphParams);

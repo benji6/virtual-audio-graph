@@ -1,4 +1,5 @@
 import connectAudioNodes from "../connectAudioNodes";
+import { OUTPUT } from "../constants";
 import {
   CustomVirtualAudioNodeFactory,
   IVirtualAudioNodeGraph,
@@ -28,8 +29,8 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
     for (const childVirtualNode of values(this.virtualNodes)) {
       const { output } = childVirtualNode;
       if (
-        output === "output" ||
-        (Array.isArray(output) && output.indexOf("output") !== -1)
+        output === OUTPUT ||
+        (Array.isArray(output) && output.indexOf(OUTPUT) !== -1)
       ) {
         childVirtualNode.connect(...connectArgs.filter(Boolean));
       }
@@ -42,8 +43,8 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
     for (const virtualNode of values(this.virtualNodes)) {
       const { output } = virtualNode;
       if (
-        output === "output" ||
-        (Array.isArray(output) && output.indexOf("output") !== -1)
+        output === OUTPUT ||
+        (Array.isArray(output) && output.indexOf(OUTPUT) !== -1)
       ) {
         virtualNode.disconnect();
       }

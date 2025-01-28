@@ -7,7 +7,7 @@ export default V.createNode((params) => {
   const stopTime = params.stopTime;
 
   return {
-    0: V.gain(["output"], { gain }),
+    0: V.gain([V.OUTPUT], { gain }),
     1: V.oscillator(0, {
       frequency,
       startTime,

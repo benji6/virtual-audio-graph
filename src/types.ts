@@ -1,3 +1,4 @@
+import { OUTPUT } from "./constants";
 import AudioWorkletVirtualAudioNode from "./VirtualAudioNodes/AudioWorkletVirtualAudioNode";
 import CustomVirtualAudioNode from "./VirtualAudioNodes/CustomVirtualAudioNode";
 import StandardVirtualAudioNode from "./VirtualAudioNodes/StandardVirtualAudioNode";
@@ -22,11 +23,11 @@ export interface IOutputObject {
 }
 
 export type Output =
-  | "output"
-  | string
-  | number
+  | Array<number | string | IOutputObject>
   | IOutputObject
-  | Array<number | string | IOutputObject>;
+  | number
+  | string
+  | typeof OUTPUT;
 
 export type VirtualAudioNode =
   | AudioWorkletVirtualAudioNode

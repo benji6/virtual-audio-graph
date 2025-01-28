@@ -1,3 +1,4 @@
+import { OUTPUT } from "./constants";
 import {
   IAudioNodePropertyLookup,
   IVirtualAudioNodeGraph,
@@ -18,7 +19,7 @@ export default (
     for (const output of Array.isArray(virtualNode.output)
       ? virtualNode.output
       : [virtualNode.output]) {
-      if (output === "output") {
+      if (output === OUTPUT) {
         handleConnectionToOutput(virtualNode);
         continue;
       }

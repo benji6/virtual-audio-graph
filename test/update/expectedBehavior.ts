@@ -7,78 +7,42 @@ const virtualAudioGraph = createVirtualAudioGraph({ audioContext });
 
 describe("expected behavior with update", () => {
   test("returns itself", () => {
-    const virtualNodeParams = { 0: V.oscillator("output", { type: "square" }) };
+    const virtualNodeParams = { 0: V.oscillator(V.OUTPUT, { type: "square" }) };
 
     expect(virtualAudioGraph.update(virtualNodeParams)).toBe(virtualAudioGraph);
   });
 
-  test('throws error if node ID is "output"', () => {
-    expect(() =>
-      virtualAudioGraph.update({
-        output: V.oscillator("output"),
-      }),
-    ).toThrow(
-      '"output" is a virtual-audio-graph reserved string and therefore not a valid node ID',
-    );
-  });
-
-  test("throws error if output string id is null", () => {
-    expect(() =>
-      virtualAudioGraph.update({
-        bar: V.oscillator(null as any),
-        foo: V.gain("output"),
-      }),
-    ).toThrow("Output not specified for oscillator");
-  });
-
-  test("throws error if output object key is null", () => {
-    expect(() =>
-      virtualAudioGraph.update({
-        bar: V.oscillator({ key: null } as any),
-        foo: V.gain("output"),
-      }),
-    ).toThrow('node with ID "bar" does not specify an output');
-  });
-
-  test("throws error if output string id is not a node ID", () => {
-    expect(() =>
-      virtualAudioGraph.update({
-        bar: V.oscillator("baz"),
-        foo: V.gain("output"),
-      }),
-    ).toThrow(
-      'node with ID "bar" specifies an output ID "baz", but no such node exists',
-    );
-  });
-
-  test("throws error if output object key is not a node ID", () => {
-    expect(() =>
-      virtualAudioGraph.update({
-        bar: V.oscillator({ key: "baz" }),
-        foo: V.gain("output"),
-      }),
-    ).toThrow(
-      'node with ID "bar" specifies an output ID "baz", but no such node exists',
-    );
+  test('backwards compatibility of using string "output" instead of exported OUTPUT constant', () => {
+    virtualAudioGraph.update({ 1: V.oscillator("output") });
+    expect(audioContext.toJSON()).toEqual({
+      inputs: [
+        {
+          detune: { inputs: [], value: 0 },
+          frequency: { inputs: [], value: 440 },
+          inputs: [],
+          name: "OscillatorNode",
+          type: "sine",
+        },
+      ],
+      name: "AudioDestinationNode",
+    });
   });
 
   test("adds then removes nodes", () => {
     virtualAudioGraph.update({
-      0: V.gain("output"),
+      0: V.gain(V.OUTPUT),
       1: V.oscillator(0),
     });
-
     expect(audioContext.toJSON()).toMatchSnapshot();
 
     virtualAudioGraph.update({});
-
     expect(audioContext.toJSON()).toMatchSnapshot();
   });
 
   test("handles random strings for ids", () => {
     virtualAudioGraph.update({
       bar: V.oscillator("foo"),
-      foo: V.gain("output"),
+      foo: V.gain(V.OUTPUT),
     });
     expect(audioContext.toJSON()).toMatchSnapshot();
   });
@@ -87,74 +51,68 @@ describe("expected behavior with update", () => {
     virtualAudioGraph.update({});
     expect(audioContext.toJSON()).toMatchSnapshot();
 
-    virtualAudioGraph.update({ 0: V.gain("output") });
+    virtualAudioGraph.update({ 0: V.gain(V.OUTPUT) });
     expect(audioContext.toJSON()).toMatchSnapshot();
 
-    virtualAudioGraph.update({ 0: V.oscillator("output") });
+    virtualAudioGraph.update({ 0: V.oscillator(V.OUTPUT) });
     expect(audioContext.toJSON()).toMatchSnapshot();
 
-    virtualAudioGraph.update({ 0: pingPongDelay("output") });
+    virtualAudioGraph.update({ 0: pingPongDelay(V.OUTPUT) });
     expect(audioContext.toJSON()).toMatchSnapshot();
   });
 
   test("updates standard and custom nodes if passed same id but different params", () => {
     virtualAudioGraph.update({
-      0: V.oscillator("output", { detune: -9, frequency: 220 }),
+      0: V.oscillator(V.OUTPUT, { detune: -9, frequency: 220 }),
     });
-
     expect(audioContext.toJSON()).toMatchSnapshot();
 
     virtualAudioGraph.update({
-      0: V.oscillator("output", { detune: 0, frequency: 880 }),
+      0: V.oscillator(V.OUTPUT, { detune: 0, frequency: 880 }),
     });
-
     expect(audioContext.toJSON()).toMatchSnapshot();
 
     virtualAudioGraph.update({
-      0: sineOsc("output", { frequency: 110, gain: 0.5 }),
+      0: sineOsc(V.OUTPUT, { frequency: 110, gain: 0.5 }),
     });
-
     expect(audioContext.toJSON()).toMatchSnapshot();
 
     virtualAudioGraph.update({
-      0: sineOsc("output", { frequency: 660, gain: 0.2 }),
+      0: sineOsc(V.OUTPUT, { frequency: 660, gain: 0.2 }),
     });
-
     expect(audioContext.toJSON()).toMatchSnapshot();
   });
 
   test("connects nodes to each other", () => {
     virtualAudioGraph.update({
-      0: V.gain("output"),
+      0: V.gain(V.OUTPUT),
       1: V.oscillator(0),
     });
     expect(audioContext.toJSON()).toMatchSnapshot();
 
     virtualAudioGraph.update({
-      0: V.oscillator("output"),
+      0: V.oscillator(V.OUTPUT),
     });
-
     expect(audioContext.toJSON()).toMatchSnapshot();
   });
 
   test("reconnects nodes to each other", () => {
     virtualAudioGraph.update({
-      0: V.gain("output"),
+      0: V.gain(V.OUTPUT),
       1: V.oscillator(0),
     });
     expect(audioContext.toJSON()).toMatchSnapshot();
 
     virtualAudioGraph.update({
-      0: V.gain("output"),
-      1: V.oscillator("output"),
+      0: V.gain(V.OUTPUT),
+      1: V.oscillator(V.OUTPUT),
     });
-
     expect(audioContext.toJSON()).toMatchSnapshot();
   });
 
   test("connects and reconnects nodes to audioParams", () => {
     virtualAudioGraph.update({
-      0: V.gain("output"),
+      0: V.gain(V.OUTPUT),
       1: V.oscillator(0),
       2: V.oscillator(
         { destination: "frequency", key: 1 },
@@ -165,7 +123,7 @@ describe("expected behavior with update", () => {
     expect(audioContext.toJSON()).toMatchSnapshot();
 
     virtualAudioGraph.update({
-      0: V.gain("output"),
+      0: V.gain(V.OUTPUT),
       1: V.oscillator(0),
       2: V.oscillator([{ destination: "detune", key: 1 }], {
         frequency: 0.5,
@@ -176,7 +134,7 @@ describe("expected behavior with update", () => {
     expect(audioContext.toJSON()).toMatchSnapshot();
 
     virtualAudioGraph.update({
-      0: V.oscillator("output"),
+      0: V.oscillator(V.OUTPUT),
     });
 
     expect(audioContext.toJSON()).toMatchSnapshot();
@@ -184,7 +142,7 @@ describe("expected behavior with update", () => {
 
   test("disconnects and reconnects child nodes properly", () => {
     virtualAudioGraph.update({
-      0: V.gain("output"),
+      0: V.gain(V.OUTPUT),
       1: V.stereoPanner(0),
       2: V.gain(1),
     });
@@ -192,7 +150,7 @@ describe("expected behavior with update", () => {
     expect(audioContext.toJSON()).toMatchSnapshot();
 
     virtualAudioGraph.update({
-      0: V.gain("output"),
+      0: V.gain(V.OUTPUT),
       1: V.gain(0),
       2: V.gain(1),
     });

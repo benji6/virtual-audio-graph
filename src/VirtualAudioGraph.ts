@@ -1,4 +1,5 @@
 import connectAudioNodes from "./connectAudioNodes";
+import { OUTPUT } from "./constants";
 import { IVirtualAudioNodeGraph, VirtualAudioNode } from "./types";
 import { entries, equals, values } from "./utils";
 
@@ -15,9 +16,9 @@ export default class VirtualAudioGraph {
   }
 
   public update(newGraph: IVirtualAudioNodeGraph): this {
-    if ("output" in newGraph)
+    if (OUTPUT in newGraph)
       throw new Error(
-        '"output" is a virtual-audio-graph reserved string and therefore not a valid node ID',
+        `"${OUTPUT}" is a virtual-audio-graph reserved string and therefore not a valid node ID`,
       );
 
     for (const [id, virtualAudioNode] of entries(this.virtualNodes)) {

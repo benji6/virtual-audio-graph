@@ -15,13 +15,13 @@ describe("createVirtualAudioGraph", () => {
     const gain: any = audioContext.createGain();
 
     createVirtualAudioGraph({ audioContext, output: gain }).update({
-      0: V.gain("output", { gain: 0.2 }),
+      0: V.gain(V.OUTPUT, { gain: 0.2 }),
     });
 
     expect(gain.toJSON()).toMatchSnapshot();
 
     createVirtualAudioGraph({ audioContext }).update({
-      0: V.gain("output", { gain: 0.2 }),
+      0: V.gain(V.OUTPUT, { gain: 0.2 }),
     });
 
     expect(audioContext.toJSON()).toMatchSnapshot();

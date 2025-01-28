@@ -12,7 +12,7 @@ describe("virtualAudioGraph instance", () => {
     const audioContext = new AudioContext();
     const virtualAudioGraph = createVirtualAudioGraph({ audioContext });
 
-    virtualAudioGraph.update({ 0: V.gain("output") });
+    virtualAudioGraph.update({ 0: V.gain(V.OUTPUT) });
 
     const node = virtualAudioGraph.getAudioNodeById(0);
 

@@ -2,6 +2,8 @@ import VirtualAudioGraph from "./VirtualAudioGraph";
 
 export * from "./nodeFactories";
 
+export { OUTPUT as OUTPUT } from "./constants";
+
 export { default as createNode } from "./createNode";
 export { default as createWorkletNode } from "./createWorkletNode";
 
