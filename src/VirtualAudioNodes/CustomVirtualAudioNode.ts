@@ -7,7 +7,7 @@ import {
   Output,
   VirtualAudioNode,
 } from "../types";
-import { equals, mapObj, values } from "../utils";
+import { equals } from "../utils";
 import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
 
 export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
@@ -26,7 +26,7 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
   }
 
   public connect(...connectArgs: any[]): void {
-    for (const childVirtualNode of values(this.virtualNodes)) {
+    for (const childVirtualNode of Object.values(this.virtualNodes)) {
       const { output } = childVirtualNode;
       if (
         output === OUTPUT ||
@@ -40,7 +40,7 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
   }
 
   public disconnect(node?: VirtualAudioNode): void {
-    for (const virtualNode of values(this.virtualNodes)) {
+    for (const virtualNode of Object.values(this.virtualNodes)) {
       const { output } = virtualNode;
       if (
         output === OUTPUT ||
@@ -53,17 +53,20 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
   }
 
   public disconnectAndDestroy(): void {
-    for (const virtualNode of values(this.virtualNodes)) {
+    for (const virtualNode of Object.values(this.virtualNodes)) {
       virtualNode.disconnectAndDestroy();
     }
     this.connected = false;
   }
 
   public initialize(audioContext: AudioContext | OfflineAudioContext): this {
-    this.virtualNodes = mapObj(
-      (virtualAudioNodeParam: VirtualAudioNode) =>
-        virtualAudioNodeParam.initialize(audioContext),
-      this.node(this.params),
+    this.virtualNodes = Object.fromEntries(
+      Object.entries(this.node(this.params)).map(
+        ([key, virtualAudioNodeParam]) => [
+          key,
+          virtualAudioNodeParam.initialize(audioContext),
+        ],
+      ),
     );
 
     connectAudioNodes(this.virtualNodes, () => {});
@@ -76,7 +79,7 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
     audioContext: AudioContext | OfflineAudioContext,
   ): this {
     const params = _params ?? {};
-    const audioGraphParamsFactoryValues = values(this.node(params));
+    const audioGraphParamsFactoryValues = Object.values(this.node(params));
     const keys = Object.keys(this.virtualNodes);
 
     for (let i = 0; i < keys.length; i++) {

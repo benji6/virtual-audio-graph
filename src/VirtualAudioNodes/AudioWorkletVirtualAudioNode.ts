@@ -1,5 +1,5 @@
 import { IVirtualAudioNodeParams, Output, VirtualAudioNode } from "../types";
-import { equals, values } from "../utils";
+import { equals } from "../utils";
 import CustomVirtualAudioNode from "./CustomVirtualAudioNode";
 import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
 
@@ -32,7 +32,7 @@ export default class AudioWorkletVirtualAudioNode extends VirtualAudioNodeBase {
     const { audioNode } = this;
     if (node) {
       if (node instanceof CustomVirtualAudioNode) {
-        for (const childNode of values(node.virtualNodes)) {
+        for (const childNode of Object.values(node.virtualNodes)) {
           if (!this.connections.some((x) => x === childNode.audioNode))
             continue;
           this.connections = this.connections.filter(

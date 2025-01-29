@@ -4,7 +4,6 @@ import {
   IVirtualAudioNodeGraph,
   VirtualAudioNode,
 } from "./types";
-import { entries, values } from "./utils";
 import AudioWorkletVirtualAudioNode from "./VirtualAudioNodes/AudioWorkletVirtualAudioNode";
 import CustomVirtualAudioNode from "./VirtualAudioNodes/CustomVirtualAudioNode";
 import StandardVirtualAudioNode from "./VirtualAudioNodes/StandardVirtualAudioNode";
@@ -13,7 +12,7 @@ export default (
   virtualGraph: IVirtualAudioNodeGraph,
   handleConnectionToOutput: (_: VirtualAudioNode) => void,
 ) => {
-  for (const [id, virtualNode] of entries(virtualGraph)) {
+  for (const [id, virtualNode] of Object.entries(virtualGraph)) {
     if (virtualNode.connected || virtualNode.output == null) continue;
 
     for (const output of Array.isArray(virtualNode.output)
@@ -62,7 +61,9 @@ export default (
       const destinationVirtualAudioNode = virtualGraph[output];
 
       if (destinationVirtualAudioNode instanceof CustomVirtualAudioNode) {
-        for (const node of values(destinationVirtualAudioNode.virtualNodes)) {
+        for (const node of Object.values(
+          destinationVirtualAudioNode.virtualNodes,
+        )) {
           if (
             (node instanceof StandardVirtualAudioNode ||
               node instanceof AudioWorkletVirtualAudioNode) &&

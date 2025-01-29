@@ -6,7 +6,7 @@ import {
   Output,
   VirtualAudioNode,
 } from "../types";
-import { capitalize, equals, values } from "../utils";
+import { capitalize, equals } from "../utils";
 import CustomVirtualAudioNode from "./CustomVirtualAudioNode";
 import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
 
@@ -72,7 +72,7 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
   public disconnect(node?: VirtualAudioNode): void {
     if (node) {
       if (node instanceof CustomVirtualAudioNode) {
-        for (const childNode of values(node.virtualNodes)) {
+        for (const childNode of Object.values(node.virtualNodes)) {
           if (!this.connections.some((x) => x === childNode.audioNode))
             continue;
           this.connections = this.connections.filter(

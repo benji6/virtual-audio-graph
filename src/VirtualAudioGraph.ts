@@ -1,7 +1,7 @@
 import connectAudioNodes from "./connectAudioNodes";
 import { OUTPUT } from "./constants";
 import { IVirtualAudioNodeGraph, VirtualAudioNode } from "./types";
-import { entries, equals, values } from "./utils";
+import { equals } from "./utils";
 
 export default class VirtualAudioGraph {
   private virtualNodes: IVirtualAudioNodeGraph = {};
@@ -21,7 +21,7 @@ export default class VirtualAudioGraph {
         `"${OUTPUT}" is a virtual-audio-graph reserved string and therefore not a valid node ID`,
       );
 
-    for (const [id, virtualAudioNode] of entries(this.virtualNodes)) {
+    for (const [id, virtualAudioNode] of Object.entries(this.virtualNodes)) {
       if (newGraph.hasOwnProperty(id)) continue;
       virtualAudioNode.disconnectAndDestroy();
       this.disconnectParents(virtualAudioNode);
@@ -69,7 +69,7 @@ export default class VirtualAudioGraph {
   }
 
   private disconnectParents(vNode: VirtualAudioNode): void {
-    for (const node of values(this.virtualNodes)) {
+    for (const node of Object.values(this.virtualNodes)) {
       node.disconnect(vNode);
     }
   }
