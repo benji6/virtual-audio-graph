@@ -23,6 +23,30 @@ describe("custom nodes", () => {
     expect(audioContext.toJSON()).toMatchSnapshot();
   });
 
+  test("supports custom nodes with no output", () => {
+    const customNode = V.createNode(() => {
+      return {
+        0: V.gain(V.OUTPUT),
+        1: V.oscillator(V.NO_OUTPUT),
+      };
+    });
+
+    virtualAudioGraph.update({
+      0: customNode(V.OUTPUT),
+    });
+
+    expect(audioContext.toJSON()).toEqual({
+      inputs: [
+        {
+          gain: { inputs: [], value: 1 },
+          inputs: [],
+          name: "GainNode",
+        },
+      ],
+      name: "AudioDestinationNode",
+    });
+  });
+
   test("can define a custom node built of other custom nodes", () => {
     const quietPingPongDelay = V.createNode(() => ({
       0: V.gain(V.OUTPUT),

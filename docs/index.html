@@ -73,8 +73,9 @@
   createWorkletNode,
   delay,
   gain,
-  OUTPUT,
+  NO_OUTPUT,
   oscillator,
+  OUTPUT,
   stereoPanner,
 } from 'virtual-audio-graph'
 </code></pre>
@@ -842,6 +843,28 @@ bufferSourceNode.start();</code></pre>
         <button class="button-play">Play</button>
       </div>
 
+      <h2>Nodes that have no output</h2>
+      <p>
+        Sometimes we don't want to connect our nodes anywhere. In those cases we
+        can use <code class="language-js">NO_OUTPUT</code> instead of
+        <code class="language-js">OUTPUT</code>:
+      </p>
+      <pre
+        class="language-js"
+      ><code class="language-js">virtualAudioGraph.update({
+  osc: oscillator("analyzer"),
+  analyzer: analyser(OUTPUT, { fftSize: 2048 }),
+});
+
+requestAnimationFrame(function render() {
+  requestAnimationFrame(render);
+  const analyserNode = virtualAudioGraph.getAudioNodeById("analyzer");
+  const dataArray = new Float32Array(analyserNode.frequencyBinCount);
+  analyserNode.getFloatFrequencyData(dataArray);
+  console.log(dataArray); // render the data somewhere...
+});</code></pre>
+
+      <h2>Happy coding!</h2>
       <p>
         Thank you for reading and I hope you find this library useful. If you
         need any further help or have any feedback or suggestions you can
@@ -857,7 +880,6 @@ bufferSourceNode.start();</code></pre>
           >see here</a
         >.
       </p>
-      <p>Happy coding!</p>
     </main>
   </body>
 </html>

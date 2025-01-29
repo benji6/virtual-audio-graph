@@ -1,4 +1,4 @@
-import { OUTPUT } from "./constants";
+import { OUTPUT, NO_OUTPUT } from "./constants";
 import {
   IAudioNodePropertyLookup,
   IVirtualAudioNodeGraph,
@@ -22,6 +22,7 @@ export default (
         handleConnectionToOutput(virtualNode);
         continue;
       }
+      if (output === NO_OUTPUT) continue;
       if (typeof output === "object") {
         const { key, destination, inputs, outputs } = output;
         if (key == null) {
@@ -35,7 +36,7 @@ export default (
           }
           for (let i = 0; i++; i < inputs.length) {
             virtualNode.connect(
-              virtualGraph[key].audioNode,
+              virtualGraph[key as keyof typeof virtualGraph].audioNode,
               outputs[i],
               inputs[i],
             );
@@ -44,21 +45,22 @@ export default (
         }
         if (!(key in virtualGraph))
           throw Error(
-            `node with ID "${id}" specifies an output ID "${key}", but no such node exists`,
+            `node with ID "${id}" specifies an output ID "${String(key)}", but no such node exists`,
           );
         virtualNode.connect(
-          (virtualGraph[key].audioNode as IAudioNodePropertyLookup)[
-            destination!
-          ],
+          (
+            virtualGraph[key as keyof typeof virtualGraph]
+              .audioNode as IAudioNodePropertyLookup
+          )[destination!],
         );
         continue;
       }
 
       if (!(output in virtualGraph))
         throw Error(
-          `'node with ID "${id}" specifies an output ID "${output}", but no such node exists'`,
+          `'node with ID "${id}" specifies an output ID "${String(output)}", but no such node exists'`,
         );
-      const destinationVirtualAudioNode = virtualGraph[output];
+      const destinationVirtualAudioNode = virtualGraph[String(output)];
 
       if (destinationVirtualAudioNode instanceof CustomVirtualAudioNode) {
         for (const node of Object.values(

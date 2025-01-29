@@ -39,6 +39,46 @@ describe("expected behavior with update", () => {
     expect(audioContext.toJSON()).toMatchSnapshot();
   });
 
+  test("supports nodes with no output", () => {
+    virtualAudioGraph.update({
+      0: V.oscillator(V.OUTPUT),
+      1: V.gain(V.OUTPUT),
+    });
+
+    expect(audioContext.toJSON()).toEqual({
+      inputs: [
+        {
+          detune: { inputs: [], value: 0 },
+          frequency: { inputs: [], value: 440 },
+          inputs: [],
+          name: "OscillatorNode",
+          type: "sine",
+        },
+        {
+          gain: { inputs: [], value: 1 },
+          inputs: [],
+          name: "GainNode",
+        },
+      ],
+      name: "AudioDestinationNode",
+    });
+
+    virtualAudioGraph.update({
+      0: V.oscillator(V.NO_OUTPUT),
+      1: V.gain(V.OUTPUT),
+    });
+    expect(audioContext.toJSON()).toEqual({
+      inputs: [
+        {
+          gain: { inputs: [], value: 1 },
+          inputs: [],
+          name: "GainNode",
+        },
+      ],
+      name: "AudioDestinationNode",
+    });
+  });
+
   test("handles random strings for ids", () => {
     virtualAudioGraph.update({
       bar: V.oscillator("foo"),

@@ -1,4 +1,4 @@
-import { OUTPUT } from "./constants";
+import { NO_OUTPUT, OUTPUT } from "./constants";
 import AudioWorkletVirtualAudioNode from "./VirtualAudioNodes/AudioWorkletVirtualAudioNode";
 import CustomVirtualAudioNode from "./VirtualAudioNodes/CustomVirtualAudioNode";
 import StandardVirtualAudioNode from "./VirtualAudioNodes/StandardVirtualAudioNode";
@@ -15,28 +15,22 @@ export type CustomVirtualAudioNodeFactory<P = IVirtualAudioNodeParams> = (
   _: P,
 ) => IVirtualAudioNodeGraph;
 
+type OutputKey = number | string | typeof NO_OUTPUT | typeof OUTPUT;
 export interface IOutputObject {
   destination?: string;
   inputs?: Array<number | string>;
-  key: number | string;
+  key: OutputKey;
   outputs?: Array<number | string>;
 }
-
-export type Output =
-  | Array<number | string | IOutputObject>
-  | IOutputObject
-  | number
-  | string
-  | typeof OUTPUT;
+type OutputItem = OutputKey | IOutputObject;
+export type Output = OutputItem | Array<OutputItem>;
 
 export type VirtualAudioNode =
   | AudioWorkletVirtualAudioNode
   | CustomVirtualAudioNode
   | StandardVirtualAudioNode;
 
-export interface IVirtualAudioNodeGraph {
-  [_: string]: VirtualAudioNode;
-}
+export type IVirtualAudioNodeGraph = Record<string, VirtualAudioNode>;
 
 export interface IVirtualAudioNodeParams {
   [_: string]: any;
