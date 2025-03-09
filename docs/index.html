@@ -73,6 +73,7 @@
   createWorkletNode,
   delay,
   gain,
+  INPUT,
   NO_OUTPUT,
   oscillator,
   OUTPUT,
@@ -487,8 +488,10 @@ virtualAudioGraph.update({
       <p>
         Sometimes you will want to connect a node to a custom node and will want
         to specify which nodes within the custom node that connection is made
-        to. You can do this by passing the string "input" as the 3rd argument in
-        the node constructor as below:
+        to. You can do this by passing the constant <code>INTPUT</code> (this is
+        currently the string <code>"input"</code> for backwards compatibility)
+        which is exported by <code>virtual-audio-graph</code> as the 3rd
+        argument in the node constructor as below:
       </p>
 
       <pre
@@ -502,7 +505,7 @@ virtualAudioGraph.update({
   2: delay([1, 5], { delayTime, maxDelayTime: delayTime }),
   3: gain(2, { gain: decay }),
   4: delay([0, 3], { delayTime, maxDelayTime: delayTime }),
-  5: gain(4, { gain: decay }, 'input'), // connections will be made here
+  5: gain(4, { gain: decay }, INPUT), // connections will be made here
 }))
 
 const { currentTime } = virtualAudioGraph
@@ -527,7 +530,7 @@ virtualAudioGraph.update({
 
       <pre
         class="language-js"
-      ><code class="language-js">5: gain(4, null, 'input')</code></pre>
+      ><code class="language-js">5: gain(4, null, INPUT)</code></pre>
 
       <h2>Working with audio files</h2>
       <p>
@@ -763,7 +766,7 @@ const pingPongDelay = createNode(({
   2: delay([1, 5], { delayTime, maxDelayTime: delayTime }),
   3: gain(2, { gain: decay }),
   4: delay([0, 3], { delayTime, maxDelayTime: delayTime }),
-  5: gain(4, { gain: decay }, 'input'),
+  5: gain(4, { gain: decay }, INPUT),
 }))
 
 const oscillators = createNode(({

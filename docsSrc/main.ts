@@ -4,6 +4,7 @@ import createVirtualAudioGraph, {
   createWorkletNode,
   delay,
   gain,
+  INPUT,
   oscillator,
   OUTPUT,
   stereoPanner,
@@ -230,7 +231,7 @@ const examples = [
       2: delay([1, 5], { delayTime, maxDelayTime: delayTime }),
       3: gain(2, { gain: decay }),
       4: delay([0, 3], { delayTime, maxDelayTime: delayTime }),
-      5: gain(4, { gain: decay }, "input"), // connections will be made here
+      5: gain(4, { gain: decay }, INPUT), // connections will be made here
     }));
 
     const { currentTime } = virtualAudioGraph;
@@ -353,7 +354,7 @@ const examples = [
       2: delay([1, 5], { delayTime, maxDelayTime: delayTime }),
       3: gain(2, { gain: decay }),
       4: delay([0, 3], { delayTime, maxDelayTime: delayTime }),
-      5: gain(4, { gain: decay }, "input"),
+      5: gain(4, { gain: decay }, INPUT),
     }));
 
     const oscillators = createNode(

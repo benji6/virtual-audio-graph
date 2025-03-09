@@ -11,7 +11,7 @@ export default V.createNode((x) => {
     2: V.delay([1, "five"], { delayTime, maxDelayTime }),
     3: V.gain(2, { gain: decay }),
     4: V.delay(["zero", 3], { delayTime, maxDelayTime }),
-    five: V.gain(4, { gain: decay }, "input"),
+    five: V.gain(4, { gain: decay }, V.INPUT),
     zero: V.stereoPanner(V.OUTPUT, { pan: -1 }),
   };
 });

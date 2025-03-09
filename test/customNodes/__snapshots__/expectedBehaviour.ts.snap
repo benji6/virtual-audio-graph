@@ -757,6 +757,45 @@ exports[`custom nodes can define a custom node which has an input node with no p
 }
 `;
 
+exports[`custom nodes can define a custom node which has an input node with no params and using the string \`input\` instead of the \`INPUT\` identifier for backwards compatibility 1`] = `
+{
+  "inputs": [
+    {
+      "gain": {
+        "inputs": [],
+        "value": 1,
+      },
+      "inputs": [
+        {
+          "gain": {
+            "inputs": [],
+            "value": 0.5,
+          },
+          "inputs": [
+            {
+              "detune": {
+                "inputs": [],
+                "value": 0,
+              },
+              "frequency": {
+                "inputs": [],
+                "value": 220,
+              },
+              "inputs": [],
+              "name": "OscillatorNode",
+              "type": "sine",
+            },
+          ],
+          "name": "GainNode",
+        },
+      ],
+      "name": "GainNode",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
 exports[`custom nodes creates a custom node which can be reused in virtualAudioGraph.update 1`] = `
 {
   "inputs": [

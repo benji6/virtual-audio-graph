@@ -132,11 +132,11 @@ describe("custom nodes", () => {
     const buffer = audioContext.createBuffer(2, sampleRate * 2, sampleRate);
     const reverb1 = V.createNode(() => ({
       0: V.gain(V.OUTPUT),
-      1: V.convolver(0, { buffer }, "input"),
+      1: V.convolver(0, { buffer }, V.INPUT),
     }));
     const reverb2 = V.createNode(() => ({
       0: V.gain(V.OUTPUT, { gain: 0.5 }),
-      1: V.convolver(0, { buffer }, "input"),
+      1: V.convolver(0, { buffer }, V.INPUT),
     }));
 
     virtualAudioGraph.update({
@@ -157,6 +157,22 @@ describe("custom nodes", () => {
   test("can define a custom node which has an input node with no params", () => {
     virtualAudioGraph.update({
       0: gainWithNoParams(V.OUTPUT),
+      1: sineOsc(0, {
+        frequency: 220,
+        gain: 0.5,
+        startTime: 1,
+        stopTime: 2,
+      }),
+    });
+    expect(audioContext.toJSON()).toMatchSnapshot();
+  });
+
+  test("can define a custom node which has an input node with no params and using the string `input` instead of the `INPUT` identifier for backwards compatibility", () => {
+    const gainWithNoParamsInputBackwardsCompatibility = V.createNode(() => ({
+      0: V.gain(V.OUTPUT, null, "input"),
+    }));
+    virtualAudioGraph.update({
+      0: gainWithNoParamsInputBackwardsCompatibility(V.OUTPUT),
       1: sineOsc(0, {
         frequency: 220,
         gain: 0.5,

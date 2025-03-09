@@ -1,4 +1,4 @@
-import { OUTPUT, NO_OUTPUT } from "./constants";
+import { OUTPUT, NO_OUTPUT, INPUT } from "./constants";
 import {
   IAudioNodePropertyLookup,
   IVirtualAudioNodeGraph,
@@ -69,7 +69,7 @@ export default (
           if (
             (node instanceof StandardVirtualAudioNode ||
               node instanceof AudioWorkletVirtualAudioNode) &&
-            node.input === "input"
+            node.input === INPUT
           ) {
             virtualNode.connect(node.audioNode);
           }
