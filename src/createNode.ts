@@ -5,6 +5,9 @@ import {
 } from "./types";
 import CustomVirtualAudioNode from "./VirtualAudioNodes/CustomVirtualAudioNode";
 
-export default (node: CustomVirtualAudioNodeFactory<IVirtualAudioNodeParams>) =>
-  (output: Output, params?: IVirtualAudioNodeParams) =>
-    new CustomVirtualAudioNode(node, output, params);
+export default function createNode<Params extends IVirtualAudioNodeParams>(
+  node: CustomVirtualAudioNodeFactory<Params>,
+) {
+  return (output: Output, params?: Params) =>
+    new CustomVirtualAudioNode<Params>(node, output, params);
+}

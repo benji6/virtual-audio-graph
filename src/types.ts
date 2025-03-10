@@ -11,9 +11,9 @@ export interface IAudioNodeFactoryParam {
   [_: string]: any;
 }
 
-export type CustomVirtualAudioNodeFactory<P = IVirtualAudioNodeParams> = (
-  _: P,
-) => IVirtualAudioNodeGraph;
+export type CustomVirtualAudioNodeFactory<
+  Params extends IVirtualAudioNodeParams,
+> = (_: Params) => IVirtualAudioNodeGraph;
 
 type OutputKey = number | string | typeof NO_OUTPUT | typeof OUTPUT;
 export interface IOutputObject {
@@ -27,7 +27,7 @@ export type Output = OutputItem | Array<OutputItem>;
 
 export type VirtualAudioNode =
   | AudioWorkletVirtualAudioNode
-  | CustomVirtualAudioNode
+  | CustomVirtualAudioNode<IVirtualAudioNodeParams>
   | StandardVirtualAudioNode;
 
 export type IVirtualAudioNodeGraph = Record<string, VirtualAudioNode>;

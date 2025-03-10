@@ -10,19 +10,21 @@ import {
 import { equals } from "../utils";
 import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
 
-export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
+export default class CustomVirtualAudioNode<
+  Params extends IVirtualAudioNodeParams,
+> extends VirtualAudioNodeBase<Params> {
   public readonly audioNode: undefined = undefined;
   public connected: boolean = false;
-  public params: IVirtualAudioNodeParams;
+  public params: Params;
   public virtualNodes!: IVirtualAudioNodeGraph;
 
   constructor(
-    public readonly node: CustomVirtualAudioNodeFactory,
+    public readonly node: CustomVirtualAudioNodeFactory<Params>,
     public output?: Output,
-    params?: IVirtualAudioNodeParams,
+    params?: Params,
   ) {
     super();
-    this.params = params || {};
+    this.params = params || ({} as Params);
   }
 
   public connect(...connectArgs: any[]): void {
@@ -75,10 +77,10 @@ export default class CustomVirtualAudioNode extends VirtualAudioNodeBase {
   }
 
   public update(
-    _params: IVirtualAudioNodeParams | null | undefined,
+    _params: Params | null | undefined,
     audioContext: AudioContext | OfflineAudioContext,
   ): this {
-    const params = _params ?? {};
+    const params = _params ?? ({} as Params);
     const audioGraphParamsFactoryValues = Object.values(this.node(params));
     const keys = Object.keys(this.virtualNodes);
 
