@@ -5,7 +5,7 @@ import {
 } from "../types";
 
 export default abstract class VirtualAudioNodeBase<
-  Params extends IVirtualAudioNodeParams = IVirtualAudioNodeParams,
+  Params = IVirtualAudioNodeParams,
 > {
   public readonly node!: string | CustomVirtualAudioNodeFactory<Params>;
 

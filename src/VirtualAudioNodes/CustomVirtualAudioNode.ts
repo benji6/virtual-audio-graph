@@ -3,7 +3,6 @@ import { OUTPUT } from "../constants";
 import {
   CustomVirtualAudioNodeFactory,
   IVirtualAudioNodeGraph,
-  IVirtualAudioNodeParams,
   Output,
   VirtualAudioNode,
 } from "../types";
@@ -11,7 +10,7 @@ import { equals } from "../utils";
 import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
 
 export default class CustomVirtualAudioNode<
-  Params extends IVirtualAudioNodeParams,
+  Params,
 > extends VirtualAudioNodeBase<Params> {
   public readonly audioNode: undefined = undefined;
   public connected: boolean = false;

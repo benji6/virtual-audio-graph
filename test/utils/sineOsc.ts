@@ -1,12 +1,17 @@
 import * as V from "../../src";
 
-export default V.createNode((params) => {
-  const frequency = params.frequency;
-  const gain = params.gain;
-  const startTime = params.startTime;
-  const stopTime = params.stopTime;
-
-  return {
+export default V.createNode(
+  ({
+    frequency,
+    gain,
+    startTime,
+    stopTime,
+  }: {
+    frequency: number;
+    gain: number;
+    startTime?: number;
+    stopTime?: number;
+  }) => ({
     0: V.gain([V.OUTPUT], { gain }),
     1: V.oscillator(0, {
       frequency,
@@ -14,5 +19,5 @@ export default V.createNode((params) => {
       stopTime,
       type: "sine",
     }),
-  };
-});
+  }),
+);

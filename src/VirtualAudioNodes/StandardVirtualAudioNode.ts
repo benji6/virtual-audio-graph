@@ -10,9 +10,7 @@ import { capitalize, equals } from "../utils";
 import CustomVirtualAudioNode from "./CustomVirtualAudioNode";
 import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
 
-interface IAudioContextFactoryLookup {
-  [_: string]: any;
-}
+type IAudioContextFactoryLookup = Record<string, any>;
 
 const createAudioNode = (
   audioContext: AudioContext | OfflineAudioContext,

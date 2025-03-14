@@ -47,6 +47,29 @@ describe("custom nodes", () => {
     });
   });
 
+  test("supports custom nodes with nested parameters", () => {
+    const customNode = V.createNode(
+      ({ gain: { value } }: { gain: { value: number } }) => ({
+        0: V.gain(V.OUTPUT, { gain: value }),
+      }),
+    );
+
+    virtualAudioGraph.update({
+      0: customNode(V.OUTPUT, { gain: { value: 0.5 } }),
+    });
+
+    expect(audioContext.toJSON()).toEqual({
+      inputs: [
+        {
+          gain: { inputs: [], value: 0.5 },
+          inputs: [],
+          name: "GainNode",
+        },
+      ],
+      name: "AudioDestinationNode",
+    });
+  });
+
   test("can define a custom node built of other custom nodes", () => {
     const quietPingPongDelay = V.createNode(() => ({
       0: V.gain(V.OUTPUT),

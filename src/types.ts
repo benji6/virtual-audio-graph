@@ -3,17 +3,14 @@ import AudioWorkletVirtualAudioNode from "./VirtualAudioNodes/AudioWorkletVirtua
 import CustomVirtualAudioNode from "./VirtualAudioNodes/CustomVirtualAudioNode";
 import StandardVirtualAudioNode from "./VirtualAudioNodes/StandardVirtualAudioNode";
 
-export interface IAudioNodePropertyLookup {
-  [_: string]: any;
-}
+export type IAudioNodeFactoryParam = Record<string, any>;
+export type IAudioNodePropertyLookup = Record<string, any>;
+export type IVirtualAudioNodeGraph = Record<string, VirtualAudioNode>;
+export type IVirtualAudioNodeParams = Record<string, any>;
 
-export interface IAudioNodeFactoryParam {
-  [_: string]: any;
-}
-
-export type CustomVirtualAudioNodeFactory<
-  Params extends IVirtualAudioNodeParams,
-> = (_: Params) => IVirtualAudioNodeGraph;
+export type CustomVirtualAudioNodeFactory<Params> = (
+  _: Params,
+) => IVirtualAudioNodeGraph;
 
 type OutputKey = number | string | typeof NO_OUTPUT | typeof OUTPUT;
 export interface IOutputObject {
@@ -27,11 +24,5 @@ export type Output = OutputItem | Array<OutputItem>;
 
 export type VirtualAudioNode =
   | AudioWorkletVirtualAudioNode
-  | CustomVirtualAudioNode<IVirtualAudioNodeParams>
+  | CustomVirtualAudioNode<any>
   | StandardVirtualAudioNode;
-
-export type IVirtualAudioNodeGraph = Record<string, VirtualAudioNode>;
-
-export interface IVirtualAudioNodeParams {
-  [_: string]: any;
-}
