@@ -1,5 +1,6 @@
 import createVirtualAudioGraph, * as V from "../../src";
 import { oscillator } from "../../src";
+import { IVirtualAudioNodeGraph } from "../../src/types";
 import gainWithNoParams from "../utils/gainWithNoParams";
 import pingPongDelay from "../utils/pingPongDelay";
 import sineOsc from "../utils/sineOsc";
@@ -287,5 +288,24 @@ describe("custom nodes", () => {
 
     virtualAudioGraph.update({ 0: voice(V.OUTPUT, { startTime: 2 }) });
     expect(initialSnapshot).toEqual(audioContext.toJSON());
+  });
+
+  test("works when the custom node audio graph changes size", () => {
+    const variableSizeNode = V.createNode(({ size }) => {
+      const graph: IVirtualAudioNodeGraph = {};
+      for (let i = 0; i < size; i++)
+        graph[`ID:${i}`] = oscillator(V.OUTPUT, { startTime: 0, stopTime: 1 });
+
+      return graph;
+    });
+    virtualAudioGraph.update({
+      0: variableSizeNode(V.OUTPUT, { size: 2 }),
+    });
+    expect(audioContext.toJSON()).toMatchSnapshot();
+
+    virtualAudioGraph.update({
+      0: variableSizeNode(V.OUTPUT, { size: 1 }),
+    });
+    expect(audioContext.toJSON()).toMatchSnapshot();
   });
 });

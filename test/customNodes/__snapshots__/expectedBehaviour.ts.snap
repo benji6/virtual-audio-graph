@@ -960,3 +960,58 @@ exports[`custom nodes updating startTime of nested custom nodes 1`] = `
   "name": "AudioDestinationNode",
 }
 `;
+
+exports[`custom nodes works when the custom node audio graph changes size 1`] = `
+{
+  "inputs": [
+    {
+      "detune": {
+        "inputs": [],
+        "value": 0,
+      },
+      "frequency": {
+        "inputs": [],
+        "value": 440,
+      },
+      "inputs": [],
+      "name": "OscillatorNode",
+      "type": "sine",
+    },
+    {
+      "detune": {
+        "inputs": [],
+        "value": 0,
+      },
+      "frequency": {
+        "inputs": [],
+        "value": 440,
+      },
+      "inputs": [],
+      "name": "OscillatorNode",
+      "type": "sine",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;
+
+exports[`custom nodes works when the custom node audio graph changes size 2`] = `
+{
+  "inputs": [
+    {
+      "detune": {
+        "inputs": [],
+        "value": 0,
+      },
+      "frequency": {
+        "inputs": [],
+        "value": 440,
+      },
+      "inputs": [],
+      "name": "OscillatorNode",
+      "type": "sine",
+    },
+  ],
+  "name": "AudioDestinationNode",
+}
+`;

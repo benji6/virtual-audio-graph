@@ -6,7 +6,7 @@ import {
   Output,
   VirtualAudioNode,
 } from "../types";
-import { equals } from "../utils";
+import updateVirtualNodeGraph from "../updateVirtualNodeGraph";
 import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
 
 export default class CustomVirtualAudioNode<
@@ -47,7 +47,7 @@ export default class CustomVirtualAudioNode<
         output === OUTPUT ||
         (Array.isArray(output) && output.indexOf(OUTPUT) !== -1)
       ) {
-        virtualNode.disconnect();
+        virtualNode.disconnect(node);
       }
     }
     this.connected = false;
@@ -80,29 +80,7 @@ export default class CustomVirtualAudioNode<
     audioContext: AudioContext | OfflineAudioContext,
   ): this {
     const params = _params ?? ({} as Params);
-    const audioGraphParamsFactoryValues = Object.values(this.node(params));
-    const keys = Object.keys(this.virtualNodes);
-
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      const virtualAudioNode = this.virtualNodes[key];
-      const newVirtualAudioNode = audioGraphParamsFactoryValues[i];
-
-      if (virtualAudioNode.cannotUpdateInPlace(newVirtualAudioNode)) {
-        virtualAudioNode.disconnectAndDestroy();
-        this.virtualNodes[key] = newVirtualAudioNode.initialize(audioContext);
-        continue;
-      }
-
-      virtualAudioNode.update(newVirtualAudioNode.params, audioContext);
-
-      if (!equals(newVirtualAudioNode.output, virtualAudioNode.output)) {
-        virtualAudioNode.disconnect();
-        virtualAudioNode.output = newVirtualAudioNode.output;
-      }
-    }
-
-    connectAudioNodes(this.virtualNodes, () => {});
+    updateVirtualNodeGraph(this.virtualNodes, this.node(params), audioContext);
     this.params = params;
     return this;
   }
