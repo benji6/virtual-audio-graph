@@ -4,6 +4,7 @@
 ![CI/CD](https://github.com/benji6/virtual-audio-graph/workflows/CI/CD/badge.svg)
 ![NPM](https://img.shields.io/npm/l/virtual-audio-graph)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/f5f3984d-617b-418a-9c5b-8881aceb7adb/deploy-status)](https://app.netlify.com/sites/virtual-audio-graph/deploys)
+[![dependencies](https://depx.co/api/badge/virtual-audio-graph)](https://depx.co/pkg/virtual-audio-graph)
 
 ## Overview
 
