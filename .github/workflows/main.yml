@@ -1,5 +1,9 @@
 name: CI/CD
 on: push
+permissions:
+  contents: write
+  id-token: write
+  issues: write
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
