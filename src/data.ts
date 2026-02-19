@@ -17,6 +17,7 @@ export const constructorParamsKeys = [
   "maxDelayTime",
   "mediaElement",
   "mediaStream",
+  "numberOfInputs",
   "numberOfOutputs",
 ];
 
