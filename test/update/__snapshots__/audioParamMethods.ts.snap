@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`audio param methods with update multiple setValueAtTime 1`] = `
+exports[`audio param methods with update > multiple setValueAtTime 1`] = `
 {
   "inputs": [
     {
@@ -16,7 +16,7 @@ exports[`audio param methods with update multiple setValueAtTime 1`] = `
 }
 `;
 
-exports[`audio param methods with update overides setValueAtTime 1`] = `
+exports[`audio param methods with update > overides setValueAtTime 1`] = `
 {
   "inputs": [
     {
@@ -32,7 +32,7 @@ exports[`audio param methods with update overides setValueAtTime 1`] = `
 }
 `;
 
-exports[`audio param methods with update setValueAtTime with exponentialRampToValueAtTime 1`] = `
+exports[`audio param methods with update > setValueAtTime with exponentialRampToValueAtTime 1`] = `
 {
   "inputs": [
     {
@@ -53,7 +53,7 @@ exports[`audio param methods with update setValueAtTime with exponentialRampToVa
 }
 `;
 
-exports[`audio param methods with update setValueAtTime with linearRampToValueAtTime 1`] = `
+exports[`audio param methods with update > setValueAtTime with linearRampToValueAtTime 1`] = `
 {
   "inputs": [
     {
@@ -69,7 +69,7 @@ exports[`audio param methods with update setValueAtTime with linearRampToValueAt
 }
 `;
 
-exports[`audio param methods with update setValueAtTime with setTargetAtTime 1`] = `
+exports[`audio param methods with update > setValueAtTime with setTargetAtTime 1`] = `
 {
   "inputs": [
     {
@@ -85,7 +85,7 @@ exports[`audio param methods with update setValueAtTime with setTargetAtTime 1`]
 }
 `;
 
-exports[`audio param methods with update setValueAtTime with setValueCurveAtTime 1`] = `
+exports[`audio param methods with update > setValueAtTime with setValueCurveAtTime 1`] = `
 {
   "inputs": [
     {
@@ -101,7 +101,7 @@ exports[`audio param methods with update setValueAtTime with setValueCurveAtTime
 }
 `;
 
-exports[`audio param methods with update single setValueAtTime 1`] = `
+exports[`audio param methods with update > single setValueAtTime 1`] = `
 {
   "inputs": [
     {

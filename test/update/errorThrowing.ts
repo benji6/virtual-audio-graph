@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import createVirtualAudioGraph, * as V from "../../src";
 
 const audioContext = new AudioContext();

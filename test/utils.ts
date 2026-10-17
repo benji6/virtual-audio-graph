@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { equals } from "../src/utils";
 
 describe("utils", () => {

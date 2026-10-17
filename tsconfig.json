@@ -3,12 +3,13 @@
     "allowUnreachableCode": false,
     "declaration": true,
     "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "outDir": "dist",
     "sourceMap": false,
     "strict": true,
-    "target": "es5"
+    "target": "es2019"
   },
   "include": ["src/**/*"]
 }

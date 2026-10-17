@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import createVirtualAudioGraph, * as V from "../../src";
 import pingPongDelay from "../utils/pingPongDelay";
 import sineOsc from "../utils/sineOsc";

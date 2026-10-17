@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, test } from "vitest";
 import createVirtualAudioGraph, * as V from "../../src";
 
 describe("audio param methods with update", () => {

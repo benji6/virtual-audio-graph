@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`custom nodes can define a custom node built of other custom nodes 1`] = `
+exports[`custom nodes > can define a custom node built of other custom nodes 1`] = `
 {
   "inputs": [
     {
@@ -144,7 +144,7 @@ exports[`custom nodes can define a custom node built of other custom nodes 1`] =
 }
 `;
 
-exports[`custom nodes can define a custom node which can be removed 1`] = `
+exports[`custom nodes > can define a custom node which can be removed 1`] = `
 {
   "inputs": [
     {
@@ -279,7 +279,7 @@ exports[`custom nodes can define a custom node which can be removed 1`] = `
 }
 `;
 
-exports[`custom nodes can define a custom node which can be removed 2`] = `
+exports[`custom nodes > can define a custom node which can be removed 2`] = `
 {
   "inputs": [
     {
@@ -295,7 +295,7 @@ exports[`custom nodes can define a custom node which can be removed 2`] = `
 }
 `;
 
-exports[`custom nodes can define a custom node which can be replaced with another on update 1`] = `
+exports[`custom nodes > can define a custom node which can be replaced with another on update 1`] = `
 {
   "inputs": [
     {
@@ -347,7 +347,7 @@ exports[`custom nodes can define a custom node which can be replaced with anothe
 }
 `;
 
-exports[`custom nodes can define a custom node which can be replaced with another on update 2`] = `
+exports[`custom nodes > can define a custom node which can be replaced with another on update 2`] = `
 {
   "inputs": [
     {
@@ -386,7 +386,7 @@ exports[`custom nodes can define a custom node which can be replaced with anothe
 }
 `;
 
-exports[`custom nodes can define a custom node which can be replaced with another on update 3`] = `
+exports[`custom nodes > can define a custom node which can be replaced with another on update 3`] = `
 {
   "inputs": [
     {
@@ -417,7 +417,7 @@ exports[`custom nodes can define a custom node which can be replaced with anothe
 }
 `;
 
-exports[`custom nodes can define a custom node which can be replaced with another on update 4`] = `
+exports[`custom nodes > can define a custom node which can be replaced with another on update 4`] = `
 {
   "inputs": [
     {
@@ -448,7 +448,7 @@ exports[`custom nodes can define a custom node which can be replaced with anothe
 }
 `;
 
-exports[`custom nodes can define a custom node which can be updated 1`] = `
+exports[`custom nodes > can define a custom node which can be updated 1`] = `
 {
   "inputs": [
     {
@@ -583,7 +583,7 @@ exports[`custom nodes can define a custom node which can be updated 1`] = `
 }
 `;
 
-exports[`custom nodes can define a custom node which can be updated 2`] = `
+exports[`custom nodes > can define a custom node which can be updated 2`] = `
 {
   "inputs": [
     {
@@ -718,7 +718,7 @@ exports[`custom nodes can define a custom node which can be updated 2`] = `
 }
 `;
 
-exports[`custom nodes can define a custom node which has an input node with no params 1`] = `
+exports[`custom nodes > can define a custom node which has an input node with no params 1`] = `
 {
   "inputs": [
     {
@@ -757,7 +757,7 @@ exports[`custom nodes can define a custom node which has an input node with no p
 }
 `;
 
-exports[`custom nodes can define a custom node which has an input node with no params and using the string \`input\` instead of the \`INPUT\` identifier for backwards compatibility 1`] = `
+exports[`custom nodes > can define a custom node which has an input node with no params and using the string \`input\` instead of the \`INPUT\` identifier for backwards compatibility 1`] = `
 {
   "inputs": [
     {
@@ -796,7 +796,7 @@ exports[`custom nodes can define a custom node which has an input node with no p
 }
 `;
 
-exports[`custom nodes creates a custom node which can be reused in virtualAudioGraph.update 1`] = `
+exports[`custom nodes > creates a custom node which can be reused in virtualAudioGraph.update 1`] = `
 {
   "inputs": [
     {
@@ -931,7 +931,7 @@ exports[`custom nodes creates a custom node which can be reused in virtualAudioG
 }
 `;
 
-exports[`custom nodes updating startTime of nested custom nodes 1`] = `
+exports[`custom nodes > updating startTime of nested custom nodes 1`] = `
 {
   "inputs": [
     {
@@ -961,7 +961,7 @@ exports[`custom nodes updating startTime of nested custom nodes 1`] = `
 }
 `;
 
-exports[`custom nodes works when the custom node audio graph changes size 1`] = `
+exports[`custom nodes > works when the custom node audio graph changes size 1`] = `
 {
   "inputs": [
     {
@@ -995,7 +995,7 @@ exports[`custom nodes works when the custom node audio graph changes size 1`] = 
 }
 `;
 
-exports[`custom nodes works when the custom node audio graph changes size 2`] = `
+exports[`custom nodes > works when the custom node audio graph changes size 2`] = `
 {
   "inputs": [
     {

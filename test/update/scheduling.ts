@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import createVirtualAudioGraph, * as _V from "../../src";
 
 const V: any = _V;

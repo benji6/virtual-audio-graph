@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`createVirtualAudioGraph optionally takes output parameter 1`] = `
+exports[`createVirtualAudioGraph > optionally takes output parameter 1`] = `
 {
   "gain": {
     "inputs": [],
@@ -20,7 +20,7 @@ exports[`createVirtualAudioGraph optionally takes output parameter 1`] = `
 }
 `;
 
-exports[`createVirtualAudioGraph optionally takes output parameter 2`] = `
+exports[`createVirtualAudioGraph > optionally takes output parameter 2`] = `
 {
   "inputs": [
     {

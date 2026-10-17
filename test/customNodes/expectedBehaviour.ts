@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import createVirtualAudioGraph, * as V from "../../src";
 import { oscillator } from "../../src";
 import { IVirtualAudioNodeGraph } from "../../src/types";
