@@ -1,10 +1,11 @@
 import { IVirtualAudioNodeParams, Output, VirtualAudioNode } from "../types";
+import updateAudioParam from "../updateAudioParam";
 import { equals } from "../utils";
 import CustomVirtualAudioNode from "./CustomVirtualAudioNode";
 import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
 
 export default class AudioWorkletVirtualAudioNode extends VirtualAudioNodeBase {
-  public audioNode!: AudioNode;
+  public audioNode!: AudioWorkletNode;
   public connected: boolean = false;
   private connections: AudioNode[] = [];
 
@@ -19,12 +20,11 @@ export default class AudioWorkletVirtualAudioNode extends VirtualAudioNodeBase {
 
   public connect(...connectArgs: any[]): void {
     const { audioNode } = this;
-    const filteredConnectArgs = connectArgs.filter(Boolean);
-    const [firstArg, ...rest] = filteredConnectArgs;
+    const [firstArg, ...rest] = connectArgs;
     if (audioNode.connect) {
       audioNode.connect(firstArg, ...rest);
     }
-    this.connections = this.connections.concat(filteredConnectArgs);
+    this.connections = this.connections.concat(connectArgs);
     this.connected = true;
   }
 
@@ -68,22 +68,14 @@ export default class AudioWorkletVirtualAudioNode extends VirtualAudioNodeBase {
     for (const key of Object.keys(params)) {
       const param = params[key];
 
-      if (this.params?.[key] === param) continue;
+      if (this.params && equals(this.params[key], param)) continue;
 
-      const paramInstance = (audioNode as any).parameters.get(key);
-
-      if (Array.isArray(param)) {
-        if (this.params && !equals(param, this.params[key])) {
-          (audioNode as any).parameters.get(key).cancelScheduledValues(0);
-        }
-        const callMethod = ([methodName, ...args]: [string, ...any[]]) =>
-          paramInstance[methodName](...args);
-        Array.isArray(param[0])
-          ? param.forEach(callMethod)
-          : callMethod(param as [string, ...any[]]);
-        continue;
-      }
-      paramInstance.value = param;
+      const paramInstance = audioNode.parameters.get(key);
+      if (!paramInstance)
+        throw new Error(
+          `Unknown AudioParam "${key}" for AudioWorkletNode "${this.node}"`,
+        );
+      updateAudioParam(paramInstance, param, this.params != null);
     }
     this.params = params;
     return this;

@@ -53,6 +53,11 @@
 
       <h3>Browser support</h3>
       <p>
+        Builds target ES2022, including APIs such as
+        <code class="language-js">Object.hasOwn</code>. Older browsers require
+        transpilation and suitable polyfills.
+      </p>
+      <p>
         virtual-audio-graph needs to be run in an environment that supports the
         web audio API (<a href="https://caniuse.com/#feat=audio-api"
           >https://caniuse.com/#feat=audio-api</a
@@ -174,6 +179,10 @@ virtualAudioGraph.update({
         The oscillator node is connnected to the gain node (id 0) and has its
         stopTime set to 1 second from the current time.
       </p>
+      <p>
+        <code class="language-js">"output"</code> is reserved and cannot be used
+        as a node ID.
+      </p>
       <h2>Rendering an empty graph</h2>
       <p>
         All the demos in this guide have a stop button that is implemented like
@@ -283,6 +292,26 @@ virtualAudioGraph.update({
           rel="noopener"
           >See here for more info on AudioParam methods</a
         >).
+      </p>
+      <h3>Updates and automation</h3>
+      <p>
+        These scheduling forms work for both standard and worklet AudioParams.
+        On an existing node, changing a parameter cancels its scheduled values
+        from time zero before applying the replacement, including when replacing
+        a schedule with a number. An empty schedule (<code class="language-js"
+          >[]</code
+        >) cancels automation without adding events.
+      </p>
+      <p>
+        Equivalent schedules, including curves with equal typed-array contents,
+        are not replayed. Omitting a parameter leaves its native state and
+        automation unchanged.
+      </p>
+      <p>
+        Native objects such as
+        <code class="language-js">AudioBuffer</code> are compared by identity:
+        pass a new buffer to replace one, and do not mutate previously supplied
+        parameter descriptions.
       </p>
       <p>Here's how to use setValueAtTime:</p>
       <pre

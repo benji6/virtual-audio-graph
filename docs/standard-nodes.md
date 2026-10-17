@@ -68,6 +68,21 @@ NB ChannelSplitter has it's own syntax for the output parameter. Because the cha
 channelSplitter({ key, outputs, inputs }, { numberOfOutputs });
 ```
 
+`key` must name an existing node. Supply both `outputs` and `inputs` with the same
+length; each pair connects one source output to one destination input. Indices
+are zero-based, and zero is preserved in either array. For example, swapping two
+channels into a merger:
+
+```javascript
+virtualAudioGraph.update({
+  merger: channelMerger(OUTPUT, { numberOfInputs: 2 }),
+  splitter: channelSplitter(
+    { key: "merger", outputs: [0, 1], inputs: [1, 0] },
+    { numberOfOutputs: 2 },
+  ),
+});
+```
+
 ---
 
 ## [convolver](https://developer.mozilla.org/en-US/docs/Web/API/ConvolverNode)

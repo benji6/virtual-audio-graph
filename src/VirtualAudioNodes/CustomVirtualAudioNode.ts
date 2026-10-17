@@ -33,7 +33,7 @@ export default class CustomVirtualAudioNode<
         output === OUTPUT ||
         (Array.isArray(output) && output.indexOf(OUTPUT) !== -1)
       ) {
-        childVirtualNode.connect(...connectArgs.filter(Boolean));
+        childVirtualNode.connect(...connectArgs);
       }
     }
 
@@ -61,14 +61,11 @@ export default class CustomVirtualAudioNode<
   }
 
   public initialize(audioContext: AudioContext | OfflineAudioContext): this {
-    this.virtualNodes = Object.fromEntries(
-      Object.entries(this.node(this.params)).map(
-        ([key, virtualAudioNodeParam]) => [
-          key,
-          virtualAudioNodeParam.initialize(audioContext),
-        ],
-      ),
-    );
+    const virtualNodes: IVirtualAudioNodeGraph = Object.create(null);
+    for (const [key, node] of Object.entries(this.node(this.params))) {
+      virtualNodes[key] = node.initialize(audioContext);
+    }
+    this.virtualNodes = virtualNodes;
 
     connectAudioNodes(this.virtualNodes, () => {});
 

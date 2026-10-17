@@ -3,7 +3,7 @@ import { IVirtualAudioNodeGraph, VirtualAudioNode } from "./types";
 import updateVirtualNodeGraph from "./updateVirtualNodeGraph";
 
 export default class VirtualAudioGraph {
-  private virtualNodes: IVirtualAudioNodeGraph = {};
+  private virtualNodes: IVirtualAudioNodeGraph = Object.create(null);
 
   constructor(
     public readonly audioContext: AudioContext | OfflineAudioContext,
@@ -15,7 +15,7 @@ export default class VirtualAudioGraph {
   }
 
   public update(newGraph: IVirtualAudioNodeGraph): this {
-    if (OUTPUT in newGraph)
+    if (Object.hasOwn(newGraph, OUTPUT))
       throw new Error(
         `"${OUTPUT}" is a virtual-audio-graph reserved string and therefore not a valid node ID`,
       );

@@ -16,7 +16,7 @@ export default function updateVirtualNodeGraph(
   connectCallback: (vNode: VirtualAudioNode) => void = () => {},
 ): void {
   for (const [id, virtualAudioNode] of Object.entries(currentGraph)) {
-    if (newGraph.hasOwnProperty(id)) continue;
+    if (Object.hasOwn(newGraph, id)) continue;
     virtualAudioNode.disconnectAndDestroy();
     disconnectParents(currentGraph, virtualAudioNode);
     delete currentGraph[id];
@@ -24,7 +24,9 @@ export default function updateVirtualNodeGraph(
 
   for (const key of Object.keys(newGraph)) {
     const newVirtualAudioNode = newGraph[key];
-    const virtualAudioNode = currentGraph[key];
+    const virtualAudioNode = Object.hasOwn(currentGraph, key)
+      ? currentGraph[key]
+      : undefined;
 
     if (virtualAudioNode == null) {
       currentGraph[key] = newVirtualAudioNode.initialize(audioContext);

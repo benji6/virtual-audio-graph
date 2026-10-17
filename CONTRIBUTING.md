@@ -9,8 +9,9 @@ dependencies:
 npm ci
 ```
 
-Library and documentation builds target ES2019. Runtime environments must support
-ES2019 APIs or provide suitable polyfills.
+Library and documentation builds target ES2022. Runtime environments must support
+ES2022 syntax and APIs, including `Object.hasOwn`, or transpile the output and
+provide suitable polyfills.
 
 See [AGENTS.md](AGENTS.md) for the source map and behavioral invariants.
 

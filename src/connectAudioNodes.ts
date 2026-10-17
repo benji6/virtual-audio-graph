@@ -28,13 +28,21 @@ export default (
         if (key == null) {
           throw new Error(`node with ID "${id}" does not specify an output`);
         }
-        if (inputs) {
-          if (inputs.length !== outputs?.length) {
+        if (!Object.hasOwn(virtualGraph, key))
+          throw Error(
+            `node with ID "${id}" specifies an output ID "${String(key)}", but no such node exists`,
+          );
+        if (inputs != null || outputs != null) {
+          if (
+            !Array.isArray(inputs) ||
+            !Array.isArray(outputs) ||
+            inputs.length !== outputs.length
+          ) {
             throw new Error(
               `node with ID "${id}" must specify outputs and inputs arrays of the same length`,
             );
           }
-          for (let i = 0; i++; i < inputs.length) {
+          for (let i = 0; i < inputs.length; i++) {
             virtualNode.connect(
               virtualGraph[key as keyof typeof virtualGraph].audioNode,
               outputs[i],
@@ -43,10 +51,6 @@ export default (
           }
           continue;
         }
-        if (!(key in virtualGraph))
-          throw Error(
-            `node with ID "${id}" specifies an output ID "${String(key)}", but no such node exists`,
-          );
         virtualNode.connect(
           (
             virtualGraph[key as keyof typeof virtualGraph]
@@ -56,7 +60,7 @@ export default (
         continue;
       }
 
-      if (!(output in virtualGraph))
+      if (!Object.hasOwn(virtualGraph, output))
         throw Error(
           `'node with ID "${id}" specifies an output ID "${String(output)}", but no such node exists'`,
         );

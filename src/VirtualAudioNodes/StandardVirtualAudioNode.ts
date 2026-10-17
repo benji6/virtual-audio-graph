@@ -6,6 +6,7 @@ import {
   Output,
   VirtualAudioNode,
 } from "../types";
+import updateAudioParam from "../updateAudioParam";
 import { capitalize, equals } from "../utils";
 import CustomVirtualAudioNode from "./CustomVirtualAudioNode";
 import VirtualAudioNodeBase from "./VirtualAudioNodeBase";
@@ -60,10 +61,9 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
   }
 
   public connect(...connectArgs: any[]): void {
-    const filteredConnectArgs = connectArgs.filter(Boolean);
-    const [firstArg, ...rest] = filteredConnectArgs;
+    const [firstArg, ...rest] = connectArgs;
     this.audioNode?.connect(firstArg, ...rest);
-    this.connections = this.connections.concat(filteredConnectArgs);
+    this.connections = this.connections.concat(connectArgs);
     this.connected = true;
   }
 
@@ -132,16 +132,7 @@ export default class StandardVirtualAudioNode extends VirtualAudioNodeBase {
       const param = params[key];
       if (this.params && equals(this.params[key], param)) continue;
       if (audioParamProperties.indexOf(key) !== -1) {
-        if (Array.isArray(param)) {
-          if (this.params) audioNode[key].cancelScheduledValues(0);
-          const callMethod = ([methodName, ...args]: [string, ...any[]]) =>
-            audioNode[key][methodName](...args);
-          Array.isArray(param[0])
-            ? param.forEach(callMethod)
-            : callMethod(param as [string, any[]]);
-          continue;
-        }
-        audioNode[key].value = param;
+        updateAudioParam(audioNode[key], param, this.params != null);
         continue;
       }
       if (setters.indexOf(key) !== -1) {
