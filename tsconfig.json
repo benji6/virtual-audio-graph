@@ -2,13 +2,10 @@
   "compilerOptions": {
     "allowUnreachableCode": false,
     "declaration": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "node16",
     "noUnusedLocals": true,
     "outDir": "dist",
-    "sourceMap": false,
-    "strict": true,
+    "rootDir": "src",
     "target": "es2019"
   },
   "include": ["src/**/*"]

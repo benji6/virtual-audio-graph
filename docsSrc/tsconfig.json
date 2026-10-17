@@ -1,11 +1,10 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
     "module": "es2015",
     "target": "es2019",
     "noImplicitAny": false,
     "outDir": "./esm/",
-    "skipLibCheck": true,
-    "sourceMap": false
+    "rootDir": "..",
+    "skipLibCheck": true
   }
 }

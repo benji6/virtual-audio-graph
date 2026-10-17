@@ -372,9 +372,7 @@ const examples = [
 
     const chromaticScale = (n) => 440 * Math.pow(2, n / 12);
     const noteLength = 0.075;
-    const up = Array.apply(null, { length: 16 }).map((_, i) =>
-      chromaticScale(i),
-    );
+    const up = Array.from({ length: 16 }, (_, i) => chromaticScale(i));
     const down = [...up].reverse();
 
     virtualAudioGraph.update({
